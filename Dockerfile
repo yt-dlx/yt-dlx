@@ -5,12 +5,9 @@ RUN apt-get update \
     tor \
     curl \
     ffmpeg \
-    nodejs \
-    python3 \
-    python3-pip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
-RUN npm i -g yarn yt-dlx --force
+RUN npm i -g yarn --force
 WORKDIR /app
 COPY ./frontend /app
 RUN yarn install && yarn frontend:build 
