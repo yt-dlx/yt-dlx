@@ -1,0 +1,1 @@
+{"version":3,"file":"list_formats.d.ts","sourceRoot":"","sources":["../../../../core/routes/command/list_formats.ts"],"names":[],"mappings":"AAIA;;;;;;;;GAQG;AACH,wBAA8B,YAAY,CAAC,EACzC,KAAK,EACL,OAAO,EACP,QAAQ,GACT,EAAE;IACD,KAAK,EAAE,MAAM,CAAC;IACd,OAAO,CAAC,EAAE,OAAO,CAAC;IAClB,QAAQ,CAAC,EAAE,OAAO,CAAC;CACpB,GAAG,OAAO,CAAC,GAAG,CAAC,CAoEf"}
