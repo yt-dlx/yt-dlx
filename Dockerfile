@@ -10,5 +10,5 @@ RUN apt-get update \
 RUN npm i -g yarn --force
 WORKDIR /app
 COPY ./frontend /app
-RUN yarn install && yarn frontend:build 
-CMD ["yarn", "frontend:start"]
+RUN yarn install && yarn build
+CMD yarn start
