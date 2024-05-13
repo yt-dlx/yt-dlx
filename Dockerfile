@@ -1,14 +1,13 @@
-FROM node:latest
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
+FROM node:lts-alpine
+RUN apk update && \
+    apk add --no-cache \
     git \
     tor \
     curl \
-    ffmpeg \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-RUN npm i -g yarn --force
+    ffmpeg
+RUN npm install -g yarn --force
 WORKDIR /app
 COPY ./frontend /app
-RUN yarn install && yarn build
-CMD yarn start
+RUN yarn install && \
+    yarn build
+CMD ["yarn", "start"]
