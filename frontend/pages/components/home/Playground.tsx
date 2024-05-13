@@ -31,7 +31,7 @@ export default function PlayGround() {
   react.useEffect(() => {
     fetch("/api/ioSocket").finally(() => {
       var ioSocket = io();
-      var getSimilar = (data: string[]) => setSimilar(data.slice(0, 8));
+      var getSimilar = (data: string[]) => setSimilar(data.slice(0, 10));
       ioSocket.on("similar", getSimilar);
       setSocket(ioSocket);
       return () => {
