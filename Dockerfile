@@ -12,6 +12,6 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 RUN npm i -g yarn yt-dlx --force
 WORKDIR /app
-COPY . /app
-RUN yarn remake
+COPY ./frontend /app
+RUN yarn install && yarn frontend:build 
 CMD ["yarn", "frontend:start"]
