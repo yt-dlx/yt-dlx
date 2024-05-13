@@ -17,7 +17,7 @@
   "dependencies": {
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.13",
-    "@tanstack/react-query": "^5.35.1",
+    "@tanstack/react-query": "^5.36.0",
     "axios": "^1.6.7",
     "colors": "^1.4.0",
     "daisyui": "^4.11.1",
@@ -40,9 +40,9 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@tanstack/react-query-devtools": "^5.35.1",
+    "@tanstack/react-query-devtools": "^5.36.0",
     "@types/node": "^20.12.11",
-    "@types/react": "^18.3.1",
+    "@types/react": "^18.3.2",
     "@types/react-dom": "^18.3.0",
     "@types/react-syntax-highlighter": "^15.5.13",
     "autoprefixer": "^10.4.19",
