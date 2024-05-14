@@ -1,19 +1,36 @@
+"use client";
 import Link from "next/link";
 import { SiBun } from "react-icons/si";
 import { FaYarn } from "react-icons/fa";
 import { SiPnpm } from "react-icons/si";
+import { GoNumber } from "react-icons/go";
+import { TiAnchor } from "react-icons/ti";
 import { TbBrandNpm } from "react-icons/tb";
 import { FaLightbulb } from "react-icons/fa";
 import { MdAudioFile } from "react-icons/md";
 import { FaFileVideo } from "react-icons/fa6";
+import { MdDataSaverOff } from "react-icons/md";
 import NavPackage from "@/pages/components/nav";
 import FootPackage from "@/pages/components/foot";
 import { SiFirefoxbrowser } from "react-icons/si";
 import VerPackage from "@/pages/components/version";
 import { AiFillCodeSandboxCircle } from "react-icons/ai";
 import PlayGround from "@/pages/components/home/Playground";
+import react from "react";
 
 export default function home() {
+  const [currentDate, setCurrentDate] = react.useState(new Date());
+  react.useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentDate(new Date());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+  const fdate = `${currentDate.getDate()} ${currentDate.toLocaleString(
+    "default",
+    { month: "short" }
+  )} ${currentDate.getFullYear()}`;
+
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-900 scrollbar-neutral-900 scrollbar-thumb-red-600">
       <NavPackage />
@@ -85,6 +102,131 @@ export default function home() {
         </div>
       </section>
       <PlayGround />
+      {/* ==================================================================== */}
+      <section className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+        <div className="grid gap-10 row-gap-8 lg:grid-cols-5">
+          <div className="lg:col-span-2">
+            <p className="mb-2 text-xs font-semibold tracking-wide text-red-600 uppercase">
+              {fdate}
+            </p>
+            <div className="mb-3">
+              <a
+                aria-label="Article"
+                className="inline-block text-red-600 transition-colors duration-200"
+              >
+                <p className="font-sans text-xl font-extrabold leading-none tracking-tight lg:text-4xl xl:text-5xl">
+                  You've Searched For
+                </p>
+              </a>
+            </div>
+            <p className="mb-4 text-base text-white/80 md:text-lg">
+              <GoNumber className="text-red-600" size={50} /> Found Total
+              <span className="text-red-600 text-4xl"> " n " </span>Videos For
+              Your Query !!
+            </p>
+            <div className="flex items-center">
+              <a href="/" aria-label="Author" className="mr-3">
+                <img
+                  alt="avatar"
+                  src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
+                  className="object-cover w-10 h-10 rounded-full shadow-sm"
+                />
+              </a>
+              <div>
+                <a
+                  href="/"
+                  aria-label="Author"
+                  className="font-semibold text-red-800 transition-colors duration-200"
+                >
+                  Petru Vîrtos
+                </a>
+                <p className="text-sm font-medium leading-4 text-red-600">
+                  Author
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-col space-y-8 lg:col-span-3">
+            <div className="px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+              <div className="grid gap-5 row-gap-10 lg:grid-cols-2">
+                <div className="flex flex-col justify-center">
+                  <div className="max-w-xl mb-6">
+                    <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold tracking-tight text-red-600 sm:text-4xl sm:leading-none">
+                      The quick, brown fox
+                      <br className="hidden md:block" />
+                      jumps over{" "}
+                      <span className="relative px-1">
+                        <div className="absolute inset-x-0 bottom-0 h-3 transform -skew-x-12 bg-teal-accent-400" />
+                        <span className="relative inline-block text-deep-purple-accent-400">
+                          a lazy dog
+                        </span>
+                      </span>
+                    </h2>
+                    <p className="text-xs text-white/80 md:text-lg lowercase">
+                      Sed ut perspiciatis unde omnis iste natus error sit
+                      voluptatem accusantium doloremque laudantium, totam rem
+                      aperiam, eaque ipsa quae. explicabo.
+                    </p>
+                  </div>
+                  <p className="mb-4 text-sm font-bold text-red-600 tracking-widest uppercase flex flex-row gap-1">
+                    <MdDataSaverOff className="text-red-600" size={20} />
+                    meta-data
+                  </p>
+                  <div className="grid space-y-3 sm:gap-2 sm:grid-cols-2 sm:space-y-0">
+                    <ul className="space-y-3">
+                      <li className="flex">
+                        <span className="mr-1">
+                          <TiAnchor className="text-red-600" size={20} />
+                        </span>
+                        un-known
+                      </li>
+                      <li className="flex">
+                        <span className="mr-1">
+                          <TiAnchor className="text-red-600" size={20} />
+                        </span>
+                        un-known
+                      </li>
+                      <li className="flex">
+                        <span className="mr-1">
+                          <TiAnchor className="text-red-600" size={20} />
+                        </span>
+                        un-known
+                      </li>
+                    </ul>
+                    <ul className="space-y-3">
+                      <li className="flex">
+                        <span className="mr-1">
+                          <TiAnchor className="text-red-600" size={20} />
+                        </span>
+                        un-known
+                      </li>
+                      <li className="flex">
+                        <span className="mr-1">
+                          <TiAnchor className="text-red-600" size={20} />
+                        </span>
+                        un-known
+                      </li>
+                      <li className="flex">
+                        <span className="mr-1">
+                          <TiAnchor className="text-red-600" size={20} />
+                        </span>
+                        un-known
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div>
+                  <img
+                    className="object-cover w-full h-56 rounded-2xl border-2 border-red-600/40 hover:border-red-600 shadow-2xl shadow-red-600 sm:h-96"
+                    src="/logo.png"
+                    alt=""
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
       {/* Documentation */}
       <section
         id="Documentation"
