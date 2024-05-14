@@ -384,11 +384,8 @@ export default function PlayGround() {
             </section>
             {TubeSearch && (
               <react.Fragment>
-                <section className="px-4 py-24 mx-auto max-w-7xl">
-                  <h2 className="pb-8 mb-12 text-2xl font-extrabold leading-tight text-red-600 border-b-4 border-double border-red-600 md:text-6xl">
-                    YouTube Results
-                  </h2>
-                  <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+                <section className="px-4 mx-auto max-w-7xl">
+                  <div className="px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 border-b-4 border-double border-red-600 mb-10">
                     <div className="grid gap-10 row-gap-8 lg:grid-cols-5">
                       <div className="lg:col-span-2">
                         <p className="mb-2 text-xs font-semibold tracking-wide text-red-600 uppercase">
@@ -399,251 +396,100 @@ export default function PlayGround() {
                             aria-label="Article"
                             className="inline-block text-red-600 transition-colors duration-200"
                           >
-                            <p className="font-sans text-xl font-extrabold leading-none tracking-tight lg:text-4xl xl:text-5xl">
-                              You've Searched For
-                              <span className="text-red-600 text-4xl">
-                                {" "}
-                                " {Query} "{" "}
+                            <p className="font-sans text-xl font-thin leading-none tracking-tight lg:text-4xl xl:text-5xl">
+                              You've Searched For{" "}
+                              <span className="text-red-600 text-6xl font-extrabold">
+                                " {Query} "
                               </span>
                             </p>
                           </a>
                         </div>
-                        <p className="mb-4 text-base text-white/80 md:text-lg">
+                        <p className="mb-4 text-base text-white/80 md:text-lg flex flex-row">
                           <GoNumber className="text-red-600" size={50} /> Found
-                          Total
-                          <span className="text-red-600 text-4xl"> " n " </span>
+                          Total{" "}
+                          <span className="text-red-600 text-4xl">
+                            " {TubeSearch.length || 0} "
+                          </span>{" "}
                           Videos For Your Query !!
                         </p>
-                        <div className="flex items-center">
-                          <a aria-label="Author" className="mr-3">
-                            <img
-                              alt="avatar"
-                              src="/logo.png"
-                              className="object-cover w-10 h-10 rounded-full shadow-sm"
+                      </div>
+                    </div>
+                  </div>
+                  <div className="w-full xl:w-4/6">
+                    <div className="flex flex-col space-y-16">
+                      {TubeSearch &&
+                        TubeSearch.map((item: any, index: number) => (
+                          <div
+                            key={index}
+                            className="grid grid-cols-1 gap-6 md:grid-cols-4"
+                          >
+                            <Image
+                              width={200}
+                              height={200}
+                              loading="lazy"
+                              alt="thumbnail"
+                              src={item.thumbnails[0].url}
+                              className="object-cover w-full h-40 col-span-1 bg-center rounded-3xl duration-300 shadow-black shadow-2xl border border-red-600"
                             />
-                          </a>
-                          <div>
-                            <a
-                              aria-label="Author"
-                              className="font-semibold text-red-800 transition-colors duration-200"
-                            >
-                              Petru Vîrtos
-                            </a>
-                            <p className="text-sm font-medium leading-4 text-red-600">
-                              Author
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex flex-col space-y-8 lg:col-span-3">
-                        <div className="px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
-                          <div className="grid gap-5 row-gap-10 lg:grid-cols-2">
-                            <div className="flex flex-col justify-center">
-                              <div className="max-w-xl mb-6">
-                                <h2 className="max-w-lg mb-6 font-sans text-3xl font-bold tracking-tight text-red-600 sm:text-4xl sm:leading-none">
-                                  The quick, brown fox
-                                  <br className="hidden md:block" />
-                                  jumps over{" "}
-                                  <span className="relative px-1">
-                                    <div className="absolute inset-x-0 bottom-0 h-3 transform -skew-x-12 bg-teal-accent-400" />
-                                    <span className="relative inline-block text-deep-purple-accent-400">
-                                      a lazy dog
-                                    </span>
-                                  </span>
-                                </h2>
-                                <p className="text-xs text-white/80 md:text-lg lowercase">
-                                  Sed ut perspiciatis unde omnis iste natus
-                                  error sit voluptatem accusantium doloremque
-                                  laudantium, totam rem aperiam, eaque ipsa
-                                  quae. explicabo.
-                                </p>
+                            <div className="col-span-1 md:col-span-3">
+                              <h2 className="mb-2 text-2xl font-extrabold leading-snug text-red-600">
+                                {item.title}
+                              </h2>
+                              <ul className="mb-3 list-disc ml-4">
+                                <li>
+                                  <span className="text-red-600 font-bold">
+                                    @description:
+                                  </span>{" "}
+                                  {item.description}
+                                </li>
+                                <li>
+                                  <span className="text-red-600 font-bold">
+                                    @videoId:
+                                  </span>{" "}
+                                  {item.id}
+                                </li>
+                                <li>
+                                  <span className="text-red-600 font-bold">
+                                    @channelid:
+                                  </span>{" "}
+                                  {item.channelid}
+                                </li>
+                                <li>
+                                  <span className="text-red-600 font-bold">
+                                    @channelname:
+                                  </span>{" "}
+                                  {item.channelname}
+                                </li>
+                                <li>
+                                  <span className="text-red-600 font-bold">
+                                    @duration:
+                                  </span>{" "}
+                                  {item.duration}
+                                </li>
+                                <li>
+                                  <span className="text-red-600 font-bold">
+                                    @uploadDate:
+                                  </span>{" "}
+                                  {item.uploadDate}
+                                </li>
+                                <li>
+                                  <span className="text-red-600 font-bold">
+                                    @viewCount:
+                                  </span>{" "}
+                                  {item.viewCount}
+                                </li>
+                              </ul>
+                              <div className="md:flex items-left justify-left gap-2">
+                                <Link
+                                  href={`/${item.id}`}
+                                  className="btn bg-red-800 hover:bg-red-600 rounded-2xl shadow-black shadow-2xl text-white font-bold btn-wide"
+                                >
+                                  watch video or download file!
+                                </Link>
                               </div>
-                              <p className="mb-4 text-sm font-bold text-red-600 tracking-widest uppercase flex flex-row gap-1">
-                                <MdDataSaverOff
-                                  className="text-red-600"
-                                  size={20}
-                                />
-                                meta-data
-                              </p>
-
-                              {TubeSearch &&
-                                TubeSearch.map((item: any, index: number) => (
-                                  <div
-                                    key={index}
-                                    className="grid grid-cols-1 gap-6 md:grid-cols-4"
-                                  >
-                                    <Image
-                                      width={200}
-                                      height={200}
-                                      loading="lazy"
-                                      alt="thumbnail"
-                                      src={item.thumbnails[0].url}
-                                      className="object-cover w-full h-40 col-span-1 bg-center rounded-3xl duration-300 shadow-black shadow-2xl border border-red-600"
-                                    />
-                                    <div className="col-span-1 md:col-span-3">
-                                      <h2 className="mb-2 text-2xl font-extrabold leading-snug text-red-600">
-                                        {item.title}
-                                      </h2>
-                                      <ul className="mb-3 list-disc ml-4">
-                                        <li>
-                                          <span className="text-red-600 font-bold">
-                                            @description:
-                                          </span>{" "}
-                                          {item.description}
-                                        </li>
-                                        <li>
-                                          <span className="text-red-600 font-bold">
-                                            @videoId:
-                                          </span>{" "}
-                                          {item.id}
-                                        </li>
-                                        <li>
-                                          <span className="text-red-600 font-bold">
-                                            @channelid:
-                                          </span>{" "}
-                                          {item.channelid}
-                                        </li>
-                                        <li>
-                                          <span className="text-red-600 font-bold">
-                                            @channelname:
-                                          </span>{" "}
-                                          {item.channelname}
-                                        </li>
-                                        <li>
-                                          <span className="text-red-600 font-bold">
-                                            @duration:
-                                          </span>{" "}
-                                          {item.duration}
-                                        </li>
-                                        <li>
-                                          <span className="text-red-600 font-bold">
-                                            @uploadDate:
-                                          </span>{" "}
-                                          {item.uploadDate}
-                                        </li>
-                                        <li>
-                                          <span className="text-red-600 font-bold">
-                                            @viewCount:
-                                          </span>{" "}
-                                          {item.viewCount}
-                                        </li>
-                                      </ul>
-                                      <div className="md:flex items-left justify-left gap-2">
-                                        <Link
-                                          href={`/${item.id}`}
-                                          className="btn bg-red-800 hover:bg-red-600 rounded-2xl shadow-black shadow-2xl text-white font-bold btn-wide"
-                                        >
-                                          watch video or download file!
-                                        </Link>
-                                      </div>
-                                    </div>
-                                  </div>
-                                ))}
-
-                              {TubeSearch &&
-                                TubeSearch.map((item: any, index: number) => (
-                                  <div
-                                    key={index}
-                                    className="grid space-y-3 sm:gap-2 sm:grid-cols-2 sm:space-y-0"
-                                  >
-                                    <ul className="space-y-3">
-                                      <li className="flex">
-                                        <span className="mr-1">
-                                          <TiAnchor
-                                            className="text-red-600"
-                                            size={20}
-                                          />
-                                        </span>
-                                        <span className="text-red-600 font-bold">
-                                          @videoId:
-                                        </span>{" "}
-                                        {item.id}
-                                      </li>
-                                      <li className="flex">
-                                        <span className="mr-1">
-                                          <TiAnchor
-                                            className="text-red-600"
-                                            size={20}
-                                          />
-                                        </span>
-                                        <span className="text-red-600 font-bold">
-                                          @channelid:
-                                        </span>{" "}
-                                        {item.channelid}
-                                      </li>
-                                      <li className="flex">
-                                        <span className="mr-1">
-                                          <TiAnchor
-                                            className="text-red-600"
-                                            size={20}
-                                          />
-                                        </span>
-                                        <span className="text-red-600 font-bold">
-                                          @channelname:
-                                        </span>{" "}
-                                        {item.channelname}
-                                      </li>
-                                    </ul>
-                                    <ul className="space-y-3">
-                                      <li className="flex">
-                                        <span className="mr-1">
-                                          <TiAnchor
-                                            className="text-red-600"
-                                            size={20}
-                                          />
-                                        </span>
-                                        <span className="text-red-600 font-bold">
-                                          @duration:
-                                        </span>{" "}
-                                        {item.duration}
-                                      </li>
-                                      <li className="flex">
-                                        <span className="mr-1">
-                                          <TiAnchor
-                                            className="text-red-600"
-                                            size={20}
-                                          />
-                                        </span>
-                                        <span className="text-red-600 font-bold">
-                                          @uploadDate:
-                                        </span>{" "}
-                                        {item.uploadDate}
-                                      </li>
-                                      <li className="flex">
-                                        <span className="mr-1">
-                                          <TiAnchor
-                                            className="text-red-600"
-                                            size={20}
-                                          />
-                                        </span>
-                                        <span className="text-red-600 font-bold">
-                                          @viewCount:
-                                        </span>{" "}
-                                        {item.viewCount}
-                                      </li>
-                                      <li className="flex">
-                                        <span className="mr-1">
-                                          <TiAnchor
-                                            className="text-red-600"
-                                            size={20}
-                                          />
-                                        </span>
-                                        un-known
-                                      </li>
-                                    </ul>
-                                  </div>
-                                ))}
-                            </div>
-                            <div>
-                              <img
-                                className="object-cover w-full h-56 rounded-2xl border-2 border-red-600/40 hover:border-red-600 shadow-2xl shadow-red-600 sm:h-96"
-                                src="/logo.png"
-                                alt=""
-                              />
                             </div>
                           </div>
-                        </div>
-                      </div>
+                        ))}
                     </div>
                   </div>
                 </section>
