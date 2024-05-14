@@ -388,8 +388,7 @@ export default function PlayGround() {
                   <h2 className="pb-8 mb-12 text-2xl font-extrabold leading-tight text-red-600 border-b-4 border-double border-red-600 md:text-6xl">
                     YouTube Results
                   </h2>
-
-                  <section className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+                  <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
                     <div className="grid gap-10 row-gap-8 lg:grid-cols-5">
                       <div className="lg:col-span-2">
                         <p className="mb-2 text-xs font-semibold tracking-wide text-red-600 uppercase">
@@ -555,7 +554,10 @@ export default function PlayGround() {
                                             size={20}
                                           />
                                         </span>
-                                        @videoId: {item.id}
+                                        <span className="text-red-600 font-bold">
+                                          @videoId:
+                                        </span>{" "}
+                                        {item.id}
                                       </li>
                                       <li className="flex">
                                         <span className="mr-1">
@@ -564,7 +566,10 @@ export default function PlayGround() {
                                             size={20}
                                           />
                                         </span>
-                                        un-known
+                                        <span className="text-red-600 font-bold">
+                                          @channelid:
+                                        </span>{" "}
+                                        {item.channelid}
                                       </li>
                                       <li className="flex">
                                         <span className="mr-1">
@@ -573,7 +578,10 @@ export default function PlayGround() {
                                             size={20}
                                           />
                                         </span>
-                                        un-known
+                                        <span className="text-red-600 font-bold">
+                                          @channelname:
+                                        </span>{" "}
+                                        {item.channelname}
                                       </li>
                                     </ul>
                                     <ul className="space-y-3">
@@ -584,7 +592,10 @@ export default function PlayGround() {
                                             size={20}
                                           />
                                         </span>
-                                        un-known
+                                        <span className="text-red-600 font-bold">
+                                          @duration:
+                                        </span>{" "}
+                                        {item.duration}
                                       </li>
                                       <li className="flex">
                                         <span className="mr-1">
@@ -593,7 +604,22 @@ export default function PlayGround() {
                                             size={20}
                                           />
                                         </span>
-                                        un-known
+                                        <span className="text-red-600 font-bold">
+                                          @uploadDate:
+                                        </span>{" "}
+                                        {item.uploadDate}
+                                      </li>
+                                      <li className="flex">
+                                        <span className="mr-1">
+                                          <TiAnchor
+                                            className="text-red-600"
+                                            size={20}
+                                          />
+                                        </span>
+                                        <span className="text-red-600 font-bold">
+                                          @viewCount:
+                                        </span>{" "}
+                                        {item.viewCount}
                                       </li>
                                       <li className="flex">
                                         <span className="mr-1">
@@ -618,84 +644,6 @@ export default function PlayGround() {
                           </div>
                         </div>
                       </div>
-                    </div>
-                  </section>
-
-                  <div className="w-full xl:w-4/6">
-                    <div className="flex flex-col space-y-16">
-                      {TubeSearch &&
-                        TubeSearch.map((item: any, index: number) => (
-                          <div
-                            key={index}
-                            className="grid grid-cols-1 gap-6 md:grid-cols-4"
-                          >
-                            <Image
-                              width={200}
-                              height={200}
-                              loading="lazy"
-                              alt="thumbnail"
-                              src={item.thumbnails[0].url}
-                              className="object-cover w-full h-40 col-span-1 bg-center rounded-3xl duration-300 shadow-black shadow-2xl border border-red-600"
-                            />
-                            <div className="col-span-1 md:col-span-3">
-                              <h2 className="mb-2 text-2xl font-extrabold leading-snug text-red-600">
-                                {item.title}
-                              </h2>
-                              <ul className="mb-3 list-disc ml-4">
-                                <li>
-                                  <span className="text-red-600 font-bold">
-                                    @description:
-                                  </span>{" "}
-                                  {item.description}
-                                </li>
-                                <li>
-                                  <span className="text-red-600 font-bold">
-                                    @videoId:
-                                  </span>{" "}
-                                  {item.id}
-                                </li>
-                                <li>
-                                  <span className="text-red-600 font-bold">
-                                    @channelid:
-                                  </span>{" "}
-                                  {item.channelid}
-                                </li>
-                                <li>
-                                  <span className="text-red-600 font-bold">
-                                    @channelname:
-                                  </span>{" "}
-                                  {item.channelname}
-                                </li>
-                                <li>
-                                  <span className="text-red-600 font-bold">
-                                    @duration:
-                                  </span>{" "}
-                                  {item.duration}
-                                </li>
-                                <li>
-                                  <span className="text-red-600 font-bold">
-                                    @uploadDate:
-                                  </span>{" "}
-                                  {item.uploadDate}
-                                </li>
-                                <li>
-                                  <span className="text-red-600 font-bold">
-                                    @viewCount:
-                                  </span>{" "}
-                                  {item.viewCount}
-                                </li>
-                              </ul>
-                              <div className="md:flex items-left justify-left gap-2">
-                                <Link
-                                  href={`/${item.id}`}
-                                  className="btn bg-red-800 hover:bg-red-600 rounded-2xl shadow-black shadow-2xl text-white font-bold btn-wide"
-                                >
-                                  watch video or download file!
-                                </Link>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
                     </div>
                   </div>
                 </section>
