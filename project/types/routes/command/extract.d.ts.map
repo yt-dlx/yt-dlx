@@ -1,1 +1,0 @@
-{"version":3,"file":"extract.d.ts","sourceRoot":"","sources":["../../../../core/routes/command/extract.ts"],"names":[],"mappings":"AAIA;;;;;;;GAOG;AACH,wBAA8B,OAAO,CAAC,EACpC,KAAK,EACL,OAAO,EACP,QAAQ,GACT,EAAE;IACD,KAAK,EAAE,MAAM,CAAC;IACd,OAAO,CAAC,EAAE,OAAO,CAAC;IAClB,QAAQ,CAAC,EAAE,OAAO,CAAC;CACpB;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;GAuHA"}
