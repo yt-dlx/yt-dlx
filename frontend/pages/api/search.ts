@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import ytdlx from "yt-dlx";
+import ytdlx from "../../../";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 export default async function handler(

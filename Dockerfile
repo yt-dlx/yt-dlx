@@ -7,7 +7,6 @@ RUN apk update && \
     ffmpeg
 RUN npm install -g yarn --force
 WORKDIR /app
-COPY ./frontend /app
-RUN yarn install && \
-    yarn build
-CMD ["yarn", "start"]
+COPY . /app
+RUN yarn remake && yarn frontend:build
+CMD ["yarn", "frontend:start"]

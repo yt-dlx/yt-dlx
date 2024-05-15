@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import ytdlx from "yt-dlx";
+import ytdlx from "../../../";
 import { Server } from "socket.io";
 export var config = {
   api: {
