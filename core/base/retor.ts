@@ -9,9 +9,7 @@ function osget() {
     if (execSync("command -v systemctl", { stdio: "ignore" })) {
       recom = "systemctl stop tor && systemctl start tor";
     } else recom = "service tor stop && service tor start";
-  } else {
-    return false;
-  }
+  } else return false;
   try {
     execSync(recom, { stdio: "ignore" });
     return true;
