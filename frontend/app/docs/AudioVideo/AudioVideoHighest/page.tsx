@@ -8,13 +8,13 @@ import VerPackage from "@/pages/components/version";
 
 export default function AwesomePackage({ param }: any) {
   return (
-    <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-900 scrollbar-neutral-900 scrollbar-thumb-red-600">
+    <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#111111] scrollbar-track-[#111111] scrollbar-thumb-red-600">
       <NavPackage />
       <section className="flex flex-col items-center justify-center mt-20">
         <div className="max-w-screen-2xl px-6 py-16 mx-auto space-y-12">
           <article className="space-y-8">
 <VerPackage />
-            <p className="text-white/80">
+            <p className="text-white/60">
               Uncover an unparalleled solution for effortless audio and video
               downloads powered by YT-DLX - An advanced{" "}
               <span className="text-red-600">
@@ -28,7 +28,7 @@ export default function AwesomePackage({ param }: any) {
           </article>
           <div>
             <div className="flex flex-wrap py-2 gap-2 border-b border-red-600 border-dashed">
-              <div className="flex flex-col items-start justify-between w-full md:flex-row md:items-center text-white/80">
+              <div className="flex flex-col items-start justify-between w-full md:flex-row md:items-center text-white/60">
                 <div className="flex items-center gap-2 md:space-x-2">
                   <TbBrandNpm className="text-red-600" size={50} />
                   <FaYarn className="text-red-600" size={30} />
@@ -41,7 +41,7 @@ export default function AwesomePackage({ param }: any) {
               <p className="text-2xl font-semibold text-red-600">
                 Install now using any package manager of your choice!
               </p>
-              <ul className="ml-4 space-y-1 list-disc text-white/80">
+              <ul className="ml-4 space-y-1 list-disc text-white/60">
                 <li>
                   <a rel="noopener noreferrer" className="cursor-pointer">
                     <span className="text-red-600">yarn</span> add yt-dlx |{" "}
@@ -77,7 +77,7 @@ export default function AwesomePackage({ param }: any) {
             <h2 className="text-3xl font-bold sm:text-4xl text-red-600">
               Viewing YtDlx.AudioVideo.Single.Highest()
             </h2>
-            <p className="mt-4 text-white/80">
+            <p className="mt-4 text-white/60">
               yt-dlx accommodates various node.js coding flavours!{" "}
               <span className="text-red-600">(typescript), (commonjs),</span>{" "}
               and <span className="text-red-600">(esm)</span>, ensuring 100%
@@ -127,7 +127,7 @@ export default function AwesomePackage({ param }: any) {
                     <h4 className="mt-8 text-2xl font-semibold leading-none tracking-tighter text-red-600 lg:text-3xl">
                       TypeScript
                     </h4>
-                    <p className="mt-3 text-base leading-relaxed text-white/80">
+                    <p className="mt-3 text-base leading-relaxed text-white/60">
                       A superset of JavaScript that adds optional static typing
                       and other features to enhance code maintainability and
                       scalability. It compiles down to plain JavaScript and is
@@ -158,7 +158,7 @@ export default function AwesomePackage({ param }: any) {
                     <h4 className="mt-8 text-2xl font-semibold leading-none tracking-tighter text-red-600 lg:text-3xl">
                       JavaScript
                     </h4>
-                    <p className="mt-3 text-base leading-relaxed text-white/80">
+                    <p className="mt-3 text-base leading-relaxed text-white/60">
                       A versatile, high-level programming language primarily
                       used for web development, enabling dynamic and interactive
                       content on websites. It's supported by all modern web
@@ -189,7 +189,7 @@ export default function AwesomePackage({ param }: any) {
                     <h4 className="mt-8 text-2xl font-semibold leading-none tracking-tighter text-red-600 lg:text-3xl">
                       ECMAScript
                     </h4>
-                    <p className="mt-3 text-base leading-relaxed text-white/80">
+                    <p className="mt-3 text-base leading-relaxed text-white/60">
                       The standardized specification for JavaScript, defining
                       the syntax, semantics, and behavior of the language.
                       JavaScript is the most popular implementation of

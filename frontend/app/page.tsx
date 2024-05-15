@@ -78,7 +78,7 @@ export default function home() {
           <div className="max-w-screen-2xl px-6 py-16 mx-auto space-y-12">
             <article className="space-y-8">
               <VerPackage />
-              <p className="text-white/80">
+              <p className="text-white/60">
                 Yt-Dlx Is A Robust Multimedia Downloading Tool Meticulously
                 Crafted To Elevate Your Media Consumption Experience. With Its
                 Advanced Capabilities, It Offers An All-Encompassing Solution
@@ -94,7 +94,7 @@ export default function home() {
             </article>
             <div>
               <div className="flex flex-wrap py-2 gap-2 border-b border-red-600 border-dashed">
-                <div className="flex flex-col items-start justify-between w-full md:flex-row md:items-center text-white/80">
+                <div className="flex flex-col items-start justify-between w-full md:flex-row md:items-center text-white/60">
                   <div className="flex items-center gap-2 md:space-x-2">
                     <TbBrandNpm className="text-red-600" size={50} />
                     <FaYarn className="text-red-600" size={30} />
@@ -107,7 +107,7 @@ export default function home() {
                 <p className="text-2xl font-semibold text-red-600">
                   Install Now Using Any Package Manager Of Your Choice!
                 </p>
-                <ul className="ml-4 space-y-1 list-disc text-white/80">
+                <ul className="ml-4 space-y-1 list-disc text-white/60">
                   <li>
                     <a rel="noopener noreferrer" className="cursor-pointer">
                       <span className="text-red-600">yarn</span> add yt-dlx |{" "}
@@ -154,7 +154,7 @@ export default function home() {
             <h2 className="text-3xl font-bold sm:text-4xl text-red-600">
               Explore All Available Functions
             </h2>
-            <p className="mt-4 text-white/80">
+            <p className="mt-4 text-white/60">
               YT-DLX accommodates various node.js coding flavours!{" "}
               <span className="text-red-600">
                 (typescript), (commonjs) and (esm)
@@ -163,9 +163,9 @@ export default function home() {
               coverage.
             </p>
             {/* ========================[ AUDIO ONLY ]======================== */}
-            <div className="bg-[#121212] mt-8 grid grid-cols-1 gap-8 md:mt-16 border-4 border-red-600 rounded-3xl shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600">
+            <div className="bg-stone-950 mt-8 grid grid-cols-1 gap-8 md:mt-16 border-4 border-red-600 rounded-3xl shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600">
               <div className="overflow-x-auto overflow-y-auto">
-                <table className="table text-white/80">
+                <table className="table text-white/60">
                   <thead>
                     <tr>
                       <th className="text-red-600 text-lg">
@@ -192,7 +192,7 @@ export default function home() {
                         Downloads and processes the highest quality audio from a
                         single YouTube video.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/Audio/AudioHighest"
                           className="font-bold"
@@ -214,7 +214,7 @@ export default function home() {
                         Downloads and processes the lowest quality audio from a
                         single YouTube video.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/Audio/AudioLowest"
                           className="font-bold"
@@ -236,7 +236,7 @@ export default function home() {
                         Downloads and processes a single YouTube video with
                         audio customization options.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/Audio/AudioCustom"
                           className="font-bold"
@@ -259,7 +259,7 @@ export default function home() {
                         Downloads the highest quality version of a YouTube video
                         with customization options.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/Video/VideoHighest"
                           className="font-bold"
@@ -281,7 +281,7 @@ export default function home() {
                         Downloads the lowest quality version of a YouTube video
                         with customization options.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/Video/VideoLowest"
                           className="font-bold"
@@ -302,7 +302,7 @@ export default function home() {
                       <td>
                         Downloads a YouTube video with customization options.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/Video/VideoCustom"
                           className="font-bold"
@@ -325,7 +325,7 @@ export default function home() {
                         Downloads audio and video from a YouTube video URL with
                         the highest available resolution.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/AudioVideo/AudioVideoHighest"
                           className="font-bold"
@@ -347,7 +347,7 @@ export default function home() {
                         Downloads audio and video from a YouTube video URL with
                         the lowest available resolution.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/AudioVideo/AudioVideoLowest"
                           className="font-bold"
@@ -369,7 +369,7 @@ export default function home() {
                         Downloads audio and video from a YouTube video URL with
                         customizable options.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/AudioVideo/AudioVideoCustom"
                           className="font-bold"
@@ -392,7 +392,7 @@ export default function home() {
                         Fetches data for a single YouTube video based on the
                         video ID or link.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/Command/video_data"
                           className="font-bold"
@@ -411,7 +411,7 @@ export default function home() {
                       </td>
                       <td>Video.Multiple</td>
                       <td>Searches for YouTube videos based on the query.</td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/Command/search_videos"
                           className="font-bold"
@@ -432,7 +432,7 @@ export default function home() {
                       <td>
                         Extracts metadata for videos in a YouTube playlist.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/Command/playlist_data"
                           className="font-bold"
@@ -453,7 +453,7 @@ export default function home() {
                       <td>
                         Searches for YouTube playlists based on the query.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/Command/search_playlist"
                           className="font-bold"
@@ -475,7 +475,7 @@ export default function home() {
                       <td>
                         Extracts metadata information from a YouTube video.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/Command/extract"
                           className="font-bold"
@@ -497,7 +497,7 @@ export default function home() {
                         Lists the available formats and manifest information for
                         a YouTube video.
                       </td>
-                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/80">
+                      <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white/60">
                         <Link
                           href="/docs/Command/list_formats"
                           className="font-bold"
@@ -516,7 +516,7 @@ export default function home() {
     );
   };
   return (
-    <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-900 scrollbar-neutral-900 scrollbar-thumb-red-600">
+    <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#111111] scrollbar-track-[#111111] scrollbar-thumb-red-600">
       <NavPackage />
       <Introduction />
       <section
@@ -529,13 +529,13 @@ export default function home() {
             setTubeSearch(null);
             ApiSearch.mutate();
           }}
-          className="bg-[#121212] max-w-screen-2xl p-10 text-red-600 mx-auto my-8 rounded-2xl border-4 border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600"
+          className="bg-stone-950 max-w-screen-2xl p-10 text-red-600 mx-auto my-8 rounded-2xl border-4 border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600"
         >
           <h1 className="text-6xl mb-4 font-bold">Yt-Dlx PlayGround</h1>
           <h2 className="text-3xl font-bold text-red-600 mb-4 font-mono">
             Effortless Audio Video Downloader And Streamer!
           </h2>
-          <p className="mb-8 italic text-white/80">
+          <p className="mb-8 italic text-white/60">
             Unlock the power of YT-DLX, the ultimate node.js toolkit for
             seamless audio and video downloading and streaming. Effortlessly
             handle various coding flavors, from TypeScript to CommonJS and ESM,
@@ -547,12 +547,12 @@ export default function home() {
                 <span className="flex flex-row items-center justify-center label-text text-red-600 text-sm">
                   <HiFire size={20} className="text-red-600 animate-pulse" />
                   option :
-                  <span className="text-white/80">provide video name</span>
+                  <span className="text-white/60">provide video name</span>
                 </span>
                 <span className="flex flex-row items-center justify-center label-text-alt text-red-600 text-sm">
                   <HiFire size={20} className="text-red-600 animate-pulse" />
                   option :
-                  <span className="text-white/80">provide video link</span>
+                  <span className="text-white/60">provide video link</span>
                 </span>
               </div>
               <input
@@ -573,7 +573,7 @@ export default function home() {
                 <span className="flex flex-row items-center justify-center label-text-alt text-red-600 text-sm">
                   <HiFire size={20} className="text-red-600 animate-pulse" />
                   option :
-                  <span className="text-white/80">provide video id</span>
+                  <span className="text-white/60">provide video id</span>
                 </span>
               </div>
             </label>
@@ -582,16 +582,16 @@ export default function home() {
             <button
               type="submit"
               disabled={ApiSearch.isPending}
-              className="flex flex-row items-center justify-center whitespace-nowrap text-sm font-bold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 active:ring-2 active:ring-red-500 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 bg-red-800 hover:bg-red-600 text-white/80 rounded-2xl shadow-md transition-all duration-300 hover:shadow-lg w-full"
+              className="flex flex-row items-center justify-center whitespace-nowrap text-sm font-bold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 active:ring-2 active:ring-red-500 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 bg-red-800 hover:bg-red-600 text-white/60 rounded-2xl shadow-md transition-all duration-300 hover:shadow-lg w-full"
             >
               <TbWorldSearch
                 size={20}
-                className="text-white/80 mr-1 font-bold"
+                className="text-white/60 mr-1 font-bold"
               />
               Search YouTube
             </button>
           </div>
-          <div className="mockup-code bg-[#121212] text-red-600">
+          <div className="mockup-code bg-stone-950 text-red-600">
             <pre data-prefix="$">
               <code className="text-red-600 font-bold lowercase">
                 Copyright © {fdate}
@@ -632,7 +632,7 @@ export default function home() {
                           </p>
                         </a>
                       </div>
-                      <p className="mb-4 text-base text-white/80 md:text-lg flex flex-row">
+                      <p className="mb-4 text-base text-white/60 md:text-lg flex flex-row">
                         <GoNumber className="text-red-600" size={50} /> Found
                         Total{" "}
                         <span className="text-red-600 text-4xl">
@@ -651,7 +651,7 @@ export default function home() {
                         <Link
                           key={index}
                           href={`/${item.id}`}
-                          className="relative group mb-4 duration-700 bg-neutral-900 p-1 shadow-red-900 hover:shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] rounded-2xl border-2 border-red-600/40 hover:border-red-600 flex flex-col justify-between"
+                          className="relative group mb-4 duration-700 bg-[#111111] p-1 shadow-red-900 hover:shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] rounded-2xl border-2 border-red-600/40 hover:border-red-600 flex flex-col justify-between"
                         >
                           <div className="relative">
                             <Image
@@ -676,10 +676,10 @@ export default function home() {
                             <h2 className="mb-2 text-xl font-bold leading-snug text-red-600">
                               {item.title}
                             </h2>
-                            <p className="mb-4 text-sm font-normal text-white/80">
+                            <p className="mb-4 text-sm font-normal text-white/60">
                               {item.description}
                             </p>
-                            <div className="flex items-center text-white/80">
+                            <div className="flex items-center text-white/60">
                               <ul className="mb-3 list-disc ml-4 text-xs">
                                 <li>
                                   <span className="text-red-600 text-sm">

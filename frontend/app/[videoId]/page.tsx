@@ -41,7 +41,7 @@ export default function home() {
         <div className="max-w-screen-2xl px-6 py-16 mx-auto space-y-12">
           <article className="space-y-8">
             <VerPackage />
-            <p className="text-white/80">
+            <p className="text-white/60">
               Yt-Dlx Is A Robust Multimedia Downloading Tool Meticulously
               Crafted To Elevate Your Media Consumption Experience. With Its
               Advanced Capabilities, It Offers An All-Encompassing Solution For
@@ -57,7 +57,7 @@ export default function home() {
           </article>
           <div>
             <div className="flex flex-wrap py-2 gap-2 border-b border-red-600 border-dashed">
-              <div className="flex flex-col items-start justify-between w-full md:flex-row md:items-center text-white/80">
+              <div className="flex flex-col items-start justify-between w-full md:flex-row md:items-center text-white/60">
                 <div className="flex items-center gap-2 md:space-x-2">
                   <TbBrandNpm className="text-red-600" size={50} />
                   <FaYarn className="text-red-600" size={30} />
@@ -70,7 +70,7 @@ export default function home() {
               <p className="text-2xl font-semibold text-red-600">
                 Install Now Using Any Package Manager Of Your Choice!
               </p>
-              <ul className="ml-4 space-y-1 list-disc text-white/80">
+              <ul className="ml-4 space-y-1 list-disc text-white/60">
                 <li>
                   <a rel="noopener noreferrer" className="cursor-pointer">
                     <span className="text-red-600">yarn</span> add yt-dlx |{" "}
@@ -104,7 +104,7 @@ export default function home() {
   };
 
   return (
-    <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-900 scrollbar-neutral-900 scrollbar-thumb-red-600">
+    <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#111111] scrollbar-track-[#111111] scrollbar-thumb-red-600">
       <NavPackage />
       <Introduction />
       {TubeSearch ? (
@@ -115,7 +115,7 @@ export default function home() {
                 <h2 className="text-3xl font-bold sm:text-4xl text-red-600">
                   Explore All Available Functions
                 </h2>
-                <p className="mt-4 text-white/80">
+                <p className="mt-4 text-white/60">
                   YT-DLX accommodates various node.js coding flavours!{" "}
                   <span className="text-red-600">
                     (typescript), (commonjs) and (esm)
@@ -125,7 +125,7 @@ export default function home() {
                 </p>
               </div>
               <section className="flex flex-col items-center justify-center">
-                <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-red-950/10 border-4 border-red-600 border-double rounded-3xl shadow-red-600 duration-500 shadow-[0_0_20px_rgba(255,0,0,0.5)]">
+                <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-stone-950 border-4 border-red-600 border-double rounded-3xl shadow-red-600 duration-500 shadow-[0_0_20px_rgba(255,0,0,0.5)]">
                   <div className="overflow-x-auto">
                     <section className="max-w-screen-2xl px-6 mx-auto p-1">
                       <iframe
@@ -138,13 +138,13 @@ export default function home() {
                       <h2 className="mt-6 text-4xl font-bold text-red-600">
                         {TubeSearch.title}
                       </h2>
-                      <p className="mt-2 leading-loose text-white/80 lowercase">
+                      <p className="mt-2 leading-loose text-white/60 lowercase">
                         <span className="text-red-600 font-bold">
                           @description:{" "}
                         </span>
                         {TubeSearch.description}
                       </p>
-                      <ul className="mt-2 text-white/80 list-disc">
+                      <ul className="mt-2 text-white/60 list-disc">
                         <li>
                           <span className="text-red-600 font-bold">
                             @videoId:
