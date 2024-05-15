@@ -11,7 +11,6 @@ import calculateETA from "../../../base/calculateETA";
 const ZodSchema = z.object({
     output: z.string().optional(),
     verbose: z.boolean().optional(),
-    onionTor: z.boolean().optional(),
     query: z.array(z.string().min(2)),
     resolution: z.enum(["high", "medium", "low", "ultralow"]),
     filter: z
@@ -41,18 +40,16 @@ const ZodSchema = z.object({
  * @param output - (optional) The output directory for the processed files.
  * @param filter - (optional) The audio filter to apply. Available options: "echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed".
  * @param verbose - (optional) Whether to log verbose output or not.
- * @param onionTor - (optional) Whether to use Tor for the download or not.
  * @param resolution - The desired audio resolution. Available options: "high", "medium", "low", "ultralow".
  * @returns A Promise that resolves when the audio processing is complete.
  */
-export default async function ListAudioCustom({ query, output, filter, verbose, onionTor, resolution, }) {
+export default async function ListAudioCustom({ query, output, filter, verbose, resolution, }) {
     try {
         ZodSchema.parse({
             query,
             output,
             filter,
             verbose,
-            onionTor,
             resolution,
         });
         let startTime;
@@ -86,7 +83,6 @@ export default async function ListAudioCustom({ query, output, filter, verbose, 
             try {
                 const engineData = await ytdlx({
                     query: video.videoLink,
-                    onionTor,
                     verbose,
                 });
                 if (engineData === undefined) {
@@ -108,7 +104,6 @@ export default async function ListAudioCustom({ query, output, filter, verbose, 
                 }
                 ff.addInput(engineData.metaData.thumbnail);
                 ff.withOutputFormat("avi");
-                ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
                 switch (filter) {
                     case "bassboost":
                         ff.withAudioFilter(["bass=g=10,dynaudnorm=f=150"]);

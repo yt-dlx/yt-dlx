@@ -78,7 +78,6 @@ export interface VideoInfo {
     duration_string: string;
 }
 export interface EngineOutput {
-    ipAddress: string;
     metaData: VideoInfo;
     AudioLowF: AudioFormat;
     AudioHighF: AudioFormat;
@@ -95,9 +94,7 @@ export interface EngineOutput {
     ManifestLow: ManifestFormat[];
     ManifestHigh: ManifestFormat[];
 }
-export default function Engine({ query, ipAddress, onionTor, }: {
+export default function Engine({ query }: {
     query: string;
-    ipAddress: string;
-    onionTor: boolean | undefined;
 }): Promise<EngineOutput>;
 //# sourceMappingURL=Engine.d.ts.map

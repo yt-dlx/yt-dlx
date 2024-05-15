@@ -11,7 +11,6 @@ import calculateETA from "../../../base/calculateETA";
 const ZodSchema = z.object({
     output: z.string().optional(),
     verbose: z.boolean().optional(),
-    onionTor: z.boolean().optional(),
     query: z.array(z.string().min(2)),
     filter: z
         .enum([
@@ -32,17 +31,15 @@ const ZodSchema = z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param output - (optional) The output directory for the processed files.
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
- * @param onionTor - (optional) Whether to use Tor for the download or not.
  * @returns A Promise that resolves when all videos have been processed.
  */
-export default async function ListVideoLowest({ query, verbose, output, filter, onionTor, }) {
+export default async function ListVideoLowest({ query, verbose, output, filter, }) {
     try {
         ZodSchema.parse({
             query,
             verbose,
             output,
             filter,
-            onionTor,
         });
         let startTime;
         const unique = new Set();
@@ -75,7 +72,6 @@ export default async function ListVideoLowest({ query, verbose, output, filter, 
             try {
                 const engineData = await ytdlx({
                     query: video.videoLink,
-                    onionTor,
                     verbose,
                 });
                 if (engineData === undefined) {
@@ -91,7 +87,6 @@ export default async function ListVideoLowest({ query, verbose, output, filter, 
                 const vdata = engineData.ManifestLow[0].url;
                 ff.addInput(vdata.toString());
                 ff.videoCodec("copy");
-                ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
                 ff.withOutputFormat("matroska");
                 switch (filter) {
                     case "grayscale":

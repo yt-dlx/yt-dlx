@@ -24,7 +24,6 @@ import YouTube from "../../";
                 resolution,
                 stream: false,
                 verbose: true,
-                onionTor: true,
                 output: "public/video",
                 query: "21 savage - redrum",
             });

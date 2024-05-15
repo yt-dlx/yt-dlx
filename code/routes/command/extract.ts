@@ -7,19 +7,16 @@ import type { EngineOutput } from "../../base/Engine";
  *
  * @param query - The YouTube video URL to extract metadata from.
  * @param verbose - (optional) Whether to log verbose output or not.
- * @param onionTor - (optional) Whether to use Tor for the extraction or not.
  * @returns A Promise that resolves with an object containing metadata information about the video.
  */
 export default async function extract({
   query,
   verbose,
-  onionTor,
 }: {
   query: string;
   verbose?: boolean;
-  onionTor?: boolean;
 }) {
-  const metaBody: EngineOutput = await ytdlx({ query, verbose, onionTor });
+  const metaBody: EngineOutput = await ytdlx({ query, verbose });
   if (!metaBody) {
     return {
       message: "Unable to get response!",
@@ -78,7 +75,6 @@ export default async function extract({
     return `${count}`;
   }
   const payload = {
-    ipAddress: metaBody.ipAddress,
     AudioLowF: metaBody.AudioLowF,
     AudioHighF: metaBody.AudioHighF,
     VideoLowF: metaBody.VideoLowF,

@@ -1,6 +1,5 @@
 import web from "../web";
 import colors from "colors";
-import retor from "./retor";
 import Engine from "./Engine";
 import YouTubeID from "../web/YouTubeId";
 import { version } from "../../package.json";
@@ -9,11 +8,9 @@ import type { EngineOutput } from "./Engine";
 export default async function Agent({
   query,
   verbose,
-  onionTor,
 }: {
   query: string;
   verbose?: boolean;
-  onionTor?: boolean;
 }): Promise<EngineOutput> {
   verbose;
   console.log(
@@ -24,24 +21,6 @@ export default async function Agent({
     colors.green(version)
   );
   let TubeBody: any;
-  let ipAddress: any;
-  if (onionTor) {
-    const { sysip, torip } = await retor();
-    if (!torip) ipAddress = sysip;
-    else ipAddress = torip;
-    console.log(
-      colors.green("@info:"),
-      "system",
-      colors.green("ipAddress"),
-      sysip
-    );
-    console.log(
-      colors.green("@info:"),
-      "socks5",
-      colors.green("ipAddress"),
-      torip
-    );
-  }
   let respEngine: EngineOutput | undefined = undefined;
   let videoId: string | undefined = await YouTubeID(query);
   if (!videoId) {
@@ -53,8 +32,6 @@ export default async function Agent({
       colors.green(TubeBody[0].title)
     );
     respEngine = await Engine({
-      onionTor,
-      ipAddress,
       query: `https://www.youtube.com/watch?v=${TubeBody[0].id}`,
     });
     return respEngine;
@@ -67,8 +44,6 @@ export default async function Agent({
       colors.green(TubeBody.title)
     );
     respEngine = await Engine({
-      onionTor,
-      ipAddress,
       query: `https://www.youtube.com/watch?v=${TubeBody.id}`,
     });
     return respEngine;

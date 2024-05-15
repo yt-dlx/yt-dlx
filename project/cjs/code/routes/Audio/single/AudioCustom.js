@@ -39,7 +39,6 @@ const ZodSchema = zod_1.z.object({
     output: zod_1.z.string().optional(),
     stream: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
-    onionTor: zod_1.z.boolean().optional(),
     resolution: zod_1.z.enum(["high", "medium", "low", "ultralow"]),
     filter: zod_1.z
         .enum([
@@ -69,11 +68,10 @@ const ZodSchema = zod_1.z.object({
  * @param stream - (optional) Whether to stream the processed video or not.
  * @param filter - (optional) The audio filter to apply. Available options: "echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed".
  * @param verbose - (optional) Whether to log verbose output or not.
- * @param onionTor - (optional) Whether to use Tor for the download or not.
  * @param resolution - The desired audio resolution. Available options: "high", "medium", "low", "ultralow".
  * @returns A Promise that resolves with either `void` (if `stream` is false) or an object containing the `ffmpeg` instance and the output filename (if `stream` is true).
  */
-async function AudioCustom({ query, output, stream, filter, verbose, onionTor, resolution, }) {
+async function AudioCustom({ query, output, stream, filter, verbose, resolution, }) {
     try {
         ZodSchema.parse({
             query,
@@ -81,11 +79,10 @@ async function AudioCustom({ query, output, stream, filter, verbose, onionTor, r
             stream,
             filter,
             verbose,
-            onionTor,
             resolution,
         });
         let startTime;
-        const engineData = await (0, Agent_1.default)({ query, verbose, onionTor });
+        const engineData = await (0, Agent_1.default)({ query, verbose });
         if (engineData === undefined) {
             throw new Error(`${colors_1.default.red("@error:")} unable to get response!`);
         }
@@ -104,7 +101,6 @@ async function AudioCustom({ query, output, stream, filter, verbose, onionTor, r
             }
             ff.addInput(engineData.metaData.thumbnail);
             ff.withOutputFormat("avi");
-            ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
             switch (filter) {
                 case "bassboost":
                     ff.withAudioFilter(["bass=g=10,dynaudnorm=f=150"]);

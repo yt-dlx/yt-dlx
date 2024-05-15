@@ -6,7 +6,6 @@ import colors from "colors";
     console.log(colors.blue("@test:"), "Extract");
     await YouTube.info.extract({
       verbose: true,
-      onionTor: true,
       query: "21 savage - redrum",
     });
   } catch (error: any) {

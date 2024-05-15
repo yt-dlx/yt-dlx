@@ -14,7 +14,6 @@ const ZodSchema = z.object({
   output: z.string().optional(),
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
-  onionTor: z.boolean().optional(),
   filter: z
     .enum([
       "invert",
@@ -35,7 +34,6 @@ const ZodSchema = z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param output - (optional) The output directory for the processed file.
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
- * @param onionTor - (optional) Whether to use Tor for the download or not.
  * @returns A Promise that resolves when the audio and video processing is complete. If `stream` is true, it returns an object with the `ffmpeg` command and the `filename`.
  */
 export default async function AudioVideoHighest({
@@ -44,7 +42,6 @@ export default async function AudioVideoHighest({
   verbose,
   output,
   filter,
-  onionTor,
 }: z.infer<typeof ZodSchema>): Promise<void | {
   ffmpeg: FfmpegCommand;
   filename: string;
@@ -56,10 +53,9 @@ export default async function AudioVideoHighest({
       verbose,
       output,
       filter,
-      onionTor,
     });
     let startTime: Date;
-    const engineData = await ytdlx({ query, verbose, onionTor });
+    const engineData = await ytdlx({ query, verbose });
     if (engineData === undefined) {
       throw new Error(`${colors.red("@error:")} unable to get response!`);
     } else {
@@ -76,7 +72,6 @@ export default async function AudioVideoHighest({
       ff.addInput(vdata.toString());
       ff.outputOptions("-c copy");
       ff.withOutputFormat("matroska");
-      ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
       let filename: string = "yt-dlx_(AudioVideoHighest_";
       switch (filter) {
         case "grayscale":

@@ -6,7 +6,6 @@ import colors from "colors";
     console.log(colors.blue("@test:"), "List Formats");
     await YouTube.info.list_formats({
       verbose: true,
-      onionTor: true,
       query: "21 savage - redrum",
     });
   } catch (error: any) {

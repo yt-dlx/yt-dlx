@@ -14,7 +14,6 @@
 // Tube = (await web.browser.SearchVideos({
 // query: "PERSONAL BY PLAZA",
 // screenshot: false,
-// onionTor: true,
 // verbose: false,
 // type: "video",
 // })) as TypeVideo[];
@@ -22,14 +21,12 @@
 // Tube = (await web.browser.VideoInfo({
 // query: Tube[0]?.videoLink as string,
 // screenshot: false,
-// onionTor: true,
 // verbose: false,
 // })) as VideoInfoType;
 // console.log(colors.green("@pass:"), "single video data received");
 // Tube = (await web.browser.SearchVideos({
 // query: Tube.title,
 // screenshot: false,
-// onionTor: true,
 // type: "playlist",
 // verbose: false,
 // })) as TypePlaylist[];
@@ -37,7 +34,6 @@
 // Tube = (await web.browser.PlaylistInfo({
 // query: Tube[0]?.playlistLink as string,
 // screenshot: false,
-// onionTor: true,
 // verbose: false,
 // })) as PlaylistInfoType;
 // console.log(colors.green("@pass:"), "single playlist data received");

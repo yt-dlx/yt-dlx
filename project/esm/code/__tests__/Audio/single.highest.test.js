@@ -7,7 +7,6 @@ import YouTube from "../../";
         await YouTube.AudioOnly.Single.Highest({
             stream: false,
             verbose: true,
-            onionTor: true,
             output: "public/audio",
             query: "21 savage - redrum",
         });

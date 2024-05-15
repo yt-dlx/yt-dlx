@@ -11,7 +11,6 @@ const ZodSchema = z.object({
     output: z.string().optional(),
     stream: z.boolean().optional(),
     verbose: z.boolean().optional(),
-    onionTor: z.boolean().optional(),
     resolution: z.enum([
         "144p",
         "240p",
@@ -48,10 +47,9 @@ const ZodSchema = z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param output - (optional) The output directory for the processed files.
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
- * @param onionTor - (optional) Whether to use Tor for the download or not.
  * @returns A Promise that resolves when the video has been processed, unless `stream` is `true`, in which case it resolves with an object containing the `ffmpeg` command and the `filename`.
  */
-export default async function VideoCustom({ query, resolution, stream, verbose, output, filter, onionTor, }) {
+export default async function VideoCustom({ query, resolution, stream, verbose, output, filter, }) {
     try {
         ZodSchema.parse({
             query,
@@ -60,10 +58,9 @@ export default async function VideoCustom({ query, resolution, stream, verbose, 
             verbose,
             output,
             filter,
-            onionTor,
         });
         let startTime;
-        const engineData = await ytdlx({ query, verbose, onionTor });
+        const engineData = await ytdlx({ query, verbose });
         if (engineData === undefined) {
             throw new Error(`${colors.red("@error:")} unable to get response!`);
         }
@@ -83,7 +80,6 @@ export default async function VideoCustom({ query, resolution, stream, verbose, 
             }
             ff.videoCodec("copy");
             ff.withOutputFormat("matroska");
-            ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
             switch (filter) {
                 case "grayscale":
                     ff.withVideoFilter("colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3");

@@ -29,7 +29,6 @@ const __1 = __importDefault(require("../../"));
                 resolution,
                 stream: false,
                 verbose: true,
-                onionTor: true,
                 output: "public/video",
                 query: "21 savage - redrum",
             });

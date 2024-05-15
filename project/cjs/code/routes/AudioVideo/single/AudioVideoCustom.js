@@ -39,7 +39,6 @@ const ZodSchema = zod_1.z.object({
     output: zod_1.z.string().optional(),
     stream: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
-    onionTor: zod_1.z.boolean().optional(),
     resolution: zod_1.z.enum([
         "144p",
         "240p",
@@ -76,10 +75,9 @@ const ZodSchema = zod_1.z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param output - (optional) The output directory for the processed file.
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
- * @param onionTor - (optional) Whether to use Tor for the download or not.
  * @returns A Promise that resolves when the audio and video processing is complete. If `stream` is true, it returns an object with the `ffmpeg` command and the `filename`.
  */
-async function AudioVideoCustom({ query, resolution, stream, verbose, output, filter, onionTor, }) {
+async function AudioVideoCustom({ query, resolution, stream, verbose, output, filter, }) {
     try {
         ZodSchema.parse({
             query,
@@ -88,10 +86,9 @@ async function AudioVideoCustom({ query, resolution, stream, verbose, output, fi
             verbose,
             output,
             filter,
-            onionTor,
         });
         let startTime;
-        const engineData = await (0, Agent_1.default)({ query, verbose, onionTor });
+        const engineData = await (0, Agent_1.default)({ query, verbose });
         if (engineData === undefined) {
             throw new Error(`${colors_1.default.red("@error:")} unable to get response!`);
         }
@@ -111,7 +108,6 @@ async function AudioVideoCustom({ query, resolution, stream, verbose, output, fi
             }
             ff.outputOptions("-c copy");
             ff.withOutputFormat("matroska");
-            ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
             switch (filter) {
                 case "grayscale":
                     ff.withVideoFilter("colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3");

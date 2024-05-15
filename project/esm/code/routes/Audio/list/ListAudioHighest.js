@@ -11,7 +11,6 @@ import calculateETA from "../../../base/calculateETA";
 const ZodSchema = z.object({
     output: z.string().optional(),
     verbose: z.boolean().optional(),
-    onionTor: z.boolean().optional(),
     query: z.array(z.string().min(2)),
     filter: z
         .enum([
@@ -40,12 +39,11 @@ const ZodSchema = z.object({
  * @param output - (optional) The output directory for the processed files.
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param filter - (optional) The audio filter to apply. Available options: "echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed".
- * @param onionTor - (optional) Whether to use Tor for the download or not.
  * @returns A Promise that resolves when the audio processing is complete.
  */
-export default async function ListAudioHighest({ query, output, verbose, filter, onionTor, }) {
+export default async function ListAudioHighest({ query, output, verbose, filter, }) {
     try {
-        ZodSchema.parse({ query, output, verbose, filter, onionTor });
+        ZodSchema.parse({ query, output, verbose, filter });
         let startTime;
         const unique = new Set();
         for (const purl of query) {
@@ -77,7 +75,6 @@ export default async function ListAudioHighest({ query, output, verbose, filter,
             try {
                 const engineData = await ytdlx({
                     query: video.videoLink,
-                    onionTor,
                     verbose,
                 });
                 if (engineData === undefined) {
@@ -93,7 +90,6 @@ export default async function ListAudioHighest({ query, output, verbose, filter,
                 ff.addInput(engineData.AudioHighF.url);
                 ff.addInput(engineData.metaData.thumbnail);
                 ff.withOutputFormat("avi");
-                ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
                 switch (filter) {
                     case "bassboost":
                         ff.withAudioFilter(["bass=g=10,dynaudnorm=f=150"]);

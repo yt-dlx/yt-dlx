@@ -14,7 +14,6 @@ const ZodSchema = z.object({
   output: z.string().optional(),
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
-  onionTor: z.boolean().optional(),
   filter: z
     .enum([
       "invert",
@@ -35,7 +34,6 @@ const ZodSchema = z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param output - (optional) The output directory for the processed files.
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
- * @param onionTor - (optional) Whether to use Tor for the download or not.
  * @returns A Promise that resolves when the video has been processed, unless `stream` is `true`, in which case it resolves with an object containing the `ffmpeg` command and the `filename`.
  */
 export default async function VideoLowest({
@@ -44,7 +42,6 @@ export default async function VideoLowest({
   verbose,
   output,
   filter,
-  onionTor,
 }: z.infer<typeof ZodSchema>): Promise<void | {
   ffmpeg: FfmpegCommand;
   filename: string;
@@ -56,10 +53,9 @@ export default async function VideoLowest({
       verbose,
       output,
       filter,
-      onionTor,
     });
     let startTime: Date;
-    const engineData = await ytdlx({ query, verbose, onionTor });
+    const engineData = await ytdlx({ query, verbose });
     if (engineData === undefined) {
       throw new Error(`${colors.red("@error:")} unable to get response!`);
     } else {
@@ -74,7 +70,7 @@ export default async function VideoLowest({
       ff.addInput(vdata.toString());
       ff.videoCodec("copy");
       ff.withOutputFormat("matroska");
-      ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
+      // ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
       let filename: string = "yt-dlx_(VideoLowest_";
       switch (filter) {
         case "grayscale":

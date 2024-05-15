@@ -10,7 +10,6 @@ const colors_1 = __importDefault(require("colors"));
         console.log(colors_1.default.blue("@test:"), "List Formats");
         await __1.default.info.list_formats({
             verbose: true,
-            onionTor: true,
             query: "21 savage - redrum",
         });
     }

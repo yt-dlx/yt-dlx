@@ -10,11 +10,10 @@ const Agent_1 = __importDefault(require("../../base/Agent"));
  *
  * @param query - The YouTube video URL to extract metadata from.
  * @param verbose - (optional) Whether to log verbose output or not.
- * @param onionTor - (optional) Whether to use Tor for the extraction or not.
  * @returns A Promise that resolves with an object containing metadata information about the video.
  */
-async function extract({ query, verbose, onionTor, }) {
-    const metaBody = await (0, Agent_1.default)({ query, verbose, onionTor });
+async function extract({ query, verbose, }) {
+    const metaBody = await (0, Agent_1.default)({ query, verbose });
     if (!metaBody) {
         return {
             message: "Unable to get response!",
@@ -65,7 +64,6 @@ async function extract({ query, verbose, onionTor, }) {
         return `${count}`;
     }
     const payload = {
-        ipAddress: metaBody.ipAddress,
         AudioLowF: metaBody.AudioLowF,
         AudioHighF: metaBody.AudioHighF,
         VideoLowF: metaBody.VideoLowF,
