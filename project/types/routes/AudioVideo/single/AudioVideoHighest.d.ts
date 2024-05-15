@@ -9,15 +9,15 @@ declare const ZodSchema: z.ZodObject<{
     filter: z.ZodOptional<z.ZodEnum<["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]>>;
 }, "strip", z.ZodTypeAny, {
     query: string;
-    filter?: "invert" | "rotate90" | "rotate270" | "grayscale" | "rotate180" | "flipVertical" | "flipHorizontal" | undefined;
     onionTor?: boolean | undefined;
+    filter?: "invert" | "rotate90" | "rotate270" | "grayscale" | "rotate180" | "flipVertical" | "flipHorizontal" | undefined;
     verbose?: boolean | undefined;
     output?: string | undefined;
     stream?: boolean | undefined;
 }, {
     query: string;
-    filter?: "invert" | "rotate90" | "rotate270" | "grayscale" | "rotate180" | "flipVertical" | "flipHorizontal" | undefined;
     onionTor?: boolean | undefined;
+    filter?: "invert" | "rotate90" | "rotate270" | "grayscale" | "rotate180" | "flipVertical" | "flipHorizontal" | undefined;
     verbose?: boolean | undefined;
     output?: string | undefined;
     stream?: boolean | undefined;

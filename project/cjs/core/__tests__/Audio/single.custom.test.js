@@ -15,7 +15,7 @@ const __1 = __importDefault(require("../../"));
                 resolution,
                 stream: false,
                 verbose: true,
-                onionTor: false,
+                onionTor: true,
                 output: "public/audio",
                 query: "21 savage - redrum",
             });

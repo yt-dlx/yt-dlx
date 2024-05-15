@@ -12,9 +12,8 @@ function osget() {
         else
             recom = "service tor stop && service tor start";
     }
-    else {
+    else
         return false;
-    }
     try {
         execSync(recom, { stdio: "ignore" });
         return true;
@@ -23,7 +22,7 @@ function osget() {
         return false;
     }
 }
-const retor = async () => {
+var retor = async () => {
     var sysip, torip;
     switch (osget()) {
         case true:

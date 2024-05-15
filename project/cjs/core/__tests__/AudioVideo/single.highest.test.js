@@ -12,7 +12,7 @@ const __1 = __importDefault(require("../../"));
         await __1.default.AudioVideo.Single.Highest({
             stream: false,
             verbose: true,
-            onionTor: false,
+            onionTor: true,
             output: "public/mix",
             query: "21 savage - redrum",
         });

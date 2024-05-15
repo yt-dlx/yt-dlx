@@ -26,14 +26,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sizeFormat = void 0;
+exports.sizeFormat = exports.checkSudo = void 0;
 const fs = __importStar(require("fs"));
 const colors_1 = __importDefault(require("colors"));
 const path = __importStar(require("path"));
 const async_retry_1 = __importDefault(require("async-retry"));
 const util_1 = require("util");
-const niptor_1 = require("./niptor");
 const child_process_1 = require("child_process");
+// =====================================================================================
+async function checkSudo() {
+    return new Promise((resolve) => {
+        try {
+            if (process.env.sudo === "false")
+                resolve(false);
+            const check = (0, child_process_1.spawn)("sudo", ["-n", "true"]);
+            check.on("error", () => resolve(false));
+            check.on("close", (code) => {
+                resolve(code === 0);
+            });
+        }
+        catch (error) {
+            console.error(error);
+            resolve(false);
+        }
+    });
+}
+exports.checkSudo = checkSudo;
 const sizeFormat = (filesize) => {
     if (isNaN(filesize) || filesize < 0)
         return filesize;
@@ -86,7 +104,7 @@ async function Engine({ query, ipAddress, onionTor, }) {
         throw new Error(colors_1.default.red("@error: ") +
             "Could not find cprobe file. maybe re-install yt-dlx?");
     }
-    const sudoAvailable = await (0, niptor_1.checkSudo)();
+    const sudoAvailable = await checkSudo();
     const command = sudoAvailable
         ? ["sudo", ["chmod", "+x", pLoc]]
         : ["chmod", "+x", pLoc];

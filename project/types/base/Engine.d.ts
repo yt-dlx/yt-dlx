@@ -1,3 +1,4 @@
+export declare function checkSudo(): Promise<boolean>;
 export interface sizeFormat {
     (filesize: number): string | number;
 }

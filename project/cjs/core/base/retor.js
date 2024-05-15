@@ -14,9 +14,8 @@ function osget() {
         else
             recom = "service tor stop && service tor start";
     }
-    else {
+    else
         return false;
-    }
     try {
         (0, child_process_1.execSync)(recom, { stdio: "ignore" });
         return true;
@@ -25,7 +24,7 @@ function osget() {
         return false;
     }
 }
-const retor = async () => {
+var retor = async () => {
     var sysip, torip;
     switch (osget()) {
         case true:

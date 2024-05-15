@@ -9,15 +9,15 @@ declare const ZodSchema: z.ZodObject<{
 }, "strip", z.ZodTypeAny, {
     query: string[];
     resolution: "high" | "medium" | "low" | "ultralow";
-    filter?: "reverse" | "echo" | "slow" | "speed" | "phaser" | "flanger" | "panning" | "vibrato" | "subboost" | "surround" | "bassboost" | "nightcore" | "superslow" | "vaporwave" | "superspeed" | undefined;
     onionTor?: boolean | undefined;
+    filter?: "reverse" | "echo" | "slow" | "speed" | "phaser" | "flanger" | "panning" | "vibrato" | "subboost" | "surround" | "bassboost" | "nightcore" | "superslow" | "vaporwave" | "superspeed" | undefined;
     verbose?: boolean | undefined;
     output?: string | undefined;
 }, {
     query: string[];
     resolution: "high" | "medium" | "low" | "ultralow";
-    filter?: "reverse" | "echo" | "slow" | "speed" | "phaser" | "flanger" | "panning" | "vibrato" | "subboost" | "surround" | "bassboost" | "nightcore" | "superslow" | "vaporwave" | "superspeed" | undefined;
     onionTor?: boolean | undefined;
+    filter?: "reverse" | "echo" | "slow" | "speed" | "phaser" | "flanger" | "panning" | "vibrato" | "subboost" | "surround" | "bassboost" | "nightcore" | "superslow" | "vaporwave" | "superspeed" | undefined;
     verbose?: boolean | undefined;
     output?: string | undefined;
 }>;

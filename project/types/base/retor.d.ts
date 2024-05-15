@@ -1,4 +1,4 @@
-declare const retor: () => Promise<{
+declare var retor: () => Promise<{
     sysip: any;
     torip: any;
 }>;
