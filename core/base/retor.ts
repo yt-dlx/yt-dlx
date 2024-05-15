@@ -3,13 +3,21 @@ import { platform } from "os";
 
 function osget() {
   var recom: string;
-  if (platform() === "darwin") {
-    recom = "brew services stop tor && brew services start tor";
-  } else if (platform() === "linux") {
-    if (execSync("command -v systemctl", { stdio: "ignore" })) {
-      recom = "systemctl stop tor && systemctl start tor";
-    } else recom = "service tor stop && service tor start";
-  } else return false;
+  var osPlatform = platform();
+  switch (osPlatform) {
+    case "darwin":
+      recom = "brew services restart tor";
+      break;
+    case "linux":
+      if (execSync("which systemctl", { stdio: "ignore" })) {
+        recom = "systemctl restart tor";
+      } else if (execSync("which service", { stdio: "ignore" })) {
+        recom = "service tor restart";
+      } else recom = "pkill tor && tor";
+      break;
+    default:
+      return false;
+  }
   try {
     execSync(recom, { stdio: "ignore" });
     return true;
@@ -18,7 +26,7 @@ function osget() {
   }
 }
 
-const retor = async () => {
+var retor = async () => {
   var sysip: any, torip: any;
   switch (osget()) {
     case true:
