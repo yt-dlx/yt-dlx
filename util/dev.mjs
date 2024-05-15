@@ -10,7 +10,7 @@ const colors = {
   green: "\x1b[1;32m",
 };
 
-const core = {
+const code = {
   remake:
     "yarn run clean && yarn run make && yarn run update && yarn run build",
   postinstall: "run-s download-files setup-permissions",
@@ -37,18 +37,18 @@ const core = {
   "build:frontend": "cd frontend && yarn run build",
   "build:base":
     "rm -rf project temp && tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json",
-  spec: "rm -rf temp && tsup core/__tests__/other/quick.spec.ts --outDir temp && node temp/quick.spec.js",
+  spec: "rm -rf temp && tsup code/__tests__/other/quick.spec.ts --outDir temp && node temp/quick.spec.js",
   test: "rm -rf temp && yarn run test:scrape && yarn run test:mix && yarn run test:video && yarn run test:audio && yarn run test:command && yarn run test:cli",
   "test:mix":
-    "rm -rf temp && tsup core --outDir temp && node temp/__tests__/mix.js",
+    "rm -rf temp && tsup code --outDir temp && node temp/__tests__/mix.js",
   "test:video":
-    "rm -rf temp && tsup core --outDir temp && node temp/__tests__/video.js",
+    "rm -rf temp && tsup code --outDir temp && node temp/__tests__/video.js",
   "test:audio":
-    "rm -rf temp && tsup core --outDir temp && node temp/__tests__/audio.js",
+    "rm -rf temp && tsup code --outDir temp && node temp/__tests__/audio.js",
   "test:command":
-    "rm -rf temp && tsup core --outDir temp && node temp/__tests__/command.js",
+    "rm -rf temp && tsup code --outDir temp && node temp/__tests__/command.js",
   "test:scrape":
-    "rm -rf temp && tsup core/__tests__/other/scrape.spec.ts --outDir temp && node temp/scrape.spec.js",
+    "rm -rf temp && tsup code/__tests__/other/scrape.spec.ts --outDir temp && node temp/scrape.spec.js",
   "test:cli":
     "yarn run link && yt-dlx audio-lowest --query PERSONAL BY PLAZA && yt-dlx al --query SuaeRys5tTc && yarn run unlink",
 };
@@ -98,7 +98,7 @@ function runScript() {
     input: process.stdin,
     output: process.stdout,
   });
-  Object.keys(core).forEach((script, index) => {
+  Object.keys(code).forEach((script, index) => {
     console.log(
       `${colors.green}@script:${colors.reset} ${colors.red}${index + 1}${
         colors.reset
@@ -111,10 +111,10 @@ function runScript() {
     (answer) => {
       console.log(colors.reset);
       const scriptIndex = parseInt(answer) - 1;
-      const scriptKeys = Object.keys(core);
+      const scriptKeys = Object.keys(code);
       if (scriptIndex >= 0 && scriptIndex < scriptKeys.length) {
         const scriptName = scriptKeys[scriptIndex];
-        const command = core[scriptName];
+        const command = code[scriptName];
         console.log(`${colors.green}@choice:${colors.reset}`, scriptName);
         const childProcess = spawn(command, {
           shell: true,

@@ -2,9 +2,9 @@
     "name": "yt-dlx",
     "version": "8.5.0",
     "license": "Apache-2.0",
-    "main": "project/cjs/core/index.js",
+    "main": "project/cjs/code/index.js",
     "types": "project/types/index.d.ts",
-    "module": "project/esm/core/index.js",
+    "module": "project/esm/code/index.js",
     "author": "yt-dlx <yt-dlx@proton.me>",
     "description": "Effortless Audio-Video Downloader And Streamer!",
     "repository": {
@@ -13,10 +13,10 @@
     },
     "homepage": "https://yt-dlx-shovit.koyeb.app",
     "bin": {
-        "yt": "project/cjs/core/cli/main.js",
-        "ytdlx": "project/cjs/core/cli/main.js",
-        "yt-dlx": "project/cjs/core/cli/main.js",
-        "youtube": "project/cjs/core/cli/main.js"
+        "yt": "project/cjs/code/cli/main.js",
+        "ytdlx": "project/cjs/code/cli/main.js",
+        "yt-dlx": "project/cjs/code/cli/main.js",
+        "youtube": "project/cjs/code/cli/main.js"
     },
     "scripts": {
         "start": "node util/dev.mjs",
@@ -43,13 +43,13 @@
         "build": "yarn run build:base && yarn run build:frontend",
         "build:frontend": "cd frontend && yarn run build",
         "build:base": "rm -rf project temp && tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json",
-        "spec": "rm -rf temp && tsup core/__tests__/other/quick.spec.ts --outDir temp && node temp/quick.spec.js",
+        "spec": "rm -rf temp && tsup code/__tests__/other/quick.spec.ts --outDir temp && node temp/quick.spec.js",
         "test": "rm -rf temp && yarn run test:scrape && yarn run test:mix && yarn run test:video && yarn run test:audio && yarn run test:command && yarn run test:cli",
-        "test:mix": "rm -rf temp && tsup core --outDir temp && node temp/__tests__/mix.js",
-        "test:video": "rm -rf temp && tsup core --outDir temp && node temp/__tests__/video.js",
-        "test:audio": "rm -rf temp && tsup core --outDir temp && node temp/__tests__/audio.js",
-        "test:command": "rm -rf temp && tsup core --outDir temp && node temp/__tests__/command.js",
-        "test:scrape": "rm -rf temp && tsup core/__tests__/other/scrape.spec.ts --outDir temp && node temp/scrape.spec.js",
+        "test:mix": "rm -rf temp && tsup code --outDir temp && node temp/__tests__/mix.js",
+        "test:video": "rm -rf temp && tsup code --outDir temp && node temp/__tests__/video.js",
+        "test:audio": "rm -rf temp && tsup code --outDir temp && node temp/__tests__/audio.js",
+        "test:command": "rm -rf temp && tsup code --outDir temp && node temp/__tests__/command.js",
+        "test:scrape": "rm -rf temp && tsup code/__tests__/other/scrape.spec.ts --outDir temp && node temp/scrape.spec.js",
         "test:cli": "yarn run link && yt-dlx audio-lowest --query PERSONAL BY PLAZA && yt-dlx al --query SuaeRys5tTc && yarn run unlink"
     },
     "files": [
