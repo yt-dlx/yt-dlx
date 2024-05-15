@@ -651,7 +651,7 @@ export default function home() {
                         <Link
                           key={index}
                           href={`/${item.id}`}
-                          className="relative group mb-4 duration-700 bg-neutral-900 p-1 shadow-red-900 hover:shadow-red-600 shadow-2xl rounded-2xl border-2 border-red-600/40 hover:border-red-600 flex flex-col justify-between"
+                          className="relative group mb-4 duration-700 bg-neutral-900 p-1 shadow-red-900 hover:shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] rounded-2xl border-2 border-red-600/40 hover:border-red-600 flex flex-col justify-between"
                         >
                           <div className="relative">
                             <Image
@@ -660,7 +660,7 @@ export default function home() {
                               height={400}
                               loading="lazy"
                               src={item.thumbnails[0].url}
-                              className="object-cover w-full h-56 mb-5 bg-center rounded-t-2xl duration-700 group-hover:shadow-red-600 shadow-red-600/40 shadow-2xl group-hover:blur-sm"
+                              className="object-cover w-full h-56 mb-5 bg-center rounded-t-2xl duration-700 group-hover:shadow-red-600 shadow-red-600/40 shadow-[0_0_20px_rgba(255,0,0,0.5)] group-hover:blur-sm"
                             />
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                               <SiGradleplaypublisher

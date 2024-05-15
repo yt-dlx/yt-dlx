@@ -11,13 +11,13 @@ import { useParams, useRouter } from "next/navigation";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 export default function home() {
-  const { push } = useRouter();
-  const { videoId }: any = useParams();
-  const QueryClient = useQueryClient();
-  const [TubeSearch, setTubeSearch] = react.useState<any>(null);
-  const ApiSearch = useMutation({
+  var { push } = useRouter();
+  var { videoId }: any = useParams();
+  var QueryClient = useQueryClient();
+  var [TubeSearch, setTubeSearch] = react.useState<any>(null);
+  var ApiSearch = useMutation({
     mutationFn: async () => {
-      const resp = await fetch("/api/search", {
+      var resp = await fetch("/api/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -32,8 +32,7 @@ export default function home() {
     if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId)) push("/");
     else ApiSearch.mutate();
   }, [videoId]);
-
-  const Introduction = () => {
+  var Introduction = () => {
     return (
       <section
         id="Introduction"
@@ -108,35 +107,32 @@ export default function home() {
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-900 scrollbar-neutral-900 scrollbar-thumb-red-600">
       <NavPackage />
       <Introduction />
-      {TubeSearch && (
-        <section
-          id="Documentation"
-          className="flex flex-col items-center justify-center"
-        >
-          <div className="max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-            <div className="max-w-screen-2xl">
-              <h2 className="text-3xl font-bold sm:text-4xl text-red-600">
-                Explore All Available Functions
-              </h2>
-              <p className="mt-4 text-white/80">
-                YT-DLX accommodates various node.js coding flavours!{" "}
-                <span className="text-red-600">
-                  (typescript), (commonjs) and (esm)
-                </span>
-                , ensuring 100% compatibility and comprehensive type safety
-                coverage.
-              </p>
-            </div>
-            <section className="flex flex-col items-center justify-center">
-              <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-red-950/10 border-4 border-red-600 border-double rounded-3xl shadow-red-600 duration-500 shadow-2xl">
-                <div className="overflow-x-auto">
-                  <section className="max-w-screen-2xl px-6 py-8 mx-auto p-4">
-                    <div className="mt-8">
+      {TubeSearch ? (
+        <react.Fragment>
+          <section className="flex flex-col items-center justify-center">
+            <div className="max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+              <div className="max-w-screen-2xl">
+                <h2 className="text-3xl font-bold sm:text-4xl text-red-600">
+                  Explore All Available Functions
+                </h2>
+                <p className="mt-4 text-white/80">
+                  YT-DLX accommodates various node.js coding flavours!{" "}
+                  <span className="text-red-600">
+                    (typescript), (commonjs) and (esm)
+                  </span>
+                  , ensuring 100% compatibility and comprehensive type safety
+                  coverage.
+                </p>
+              </div>
+              <section className="flex flex-col items-center justify-center">
+                <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-red-950/10 border-4 border-red-600 border-double rounded-3xl shadow-red-600 duration-500 shadow-[0_0_20px_rgba(255,0,0,0.5)]">
+                  <div className="overflow-x-auto">
+                    <section className="max-w-screen-2xl px-6 mx-auto p-1">
                       <iframe
                         allowFullScreen
                         title="yt-dlx player"
                         src={`https://www.youtube.com/embed/${TubeSearch.id}`}
-                        className="w-full h-64 my-10 rounded-3xl md:h-80 shadow-2xl shadow-red-800"
+                        className="w-full h-64 my-10 rounded-3xl md:h-80 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-800"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       />
                       <h2 className="mt-6 text-4xl font-bold text-red-600">
@@ -186,46 +182,57 @@ export default function home() {
                           {TubeSearch.viewCount}
                         </li>
                       </ul>
-                    </div>
-                    <div className="mt-8">
-                      <div className="mt-4 space-y-2 -mx-2">
-                        <button
-                          onClick={() => {
-                            window.location.href = `/api/audio?videoId=${videoId}`;
-                          }}
-                          className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-2xl hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
-                        >
-                          Get it as 'Audio Only'
-                        </button>
-                        <button
-                          onClick={() => {
-                            window.location.href = `/api/video?videoId=${videoId}`;
-                          }}
-                          className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-2xl hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
-                        >
-                          Get it as 'Video Only'
-                        </button>
-                        <button
-                          onClick={() => {
-                            window.location.href = `/api/audio_video?videoId=${videoId}`;
-                          }}
-                          className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-2xl hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
-                        >
-                          Get it as 'Audio + Video'
-                        </button>
+                      <div className="mt-8">
+                        <div className="mt-4 space-y-2 -mx-2">
+                          <button
+                            onClick={() => {
+                              window.location.href = `/api/audio?videoId=${videoId}`;
+                            }}
+                            className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
+                          >
+                            Get it as 'Audio Only'
+                          </button>
+                          <button
+                            onClick={() => {
+                              window.location.href = `/api/video?videoId=${videoId}`;
+                            }}
+                            className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
+                          >
+                            Get it as 'Video Only'
+                          </button>
+                          <button
+                            onClick={() => {
+                              window.location.href = `/api/audio_video?videoId=${videoId}`;
+                            }}
+                            className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
+                          >
+                            Get it as 'Audio + Video'
+                          </button>
+                        </div>
+                        <p className="mt-6 text-xs text-red-600 items-center justify-center flex font-bold">
+                          Effortless Audio-Video Downloading And Streaming Is
+                          Provided Free Of Cost To You With The Power Of Yt-Dlx
+                          Copyright © 2024
+                        </p>
                       </div>
-                      <p className="mt-6 text-xs text-red-600 items-center justify-center flex font-bold">
-                        Effortless Audio-Video Downloading And Streaming Is
-                        Provided Free Of Cost To You With The Power Of Yt-Dlx
-                        Copyright © 2024
-                      </p>
-                    </div>
-                  </section>
+                    </section>
+                  </div>
                 </div>
-              </div>
-            </section>
+              </section>
+            </div>
+          </section>
+        </react.Fragment>
+      ) : (
+        <react.Fragment>
+          <div className="flex flex-col items-center justify-center w-full">
+            <div className="flex flex-col items-center justify-center gap-4 w-96">
+              <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-40 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
+              <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-28 shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
+              <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
+              <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
+            </div>
           </div>
-        </section>
+        </react.Fragment>
       )}
       <FootPackage />
     </main>
