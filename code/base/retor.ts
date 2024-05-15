@@ -3,13 +3,17 @@ import { platform } from "os";
 
 function osget() {
   var recom: string;
-  if (platform() === "darwin") {
-    recom = "brew services stop tor && brew services start tor";
-  } else if (platform() === "linux") {
-    if (execSync("command -v systemctl", { stdio: "ignore" })) {
-      recom = "systemctl stop tor && systemctl start tor";
-    } else recom = "service tor stop && service tor start";
-  } else return false;
+  try {
+    if (platform() === "darwin") {
+      recom = "brew services stop tor && brew services start tor";
+    } else if (platform() === "linux") {
+      if (execSync("command -v systemctl", { stdio: "ignore" })) {
+        recom = "systemctl stop tor && systemctl start tor";
+      } else recom = "service tor stop && service tor start";
+    } else return false;
+  } catch {
+    recom = "pkill tor && tor";
+  }
   try {
     execSync(recom, { stdio: "ignore" });
     return true;
