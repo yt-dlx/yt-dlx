@@ -24,7 +24,6 @@ import YouTube from "yt-dlx";
         resolution,
         stream: false,
         verbose: true,
-        onionTor: false,
         output: "public/mix",
         query: "video-NAME/ID/URL",
       });
@@ -59,7 +58,6 @@ import * as fs from "fs";
         resolution,
         stream: true,
         verbose: true,
-        onionTor: false,
         output: "public/mix",
         query: "video-NAME/ID/URL",
       });
@@ -94,7 +92,6 @@ import express from "express";
         const result = await YouTube.AudioVideo.Single.Custom({
           stream: true,
           verbose: true,
-          onionTor: false,
           query: queryParam,
           resolution: resparam as any,
         });

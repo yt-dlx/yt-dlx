@@ -7,7 +7,6 @@ const colors = require("colors");
     await YouTube.default.VideoOnly.Single.Lowest({
       stream: false,
       verbose: true,
-      onionTor: false,
       output: "public/video",
       query: "video-NAME/ID/URL",
     });
@@ -24,7 +23,6 @@ const fs = require("fs");
     const result = await YouTube.default.VideoOnly.Single.Lowest({
       stream: true,
       verbose: true,
-      onionTor: false,
       output: "public/video",
       query: "video-NAME/ID/URL",
     });
@@ -52,7 +50,6 @@ const express = require("express");
         const result = await YouTube.default.VideoOnly.Single.Lowest({
           stream: true,
           verbose: true,
-          onionTor: false,
           query: queryParam,
         });
         if (result && result.filename && result.ffmpeg) {
