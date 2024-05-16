@@ -13,7 +13,7 @@ export default function AwesomePackage({ param }: any) {
       <section className="flex flex-col items-center justify-center mt-20">
         <div className="max-w-screen-2xl px-6 py-16 mx-auto space-y-12">
           <article className="space-y-8">
-<VerPackage />
+            <VerPackage />
             <p className="text-white/60">
               Uncover an unparalleled solution for effortless audio and video
               downloads powered by YT-DLX - An advanced{" "}
@@ -118,8 +118,8 @@ export default function AwesomePackage({ param }: any) {
               </li>
             </ul>
             <section className="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
-              <div className="grid grid-cols-1">
-                <div className="w-full max-w-lg mx-auto my-4 bg-neutral-800 shadow-xl rounded-xl">
+              <div className="flex flex-col md:flex-row lg:flex-row xl:flex-row gap-4">
+                <div className="w-full max-w-lg mx-auto my-4 bg-neutral-900 rounded-2xl border-red-600 border shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]">
                   <img
                     alt="team"
                     src="/ts.png"
@@ -150,7 +150,7 @@ export default function AwesomePackage({ param }: any) {
                     </div>
                   </div>
                 </div>
-                <div className="w-full max-w-lg mx-auto my-4 bg-neutral-800 shadow-xl rounded-xl">
+                <div className="w-full max-w-lg mx-auto my-4 bg-neutral-900 rounded-2xl border-red-600 border shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]">
                   <img
                     alt="team"
                     src="/js.png"
@@ -181,7 +181,7 @@ export default function AwesomePackage({ param }: any) {
                     </div>
                   </div>
                 </div>
-                <div className="w-full max-w-lg mx-auto my-4 bg-neutral-800 shadow-xl rounded-xl">
+                <div className="w-full max-w-lg mx-auto my-4 bg-neutral-900 rounded-2xl border-red-600 border shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]">
                   <img
                     alt="team"
                     src="/esm.png"
