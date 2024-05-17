@@ -1,40 +1,45 @@
 console.clear();
 import { execSync } from "child_process";
 
-function CheckCommand(command: string) {
+function ctor() {
   try {
-    execSync(`${command} --version`);
+    execSync("tor --version", { stdio: "ignore" });
     return true;
-  } catch (error) {
+  } catch {
+    return false;
+  }
+}
+function csudo() {
+  try {
+    execSync("sudo --version", { stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+function cservice() {
+  try {
+    execSync("service --version", { stdio: "ignore" });
+    return true;
+  } catch {
+    return false;
+  }
+}
+function csystemctl() {
+  try {
+    execSync("systemctl --version", { stdio: "ignore" });
+    return true;
+  } catch {
     return false;
   }
 }
 
-async function main() {
-  const commandsToCheck = ["sudo", "systemctl", "service", "tor"];
-  for (const command of commandsToCheck) {
-    let isAvailable: boolean;
-    switch (command) {
-      case "sudo":
-        isAvailable = CheckCommand("sudo");
-        break;
-      case "systemctl":
-        isAvailable = CheckCommand("systemctl");
-        break;
-      case "pkill":
-        isAvailable = CheckCommand("pkill");
-        break;
-      case "tor":
-        isAvailable = CheckCommand("tor");
-        break;
-      default:
-        console.log(`Unknown command: ${command}`);
-        isAvailable = false;
-        break;
-    }
-    if (isAvailable) console.log(`'${command}' command is available.`);
-    else console.log(`'${command}' command is not available.`);
-  }
-}
+var isctor = ctor();
+var iscsudo = csudo();
+var iscservice = cservice();
+var iscsystemctl = csystemctl();
 
-main();
+console.log("@tor:", isctor);
+console.log("@sudo:", iscsudo);
+console.log("@service:", iscservice);
+console.log("@systemctl:", iscsystemctl);
