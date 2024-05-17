@@ -3,9 +3,6 @@ import react from "react";
 import Link from "next/link";
 import Image from "next/image";
 import io from "socket.io-client";
-import NavPackage from "@/pages/components/nav";
-import FootPackage from "@/pages/components/foot";
-import VerPackage from "@/pages/components/version";
 import { SiBun } from "react-icons/si";
 import { FaYarn } from "react-icons/fa";
 import { SiPnpm } from "react-icons/si";
@@ -18,7 +15,10 @@ import { MdAudioFile } from "react-icons/md";
 import { FaFileVideo } from "react-icons/fa6";
 import { TbWorldSearch } from "react-icons/tb";
 import { TbDiamondFilled } from "react-icons/tb";
+import NavPackage from "@/pages/components/nav";
+import FootPackage from "@/pages/components/foot";
 import { SiFirefoxbrowser } from "react-icons/si";
+import VerPackage from "@/pages/components/version";
 import { SiGradleplaypublisher } from "react-icons/si";
 import { AiFillCodeSandboxCircle } from "react-icons/ai";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
@@ -529,7 +529,7 @@ export default function home() {
             setTubeSearch(null);
             ApiSearch.mutate();
           }}
-          className="bg-stone-950 max-w-screen-2xl p-10 text-red-600 mx-auto my-8 rounded-2xl border-4 border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600"
+          className="bg-stone-950 max-w-screen-xl p-10 text-red-600 mx-auto my-8 rounded-2xl border-4 border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600"
         >
           <h1 className="text-6xl mb-4 font-bold">Yt-Dlx PlayGround</h1>
           <h2 className="text-3xl font-bold text-red-600 mb-4 font-mono">
