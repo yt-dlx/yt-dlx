@@ -24,10 +24,30 @@ export default async function Agent({
       "version",
       colors.green(version)
     );
-    console.log(colors.green("@info:"), "system has tor", ctor());
-    console.log(colors.green("@info:"), "system has sudo", csudo());
-    console.log(colors.green("@info:"), "system has service", cservice());
-    console.log(colors.green("@info:"), "system has systemctl", csystemctl());
+    console.log(
+      colors.green("@info:"),
+      "system has",
+      colors.green("tor"),
+      ctor()
+    );
+    console.log(
+      colors.green("@info:"),
+      "system has",
+      colors.green("sudo"),
+      csudo()
+    );
+    console.log(
+      colors.green("@info:"),
+      "system has",
+      colors.green("service"),
+      cservice()
+    );
+    console.log(
+      colors.green("@info:"),
+      "system has",
+      colors.green("systemctl"),
+      csystemctl()
+    );
   }
   var TubeBody: any;
   var respEngine: EngineOutput | undefined = undefined;
