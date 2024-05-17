@@ -173,6 +173,7 @@ export default async function Engine({
     });
   }
   var payLoad: EngineOutput = {
+    ipAddress,
     AudioLowF: (() => {
       var i = AudioLowF || ({} as AudioFormat);
       return nAudio(i);

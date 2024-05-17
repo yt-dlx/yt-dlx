@@ -38,6 +38,7 @@ const formatTime_1 = __importDefault(require("../../../base/formatTime"));
 const calculateETA_1 = __importDefault(require("../../../base/calculateETA"));
 const ZodSchema = zod_1.z.object({
     output: zod_1.z.string().optional(),
+    useTor: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
     query: zod_1.z.array(zod_1.z.string().min(2)),
     resolution: zod_1.z.enum([
@@ -77,13 +78,14 @@ const ZodSchema = zod_1.z.object({
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
  * @returns A Promise that resolves when the audio and video processing is complete.
  */
-async function ListAudioVideoCustom({ query, resolution, verbose, output, filter, }) {
+async function ListAudioVideoCustom({ query, resolution, verbose, output, useTor, filter, }) {
     try {
         ZodSchema.parse({
             query,
             resolution,
             verbose,
             output,
+            useTor,
             filter,
         });
         let startTime;
@@ -139,6 +141,7 @@ async function ListAudioVideoCustom({ query, resolution, verbose, output, filter
                 ff.outputOptions("-c copy");
                 ff.withOutputFormat("matroska");
                 ff.withOutputFormat("matroska");
+                ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
                 switch (filter) {
                     case "grayscale":
                         ff.withVideoFilter("colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3");

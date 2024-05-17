@@ -37,6 +37,7 @@ const calculateETA_1 = __importDefault(require("../../../base/calculateETA"));
 const ZodSchema = zod_1.z.object({
     query: zod_1.z.string().min(2),
     output: zod_1.z.string().optional(),
+    useTor: zod_1.z.boolean().optional(),
     stream: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
     filter: zod_1.z
@@ -69,9 +70,9 @@ const ZodSchema = zod_1.z.object({
  * @param filter - (optional) The audio filter to apply. Available options: "echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed".
  * @returns A Promise that resolves with either `void` (if `stream` is false) or an object containing the `ffmpeg` instance and the output filename (if `stream` is true).
  */
-async function AudioHighest({ query, output, stream, verbose, filter, }) {
+async function AudioHighest({ query, output, useTor, stream, verbose, filter, }) {
     try {
-        ZodSchema.parse({ query, output, stream, verbose, filter });
+        ZodSchema.parse({ query, output, useTor, stream, verbose, filter });
         let startTime;
         const engineData = await (0, Agent_1.default)({ query, verbose });
         if (engineData === undefined) {
@@ -87,6 +88,7 @@ async function AudioHighest({ query, output, stream, verbose, filter, }) {
             ff.addInput(engineData.AudioHighF.url);
             ff.addInput(engineData.metaData.thumbnail);
             ff.withOutputFormat("avi");
+            ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
             switch (filter) {
                 case "bassboost":
                     ff.withAudioFilter(["bass=g=10,dynaudnorm=f=150"]);

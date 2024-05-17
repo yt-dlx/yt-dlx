@@ -38,6 +38,7 @@ const formatTime_1 = __importDefault(require("../../../base/formatTime"));
 const calculateETA_1 = __importDefault(require("../../../base/calculateETA"));
 const ZodSchema = zod_1.z.object({
     output: zod_1.z.string().optional(),
+    useTor: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
     query: zod_1.z.array(zod_1.z.string().min(2)),
     resolution: zod_1.z.enum(["high", "medium", "low", "ultralow"]),
@@ -71,11 +72,12 @@ const ZodSchema = zod_1.z.object({
  * @param resolution - The desired audio resolution. Available options: "high", "medium", "low", "ultralow".
  * @returns A Promise that resolves when the audio processing is complete.
  */
-async function ListAudioCustom({ query, output, filter, verbose, resolution, }) {
+async function ListAudioCustom({ query, output, useTor, filter, verbose, resolution, }) {
     try {
         ZodSchema.parse({
             query,
             output,
+            useTor,
             filter,
             verbose,
             resolution,
@@ -132,6 +134,7 @@ async function ListAudioCustom({ query, output, filter, verbose, resolution, }) 
                 }
                 ff.addInput(engineData.metaData.thumbnail);
                 ff.withOutputFormat("avi");
+                ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
                 switch (filter) {
                     case "bassboost":
                         ff.withAudioFilter(["bass=g=10,dynaudnorm=f=150"]);

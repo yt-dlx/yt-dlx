@@ -37,6 +37,7 @@ const calculateETA_1 = __importDefault(require("../../../base/calculateETA"));
 const ZodSchema = zod_1.z.object({
     query: zod_1.z.string().min(2),
     output: zod_1.z.string().optional(),
+    useTor: zod_1.z.boolean().optional(),
     stream: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
     filter: zod_1.z
@@ -61,13 +62,14 @@ const ZodSchema = zod_1.z.object({
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
  * @returns A Promise that resolves when the video has been processed, unless `stream` is `true`, in which case it resolves with an object containing the `ffmpeg` command and the `filename`.
  */
-async function VideoLowest({ query, stream, verbose, output, filter, }) {
+async function VideoLowest({ query, stream, verbose, output, useTor, filter, }) {
     try {
         ZodSchema.parse({
             query,
             stream,
             verbose,
             output,
+            useTor,
             filter,
         });
         let startTime;
@@ -85,7 +87,7 @@ async function VideoLowest({ query, stream, verbose, output, filter, }) {
             ff.addInput(vdata.toString());
             ff.videoCodec("copy");
             ff.withOutputFormat("matroska");
-            // ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
+            ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
             let filename = "yt-dlx_(VideoLowest_";
             switch (filter) {
                 case "grayscale":

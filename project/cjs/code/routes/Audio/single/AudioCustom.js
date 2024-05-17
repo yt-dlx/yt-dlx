@@ -37,6 +37,7 @@ const calculateETA_1 = __importDefault(require("../../../base/calculateETA"));
 const ZodSchema = zod_1.z.object({
     query: zod_1.z.string().min(2),
     output: zod_1.z.string().optional(),
+    useTor: zod_1.z.boolean().optional(),
     stream: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
     resolution: zod_1.z.enum(["high", "medium", "low", "ultralow"]),
@@ -71,11 +72,12 @@ const ZodSchema = zod_1.z.object({
  * @param resolution - The desired audio resolution. Available options: "high", "medium", "low", "ultralow".
  * @returns A Promise that resolves with either `void` (if `stream` is false) or an object containing the `ffmpeg` instance and the output filename (if `stream` is true).
  */
-async function AudioCustom({ query, output, stream, filter, verbose, resolution, }) {
+async function AudioCustom({ query, output, useTor, stream, filter, verbose, resolution, }) {
     try {
         ZodSchema.parse({
             query,
             output,
+            useTor,
             stream,
             filter,
             verbose,
@@ -101,6 +103,7 @@ async function AudioCustom({ query, output, stream, filter, verbose, resolution,
             }
             ff.addInput(engineData.metaData.thumbnail);
             ff.withOutputFormat("avi");
+            ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
             switch (filter) {
                 case "bassboost":
                     ff.withAudioFilter(["bass=g=10,dynaudnorm=f=150"]);

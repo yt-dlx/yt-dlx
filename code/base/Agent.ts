@@ -1,5 +1,6 @@
 import web from "../web";
 import colors from "colors";
+import cip from "./check/cip";
 import Engine from "./Engine";
 import ctor from "./check/ctor";
 import csudo from "./check/csudo";
@@ -8,7 +9,6 @@ import YouTubeID from "../web/YouTubeId";
 import csystemctl from "./check/csystemctl";
 import { version } from "../../package.json";
 import type EngineOutput from "../interfaces/EngineOutput";
-import cip from "./check/cip";
 
 export default async function Agent({
   query,
@@ -19,14 +19,16 @@ export default async function Agent({
   useTor?: boolean;
   verbose?: boolean;
 }): Promise<EngineOutput> {
+  var cipResult: any;
+  var ipAddress: string;
+  if (useTor) {
+    cipResult = cip(true);
+    ipAddress = cipResult.torIP || cipResult.sysIP;
+  } else {
+    cipResult = cip(false);
+    ipAddress = cipResult.sysIP || cipResult.torIP;
+  }
   if (verbose) {
-    console.log(
-      colors.green("@info:"),
-      "using",
-      colors.green("yt-dlx"),
-      "version",
-      colors.green(version)
-    );
     console.log(
       colors.green("@info:"),
       "system has",
@@ -51,18 +53,21 @@ export default async function Agent({
       colors.green("systemctl"),
       csystemctl()
     );
+    console.log(
+      colors.green("@info:"),
+      "using",
+      colors.green("yt-dlx"),
+      "version",
+      colors.green(version)
+    );
+    console.log(
+      colors.green("@info:"),
+      "current",
+      colors.green("ipAddress"),
+      "is",
+      colors.green(ipAddress)
+    );
   }
-
-  var cipResult: any;
-  var ipAddress: string;
-  if (useTor) {
-    cipResult = cip(true);
-    ipAddress = cipResult.torIP || cipResult.sysIP;
-  } else {
-    cipResult = cip(false);
-    ipAddress = cipResult.sysIP || cipResult.torIP;
-  }
-
   var TubeBody: any;
   var respEngine: EngineOutput | undefined = undefined;
   var videoId: string | undefined = await YouTubeID(query);
