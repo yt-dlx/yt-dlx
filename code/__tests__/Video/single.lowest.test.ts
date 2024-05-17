@@ -5,8 +5,9 @@ import YouTube from "../../";
 (async () => {
   try {
     await YouTube.VideoOnly.Single.Lowest({
-      stream: false,
+      useTor: true,
       verbose: true,
+      stream: false,
       output: "public/video",
       query: "21 savage - redrum",
     });

@@ -109,6 +109,7 @@ export default async function ListAudioCustom({
         const engineData = await ytdlx({
           query: video.videoLink,
           verbose,
+          useTor,
         });
         if (engineData === undefined) {
           console.log(

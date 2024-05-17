@@ -5,12 +5,12 @@ import cservice from "../../base/check/cservice";
 import csystemctl from "../../base/check/csystemctl";
 
 switch (true) {
-  case cservice():
-    execSync("service tor restart", { stdio: "inherit" });
-    console.log("@ipAddress", cip(true));
-    break;
   case csystemctl():
     execSync("systemctl restart tor", { stdio: "inherit" });
+    console.log("@ipAddress", cip(true));
+    break;
+  case cservice():
+    execSync("service tor restart", { stdio: "inherit" });
     console.log("@ipAddress", cip(true));
     break;
   default:

@@ -99,6 +99,7 @@ export default async function ListAudioLowest({
         const engineData = await ytdlx({
           query: video.videoLink,
           verbose,
+          useTor,
         });
         if (engineData === undefined) {
           console.log(

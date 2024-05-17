@@ -22,8 +22,9 @@ import YouTube from "../../";
     for (const resolution of resolutions) {
       await YouTube.VideoOnly.Single.Custom({
         resolution,
-        stream: false,
+        useTor: true,
         verbose: true,
+        stream: false,
         output: "public/video",
         query: "21 savage - redrum",
       });

@@ -5,6 +5,7 @@ import Engine from "./Engine";
 import ctor from "./check/ctor";
 import csudo from "./check/csudo";
 import cservice from "./check/cservice";
+import { execSync } from "child_process";
 import YouTubeID from "../web/YouTubeId";
 import csystemctl from "./check/csystemctl";
 import { version } from "../../package.json";
@@ -19,15 +20,28 @@ export default async function Agent({
   useTor?: boolean;
   verbose?: boolean;
 }): Promise<EngineOutput> {
-  var cipResult: any;
+  var cipres: any;
   var ipAddress: string;
   if (useTor) {
-    cipResult = cip(true);
-    ipAddress = cipResult.torIP || cipResult.sysIP;
+    cipres = cip(true);
+    switch (true) {
+      case csystemctl():
+        execSync("systemctl restart tor", { stdio: "inherit" });
+        ipAddress = cipres.torIP || cipres.sysIP;
+        break;
+      case cservice():
+        execSync("service tor restart", { stdio: "inherit" });
+        ipAddress = cipres.torIP || cipres.sysIP;
+        break;
+      default:
+        ipAddress = cipres.sysIP || cipres.torIP;
+        break;
+    }
   } else {
-    cipResult = cip(false);
-    ipAddress = cipResult.sysIP || cipResult.torIP;
+    cipres = cip(false);
+    ipAddress = cipres.sysIP || cipres.torIP;
   }
+
   if (verbose) {
     console.log(
       colors.green("@info:"),
@@ -68,6 +82,7 @@ export default async function Agent({
       colors.green(ipAddress)
     );
   }
+
   var TubeBody: any;
   var respEngine: EngineOutput | undefined = undefined;
   var videoId: string | undefined = await YouTubeID(query);

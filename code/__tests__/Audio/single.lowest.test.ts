@@ -5,8 +5,9 @@ import YouTube from "../../";
 (async () => {
   try {
     await YouTube.AudioOnly.Single.Lowest({
-      stream: false,
+      useTor: true,
       verbose: true,
+      stream: false,
       output: "public/audio",
       query: "21 savage - redrum",
     });
