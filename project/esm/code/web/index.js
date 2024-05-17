@@ -1,8 +1,8 @@
-import playlistVideos from "./vercel/playlistVideos";
-import relatedVideos from "./vercel/relatedVideos";
-import searchPlaylists from "./vercel/searchPlaylists";
-import searchVideos from "./vercel/searchVideos";
-import singleVideo from "./vercel/singleVideo";
+import playlistVideos from "./playlistVideos";
+import relatedVideos from "./relatedVideos";
+import searchPlaylists from "./searchPlaylists";
+import searchVideos from "./searchVideos";
+import singleVideo from "./singleVideo";
 const web = {
     singleVideo,
     searchVideos,

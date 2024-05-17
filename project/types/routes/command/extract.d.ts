@@ -9,20 +9,20 @@ export default function extract({ query, verbose, }: {
     query: string;
     verbose?: boolean;
 }): Promise<{
-    AudioLowF: import("../../base/Engine").AudioFormat;
-    AudioHighF: import("../../base/Engine").AudioFormat;
-    VideoLowF: import("../../base/Engine").VideoFormat;
-    VideoHighF: import("../../base/Engine").VideoFormat;
-    AudioLowDRC: import("../../base/Engine").AudioFormat[];
-    AudioHighDRC: import("../../base/Engine").AudioFormat[];
-    AudioLow: import("../../base/Engine").AudioFormat[];
-    AudioHigh: import("../../base/Engine").AudioFormat[];
-    VideoLowHDR: import("../../base/Engine").VideoFormat[];
-    VideoHighHDR: import("../../base/Engine").VideoFormat[];
-    VideoLow: import("../../base/Engine").VideoFormat[];
-    VideoHigh: import("../../base/Engine").VideoFormat[];
-    ManifestLow: import("../../base/Engine").ManifestFormat[];
-    ManifestHigh: import("../../base/Engine").ManifestFormat[];
+    AudioLowF: import("../../interfaces/AudioFormat").default;
+    AudioHighF: import("../../interfaces/AudioFormat").default;
+    VideoLowF: import("../../interfaces/VideoFormat").default;
+    VideoHighF: import("../../interfaces/VideoFormat").default;
+    AudioLowDRC: import("../../interfaces/AudioFormat").default[];
+    AudioHighDRC: import("../../interfaces/AudioFormat").default[];
+    AudioLow: import("../../interfaces/AudioFormat").default[];
+    AudioHigh: import("../../interfaces/AudioFormat").default[];
+    VideoLowHDR: import("../../interfaces/VideoFormat").default[];
+    VideoHighHDR: import("../../interfaces/VideoFormat").default[];
+    VideoLow: import("../../interfaces/VideoFormat").default[];
+    VideoHigh: import("../../interfaces/VideoFormat").default[];
+    ManifestLow: import("../../interfaces/ManifestFormat").default[];
+    ManifestHigh: import("../../interfaces/ManifestFormat").default[];
     meta_data: {
         id: string;
         original_url: string;

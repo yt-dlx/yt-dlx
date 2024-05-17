@@ -3,25 +3,8 @@ import colors from "colors";
 import * as path from "path";
 import retry from "async-retry";
 import { promisify } from "util";
+import checkSudo from "./checkSudo";
 import { exec, spawn } from "child_process";
-// =====================================================================================
-export async function checkSudo() {
-    return new Promise((resolve) => {
-        try {
-            if (process.env.sudo === "false")
-                resolve(false);
-            const check = spawn("sudo", ["-n", "true"]);
-            check.on("error", () => resolve(false));
-            check.on("close", (code) => {
-                resolve(code === 0);
-            });
-        }
-        catch (error) {
-            console.error(error);
-            resolve(false);
-        }
-    });
-}
 export const sizeFormat = (filesize) => {
     if (isNaN(filesize) || filesize < 0)
         return filesize;
@@ -39,7 +22,6 @@ export const sizeFormat = (filesize) => {
     else
         return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
 };
-// =====================================================================================
 export default async function Engine({ query }) {
     let AudioLow = {};
     let AudioHigh = {};

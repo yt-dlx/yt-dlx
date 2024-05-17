@@ -1,4 +1,4 @@
-import type { EngineOutput } from "./Engine";
+import type EngineOutput from "../interfaces/EngineOutput";
 export default function Agent({ query, verbose, }: {
     query: string;
     verbose?: boolean;
