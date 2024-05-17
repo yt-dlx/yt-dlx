@@ -8,6 +8,7 @@ import YouTubeID from "../web/YouTubeId";
 import csystemctl from "./check/csystemctl";
 import { version } from "../../package.json";
 import type EngineOutput from "../interfaces/EngineOutput";
+import cip from "./check/cip";
 
 export default async function Agent({
   query,
@@ -51,6 +52,17 @@ export default async function Agent({
       csystemctl()
     );
   }
+
+  var cipResult: any;
+  var ipAddress: string;
+  if (useTor) {
+    cipResult = cip(useTor);
+    ipAddress = cipResult.torIP || cipResult.sysIP;
+  } else {
+    cipResult = cip(false);
+    ipAddress = cipResult.sysIP || cipResult.torIP;
+  }
+
   var TubeBody: any;
   var respEngine: EngineOutput | undefined = undefined;
   var videoId: string | undefined = await YouTubeID(query);
@@ -59,10 +71,11 @@ export default async function Agent({
     if (!TubeBody[0]) throw new Error("Unable to get response!");
     console.log(
       colors.green("@info:"),
-      `preparing payload for`,
+      "preparing payload for",
       colors.green(TubeBody[0].title)
     );
     respEngine = await Engine({
+      ipAddress,
       query: `https://www.youtube.com/watch?v=${TubeBody[0].id}`,
     });
     return respEngine;
@@ -71,10 +84,11 @@ export default async function Agent({
     if (!TubeBody) throw new Error("Unable to get response!");
     console.log(
       colors.green("@info:"),
-      `preparing payload for`,
+      "preparing payload for",
       colors.green(TubeBody.title)
     );
     respEngine = await Engine({
+      ipAddress,
       query: `https://www.youtube.com/watch?v=${TubeBody.id}`,
     });
     return respEngine;

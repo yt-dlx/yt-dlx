@@ -1,4 +1,5 @@
 export default interface VideoInfo {
+  ipAddress: string;
   id: string;
   title: string;
   channel: string;

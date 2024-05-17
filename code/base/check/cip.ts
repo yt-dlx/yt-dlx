@@ -1,22 +1,27 @@
 import { execSync } from "child_process";
 
-export default function cip(): { sysIP: string; torIP: string } {
+export default function cip(useTor: boolean): {
+  sysIP: string;
+  torIP?: string;
+} {
   try {
-    return {
-      sysIP: execSync("curl https://checkip.amazonaws.com --insecure", {
-        stdio: "pipe",
-      })
-        .toString()
-        .trim(),
-      torIP: execSync(
+    var sysIP = execSync("curl https://checkip.amazonaws.com --insecure", {
+      stdio: "pipe",
+    })
+      .toString()
+      .trim();
+    var torIP: string | undefined;
+    if (useTor) {
+      torIP = execSync(
         "curl --socks5-hostname 127.0.0.1:9050 https://checkip.amazonaws.com --insecure",
         {
           stdio: "pipe",
         }
       )
         .toString()
-        .trim(),
-    };
+        .trim();
+    }
+    return { sysIP, torIP };
   } catch {
     return { sysIP: "", torIP: "" };
   }

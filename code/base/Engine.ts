@@ -25,9 +25,11 @@ export var sizeFormat: sizeFormat = (filesize: number): string | number => {
 export default async function Engine({
   query,
   useTor,
+  ipAddress,
 }: {
   query: string;
   useTor?: boolean;
+  ipAddress: string;
 }) {
   var AudioLow: any = {};
   var AudioHigh: any = {};
@@ -198,6 +200,7 @@ export default async function Engine({
     ManifestLow: Object.values(ManifestLow).map((i: any) => pManifest(i)),
     ManifestHigh: Object.values(ManifestHigh).map((i: any) => pManifest(i)),
     metaData: {
+      ipAddress,
       id: i.id as string,
       title: i.title as string,
       channel: i.channel as string,
