@@ -12,6 +12,7 @@ import calculateETA from "../../../base/calculateETA";
 
 const ZodSchema = z.object({
   output: z.string().optional(),
+  useTor: z.boolean().optional(),
   verbose: z.boolean().optional(),
   query: z.array(z.string().min(2)),
   resolution: z.enum(["high", "medium", "low", "ultralow"]),
@@ -48,6 +49,7 @@ const ZodSchema = z.object({
 export default async function ListAudioCustom({
   query,
   output,
+  useTor,
   filter,
   verbose,
   resolution,
@@ -56,6 +58,7 @@ export default async function ListAudioCustom({
     ZodSchema.parse({
       query,
       output,
+      useTor,
       filter,
       verbose,
       resolution,
@@ -135,6 +138,7 @@ export default async function ListAudioCustom({
         }
         ff.addInput(engineData.metaData.thumbnail);
         ff.withOutputFormat("avi");
+        // ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
         switch (filter) {
           case "bassboost":
             ff.withAudioFilter(["bass=g=10,dynaudnorm=f=150"]);

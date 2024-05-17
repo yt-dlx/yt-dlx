@@ -12,6 +12,7 @@ import calculateETA from "../../../base/calculateETA";
 
 const ZodSchema = z.object({
   output: z.string().optional(),
+  useTor: z.boolean().optional(),
   verbose: z.boolean().optional(),
   query: z.array(z.string().min(2)),
   filter: z
@@ -39,6 +40,7 @@ export default async function ListAudioVideoLowest({
   query,
   verbose,
   output,
+  useTor,
   filter,
 }: z.infer<typeof ZodSchema>): Promise<void> {
   try {
@@ -46,6 +48,7 @@ export default async function ListAudioVideoLowest({
       query,
       verbose,
       output,
+      useTor,
       filter,
     });
     let startTime: Date;
@@ -113,6 +116,7 @@ export default async function ListAudioVideoLowest({
         ff.outputOptions("-c copy");
         ff.withOutputFormat("matroska");
         ff.withOutputFormat("matroska");
+        // ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
         switch (filter) {
           case "grayscale":
             ff.withVideoFilter(

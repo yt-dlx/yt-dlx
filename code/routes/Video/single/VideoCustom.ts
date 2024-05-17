@@ -11,6 +11,7 @@ import calculateETA from "../../../base/calculateETA";
 const ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
+  useTor: z.boolean().optional(),
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
   resolution: z.enum([
@@ -57,6 +58,7 @@ export default async function VideoCustom({
   stream,
   verbose,
   output,
+  useTor,
   filter,
 }: z.infer<typeof ZodSchema>): Promise<void | {
   ffmpeg: FfmpegCommand;
@@ -69,6 +71,7 @@ export default async function VideoCustom({
       stream,
       verbose,
       output,
+      useTor,
       filter,
     });
     let startTime: Date;
@@ -98,6 +101,7 @@ export default async function VideoCustom({
       }
       ff.videoCodec("copy");
       ff.withOutputFormat("matroska");
+      // ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
       switch (filter) {
         case "grayscale":
           ff.withVideoFilter(

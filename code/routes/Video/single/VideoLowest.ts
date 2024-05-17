@@ -11,6 +11,7 @@ import calculateETA from "../../../base/calculateETA";
 const ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
+  useTor: z.boolean().optional(),
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
   filter: z
@@ -40,6 +41,7 @@ export default async function VideoLowest({
   stream,
   verbose,
   output,
+  useTor,
   filter,
 }: z.infer<typeof ZodSchema>): Promise<void | {
   ffmpeg: FfmpegCommand;
@@ -51,6 +53,7 @@ export default async function VideoLowest({
       stream,
       verbose,
       output,
+      useTor,
       filter,
     });
     let startTime: Date;

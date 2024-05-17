@@ -11,6 +11,7 @@ import calculateETA from "../../../base/calculateETA";
 const ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
+  useTor: z.boolean().optional(),
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
   filter: z
@@ -47,6 +48,7 @@ const ZodSchema = z.object({
 export default async function AudioHighest({
   query,
   output,
+  useTor,
   stream,
   verbose,
   filter,
@@ -55,7 +57,7 @@ export default async function AudioHighest({
   filename: string;
 }> {
   try {
-    ZodSchema.parse({ query, output, stream, verbose, filter });
+    ZodSchema.parse({ query, output, useTor, stream, verbose, filter });
     let startTime: Date;
     const engineData = await ytdlx({ query, verbose });
     if (engineData === undefined) {
@@ -72,6 +74,7 @@ export default async function AudioHighest({
       ff.addInput(engineData.AudioHighF.url);
       ff.addInput(engineData.metaData.thumbnail);
       ff.withOutputFormat("avi");
+      // ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
       switch (filter) {
         case "bassboost":
           ff.withAudioFilter(["bass=g=10,dynaudnorm=f=150"]);

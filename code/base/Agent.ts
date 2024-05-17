@@ -11,9 +11,11 @@ import type EngineOutput from "../interfaces/EngineOutput";
 
 export default async function Agent({
   query,
+  useTor,
   verbose,
 }: {
   query: string;
+  useTor?: boolean;
   verbose?: boolean;
 }): Promise<EngineOutput> {
   if (verbose) {

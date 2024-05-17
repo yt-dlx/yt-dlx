@@ -22,7 +22,13 @@ export var sizeFormat: sizeFormat = (filesize: number): string | number => {
     return (filesize / bytesPerGigabyte).toFixed(2) + " GB";
   } else return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
 };
-export default async function Engine({ query }: { query: string }) {
+export default async function Engine({
+  query,
+  useTor,
+}: {
+  query: string;
+  useTor?: boolean;
+}) {
   var AudioLow: any = {};
   var AudioHigh: any = {};
   var VideoLow: any = {};

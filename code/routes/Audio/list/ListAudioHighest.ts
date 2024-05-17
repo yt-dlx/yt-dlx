@@ -12,6 +12,7 @@ import calculateETA from "../../../base/calculateETA";
 
 const ZodSchema = z.object({
   output: z.string().optional(),
+  useTor: z.boolean().optional(),
   verbose: z.boolean().optional(),
   query: z.array(z.string().min(2)),
   filter: z
@@ -46,11 +47,12 @@ const ZodSchema = z.object({
 export default async function ListAudioHighest({
   query,
   output,
+  useTor,
   verbose,
   filter,
 }: z.infer<typeof ZodSchema>): Promise<void> {
   try {
-    ZodSchema.parse({ query, output, verbose, filter });
+    ZodSchema.parse({ query, output, useTor, verbose, filter });
     let startTime: Date;
     const unique = new Set<{
       ago: string;
@@ -117,6 +119,7 @@ export default async function ListAudioHighest({
         ff.addInput(engineData.AudioHighF.url);
         ff.addInput(engineData.metaData.thumbnail);
         ff.withOutputFormat("avi");
+        // ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
         switch (filter) {
           case "bassboost":
             ff.withAudioFilter(["bass=g=10,dynaudnorm=f=150"]);
