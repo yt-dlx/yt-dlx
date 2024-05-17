@@ -12,7 +12,6 @@ export default async function handler(
     var TubeBody = await ytdlx.info.list_formats({
       query,
       verbose: true,
-      onionTor: true,
     });
     if (TubeBody) return res.status(200).json(TubeBody);
     else return res.status(400).send("@error: try again!");

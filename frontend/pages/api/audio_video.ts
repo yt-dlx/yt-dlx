@@ -12,7 +12,6 @@ export default async function handler(
     const result = await ytdlx.AudioVideo.Single.Highest({
       stream: true,
       verbose: true,
-      onionTor: true,
       query: videoId,
     });
     if (result && result.filename && result.ffmpeg) {
