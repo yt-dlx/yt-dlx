@@ -115,7 +115,7 @@ export default async function ListVideoHighest({
         ff.addInput(vdata.toString());
         ff.videoCodec("copy");
         ff.withOutputFormat("matroska");
-        // ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
+        ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
         switch (filter) {
           case "grayscale":
             ff.withVideoFilter(

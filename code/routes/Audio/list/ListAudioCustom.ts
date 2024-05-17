@@ -138,7 +138,7 @@ export default async function ListAudioCustom({
         }
         ff.addInput(engineData.metaData.thumbnail);
         ff.withOutputFormat("avi");
-        // ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
+        ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
         switch (filter) {
           case "bassboost":
             ff.withAudioFilter(["bass=g=10,dynaudnorm=f=150"]);

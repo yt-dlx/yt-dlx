@@ -74,7 +74,7 @@ export default async function AudioVideoHighest({
       ff.addInput(vdata.toString());
       ff.outputOptions("-c copy");
       ff.withOutputFormat("matroska");
-      // ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
+      ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
       let filename: string = "yt-dlx_(AudioVideoHighest_";
       switch (filter) {
         case "grayscale":

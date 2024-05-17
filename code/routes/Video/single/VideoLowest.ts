@@ -72,7 +72,7 @@ export default async function VideoLowest({
       ff.addInput(vdata.toString());
       ff.videoCodec("copy");
       ff.withOutputFormat("matroska");
-      // ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
+      ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
       let filename: string = "yt-dlx_(VideoLowest_";
       switch (filter) {
         case "grayscale":

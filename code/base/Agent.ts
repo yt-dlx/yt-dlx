@@ -56,7 +56,7 @@ export default async function Agent({
   var cipResult: any;
   var ipAddress: string;
   if (useTor) {
-    cipResult = cip(useTor);
+    cipResult = cip(true);
     ipAddress = cipResult.torIP || cipResult.sysIP;
   } else {
     cipResult = cip(false);

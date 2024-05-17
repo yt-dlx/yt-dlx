@@ -116,7 +116,7 @@ export default async function ListAudioVideoLowest({
         ff.outputOptions("-c copy");
         ff.withOutputFormat("matroska");
         ff.withOutputFormat("matroska");
-        // ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
+        ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
         switch (filter) {
           case "grayscale":
             ff.withVideoFilter(
