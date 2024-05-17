@@ -1,7 +1,11 @@
 import web from "../web";
 import colors from "colors";
 import Engine from "./Engine";
+import ctor from "./check/ctor";
+import csudo from "./check/csudo";
+import cservice from "./check/cservice";
 import YouTubeID from "../web/YouTubeId";
+import csystemctl from "./check/csystemctl";
 import { version } from "../../package.json";
 import type EngineOutput from "../interfaces/EngineOutput";
 
@@ -12,17 +16,22 @@ export default async function Agent({
   query: string;
   verbose?: boolean;
 }): Promise<EngineOutput> {
-  verbose;
-  console.log(
-    colors.green("@info:"),
-    "using",
-    colors.green("yt-dlx"),
-    "version",
-    colors.green(version)
-  );
-  let TubeBody: any;
-  let respEngine: EngineOutput | undefined = undefined;
-  let videoId: string | undefined = await YouTubeID(query);
+  if (verbose) {
+    console.log(
+      colors.green("@info:"),
+      "using",
+      colors.green("yt-dlx"),
+      "version",
+      colors.green(version)
+    );
+    console.log(colors.green("@info:"), "system has tor", ctor());
+    console.log(colors.green("@info:"), "system has sudo", csudo());
+    console.log(colors.green("@info:"), "system has service", cservice());
+    console.log(colors.green("@info:"), "system has systemctl", csystemctl());
+  }
+  var TubeBody: any;
+  var respEngine: EngineOutput | undefined = undefined;
+  var videoId: string | undefined = await YouTubeID(query);
   if (!videoId) {
     TubeBody = await web.searchVideos({ query });
     if (!TubeBody[0]) throw new Error("Unable to get response!");

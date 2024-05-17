@@ -3,18 +3,18 @@ import colors from "colors";
 import * as path from "path";
 import retry from "async-retry";
 import { promisify } from "util";
-import checkSudo from "./checkSudo";
-import { exec, spawn } from "child_process";
+import csudo from "./check/csudo";
+import { exec, execSync } from "child_process";
 import type sizeFormat from "../interfaces/sizeFormat";
 import type AudioFormat from "../interfaces/AudioFormat";
 import type VideoFormat from "../interfaces/VideoFormat";
 import type EngineOutput from "../interfaces/EngineOutput";
 
-export const sizeFormat: sizeFormat = (filesize: number): string | number => {
+export var sizeFormat: sizeFormat = (filesize: number): string | number => {
   if (isNaN(filesize) || filesize < 0) return filesize;
-  const bytesPerMegabyte = 1024 * 1024;
-  const bytesPerGigabyte = bytesPerMegabyte * 1024;
-  const bytesPerTerabyte = bytesPerGigabyte * 1024;
+  var bytesPerMegabyte = 1024 * 1024;
+  var bytesPerGigabyte = bytesPerMegabyte * 1024;
+  var bytesPerTerabyte = bytesPerGigabyte * 1024;
   if (filesize < bytesPerMegabyte) return filesize + " B";
   else if (filesize < bytesPerGigabyte) {
     return (filesize / bytesPerMegabyte).toFixed(2) + " MB";
@@ -23,25 +23,25 @@ export const sizeFormat: sizeFormat = (filesize: number): string | number => {
   } else return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
 };
 export default async function Engine({ query }: { query: string }) {
-  let AudioLow: any = {};
-  let AudioHigh: any = {};
-  let VideoLow: any = {};
-  let VideoHigh: any = {};
-  let ManifestLow: any = {};
-  let ManifestHigh: any = {};
-  let AudioLowDRC: any = {};
-  let AudioHighDRC: any = {};
-  let VideoLowHDR: any = {};
-  let VideoHighHDR: any = {};
-  let AudioLowF: AudioFormat | any = null;
-  let AudioHighF: AudioFormat | any = null;
-  let VideoLowF: VideoFormat | any = null;
-  let VideoHighF: VideoFormat | any = null;
-  let dirC = __dirname || process.cwd();
-  let pLoc = "";
-  let maxT = 8;
+  var AudioLow: any = {};
+  var AudioHigh: any = {};
+  var VideoLow: any = {};
+  var VideoHigh: any = {};
+  var ManifestLow: any = {};
+  var ManifestHigh: any = {};
+  var AudioLowDRC: any = {};
+  var AudioHighDRC: any = {};
+  var VideoLowHDR: any = {};
+  var VideoHighHDR: any = {};
+  var AudioLowF: AudioFormat | any = null;
+  var AudioHighF: AudioFormat | any = null;
+  var VideoLowF: VideoFormat | any = null;
+  var VideoHighF: VideoFormat | any = null;
+  var dirC = __dirname || process.cwd();
+  var pLoc = "";
+  var maxT = 8;
   while (maxT > 0) {
-    const cprobePath = path.join(dirC, "util", "cprobe");
+    var cprobePath = path.join(dirC, "util", "cprobe");
     if (fs.existsSync(cprobePath)) {
       pLoc = cprobePath;
       break;
@@ -56,26 +56,24 @@ export default async function Engine({ query }: { query: string }) {
         "Could not find cprobe file. maybe re-install yt-dlx?"
     );
   }
-  const sudoAvailable = await checkSudo();
-  const command = sudoAvailable
-    ? ["sudo", ["chmod", "+x", pLoc]]
-    : ["chmod", "+x", pLoc];
-  spawn("sh", ["-c", command.join(" ")]);
-  const config = {
+  var sudo = csudo();
+  if (sudo) execSync(`sudo chmod +x ${pLoc}`);
+  else execSync(`chmod +x ${pLoc}`);
+  var config = {
     factor: 2,
     retries: 3,
     minTimeout: 1000,
     maxTimeout: 3000,
   };
-  const metaCore = await retry(async () => {
+  var metaCore = await retry(async () => {
     pLoc += ` --dump-single-json "${query}"`;
     pLoc += ` --no-check-certificate --prefer-insecure --no-call-home --skip-download --no-warnings --geo-bypass`;
     pLoc += ` --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"`;
     return await promisify(exec)(pLoc);
   }, config);
-  const i = JSON.parse(metaCore.stdout.toString());
+  var i = JSON.parse(metaCore.stdout.toString());
   i.formats.forEach((tube: any) => {
-    const rm = new Set(["storyboard", "Default"]);
+    var rm = new Set(["storyboard", "Default"]);
     if (
       !rm.has(tube.format_note) &&
       tube.protocol === "m3u8_native" &&
@@ -114,10 +112,10 @@ export default async function Engine({ query }: { query: string }) {
       )
         VideoHighHDR[tube.format_note] = tube;
     }
-    const prevLowVideo = VideoLow[tube.format_note];
-    const prevHighVideo = VideoHigh[tube.format_note];
-    const prevLowAudio = AudioLow[tube.format_note];
-    const prevHighAudio = AudioHigh[tube.format_note];
+    var prevLowVideo = VideoLow[tube.format_note];
+    var prevHighVideo = VideoHigh[tube.format_note];
+    var prevLowAudio = AudioLow[tube.format_note];
+    var prevHighAudio = AudioHigh[tube.format_note];
     switch (true) {
       case tube.format_note.includes("p"):
         if (!prevLowVideo || tube.filesize < prevLowVideo.filesize)
@@ -166,21 +164,21 @@ export default async function Engine({ query }: { query: string }) {
       return !i.format_note.includes("DRC") && !i.format_note.includes("HDR");
     });
   }
-  const payLoad: EngineOutput = {
+  var payLoad: EngineOutput = {
     AudioLowF: (() => {
-      const i = AudioLowF || ({} as AudioFormat);
+      var i = AudioLowF || ({} as AudioFormat);
       return nAudio(i);
     })(),
     AudioHighF: (() => {
-      const i = AudioHighF || ({} as AudioFormat);
+      var i = AudioHighF || ({} as AudioFormat);
       return nAudio(i);
     })(),
     VideoLowF: (() => {
-      const i = VideoLowF || ({} as VideoFormat);
+      var i = VideoLowF || ({} as VideoFormat);
       return nVideo(i);
     })(),
     VideoHighF: (() => {
-      const i = VideoHighF || ({} as VideoFormat);
+      var i = VideoHighF || ({} as VideoFormat);
       return nVideo(i);
     })(),
     AudioLowDRC: Object.values(AudioLowDRC).map((i: any) => pAudio(i)),

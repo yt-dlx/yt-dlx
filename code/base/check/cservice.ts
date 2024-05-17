@@ -1,6 +1,6 @@
 import { execSync } from "child_process";
 
-export default function cservice() {
+export default function cservice(): boolean {
   try {
     execSync("service --version", { stdio: "ignore" });
     return true;
