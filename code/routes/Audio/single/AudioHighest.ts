@@ -3,10 +3,9 @@ import colors from "colors";
 import * as path from "path";
 import { z, ZodError } from "zod";
 import ffmpeg from "fluent-ffmpeg";
-import type { FfmpegCommand } from "fluent-ffmpeg";
-
 import ytdlx from "../../../base/Agent";
 import formatTime from "../../../base/formatTime";
+import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
 
 const ZodSchema = z.object({

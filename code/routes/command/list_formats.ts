@@ -1,6 +1,6 @@
 import colors from "colors";
 import ytdlx from "../../base/Agent";
-import type { EngineOutput } from "../../base/Engine";
+import type EngineOutput from "../../interfaces/EngineOutput";
 
 /**
  * Lists the available formats and manifest information for a YouTube video.

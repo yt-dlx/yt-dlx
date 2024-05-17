@@ -1,6 +1,6 @@
 import colors from "colors";
 import ytdlx from "../../base/Agent";
-import type { EngineOutput } from "../../base/Engine";
+import type EngineOutput from "../../interfaces/EngineOutput";
 
 /**
  * Extracts metadata information from a YouTube video.
