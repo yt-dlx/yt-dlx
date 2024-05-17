@@ -3885,10 +3885,10 @@ youtubei@^1.4.1:
     node-fetch "2.6.7"
     protobufjs "7.2.6"
 
-yt-dlx@^8.5.0:
-  version "8.5.0"
-  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-8.5.0.tgz#64dfe75c6fb24f8266bacf0d0f86180be45a09b7"
-  integrity sha512-rdPnYNa27iDqr90A2rOPhVHFpbPvyLhenfZ0MLnXVXeX+d5WRowEe8lJ7P/alw/ZAQFmGifiC3IvMo5Lavz3hw==
+yt-dlx@^8.6.0:
+  version "8.6.0"
+  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-8.6.0.tgz#65e9a257f821982497f5ee33bc3df65bbde8b464"
+  integrity sha512-OfrUtr1J4O9V381JC0qLVWVUHrpBteWiUxZ5JGkK093v92JptcwqEiX9t3wcvyuNJW8gLBIaWMZtIuntc7m26g==
   dependencies:
     async-retry "^1.3.3"
     colors "^1.4.0"

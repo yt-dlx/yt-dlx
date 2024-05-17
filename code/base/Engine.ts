@@ -3,27 +3,13 @@ import colors from "colors";
 import * as path from "path";
 import retry from "async-retry";
 import { promisify } from "util";
+import checkSudo from "./checkSudo";
 import { exec, spawn } from "child_process";
-// =====================================================================================
-export async function checkSudo() {
-  return new Promise<boolean>((resolve) => {
-    try {
-      if (process.env.sudo === "false") resolve(false);
-      const check = spawn("sudo", ["-n", "true"]);
-      check.on("error", () => resolve(false));
-      check.on("close", (code) => {
-        resolve(code === 0);
-      });
-    } catch (error) {
-      console.error(error);
-      resolve(false);
-    }
-  });
-}
-// =====================================================================================
-export interface sizeFormat {
-  (filesize: number): string | number;
-}
+import sizeFormat from "../interfaces/sizeFormat";
+import AudioFormat from "../interfaces/AudioFormat";
+import VideoFormat from "../interfaces/VideoFormat";
+import EngineOutput from "../interfaces/EngineOutput";
+
 export const sizeFormat: sizeFormat = (filesize: number): string | number => {
   if (isNaN(filesize) || filesize < 0) return filesize;
   const bytesPerMegabyte = 1024 * 1024;
@@ -36,99 +22,6 @@ export const sizeFormat: sizeFormat = (filesize: number): string | number => {
     return (filesize / bytesPerGigabyte).toFixed(2) + " GB";
   } else return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
 };
-// =====================================================================================
-export interface AudioFormat {
-  filesize: number;
-  filesizeP: string | number;
-  asr: number;
-  format_note: string;
-  tbr: number;
-  url: string;
-  ext: string;
-  acodec: string;
-  container: string;
-  resolution: string;
-  audio_ext: string;
-  abr: number;
-  format: string;
-}
-export interface VideoFormat {
-  filesize: number;
-  filesizeP: string | number;
-  format_note: string;
-  fps: number;
-  height: number;
-  width: number;
-  tbr: number;
-  url: string;
-  ext: string;
-  vcodec: string;
-  dynamic_range: string;
-  container: string;
-  resolution: string;
-  aspect_ratio: number;
-  video_ext: string;
-  vbr: number;
-  format: string;
-}
-export interface ManifestFormat {
-  url: string;
-  manifest_url: string;
-  tbr: number;
-  ext: string;
-  fps: number;
-  width: number;
-  height: number;
-  vcodec: string;
-  dynamic_range: string;
-  aspect_ratio: number;
-  video_ext: string;
-  vbr: number;
-  format: string;
-}
-export interface VideoInfo {
-  id: string;
-  title: string;
-  channel: string;
-  uploader: string;
-  duration: number;
-  thumbnail: string;
-  age_limit: number;
-  channel_id: string;
-  categories: string[];
-  display_id: string;
-  description: string;
-  channel_url: string;
-  webpage_url: string;
-  live_status: boolean;
-  view_count: number;
-  like_count: number;
-  comment_count: number;
-  channel_follower_count: number;
-  upload_date: string;
-  uploader_id: string;
-  original_url: string;
-  uploader_url: string;
-  duration_string: string;
-}
-export interface EngineOutput {
-  metaData: VideoInfo;
-  AudioLowF: AudioFormat;
-  AudioHighF: AudioFormat;
-  VideoLowF: VideoFormat;
-  VideoHighF: VideoFormat;
-  AudioLowDRC: AudioFormat[];
-  AudioHighDRC: AudioFormat[];
-  AudioLow: AudioFormat[];
-  AudioHigh: AudioFormat[];
-  VideoLowHDR: VideoFormat[];
-  VideoHighHDR: VideoFormat[];
-  VideoLow: VideoFormat[];
-  VideoHigh: VideoFormat[];
-  ManifestLow: ManifestFormat[];
-  ManifestHigh: ManifestFormat[];
-}
-// =====================================================================================
 export default async function Engine({ query }: { query: string }) {
   let AudioLow: any = {};
   let AudioHigh: any = {};
