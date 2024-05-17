@@ -3,7 +3,7 @@ import colors from "colors";
 import Engine from "./Engine";
 import YouTubeID from "../web/YouTubeId";
 import { version } from "../../package.json";
-import type { EngineOutput } from "./Engine";
+import type EngineOutput from "../interfaces/EngineOutput";
 
 export default async function Agent({
   query,

@@ -5,10 +5,10 @@ import retry from "async-retry";
 import { promisify } from "util";
 import checkSudo from "./checkSudo";
 import { exec, spawn } from "child_process";
-import sizeFormat from "../interfaces/sizeFormat";
-import AudioFormat from "../interfaces/AudioFormat";
-import VideoFormat from "../interfaces/VideoFormat";
-import EngineOutput from "../interfaces/EngineOutput";
+import type sizeFormat from "../interfaces/sizeFormat";
+import type AudioFormat from "../interfaces/AudioFormat";
+import type VideoFormat from "../interfaces/VideoFormat";
+import type EngineOutput from "../interfaces/EngineOutput";
 
 export const sizeFormat: sizeFormat = (filesize: number): string | number => {
   if (isNaN(filesize) || filesize < 0) return filesize;

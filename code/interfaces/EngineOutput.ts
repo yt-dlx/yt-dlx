@@ -1,7 +1,7 @@
-import VideoInfo from "./VideoInfo";
-import AudioFormat from "./AudioFormat";
-import VideoFormat from "./VideoFormat";
-import ManifestFormat from "./ManifestFormat";
+import type VideoInfo from "./VideoInfo";
+import type AudioFormat from "./AudioFormat";
+import type VideoFormat from "./VideoFormat";
+import type ManifestFormat from "./ManifestFormat";
 
 export default interface EngineOutput {
   metaData: VideoInfo;
