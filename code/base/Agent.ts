@@ -20,28 +20,51 @@ export default async function Agent({
   useTor?: boolean;
   verbose?: boolean;
 }): Promise<EngineOutput> {
-  var cipres: any;
   var ipAddress: string;
   if (useTor) {
-    cipres = cip(true);
     switch (true) {
       case csystemctl():
+        var cipres = await cip(true);
         execSync("systemctl restart tor", { stdio: "inherit" });
         ipAddress = cipres.torIP || cipres.sysIP;
+        console.log(
+          colors.green("@info:"),
+          "current",
+          colors.green("ipAddress"),
+          "is",
+          cipres
+        );
         break;
       case cservice():
+        var cipres = await cip(true);
         execSync("service tor restart", { stdio: "inherit" });
         ipAddress = cipres.torIP || cipres.sysIP;
+
+        console.log(
+          colors.green("@info:"),
+          "current",
+          colors.green("ipAddress"),
+          "is",
+          cipres
+        );
         break;
       default:
-        ipAddress = cipres.sysIP || cipres.torIP;
+        var cipres = await cip(true);
+        ipAddress = cipres.sysIP;
+
+        console.log(
+          colors.green("@info:"),
+          "current",
+          colors.green("ipAddress"),
+          "is",
+          cipres
+        );
         break;
     }
   } else {
-    cipres = cip(false);
-    ipAddress = cipres.sysIP || cipres.torIP;
+    var cipres = await cip(false);
+    ipAddress = cipres.sysIP;
   }
-
   if (verbose) {
     console.log(
       colors.green("@info:"),
@@ -73,13 +96,6 @@ export default async function Agent({
       colors.green("yt-dlx"),
       "version",
       colors.green(version)
-    );
-    console.log(
-      colors.green("@info:"),
-      "current",
-      colors.green("ipAddress"),
-      "is",
-      colors.green(ipAddress)
     );
   }
 
