@@ -1709,7 +1709,7 @@ flowbite@^2.2.1:
     "@popperjs/core" "^2.9.3"
     mini-svg-data-uri "^1.4.3"
 
-fluent-ffmpeg@^2.1.2:
+fluent-ffmpeg@^2.1.3:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/fluent-ffmpeg/-/fluent-ffmpeg-2.1.3.tgz#d6846be257777844249a4adeb320f25326d239f3"
   integrity sha512-Be3narBNt2s6bsaqP6Jzq91heDgOEaDCJAXcE3qcma/EJBSy5FB4cvO31XBInuAuKBx8Kptf8dkhjK0IOru39Q==
@@ -4052,15 +4052,15 @@ youtubei@^1.4.1:
     node-fetch "2.6.7"
     protobufjs "7.2.6"
 
-yt-dlx@^8.6.0:
-  version "8.6.0"
-  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-8.6.0.tgz#65e9a257f821982497f5ee33bc3df65bbde8b464"
-  integrity sha512-OfrUtr1J4O9V381JC0qLVWVUHrpBteWiUxZ5JGkK093v92JptcwqEiX9t3wcvyuNJW8gLBIaWMZtIuntc7m26g==
+yt-dlx@^8.8.0:
+  version "8.8.0"
+  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-8.8.0.tgz#34ea3917c88751113ae3f0927ba3a7195fe2f446"
+  integrity sha512-9GWcAndIXkhWaSCB8mef9ezLyf/ArtQOOZBqqfAxukapc76i18qu2+6fTHf3RKj2SarSXva/0BYUqmg3Gm60mg==
   dependencies:
     async-retry "^1.3.3"
     colors "^1.4.0"
     cron "^3.1.7"
-    fluent-ffmpeg "^2.1.2"
+    fluent-ffmpeg "^2.1.3"
     minimist "^1.2.8"
     npm-run-all "^4.1.5"
     readline-sync "^1.4.10"
