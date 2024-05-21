@@ -92,6 +92,7 @@ export default async function ListVideoCustom({ query, resolution, verbose, outp
                 const engineData = await ytdlx({
                     query: video.videoLink,
                     verbose,
+                    useTor,
                 });
                 if (engineData === undefined) {
                     console.log(colors.red("@error:"), "unable to get response!");

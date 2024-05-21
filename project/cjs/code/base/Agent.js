@@ -3,34 +3,80 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+console.clear();
 const web_1 = __importDefault(require("../web"));
 const colors_1 = __importDefault(require("colors"));
-const cip_1 = __importDefault(require("./check/cip"));
 const Engine_1 = __importDefault(require("./Engine"));
-const ctor_1 = __importDefault(require("./check/ctor"));
-const csudo_1 = __importDefault(require("./check/csudo"));
-const cservice_1 = __importDefault(require("./check/cservice"));
+const child_process_1 = require("child_process");
 const YouTubeId_1 = __importDefault(require("../web/YouTubeId"));
-const csystemctl_1 = __importDefault(require("./check/csystemctl"));
-const package_json_1 = require("../../package.json");
 async function Agent({ query, useTor, verbose, }) {
-    var cipResult;
-    var ipAddress;
+    var ipAddress = "", issystemctl = false, isservice = false;
+    function sip() {
+        var op = (0, child_process_1.execSync)("curl https://checkip.amazonaws.com --insecure", {
+            stdio: "pipe",
+        });
+        return op.toString().trim();
+    }
+    function tip() {
+        var op = (0, child_process_1.execSync)("curl --socks5-hostname 127.0.0.1:9050 https://checkip.amazonaws.com --insecure", {
+            stdio: "pipe",
+        });
+        return op.toString().trim();
+    }
+    function service() {
+        try {
+            (0, child_process_1.execSync)("service --version", { stdio: "ignore" });
+            (0, child_process_1.execSync)("service tor stop", { stdio: "ignore" });
+            return true;
+        }
+        catch {
+            return false;
+        }
+    }
+    function systemctl() {
+        try {
+            (0, child_process_1.execSync)("systemctl --version", { stdio: "ignore" });
+            (0, child_process_1.execSync)("systemctl tor stop", { stdio: "ignore" });
+            return true;
+        }
+        catch {
+            return false;
+        }
+    }
+    function sudo() {
+        try {
+            (0, child_process_1.execSync)("sudo --version", { stdio: "ignore" });
+            return true;
+        }
+        catch {
+            return false;
+        }
+    }
+    var issudo = sudo();
     if (useTor) {
-        cipResult = (0, cip_1.default)(true);
-        ipAddress = cipResult.torIP || cipResult.sysIP;
+        switch (true) {
+            case systemctl():
+                (0, child_process_1.execSync)("systemctl restart tor", { stdio: "inherit" });
+                ipAddress = tip() || sip();
+                issystemctl = true;
+                break;
+            case service():
+                (0, child_process_1.execSync)("service tor restart", { stdio: "inherit" });
+                ipAddress = tip() || sip();
+                isservice = true;
+                break;
+            default:
+                ipAddress = sip();
+                break;
+        }
     }
-    else {
-        cipResult = (0, cip_1.default)(false);
-        ipAddress = cipResult.sysIP || cipResult.torIP;
-    }
+    else
+        ipAddress = sip();
     if (verbose) {
-        console.log(colors_1.default.green("@info:"), "system has", colors_1.default.green("tor"), (0, ctor_1.default)());
-        console.log(colors_1.default.green("@info:"), "system has", colors_1.default.green("sudo"), (0, csudo_1.default)());
-        console.log(colors_1.default.green("@info:"), "system has", colors_1.default.green("service"), (0, cservice_1.default)());
-        console.log(colors_1.default.green("@info:"), "system has", colors_1.default.green("systemctl"), (0, csystemctl_1.default)());
-        console.log(colors_1.default.green("@info:"), "using", colors_1.default.green("yt-dlx"), "version", colors_1.default.green(package_json_1.version));
-        console.log(colors_1.default.green("@info:"), "current", colors_1.default.green("ipAddress"), "is", colors_1.default.green(ipAddress));
+        console.log(colors_1.default.green("@info:"), "now using", colors_1.default.green("ipAddress"), ipAddress);
+        console.log(colors_1.default.green("@info:"), "is sudo", colors_1.default.green("available"), issudo);
+        console.log(colors_1.default.green("@info:"), "is service", colors_1.default.green("available"), isservice);
+        console.log(colors_1.default.green("@info:"), "is systemctl", colors_1.default.green("available"), issystemctl);
     }
     var TubeBody;
     var respEngine = undefined;
@@ -42,7 +88,8 @@ async function Agent({ query, useTor, verbose, }) {
         console.log(colors_1.default.green("@info:"), "preparing payload for", colors_1.default.green(TubeBody[0].title));
         respEngine = await (0, Engine_1.default)({
             ipAddress,
-            query: `https://www.youtube.com/watch?v=${TubeBody[0].id}`,
+            sudo: issudo,
+            query: "https://www.youtube.com/watch?v=" + TubeBody[0].id,
         });
         return respEngine;
     }
@@ -53,7 +100,8 @@ async function Agent({ query, useTor, verbose, }) {
         console.log(colors_1.default.green("@info:"), "preparing payload for", colors_1.default.green(TubeBody.title));
         respEngine = await (0, Engine_1.default)({
             ipAddress,
-            query: `https://www.youtube.com/watch?v=${TubeBody.id}`,
+            sudo: issudo,
+            query: "https://www.youtube.com/watch?v=" + TubeBody.id,
         });
         return respEngine;
     }

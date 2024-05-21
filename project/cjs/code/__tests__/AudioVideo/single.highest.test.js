@@ -10,8 +10,9 @@ const __1 = __importDefault(require("../../"));
 (async () => {
     try {
         await __1.default.AudioVideo.Single.Highest({
-            stream: false,
+            useTor: true,
             verbose: true,
+            stream: false,
             output: "public/mix",
             query: "21 savage - redrum",
         });

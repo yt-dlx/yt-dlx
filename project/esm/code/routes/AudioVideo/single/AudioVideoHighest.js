@@ -45,7 +45,7 @@ export default async function AudioVideoHighest({ query, stream, verbose, output
             filter,
         });
         let startTime;
-        const engineData = await ytdlx({ query, verbose });
+        const engineData = await ytdlx({ query, verbose, useTor });
         if (engineData === undefined) {
             throw new Error(`${colors.red("@error:")} unable to get response!`);
         }

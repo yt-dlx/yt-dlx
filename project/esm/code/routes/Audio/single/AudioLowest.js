@@ -46,7 +46,7 @@ export default async function AudioLowest({ query, output, useTor, stream, verbo
     try {
         ZodSchema.parse({ query, output, useTor, stream, verbose, filter });
         let startTime;
-        const engineData = await ytdlx({ query, verbose });
+        const engineData = await ytdlx({ query, verbose, useTor });
         if (engineData === undefined) {
             throw new Error(`${colors.red("@error:")} unable to get response!`);
         }

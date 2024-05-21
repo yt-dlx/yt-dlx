@@ -86,6 +86,7 @@ export default async function ListAudioCustom({ query, output, useTor, filter, v
                 const engineData = await ytdlx({
                     query: video.videoLink,
                     verbose,
+                    useTor,
                 });
                 if (engineData === undefined) {
                     console.log(colors.red("@error:"), "unable to get response for", video.videoLink);

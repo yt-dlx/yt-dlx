@@ -32,7 +32,6 @@ const colors_1 = __importDefault(require("colors"));
 const path = __importStar(require("path"));
 const async_retry_1 = __importDefault(require("async-retry"));
 const util_1 = require("util");
-const csudo_1 = __importDefault(require("./check/csudo"));
 const child_process_1 = require("child_process");
 var sizeFormat = (filesize) => {
     if (isNaN(filesize) || filesize < 0)
@@ -52,7 +51,7 @@ var sizeFormat = (filesize) => {
         return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
 };
 exports.sizeFormat = sizeFormat;
-async function Engine({ query, useTor, ipAddress, }) {
+async function Engine({ sudo, query, useTor, ipAddress, }) {
     var AudioLow = {};
     var AudioHigh = {};
     var VideoLow = {};
@@ -85,7 +84,6 @@ async function Engine({ query, useTor, ipAddress, }) {
         throw new Error(colors_1.default.red("@error: ") +
             "Could not find cprobe file. maybe re-install yt-dlx?");
     }
-    var sudo = (0, csudo_1.default)();
     if (sudo)
         (0, child_process_1.execSync)(`sudo chmod +x ${pLoc}`);
     else

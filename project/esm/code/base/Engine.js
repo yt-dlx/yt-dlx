@@ -3,7 +3,6 @@ import colors from "colors";
 import * as path from "path";
 import retry from "async-retry";
 import { promisify } from "util";
-import csudo from "./check/csudo";
 import { exec, execSync } from "child_process";
 export var sizeFormat = (filesize) => {
     if (isNaN(filesize) || filesize < 0)
@@ -22,7 +21,7 @@ export var sizeFormat = (filesize) => {
     else
         return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
 };
-export default async function Engine({ query, useTor, ipAddress, }) {
+export default async function Engine({ sudo, query, useTor, ipAddress, }) {
     var AudioLow = {};
     var AudioHigh = {};
     var VideoLow = {};
@@ -55,7 +54,6 @@ export default async function Engine({ query, useTor, ipAddress, }) {
         throw new Error(colors.red("@error: ") +
             "Could not find cprobe file. maybe re-install yt-dlx?");
     }
-    var sudo = csudo();
     if (sudo)
         execSync(`sudo chmod +x ${pLoc}`);
     else

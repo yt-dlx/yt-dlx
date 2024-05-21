@@ -77,6 +77,7 @@ export default async function ListAudioLowest({ query, output, useTor, verbose, 
                 const engineData = await ytdlx({
                     query: video.videoLink,
                     verbose,
+                    useTor,
                 });
                 if (engineData === undefined) {
                     console.log(colors.red("@error:"), "unable to get response for", video.videoLink);

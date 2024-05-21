@@ -27,8 +27,9 @@ const __1 = __importDefault(require("../../"));
         for (const resolution of resolutions) {
             await __1.default.VideoOnly.Single.Custom({
                 resolution,
-                stream: false,
+                useTor: true,
                 verbose: true,
+                stream: false,
                 output: "public/video",
                 query: "21 savage - redrum",
             });

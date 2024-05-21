@@ -74,7 +74,7 @@ async function AudioLowest({ query, output, useTor, stream, verbose, filter, }) 
     try {
         ZodSchema.parse({ query, output, useTor, stream, verbose, filter });
         let startTime;
-        const engineData = await (0, Agent_1.default)({ query, verbose });
+        const engineData = await (0, Agent_1.default)({ query, verbose, useTor });
         if (engineData === undefined) {
             throw new Error(`${colors_1.default.red("@error:")} unable to get response!`);
         }

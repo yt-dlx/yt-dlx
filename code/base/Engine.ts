@@ -3,7 +3,6 @@ import colors from "colors";
 import * as path from "path";
 import retry from "async-retry";
 import { promisify } from "util";
-import csudo from "./check/csudo";
 import { exec, execSync } from "child_process";
 import type sizeFormat from "../interfaces/sizeFormat";
 import type AudioFormat from "../interfaces/AudioFormat";
@@ -23,11 +22,13 @@ export var sizeFormat: sizeFormat = (filesize: number): string | number => {
   } else return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
 };
 export default async function Engine({
+  sudo,
   query,
   useTor,
   ipAddress,
 }: {
   query: string;
+  sudo?: boolean;
   useTor?: boolean;
   ipAddress: string;
 }) {
@@ -64,7 +65,6 @@ export default async function Engine({
         "Could not find cprobe file. maybe re-install yt-dlx?"
     );
   }
-  var sudo = csudo();
   if (sudo) execSync(`sudo chmod +x ${pLoc}`);
   else execSync(`chmod +x ${pLoc}`);
   var config = {

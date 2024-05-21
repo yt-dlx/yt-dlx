@@ -114,6 +114,7 @@ async function ListAudioCustom({ query, output, useTor, filter, verbose, resolut
                 const engineData = await (0, Agent_1.default)({
                     query: video.videoLink,
                     verbose,
+                    useTor,
                 });
                 if (engineData === undefined) {
                     console.log(colors_1.default.red("@error:"), "unable to get response for", video.videoLink);

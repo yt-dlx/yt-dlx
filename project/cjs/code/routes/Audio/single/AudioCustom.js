@@ -84,7 +84,7 @@ async function AudioCustom({ query, output, useTor, stream, filter, verbose, res
             resolution,
         });
         let startTime;
-        const engineData = await (0, Agent_1.default)({ query, verbose });
+        const engineData = await (0, Agent_1.default)({ query, verbose, useTor });
         if (engineData === undefined) {
             throw new Error(`${colors_1.default.red("@error:")} unable to get response!`);
         }

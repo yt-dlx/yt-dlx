@@ -62,7 +62,7 @@ export default async function VideoCustom({ query, resolution, stream, verbose, 
             filter,
         });
         let startTime;
-        const engineData = await ytdlx({ query, verbose });
+        const engineData = await ytdlx({ query, verbose, useTor });
         if (engineData === undefined) {
             throw new Error(`${colors.red("@error:")} unable to get response!`);
         }

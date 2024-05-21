@@ -120,6 +120,7 @@ async function ListVideoCustom({ query, resolution, verbose, output, useTor, fil
                 const engineData = await (0, Agent_1.default)({
                     query: video.videoLink,
                     verbose,
+                    useTor,
                 });
                 if (engineData === undefined) {
                     console.log(colors_1.default.red("@error:"), "unable to get response!");

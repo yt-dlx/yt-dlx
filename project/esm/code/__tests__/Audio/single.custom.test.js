@@ -8,8 +8,9 @@ import YouTube from "../../";
         for (const resolution of resolutions) {
             await YouTube.AudioOnly.Single.Custom({
                 resolution,
-                stream: false,
+                useTor: true,
                 verbose: true,
+                stream: false,
                 output: "public/audio",
                 query: "21 savage - redrum",
             });
