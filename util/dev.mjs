@@ -29,7 +29,7 @@ const code = {
   "clean:deps": "rm -rf util/ffmpeg.tar.xz util/ffmpeg util/cprobe",
   make: "yarn run make:base && yarn run make:frontend",
   "make:base": "yarn install",
-  "make:frontend": "cd frontend && yarn install && yarn remove sharp",
+  "make:frontend": "cd frontend && yarn install",
   update: "yarn run update:base && yarn run update:frontend",
   "update:base": "yarn upgrade --latest",
   "update:frontend":
