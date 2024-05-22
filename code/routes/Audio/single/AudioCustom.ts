@@ -44,6 +44,7 @@ const ZodSchema = z.object({
  * @param stream - (optional) Whether to stream the processed video or not.
  * @param filter - (optional) The audio filter to apply. Available options: "echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed".
  * @param verbose - (optional) Whether to log verbose output or not.
+ * @param useTor - (optional) Whether to use Tor for the download or not.
  * @param resolution - The desired audio resolution. Available options: "high", "medium", "low", "ultralow".
  * @returns A Promise that resolves with either `void` (if `stream` is false) or an object containing the `ffmpeg` instance and the output filename (if `stream` is true).
  */

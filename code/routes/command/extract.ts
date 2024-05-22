@@ -7,6 +7,7 @@ import type EngineOutput from "../../interfaces/EngineOutput";
  *
  * @param query - The YouTube video URL to extract metadata from.
  * @param verbose - (optional) Whether to log verbose output or not.
+ * @param useTor - (optional) Whether to use Tor for the download or not.
  * @returns A Promise that resolves with an object containing metadata information about the video.
  */
 export default async function extract({

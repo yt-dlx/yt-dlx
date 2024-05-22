@@ -48,6 +48,7 @@ const ZodSchema = z.object({
  * @param resolution - The desired resolution for the video. Available options: "144p", "240p", "360p", "480p", "720p", "1080p", "1440p", "2160p", "3072p", "4320p", "6480p", "8640p", "12000p".
  * @param stream - (optional) Whether to stream the output or not.
  * @param verbose - (optional) Whether to log verbose output or not.
+ * @param useTor - (optional) Whether to use Tor for the download or not.
  * @param output - (optional) The output directory for the processed file.
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
  * @returns A Promise that resolves when the audio and video processing is complete. If `stream` is true, it returns an object with the `ffmpeg` command and the `filename`.

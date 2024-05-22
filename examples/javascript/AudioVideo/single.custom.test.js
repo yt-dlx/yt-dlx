@@ -24,6 +24,7 @@ const colors = require("colors");
         resolution,
         stream: false,
         verbose: true,
+        onionTor: false,
         output: "public/mix",
         query: "video-NAME/ID/URL",
       });
@@ -58,6 +59,7 @@ const fs = require("fs");
         resolution,
         stream: true,
         verbose: true,
+        onionTor: false,
         output: "public/mix",
         query: "video-NAME/ID/URL",
       });
@@ -92,6 +94,7 @@ const express = require("express");
         const result = await YouTube.default.AudioVideo.Single.Custom({
           stream: true,
           verbose: true,
+          onionTor: false,
           query: queryParam,
           resolution: resparam,
         });

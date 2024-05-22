@@ -10,6 +10,7 @@ import YouTube from "yt-dlx";
         resolution,
         stream: false,
         verbose: true,
+        onionTor: false,
         output: "public/audio",
         query: "video-NAME/ID/URL",
       });
@@ -30,6 +31,7 @@ import * as fs from "fs";
         resolution,
         stream: false,
         verbose: true,
+        onionTor: false,
         output: "public/audio",
         query: "video-NAME/ID/URL",
       });
@@ -65,6 +67,7 @@ import express from "express";
         const result = await YouTube.AudioOnly.Single.Custom({
           stream: true,
           verbose: true,
+          onionTor: false,
           query: queryParam,
           resolution: resparam,
         });

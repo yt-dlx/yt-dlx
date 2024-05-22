@@ -7,6 +7,7 @@ import colors from "colors";
   try {
     await YouTube.info.extract({
       verbose: true,
+      onionTor: true,
       query: "video-NAME/ID/URL",
     });
   } catch (error: any) {
