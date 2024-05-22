@@ -591,28 +591,28 @@ export default function home() {
               Search YouTube
             </button>
           </div>
-          <div className="mockup-code bg-stone-950 text-red-600">
-            <pre data-prefix="$">
-              <code className="text-red-600 font-bold lowercase">
-                Copyright © {fdate}
-              </code>
-            </pre>
-            {similar.length > 0 ? (
-              similar.map((data: any, index: number) => (
-                <pre
-                  key={index}
-                  data-prefix=">"
-                  className="text-sm overflow-x-auto overflow-y-auto"
-                >
-                  <code>{data.title}</code>
-                </pre>
-              ))
-            ) : (
-              <pre data-prefix=">" className="text-sm animate-pulse">
-                <code>start typing to get suggestions...</code>
-              </pre>
-            )}
-          </div>
+          {/* <div className="mockup-code bg-stone-950 text-red-600">
+<pre data-prefix="$">
+<code className="text-red-600 font-bold lowercase">
+Copyright © {fdate}
+</code>
+</pre>
+{similar.length > 0 ? (
+similar.map((data: any, index: number) => (
+<pre
+key={index}
+data-prefix=">"
+className="text-sm overflow-x-auto overflow-y-auto"
+>
+<code>{data.title}</code>
+</pre>
+))
+) : (
+<pre data-prefix=">" className="text-sm animate-pulse">
+<code>start typing to get suggestions...</code>
+</pre>
+)}
+</div> */}
           {TubeSearch && (
             <react.Fragment>
               <section className="px-4 mx-auto max-w-7xl">
