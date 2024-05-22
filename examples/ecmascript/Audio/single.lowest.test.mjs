@@ -7,7 +7,7 @@ import YouTube from "yt-dlx";
     await YouTube.default.default.AudioOnly.Single.Lowest({
       stream: false,
       verbose: true,
-      onionTor: false,
+      useTor: false,
       output: "public/audio",
       query: "video-NAME/ID/URL",
     });
@@ -24,7 +24,7 @@ import * as fs from "fs";
     const result = await YouTube.default.default.AudioOnly.Single.Lowest({
       stream: true,
       verbose: true,
-      onionTor: false,
+      useTor: false,
       output: "public/audio",
       query: "video-NAME/ID/URL",
     });
@@ -52,7 +52,7 @@ import express from "express";
         const result = await YouTube.default.default.AudioOnly.Single.Lowest({
           stream: true,
           verbose: true,
-          onionTor: false,
+          useTor: false,
           query: queryParam,
         });
         if (result && result.filename && result.ffmpeg) {

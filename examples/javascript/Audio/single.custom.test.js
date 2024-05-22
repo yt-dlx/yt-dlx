@@ -10,7 +10,7 @@ const colors = require("colors");
         resolution,
         stream: false,
         verbose: true,
-        onionTor: false,
+        useTor: false,
         output: "public/audio",
         query: "video-NAME/ID/URL",
       });
@@ -31,7 +31,7 @@ const fs = require("fs");
         resolution,
         stream: false,
         verbose: true,
-        onionTor: false,
+        useTor: false,
         output: "public/audio",
         query: "video-NAME/ID/URL",
       });
@@ -67,7 +67,7 @@ const express = require("express");
         const result = await YouTube.default.AudioOnly.Single.Custom({
           stream: true,
           verbose: true,
-          onionTor: false,
+          useTor: false,
           query: queryParam,
           resolution: resparam,
         });

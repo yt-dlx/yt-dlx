@@ -7,7 +7,7 @@ const colors = require("colors");
   try {
     await YouTube.default.info.list_formats({
       verbose: true,
-      onionTor: true,
+      useTor: true,
       query: "video-NAME/ID/URL",
     });
   } catch (error) {
