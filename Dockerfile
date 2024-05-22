@@ -6,8 +6,9 @@ RUN apt-get update && \
     curl \
     ffmpeg && \
     rm -rf /var/lib/apt/lists/*
+RUN npm install -g yarn --force
 WORKDIR /app
-COPY . .
-RUN npm install -g yarn --force && \
-    yarn remake
+COPY . /app
+RUN yarn remake && \
+    yarn frontend:build
 CMD ["yarn", "frontend:start"]
