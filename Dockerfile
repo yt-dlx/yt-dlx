@@ -11,9 +11,6 @@ RUN apt-get update && \
 # Clean up the apt cache to reduce image size
 RUN rm -rf /var/lib/apt/lists/*
 
-# Install yarn globally
-RUN npm install -g yarn
-
 # Set the working directory
 WORKDIR /app
 
