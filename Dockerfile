@@ -9,11 +9,11 @@ RUN apt-get update && \
     ffmpeg && \
     rm -rf /var/lib/apt/lists/*
 
-# Clone the repository
-RUN git clone https://github.com/yt-dlx/yt-dlx.git
-
 # Set the working directory
-WORKDIR /yt-dlx
+WORKDIR /app
+
+# Copy the local repository into the Docker image
+COPY . .
 
 # Install yarn globally and run yarn remake
 RUN npm install -g yarn --force && \
