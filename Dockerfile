@@ -9,6 +9,5 @@ RUN apt-get update && \
 RUN npm install -g yarn --force
 WORKDIR /app
 COPY . /app
-RUN yarn remake && \
-    yarn frontend:build
+RUN yarn frontend:build
 CMD ["yarn", "frontend:start"]
