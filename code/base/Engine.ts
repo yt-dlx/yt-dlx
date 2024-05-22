@@ -21,6 +21,104 @@ export var sizeFormat: sizeFormat = (filesize: number): string | number => {
     return (filesize / bytesPerGigabyte).toFixed(2) + " GB";
   } else return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
 };
+
+function nAudio(i: any) {
+  i.filesizeP = sizeFormat(i.filesize);
+  delete i.format_id;
+  delete i.source_preference;
+  delete i.has_drm;
+  delete i.quality;
+  delete i.fps;
+  delete i.height;
+  delete i.width;
+  delete i.language;
+  delete i.language_preference;
+  delete i.preference;
+  delete i.dynamic_range;
+  delete i.downloader_options;
+  delete i.protocol;
+  delete i.aspect_ratio;
+  delete i.vbr;
+  delete i.vcodec;
+  delete i.http_headers;
+  delete i.video_ext;
+  return i;
+}
+function nVideo(i: any) {
+  i.filesizeP = sizeFormat(i.filesize);
+  delete i.asr;
+  delete i.format_id;
+  delete i.has_drm;
+  delete i.quality;
+  delete i.source_preference;
+  delete i.audio_channels;
+  delete i.protocol;
+  delete i.language;
+  delete i.language_preference;
+  delete i.preference;
+  delete i.acodec;
+  delete i.downloader_options;
+  delete i.http_headers;
+  delete i.audio_ext;
+  delete i.abr;
+  return i;
+}
+function pAudio(i: any) {
+  return {
+    filesize: i.filesize as number,
+    filesizeP: sizeFormat(i.filesize) as string,
+    asr: parseFloat(i.asr) as number,
+    format_note: i.format_note as string,
+    tbr: parseFloat(i.tbr) as number,
+    url: i.url as string,
+    ext: i.ext as string,
+    acodec: i.acodec as string,
+    container: i.container as string,
+    resolution: i.resolution as string,
+    audio_ext: i.audio_ext as string,
+    abr: parseFloat(i.abr) as number,
+    format: i.format as string,
+  };
+}
+function pVideo(i: any) {
+  return {
+    filesize: i.filesize as number,
+    filesizeP: sizeFormat(i.filesize) as string,
+    format_note: i.format_note as string,
+    fps: parseFloat(i.fps) as number,
+    height: parseFloat(i.height) as number,
+    width: parseFloat(i.width) as number,
+    tbr: parseFloat(i.tbr) as number,
+    url: i.url as string,
+    ext: i.ext as string,
+    vcodec: i.vcodec as string,
+    dynamic_range: i.dynamic_range as string,
+    container: i.container as string,
+    resolution: i.resolution as string,
+    aspect_ratio: parseFloat(i.aspect_ratio) as number,
+    video_ext: i.video_ext as string,
+    vbr: parseFloat(i.vbr) as number,
+    format: i.format as string,
+  };
+}
+function pManifest(i: any) {
+  return {
+    url: i.url as string,
+    manifest_url: i.manifest_url as string,
+    tbr: parseFloat(i.tbr) as number,
+    ext: i.ext as string,
+    fps: parseFloat(i.fps) as number,
+    width: parseFloat(i.width) as number,
+    height: parseFloat(i.height) as number,
+    vcodec: i.vcodec as string,
+    dynamic_range: i.dynamic_range as string,
+    aspect_ratio: parseFloat(i.aspect_ratio) as number,
+    video_ext: i.video_ext as string,
+    vbr: parseFloat(i.vbr) as number,
+    format: i.format as string,
+  };
+}
+
 export default async function Engine({
   sudo,
   query,
@@ -74,6 +172,7 @@ export default async function Engine({
     maxTimeout: 3000,
   };
   var metaCore = await retry(async () => {
+    if (useTor) pLoc += ` --proxy "socks5://127.0.0.1:9050"`;
     pLoc += ` --dump-single-json "${query}"`;
     pLoc += ` --no-check-certificate --prefer-insecure --no-call-home --skip-download --no-warnings --geo-bypass`;
     pLoc += ` --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"`;
@@ -228,105 +327,4 @@ export default async function Engine({
     },
   };
   return payLoad;
-}
-
-function nAudio(i: any) {
-  i.filesizeP = sizeFormat(i.filesize);
-  delete i.format_id;
-  delete i.source_preference;
-  delete i.has_drm;
-  delete i.quality;
-  delete i.fps;
-  delete i.height;
-  delete i.width;
-  delete i.language;
-  delete i.language_preference;
-  delete i.preference;
-  delete i.dynamic_range;
-  delete i.downloader_options;
-  delete i.protocol;
-  delete i.aspect_ratio;
-  delete i.vbr;
-  delete i.vcodec;
-  delete i.http_headers;
-  delete i.video_ext;
-  return i;
-}
-
-function nVideo(i: any) {
-  i.filesizeP = sizeFormat(i.filesize);
-  delete i.asr;
-  delete i.format_id;
-  delete i.has_drm;
-  delete i.quality;
-  delete i.source_preference;
-  delete i.audio_channels;
-  delete i.protocol;
-  delete i.language;
-  delete i.language_preference;
-  delete i.preference;
-  delete i.acodec;
-  delete i.downloader_options;
-  delete i.http_headers;
-  delete i.audio_ext;
-  delete i.abr;
-  return i;
-}
-
-function pAudio(i: any) {
-  return {
-    filesize: i.filesize as number,
-    filesizeP: sizeFormat(i.filesize) as string,
-    asr: parseFloat(i.asr) as number,
-    format_note: i.format_note as string,
-    tbr: parseFloat(i.tbr) as number,
-    url: i.url as string,
-    ext: i.ext as string,
-    acodec: i.acodec as string,
-    container: i.container as string,
-    resolution: i.resolution as string,
-    audio_ext: i.audio_ext as string,
-    abr: parseFloat(i.abr) as number,
-    format: i.format as string,
-  };
-}
-
-function pVideo(i: any) {
-  return {
-    filesize: i.filesize as number,
-    filesizeP: sizeFormat(i.filesize) as string,
-    format_note: i.format_note as string,
-    fps: parseFloat(i.fps) as number,
-    height: parseFloat(i.height) as number,
-    width: parseFloat(i.width) as number,
-    tbr: parseFloat(i.tbr) as number,
-    url: i.url as string,
-    ext: i.ext as string,
-    vcodec: i.vcodec as string,
-    dynamic_range: i.dynamic_range as string,
-    container: i.container as string,
-    resolution: i.resolution as string,
-    aspect_ratio: parseFloat(i.aspect_ratio) as number,
-    video_ext: i.video_ext as string,
-    vbr: parseFloat(i.vbr) as number,
-    format: i.format as string,
-  };
-}
-
-function pManifest(i: any) {
-  return {
-    url: i.url as string,
-    manifest_url: i.manifest_url as string,
-    tbr: parseFloat(i.tbr) as number,
-    ext: i.ext as string,
-    fps: parseFloat(i.fps) as number,
-    width: parseFloat(i.width) as number,
-    height: parseFloat(i.height) as number,
-    vcodec: i.vcodec as string,
-    dynamic_range: i.dynamic_range as string,
-    aspect_ratio: parseFloat(i.aspect_ratio) as number,
-    video_ext: i.video_ext as string,
-    vbr: parseFloat(i.vbr) as number,
-    format: i.format as string,
-  };
 }

@@ -56,11 +56,10 @@ export default async function Agent({
   useTor?: boolean;
   verbose?: boolean;
 }): Promise<any> {
-  var ipsys: string = "",
-    iptor: string = "",
-    issystemctl: boolean = false,
-    isservice: boolean = false;
-  var issudo: boolean = sudo();
+  var iptor: string = "";
+  var ipsys: string = "";
+  var isservice: boolean = false;
+  var issystemctl: boolean = false;
   if (useTor) {
     switch (true) {
       case systemctl():
@@ -109,7 +108,7 @@ export default async function Agent({
       colors.green("@info:"),
       "is sudo",
       colors.green("available"),
-      issudo
+      sudo()
     );
     console.log(
       colors.green("@info:"),
@@ -136,7 +135,7 @@ export default async function Agent({
       colors.green(TubeBody[0].title)
     );
     respEngine = await Engine({
-      sudo: issudo,
+      sudo: sudo(),
       ipAddress: iptor || ipsys,
       query: "https://www.youtube.com/watch?v=" + TubeBody[0].id,
     });
@@ -150,7 +149,7 @@ export default async function Agent({
       colors.green(TubeBody.title)
     );
     respEngine = await Engine({
-      sudo: issudo,
+      sudo: sudo(),
       ipAddress: iptor || ipsys,
       query: "https://www.youtube.com/watch?v=" + TubeBody.id,
     });
