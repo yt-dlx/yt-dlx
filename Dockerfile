@@ -8,6 +8,6 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 RUN npm install -g yarn --force
 WORKDIR /app
-COPY . /app
-RUN yarn frontend:build
-CMD ["yarn", "frontend:start"]
+COPY ./frontend /app/frontend
+RUN yarn build
+CMD ["yarn", "start"]
