@@ -82,46 +82,16 @@ export default async function Agent({
   if (verbose) {
     switch (useTor) {
       case true:
-        console.log(
-          colors.green("@info:"),
-          "system",
-          colors.green("ipAddress"),
-          ipsys
-        );
-        console.log(
-          colors.green("@info:"),
-          "socks5",
-          colors.green("ipAddress"),
-          iptor
-        );
+        console.log(colors.green("@info:"), "system ipAddress", ipsys);
+        console.log(colors.green("@info:"), "socks5 ipAddress", iptor);
         break;
       default:
-        console.log(
-          colors.green("@info:"),
-          "system",
-          colors.green("ipAddress"),
-          ipsys
-        );
+        console.log(colors.green("@info:"), "system ipAddress", ipsys);
         break;
     }
-    console.log(
-      colors.green("@info:"),
-      "is sudo",
-      colors.green("available"),
-      sudo()
-    );
-    console.log(
-      colors.green("@info:"),
-      "is service",
-      colors.green("available"),
-      isservice
-    );
-    console.log(
-      colors.green("@info:"),
-      "is systemctl",
-      colors.green("available"),
-      issystemctl
-    );
+    console.log(colors.green("@info:"), "is sudo available", sudo());
+    console.log(colors.green("@info:"), "is service available", isservice);
+    console.log(colors.green("@info:"), "is systemctl available", issystemctl);
   }
   var TubeBody: any;
   var respEngine: EngineOutput | undefined = undefined;
@@ -132,7 +102,7 @@ export default async function Agent({
     console.log(
       colors.green("@info:"),
       "preparing payload for",
-      colors.green(TubeBody[0].title)
+      TubeBody[0].title
     );
     respEngine = await Engine({
       sudo: sudo(),
@@ -146,7 +116,7 @@ export default async function Agent({
     console.log(
       colors.green("@info:"),
       "preparing payload for",
-      colors.green(TubeBody.title)
+      TubeBody.title
     );
     respEngine = await Engine({
       sudo: sudo(),

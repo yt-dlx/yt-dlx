@@ -204,12 +204,7 @@ export default async function ListAudioVideoLowest({
   } finally {
     console.log(
       colors.green("@info:"),
-      "❣️ Thank you for using",
-      colors.green("yt-dlx."),
-      "Consider",
-      colors.green("🌟starring"),
-      "the GitHub repo",
-      colors.green("https://github.com/yt-dlx\n")
+      "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx."
     );
   }
 }

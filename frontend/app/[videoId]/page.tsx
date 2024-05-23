@@ -138,6 +138,37 @@ export default function home() {
                       <h2 className="mt-6 text-4xl font-bold text-red-600">
                         {TubeSearch.title}
                       </h2>
+                      <div className="mt-4 space-y-2 -mx-2">
+                        <button
+                          onClick={() => {
+                            window.location.href = `/api/audio?videoId=${videoId}`;
+                          }}
+                          className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
+                        >
+                          Get it as 'Audio Only'
+                        </button>
+                        <button
+                          onClick={() => {
+                            window.location.href = `/api/video?videoId=${videoId}`;
+                          }}
+                          className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
+                        >
+                          Get it as 'Video Only'
+                        </button>
+                        <button
+                          onClick={() => {
+                            window.location.href = `/api/audio_video?videoId=${videoId}`;
+                          }}
+                          className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
+                        >
+                          Get it as 'Audio + Video'
+                        </button>
+                      </div>
+                      <p className="mt-6 text-xs text-red-600 items-center justify-center flex font-bold">
+                        Effortless Audio-Video Downloading And Streaming Is
+                        Provided Free Of Cost To You With The Power Of Yt-Dlx
+                        Copyright © 2024
+                      </p>
                       <p className="mt-2 leading-loose text-white/60 lowercase">
                         <span className="text-red-600 font-bold">
                           @description:{" "}
@@ -182,39 +213,6 @@ export default function home() {
                           {TubeSearch.viewCount}
                         </li>
                       </ul>
-                      <div className="mt-8">
-                        <div className="mt-4 space-y-2 -mx-2">
-                          <button
-                            onClick={() => {
-                              window.location.href = `/api/audio?videoId=${videoId}`;
-                            }}
-                            className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
-                          >
-                            Get it as 'Audio Only'
-                          </button>
-                          <button
-                            onClick={() => {
-                              window.location.href = `/api/video?videoId=${videoId}`;
-                            }}
-                            className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
-                          >
-                            Get it as 'Video Only'
-                          </button>
-                          <button
-                            onClick={() => {
-                              window.location.href = `/api/audio_video?videoId=${videoId}`;
-                            }}
-                            className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
-                          >
-                            Get it as 'Audio + Video'
-                          </button>
-                        </div>
-                        <p className="mt-6 text-xs text-red-600 items-center justify-center flex font-bold">
-                          Effortless Audio-Video Downloading And Streaming Is
-                          Provided Free Of Cost To You With The Power Of Yt-Dlx
-                          Copyright © 2024
-                        </p>
-                      </div>
                     </section>
                   </div>
                 </div>
