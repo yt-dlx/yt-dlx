@@ -2,14 +2,12 @@
 import react from "react";
 import Link from "next/link";
 import Image from "next/image";
-import io from "socket.io-client";
 import { SiBun } from "react-icons/si";
 import { FaYarn } from "react-icons/fa";
 import { SiPnpm } from "react-icons/si";
 import { HiFire } from "react-icons/hi";
 import { GoNumber } from "react-icons/go";
 import { TbBrandNpm } from "react-icons/tb";
-import * as socketIO from "socket.io-client";
 import { FaLightbulb } from "react-icons/fa";
 import { MdAudioFile } from "react-icons/md";
 import { FaFileVideo } from "react-icons/fa6";
@@ -24,10 +22,7 @@ import { AiFillCodeSandboxCircle } from "react-icons/ai";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 export default function home() {
-  var QueryClient = useQueryClient();
   var [Query, setQuery] = react.useState<string>("");
-  var [similar, setSimilar] = react.useState<string[]>([]);
-  var [socket, setSocket] = react.useState<socketIO.Socket>();
   var [TubeSearch, setTubeSearch] = react.useState<any>(null);
   var ApiSearch = useMutation({
     mutationFn: async () => {
@@ -45,18 +40,6 @@ export default function home() {
     },
     onMutate: () => console.log("ApiSearch started!"),
   });
-  react.useEffect(() => {
-    fetch("/api/ioSocket").finally(() => {
-      var ioSocket = io();
-      var getSimilar = (data: string[]) => setSimilar(data.slice(0, 10));
-      ioSocket.on("similar", getSimilar);
-      setSocket(ioSocket);
-      return () => {
-        ioSocket.off("similar", getSimilar);
-        ioSocket.disconnect();
-      };
-    });
-  }, []);
 
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#111111] scrollbar-track-[#111111] scrollbar-thumb-red-600">
@@ -176,13 +159,7 @@ export default function home() {
                   value={Query}
                   placeholder="required"
                   disabled={ApiSearch.isPending}
-                  onChange={(e) => {
-                    setQuery(e.target.value);
-                    socket?.emit("similar", {
-                      query: e.target.value,
-                      user: socket.id,
-                    });
-                  }}
+                  onChange={(e) => setQuery(e.target.value)}
                   className="input input-bordered w-full rounded-2xl bg-neutral-800"
                 />
                 <div className="label">
