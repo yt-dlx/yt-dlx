@@ -131,8 +131,8 @@ export default function home() {
                       <iframe
                         allowFullScreen
                         title="yt-dlx player"
+                        className="w-full h-64 my-10 rounded-3xl md:h-80"
                         src={`https://www.youtube.com/embed/${TubeSearch.id}`}
-                        className="w-full h-64 my-10 rounded-3xl md:h-80 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-800"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       />
                       <h2 className="mt-6 text-4xl font-bold text-red-600">
@@ -175,7 +175,7 @@ export default function home() {
                         </span>
                         {TubeSearch.description}
                       </p>
-                      <ul className="mt-2 text-white/60 list-disc">
+                      <ul className="mt-2 text-white/60 list-disc p-6">
                         <li>
                           <span className="text-red-600 font-bold">
                             @videoId:
