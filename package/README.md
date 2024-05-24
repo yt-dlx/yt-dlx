@@ -1,4 +1,4 @@
-<p align="center"><img src="https://i.imgur.com/a9QWW0v.png"></p>
+<p align="center"><img src="https://i.imgur.com/RzAykrU.png"></p>
 
 ## Usage
 
@@ -6,13 +6,13 @@
 
 ```
 # with npx
-$ npx create-nextron-app my-app --example with-tailwindcss
+$ npx create-nextron-app my-app --example basic-lang-javascript-python
 
 # with yarn
-$ yarn create nextron-app my-app --example with-tailwindcss
+$ yarn create nextron-app my-app --example basic-lang-javascript-python
 
 # with pnpm
-$ pnpm dlx create-nextron-app my-app --example with-tailwindcss
+$ pnpm dlx create-nextron-app my-app --example basic-lang-javascript-python
 ```
 
 ### Install Dependencies

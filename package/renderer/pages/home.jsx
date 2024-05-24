@@ -12,11 +12,12 @@ export default function HomePage() {
     setValue(event.target.value);
     setMessage("");
   };
+
   React.useEffect(() => {
-    window.ipc.on("log", (log: any) => {
+    window.ipc.on("log", (log) => {
       setLog(log);
     });
-    window.ipc.on("message", (msg: any) => {
+    window.ipc.on("message", (msg) => {
       setMessage(msg);
     });
   }, []);
