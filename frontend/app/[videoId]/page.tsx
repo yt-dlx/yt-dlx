@@ -111,129 +111,158 @@ export default function home() {
       {/* =================================[ Downloader ]=============================== */}
       <react.Fragment>
         {TubeSearch ? (
-          <react.Fragment>
-            <section className="flex flex-col items-center justify-center">
-              <div className="max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-                <div className="max-w-screen-2xl">
-                  <h2 className="text-3xl font-bold sm:text-4xl text-red-600">
-                    Explore All Available Functions
-                  </h2>
-                  <p className="mt-4 text-white/60">
-                    YT-DLX accommodates various node.js coding flavours!{" "}
-                    <span className="text-red-600">
-                      (typescript), (commonjs) and (esm)
-                    </span>
-                    , ensuring 100% compatibility and comprehensive type safety
-                    coverage.
-                  </p>
-                </div>
-                <section className="flex flex-col items-center justify-center">
-                  <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-stone-950 border-4 border-red-600 border-double rounded-3xl shadow-red-600 duration-500 shadow-[0_0_20px_rgba(255,0,0,0.5)]">
-                    <div className="overflow-x-auto">
-                      <section className="max-w-screen-2xl px-6 mx-auto p-1">
-                        <iframe
-                          allowFullScreen
-                          title="yt-dlx player"
-                          className="w-full h-64 my-10 rounded-3xl md:h-80"
-                          src={`https://www.youtube.com/embed/${TubeSearch.id}`}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        />
-                        <h2 className="mt-6 text-4xl font-bold text-red-600">
-                          {TubeSearch.title}
-                        </h2>
-                        <div className="mt-4 space-y-2 -mx-2">
-                          <button
+          <section className="flex flex-col items-center justify-center">
+            <div className="max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+              <div className="max-w-screen-2xl">
+                <h2 className="text-3xl font-bold sm:text-4xl text-red-600">
+                  Explore All Available Functions
+                </h2>
+                <p className="mt-4 text-white/60">
+                  YT-DLX accommodates various node.js coding flavours!{" "}
+                  <span className="text-red-600">
+                    (typescript), (commonjs) and (esm)
+                  </span>
+                  , ensuring 100% compatibility and comprehensive type safety
+                  coverage.
+                </p>
+              </div>
+              <section className="flex flex-col items-center justify-center">
+                <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-stone-950 border-4 border-red-600 border-double rounded-3xl shadow-red-600 duration-500 shadow-[0_0_20px_rgba(255,0,0,0.5)]">
+                  <div className="overflow-x-auto">
+                    <section className="max-w-screen-2xl px-6 mx-auto p-1">
+                      <iframe
+                        allowFullScreen
+                        title="yt-dlx player"
+                        className="w-full h-64 my-10 rounded-3xl md:h-80"
+                        src={`https://www.youtube.com/embed/${TubeSearch.id}`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      />
+                      <h2 className="mt-6 text-4xl font-bold text-red-600">
+                        {TubeSearch.title}
+                      </h2>
+                      <div className="mt-4 space-x-2 -mx-2 items-center justify-center flex">
+                        <select className="select select-bordered w-full max-w-xs bg-stone-900">
+                          <option disabled selected>
+                            Get it as 'Audio Only'
+                          </option>
+                          <option
                             onClick={() => {
                               window.location.href = `/api/audio?videoId=${videoId}`;
                             }}
-                            className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
                           >
-                            Get it as 'Audio Only'
-                          </button>
-                          <button
+                            Highest
+                          </option>
+                          <option
+                            onClick={() => {
+                              window.location.href = `/api/audio?videoId=${videoId}`;
+                            }}
+                          >
+                            Lowest
+                          </option>
+                        </select>
+                        <select className="select select-bordered w-full max-w-xs bg-stone-900">
+                          <option disabled selected>
+                            Get it as 'Video Only'
+                          </option>
+                          <option
                             onClick={() => {
                               window.location.href = `/api/video?videoId=${videoId}`;
                             }}
-                            className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
                           >
-                            Get it as 'Video Only'
-                          </button>
-                          <button
+                            Highest
+                          </option>
+                          <option
+                            onClick={() => {
+                              window.location.href = `/api/video?videoId=${videoId}`;
+                            }}
+                          >
+                            Lowest
+                          </option>
+                        </select>
+                        <select className="select select-bordered w-full max-w-xs bg-stone-900">
+                          <option disabled selected>
+                            Get it as 'Audio + Video'
+                          </option>
+                          <option
                             onClick={() => {
                               window.location.href = `/api/audio_video?videoId=${videoId}`;
                             }}
-                            className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm overflow-hidden text-white duration-300 bg-red-900 hover:bg-red-700 rounded-3xl shadow-black shadow-[0_0_20px_rgba(255,0,0,0.5)] hover:shadow-red-900 hover:scale-105 duration300 transition-transform sm:w-auto sm:mx-2 cursor-pointer"
                           >
-                            Get it as 'Audio + Video'
-                          </button>
-                        </div>
-                        <p className="mt-6 text-xs text-red-600 items-center justify-center flex font-bold">
-                          Effortless Audio-Video Downloading And Streaming Is
-                          Provided Free Of Cost To You With The Power Of Yt-Dlx
-                          Copyright © 2024
-                        </p>
-                        <p className="mt-2 leading-loose text-white/60 lowercase">
+                            Highest
+                          </option>
+                          <option
+                            onClick={() => {
+                              window.location.href = `/api/audio_video?videoId=${videoId}`;
+                            }}
+                          >
+                            Lowest
+                          </option>
+                        </select>
+                      </div>
+                      <p className="mt-6 text-xs text-red-600 items-center justify-center flex font-bold">
+                        Effortless Audio-Video Downloading And Streaming Is
+                        Provided Free Of Cost To You With The Power Of Yt-Dlx
+                        Copyright © 2024
+                      </p>
+                      <p className="mt-2 leading-loose text-white/60 lowercase">
+                        <span className="text-red-600 font-bold">
+                          @description:{" "}
+                        </span>
+                        {TubeSearch.description}
+                      </p>
+                      <ul className="mt-2 text-white/60 list-disc p-6">
+                        <li>
                           <span className="text-red-600 font-bold">
-                            @description:{" "}
-                          </span>
-                          {TubeSearch.description}
-                        </p>
-                        <ul className="mt-2 text-white/60 list-disc p-6">
-                          <li>
-                            <span className="text-red-600 font-bold">
-                              @videoId:
-                            </span>{" "}
-                            {TubeSearch.id}
-                          </li>
-                          <li>
-                            <span className="text-red-600 font-bold">
-                              @channelid:
-                            </span>{" "}
-                            {TubeSearch.channelid}
-                          </li>
-                          <li>
-                            <span className="text-red-600 font-bold">
-                              @channelname:
-                            </span>{" "}
-                            {TubeSearch.channelname}
-                          </li>
-                          <li>
-                            <span className="text-red-600 font-bold">
-                              @duration:
-                            </span>{" "}
-                            {TubeSearch.duration}
-                          </li>
-                          <li>
-                            <span className="text-red-600 font-bold">
-                              @uploadDate:
-                            </span>{" "}
-                            {TubeSearch.uploadDate}
-                          </li>
-                          <li>
-                            <span className="text-red-600 font-bold">
-                              @viewCount:
-                            </span>{" "}
-                            {TubeSearch.viewCount}
-                          </li>
-                        </ul>
-                      </section>
-                    </div>
+                            @videoId:
+                          </span>{" "}
+                          {TubeSearch.id}
+                        </li>
+                        <li>
+                          <span className="text-red-600 font-bold">
+                            @channelid:
+                          </span>{" "}
+                          {TubeSearch.channelid}
+                        </li>
+                        <li>
+                          <span className="text-red-600 font-bold">
+                            @channelname:
+                          </span>{" "}
+                          {TubeSearch.channelname}
+                        </li>
+                        <li>
+                          <span className="text-red-600 font-bold">
+                            @duration:
+                          </span>{" "}
+                          {TubeSearch.duration}
+                        </li>
+                        <li>
+                          <span className="text-red-600 font-bold">
+                            @uploadDate:
+                          </span>{" "}
+                          {TubeSearch.uploadDate}
+                        </li>
+                        <li>
+                          <span className="text-red-600 font-bold">
+                            @viewCount:
+                          </span>{" "}
+                          {TubeSearch.viewCount}
+                        </li>
+                      </ul>
+                    </section>
                   </div>
-                </section>
-              </div>
-            </section>
-          </react.Fragment>
-        ) : (
-          <react.Fragment>
-            <div className="flex flex-col items-center justify-center w-full">
-              <div className="flex flex-col items-center justify-center gap-4 w-96">
-                <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-40 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
-                <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-28 shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
-                <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
-                <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
-              </div>
+                </div>
+              </section>
             </div>
-          </react.Fragment>
+          </section>
+        ) : (
+          <section className="flex flex-col items-center justify-center w-full">
+            <div className="flex flex-col items-center justify-center gap-4 w-96">
+              <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-40 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
+              <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-28 shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
+              <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
+              <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
+            </div>
+          </section>
         )}
       </react.Fragment>
       <FootPackage />

@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   try {
     const videoId: any = req.query.videoId;
-    console.log(chalk.greenBright.bold("❓ videoId:"), chalk.italic(videoId));
+    console.log(chalk.green("❓ videoId:"), chalk.italic(videoId));
     const result = await ytdlx.AudioOnly.Single.Highest({
       useTor: true,
       stream: true,

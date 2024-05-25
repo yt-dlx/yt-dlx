@@ -8,7 +8,7 @@ export default async function handler(
 ) {
   try {
     var query = await req.body.query;
-    console.log(chalk.greenBright.bold("❓ query:"), chalk.italic(query));
+    console.log(chalk.green("❓ query:"), chalk.italic(query));
     var TubeBody = await ytdlx.info.list_formats({
       query,
       verbose: true,
