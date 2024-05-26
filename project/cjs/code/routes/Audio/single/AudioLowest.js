@@ -40,6 +40,7 @@ const ZodSchema = zod_1.z.object({
     useTor: zod_1.z.boolean().optional(),
     stream: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
+    extract: zod_1.z.boolean().optional(),
     filter: zod_1.z
         .enum([
         "echo",
@@ -68,12 +69,21 @@ const ZodSchema = zod_1.z.object({
  * @param stream - (optional) Whether to stream the processed video or not.
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
+ * @param extract - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
  * @param filter - (optional) The audio filter to apply. Available options: "echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed".
  * @returns A Promise that resolves with either `void` (if `stream` is false) or an object containing the `ffmpeg` instance and the output filename (if `stream` is true).
  */
-async function AudioLowest({ query, output, useTor, stream, verbose, filter, }) {
+async function AudioLowest({ query, output, useTor, stream, verbose, extract, filter, }) {
     try {
-        ZodSchema.parse({ query, output, useTor, stream, verbose, filter });
+        ZodSchema.parse({
+            query,
+            output,
+            useTor,
+            stream,
+            verbose,
+            extract,
+            filter,
+        });
         let startTime;
         const engineData = await (0, Agent_1.default)({ query, verbose, useTor });
         if (engineData === undefined) {
@@ -182,23 +192,34 @@ async function AudioLowest({ query, output, useTor, stream, verbose, filter, }) 
                     ` ${color("| @timemark:")} ${timemark}` +
                     ` ${color("| @eta:")} ${(0, formatTime_1.default)((0, calculateETA_1.default)(startTime, percent))}`);
             });
-            if (stream) {
-                return {
-                    ffmpeg: ff,
-                    filename: output
-                        ? path.join(folder, filename)
-                        : filename.replace("_)_", ")_"),
-                };
-            }
-            else {
-                await new Promise((resolve, reject) => {
-                    ff.output(path.join(folder, filename.replace("_)_", ")_")));
-                    ff.on("end", () => resolve());
-                    ff.on("error", (error) => {
-                        reject(new Error(colors_1.default.red("@error: ") + error.message));
+            switch (true) {
+                case stream:
+                    return {
+                        ffmpeg: ff,
+                        filename: output
+                            ? path.join(folder, filename)
+                            : filename.replace("_)_", ")_"),
+                    };
+                case extract:
+                    return {
+                        filename,
+                        metaData: engineData.metaData,
+                        ipAddress: engineData.ipAddress,
+                        AudioLowF: engineData.AudioLowF,
+                        AudioHighF: engineData.AudioHighF,
+                        AudioLowDRC: engineData.AudioLowDRC,
+                        AudioHighDRC: engineData.AudioHighDRC,
+                    };
+                default:
+                    await new Promise((resolve, reject) => {
+                        ff.output(path.join(folder, filename.replace("_)_", ")_")));
+                        ff.on("end", () => resolve());
+                        ff.on("error", (error) => {
+                            reject(new Error(colors_1.default.red("@error: ") + error.message));
+                        });
+                        ff.run();
                     });
-                    ff.run();
-                });
+                    break;
             }
         }
     }

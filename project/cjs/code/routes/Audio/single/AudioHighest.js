@@ -34,7 +34,7 @@ const fluent_ffmpeg_1 = __importDefault(require("fluent-ffmpeg"));
 const Agent_1 = __importDefault(require("../../../base/Agent"));
 const formatTime_1 = __importDefault(require("../../../base/formatTime"));
 const calculateETA_1 = __importDefault(require("../../../base/calculateETA"));
-const ZodSchema = zod_1.z.object({
+var ZodSchema = zod_1.z.object({
     query: zod_1.z.string().min(2),
     output: zod_1.z.string().optional(),
     useTor: zod_1.z.boolean().optional(),
@@ -69,9 +69,9 @@ const ZodSchema = zod_1.z.object({
  * @param stream - (optional) Whether to stream the processed video or not.
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
- * @param extract - (optional) Whether to extract the video data instead of downloading or streaming.
  * @param filter - (optional) The audio filter to apply. Available options: "echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed".
- * @returns A Promise that resolves with either `void` (if `stream` is false) or an object containing the `ffmpeg` instance and the output filename (if `stream` is true).
+ * @param extract - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
+ * @returns A Promise that resolves with either `void` (if `stream` is false and `extract` is false), an object containing the `ffmpeg` instance and the output filename (if `stream` is true), or an object containing the filename and extracted engine data (if `extract` is true).
  */
 async function AudioHighest({ query, output, useTor, stream, filter, extract, verbose, }) {
     try {
@@ -200,12 +200,16 @@ async function AudioHighest({ query, output, useTor, stream, filter, extract, ve
                             ? path.join(folder, filename)
                             : filename.replace("_)_", ")_"),
                     };
-                    break;
                 case extract:
                     return {
                         filename,
+                        metaData: engineData.metaData,
+                        ipAddress: engineData.ipAddress,
+                        AudioLowF: engineData.AudioLowF,
+                        AudioHighF: engineData.AudioHighF,
+                        AudioLowDRC: engineData.AudioLowDRC,
+                        AudioHighDRC: engineData.AudioHighDRC,
                     };
-                    break;
                 default:
                     await new Promise((resolve, reject) => {
                         ff.output(path.join(folder, filename.replace("_)_", ")_")));

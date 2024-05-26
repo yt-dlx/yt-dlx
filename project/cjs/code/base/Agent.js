@@ -6,48 +6,65 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const web_1 = __importDefault(require("../web"));
 const colors_1 = __importDefault(require("colors"));
 const Engine_1 = __importDefault(require("./Engine"));
+const async_retry_1 = __importDefault(require("async-retry"));
 const child_process_1 = require("child_process");
 const YouTubeId_1 = __importDefault(require("../web/YouTubeId"));
-function sip() {
-    var op = (0, child_process_1.execSync)("curl https://checkip.amazonaws.com --insecure", {
-        stdio: "pipe",
-    });
-    return op.toString().trim();
+var reOpts = {
+    retries: 3,
+    minTimeout: 1000,
+    maxTimeout: 5000,
+    factor: 2,
+};
+async function sip() {
+    return await (0, async_retry_1.default)(async () => {
+        var op = (0, child_process_1.execSync)("curl https://checkip.amazonaws.com --insecure", {
+            stdio: "pipe",
+        });
+        return op.toString().trim();
+    }, reOpts);
 }
-function tip() {
-    var op = (0, child_process_1.execSync)("curl --socks5-hostname 127.0.0.1:9050 https://checkip.amazonaws.com --insecure", {
-        stdio: "pipe",
-    });
-    return op.toString().trim();
+async function tip() {
+    return await (0, async_retry_1.default)(async () => {
+        var op = (0, child_process_1.execSync)("curl --socks5-hostname 127.0.0.1:9050 https://checkip.amazonaws.com --insecure", {
+            stdio: "pipe",
+        });
+        return op.toString().trim();
+    }, reOpts);
 }
-function service() {
-    try {
-        (0, child_process_1.execSync)("service --version", { stdio: "ignore" });
-        (0, child_process_1.execSync)("service tor stop", { stdio: "ignore" });
-        return true;
-    }
-    catch {
-        return false;
-    }
+async function service() {
+    return await (0, async_retry_1.default)(async () => {
+        try {
+            (0, child_process_1.execSync)("service --version", { stdio: "ignore" });
+            (0, child_process_1.execSync)("service tor stop", { stdio: "ignore" });
+            return true;
+        }
+        catch {
+            return false;
+        }
+    }, reOpts);
 }
-function systemctl() {
-    try {
-        (0, child_process_1.execSync)("systemctl --version", { stdio: "ignore" });
-        (0, child_process_1.execSync)("systemctl tor stop", { stdio: "ignore" });
-        return true;
-    }
-    catch {
-        return false;
-    }
+async function systemctl() {
+    return await (0, async_retry_1.default)(async () => {
+        try {
+            (0, child_process_1.execSync)("systemctl --version", { stdio: "ignore" });
+            (0, child_process_1.execSync)("systemctl tor stop", { stdio: "ignore" });
+            return true;
+        }
+        catch {
+            return false;
+        }
+    }, reOpts);
 }
-function sudo() {
-    try {
-        (0, child_process_1.execSync)("sudo --version", { stdio: "ignore" });
-        return true;
-    }
-    catch {
-        return false;
-    }
+async function sudo() {
+    return await (0, async_retry_1.default)(async () => {
+        try {
+            (0, child_process_1.execSync)("sudo --version", { stdio: "ignore" });
+            return true;
+        }
+        catch {
+            return false;
+        }
+    }, reOpts);
 }
 async function Agent({ query, useTor, verbose, }) {
     var iptor = "";
@@ -56,25 +73,25 @@ async function Agent({ query, useTor, verbose, }) {
     var issystemctl = false;
     if (useTor) {
         switch (true) {
-            case systemctl():
+            case await systemctl():
                 (0, child_process_1.execSync)("systemctl restart tor", { stdio: "inherit" });
                 issystemctl = true;
-                ipsys = sip();
-                iptor = tip();
+                ipsys = await sip();
+                iptor = await tip();
                 break;
-            case service():
+            case await service():
                 (0, child_process_1.execSync)("service tor restart", { stdio: "inherit" });
                 isservice = true;
-                ipsys = sip();
-                iptor = tip();
+                ipsys = await sip();
+                iptor = await tip();
                 break;
             default:
-                ipsys = sip();
+                ipsys = await sip();
                 break;
         }
     }
     else
-        ipsys = sip();
+        ipsys = await sip();
     if (verbose) {
         switch (useTor) {
             case true:
@@ -85,7 +102,7 @@ async function Agent({ query, useTor, verbose, }) {
                 console.log(colors_1.default.green("@info:"), "system ipAddress", ipsys);
                 break;
         }
-        console.log(colors_1.default.green("@info:"), "is sudo available", sudo());
+        console.log(colors_1.default.green("@info:"), "is sudo available", await sudo());
         console.log(colors_1.default.green("@info:"), "is service available", isservice);
         console.log(colors_1.default.green("@info:"), "is systemctl available", issystemctl);
     }
@@ -98,7 +115,7 @@ async function Agent({ query, useTor, verbose, }) {
             throw new Error("Unable to get response!");
         console.log(colors_1.default.green("@info:"), "preparing payload for", TubeBody[0].title);
         respEngine = await (0, Engine_1.default)({
-            sudo: sudo(),
+            sudo: await sudo(),
             ipAddress: iptor || ipsys,
             query: "https://www.youtube.com/watch?v=" + TubeBody[0].id,
         });
@@ -110,7 +127,7 @@ async function Agent({ query, useTor, verbose, }) {
             throw new Error("Unable to get response!");
         console.log(colors_1.default.green("@info:"), "preparing payload for", TubeBody.title);
         respEngine = await (0, Engine_1.default)({
-            sudo: sudo(),
+            sudo: await sudo(),
             ipAddress: iptor || ipsys,
             query: "https://www.youtube.com/watch?v=" + TubeBody.id,
         });

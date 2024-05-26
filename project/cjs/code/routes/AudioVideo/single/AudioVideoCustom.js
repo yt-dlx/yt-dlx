@@ -40,6 +40,7 @@ const ZodSchema = zod_1.z.object({
     useTor: zod_1.z.boolean().optional(),
     stream: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
+    extract: zod_1.z.boolean().optional(),
     resolution: zod_1.z.enum([
         "144p",
         "240p",
@@ -76,19 +77,21 @@ const ZodSchema = zod_1.z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
  * @param output - (optional) The output directory for the processed file.
+ * @param extract - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
  * @returns A Promise that resolves when the audio and video processing is complete. If `stream` is true, it returns an object with the `ffmpeg` command and the `filename`.
  */
-async function AudioVideoCustom({ query, resolution, stream, verbose, output, useTor, filter, }) {
+async function AudioVideoCustom({ query, stream, output, useTor, filter, extract, verbose, resolution, }) {
     try {
         ZodSchema.parse({
             query,
-            resolution,
             stream,
-            verbose,
             output,
             useTor,
             filter,
+            extract,
+            verbose,
+            resolution,
         });
         let startTime;
         const engineData = await (0, Agent_1.default)({ query, verbose, useTor });
@@ -172,23 +175,40 @@ async function AudioVideoCustom({ query, resolution, stream, verbose, output, us
                     ` ${color("| @timemark:")} ${timemark}` +
                     ` ${color("| @eta:")} ${(0, formatTime_1.default)((0, calculateETA_1.default)(startTime, percent))}`);
             });
-            if (stream) {
-                return {
-                    ffmpeg: ff,
-                    filename: output
-                        ? path.join(folder, filename)
-                        : filename.replace("_)_", ")_"),
-                };
-            }
-            else {
-                await new Promise((resolve, reject) => {
-                    ff.output(path.join(folder, filename.replace("_)_", ")_")));
-                    ff.on("end", () => resolve());
-                    ff.on("error", (error) => {
-                        reject(new Error(colors_1.default.red("@error: ") + error.message));
+            switch (true) {
+                case stream:
+                    return {
+                        ffmpeg: ff,
+                        filename: output
+                            ? path.join(folder, filename)
+                            : filename.replace("_)_", ")_"),
+                    };
+                case extract:
+                    return {
+                        filename,
+                        metaData: engineData.metaData,
+                        ipAddress: engineData.ipAddress,
+                        AudioLowF: engineData.AudioLowF,
+                        AudioHighF: engineData.AudioHighF,
+                        AudioLowDRC: engineData.AudioLowDRC,
+                        AudioHighDRC: engineData.AudioHighDRC,
+                        VideoLowF: engineData.videoLowF,
+                        VideoHighF: engineData.VideoHighF,
+                        VideoLowHDR: engineData.VideoLowHDR,
+                        VideoHighHDR: engineData.VideoHighHDR,
+                        ManifestLow: engineData.ManifestLow,
+                        ManifestHigh: engineData.ManifestHigh,
+                    };
+                default:
+                    await new Promise((resolve, reject) => {
+                        ff.output(path.join(folder, filename.replace("_)_", ")_")));
+                        ff.on("end", () => resolve());
+                        ff.on("error", (error) => {
+                            reject(new Error(colors_1.default.red("@error: ") + error.message));
+                        });
+                        ff.run();
                     });
-                    ff.run();
-                });
+                    break;
             }
         }
     }
