@@ -59,6 +59,12 @@ export default async function AudioVideoLowest({
       AudioHighF: EngineOutput["AudioHighF"];
       AudioLowDRC: EngineOutput["AudioLowDRC"];
       AudioHighDRC: EngineOutput["AudioHighDRC"];
+      VideoLowF: EngineOutput["VideoLowF"];
+      VideoHighF: EngineOutput["VideoHighF"];
+      VideoLowHDR: EngineOutput["VideoLowHDR"];
+      VideoHighHDR: EngineOutput["VideoHighHDR"];
+      ManifestLow: EngineOutput["ManifestLow"];
+      ManifestHigh: EngineOutput["ManifestHigh"];
     }
 > {
   try {
@@ -169,6 +175,12 @@ export default async function AudioVideoLowest({
             AudioHighF: engineData.AudioHighF,
             AudioLowDRC: engineData.AudioLowDRC,
             AudioHighDRC: engineData.AudioHighDRC,
+            VideoLowF: engineData.videoLowF,
+            VideoHighF: engineData.VideoHighF,
+            VideoLowHDR: engineData.VideoLowHDR,
+            VideoHighHDR: engineData.VideoHighHDR,
+            ManifestLow: engineData.ManifestLow,
+            ManifestHigh: engineData.ManifestHigh,
           };
         default:
           await new Promise<void>((resolve, reject) => {
