@@ -22,16 +22,16 @@ export default async function list_formats({
   if (!metaBody) {
     throw new Error("@error: Unable to get response from YouTube.");
   } else {
-    pTable("@AudioLow:", metaBody.AudioLow);
-    pTable("@AudioLowDRC:", metaBody.AudioLowDRC);
-    pTable("@AudioHigh:", metaBody.AudioHigh);
-    pTable("@AudioHighDRC:", metaBody.AudioHighDRC);
-    pTable("@VideoLow:", metaBody.VideoLow);
-    pTable("@VideoLowHDR:", metaBody.VideoLowHDR);
-    pTable("@VideoHigh:", metaBody.VideoHigh);
-    pTable("@VideoHighHDR:", metaBody.VideoHighHDR);
-    pManifestTable("@ManifestLow:", metaBody.ManifestLow);
-    pManifestTable("@ManifestHigh:", metaBody.ManifestHigh);
+    // pTable("@AudioLow:", metaBody.AudioLow);
+    // pTable("@AudioLowDRC:", metaBody.AudioLowDRC);
+    // pTable("@AudioHigh:", metaBody.AudioHigh);
+    // pTable("@AudioHighDRC:", metaBody.AudioHighDRC);
+    // pTable("@VideoLow:", metaBody.VideoLow);
+    // pTable("@VideoLowHDR:", metaBody.VideoLowHDR);
+    // pTable("@VideoHigh:", metaBody.VideoHigh);
+    // pTable("@VideoHighHDR:", metaBody.VideoHighHDR);
+    // pManifestTable("@ManifestLow:", metaBody.ManifestLow);
+    // pManifestTable("@ManifestHigh:", metaBody.ManifestHigh);
     var AudioLow = metaBody.AudioLow.map((item) => ({
       filesizeP: item.filesizeP,
       format_note: item.format_note,
