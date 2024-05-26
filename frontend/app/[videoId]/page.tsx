@@ -14,7 +14,9 @@ export default function home() {
   var { push } = useRouter();
   var { videoId }: any = useParams();
   var QueryClient = useQueryClient();
+  var [Formats, setFormats] = react.useState<any>(null);
   var [TubeSearch, setTubeSearch] = react.useState<any>(null);
+
   var ApiSearch = useMutation({
     mutationFn: async () => {
       var resp = await fetch("/api/search", {
@@ -28,10 +30,27 @@ export default function home() {
     },
     onMutate: () => console.log("ApiSearch started!"),
   });
+
+  var ApiFormats = useMutation({
+    mutationFn: async () => {
+      var resp = await fetch("/api/formats", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ videoId }),
+      });
+      if (resp.status === 200) setFormats(await resp.json());
+    },
+    onMutate: () => console.log("ApiFormats started!"),
+  });
   react.useEffect(() => {
     if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId)) push("/");
-    else ApiSearch.mutate();
+    ApiSearch.mutate();
+    ApiFormats.mutate();
   }, [videoId]);
+
+  console.log(Formats);
 
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#111111] scrollbar-track-[#111111] scrollbar-thumb-red-600">

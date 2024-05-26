@@ -7,14 +7,14 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    var query = await req.body.query;
-    console.log(chalk.green("❓ query:"), chalk.italic(query));
-    var TubeBody = await ytdlx.info.list_formats({
-      query,
+    const videoId: any = req.query.videoId;
+    console.log(chalk.green("❓ videoId:"), videoId);
+    var metaTube = await ytdlx.info.list_formats({
+      query: videoId,
       verbose: true,
     });
-    if (TubeBody) return res.status(200).json(TubeBody);
-    else return res.status(400).send("@error: try again!");
+    console.log(metaTube);
+    return res.status(400).send(metaTube);
   } catch (error: any) {
     return res.status(500).send("@error: " + error.message);
   }
