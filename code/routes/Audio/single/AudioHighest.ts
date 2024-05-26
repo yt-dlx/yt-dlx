@@ -7,13 +7,15 @@ import ytdlx from "../../../base/Agent";
 import formatTime from "../../../base/formatTime";
 import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
+import EngineOutput from "../../../interfaces/EngineOutput";
 
-const ZodSchema = z.object({
+var ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
   useTor: z.boolean().optional(),
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
+  extract: z.boolean().optional(),
   filter: z
     .enum([
       "echo",
@@ -44,21 +46,40 @@ const ZodSchema = z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
  * @param filter - (optional) The audio filter to apply. Available options: "echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed".
- * @returns A Promise that resolves with either `void` (if `stream` is false) or an object containing the `ffmpeg` instance and the output filename (if `stream` is true).
+ * @param extract - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
+ * @returns A Promise that resolves with either `void` (if `stream` is false and `extract` is false), an object containing the `ffmpeg` instance and the output filename (if `stream` is true), or an object containing the filename and extracted engine data (if `extract` is true).
  */
 export default async function AudioHighest({
   query,
   output,
   useTor,
   stream,
-  verbose,
   filter,
-}: z.infer<typeof ZodSchema>): Promise<void | {
-  ffmpeg: FfmpegCommand;
-  filename: string;
-}> {
+  extract,
+  verbose,
+}: z.infer<typeof ZodSchema>): Promise<
+  | void
+  | { ffmpeg: FfmpegCommand; filename: string }
+  | {
+      filename: string;
+      metaData: EngineOutput["metaData"];
+      ipAddress: EngineOutput["ipAddress"];
+      AudioLowF: EngineOutput["AudioLowF"];
+      AudioHighF: EngineOutput["AudioHighF"];
+      AudioLowDRC: EngineOutput["AudioLowDRC"];
+      AudioHighDRC: EngineOutput["AudioHighDRC"];
+    }
+> {
   try {
-    ZodSchema.parse({ query, output, useTor, stream, verbose, filter });
+    ZodSchema.parse({
+      query,
+      output,
+      useTor,
+      stream,
+      filter,
+      extract,
+      verbose,
+    });
     let startTime: Date;
     const engineData = await ytdlx({ query, verbose, useTor });
     if (engineData === undefined) {
@@ -168,22 +189,34 @@ export default async function AudioHighest({
             )}`
         );
       });
-      if (stream) {
-        return {
-          ffmpeg: ff,
-          filename: output
-            ? path.join(folder, filename)
-            : filename.replace("_)_", ")_"),
-        };
-      } else {
-        await new Promise<void>((resolve, reject) => {
-          ff.output(path.join(folder, filename.replace("_)_", ")_")));
-          ff.on("end", () => resolve());
-          ff.on("error", (error) => {
-            reject(new Error(colors.red("@error: ") + error.message));
+      switch (true) {
+        case stream:
+          return {
+            ffmpeg: ff,
+            filename: output
+              ? path.join(folder, filename)
+              : filename.replace("_)_", ")_"),
+          };
+        case extract:
+          return {
+            filename,
+            metaData: engineData.metaData,
+            ipAddress: engineData.ipAddress,
+            AudioLowF: engineData.AudioLowF,
+            AudioHighF: engineData.AudioHighF,
+            AudioLowDRC: engineData.AudioLowDRC,
+            AudioHighDRC: engineData.AudioHighDRC,
+          };
+        default:
+          await new Promise<void>((resolve, reject) => {
+            ff.output(path.join(folder, filename.replace("_)_", ")_")));
+            ff.on("end", () => resolve());
+            ff.on("error", (error) => {
+              reject(new Error(colors.red("@error: ") + error.message));
+            });
+            ff.run();
           });
-          ff.run();
-        });
+          break;
       }
     }
   } catch (error: any) {

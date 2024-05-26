@@ -7,6 +7,7 @@ import ytdlx from "../../../base/Agent";
 import formatTime from "../../../base/formatTime";
 import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
+import EngineOutput from "../../../interfaces/EngineOutput";
 
 const ZodSchema = z.object({
   query: z.string().min(2),
@@ -14,6 +15,7 @@ const ZodSchema = z.object({
   useTor: z.boolean().optional(),
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
+  extract: z.boolean().optional(),
   resolution: z.enum([
     "144p",
     "240p",
@@ -50,30 +52,42 @@ const ZodSchema = z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
  * @param output - (optional) The output directory for the processed files.
+ * @param extract - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
  * @returns A Promise that resolves when the video has been processed, unless `stream` is `true`, in which case it resolves with an object containing the `ffmpeg` command and the `filename`.
  */
 export default async function VideoCustom({
   query,
-  resolution,
   stream,
-  verbose,
-  output,
   useTor,
   filter,
-}: z.infer<typeof ZodSchema>): Promise<void | {
-  ffmpeg: FfmpegCommand;
-  filename: string;
-}> {
+  output,
+  verbose,
+  extract,
+  resolution,
+}: z.infer<typeof ZodSchema>): Promise<
+  | void
+  | { ffmpeg: FfmpegCommand; filename: string }
+  | {
+      filename: string;
+      metaData: EngineOutput["metaData"];
+      ipAddress: EngineOutput["ipAddress"];
+      AudioLowF: EngineOutput["AudioLowF"];
+      AudioHighF: EngineOutput["AudioHighF"];
+      AudioLowDRC: EngineOutput["AudioLowDRC"];
+      AudioHighDRC: EngineOutput["AudioHighDRC"];
+    }
+> {
   try {
     ZodSchema.parse({
       query,
-      resolution,
       stream,
-      verbose,
-      output,
       useTor,
       filter,
+      output,
+      verbose,
+      extract,
+      resolution,
     });
     let startTime: Date;
     const engineData = await ytdlx({ query, verbose, useTor });
@@ -165,22 +179,34 @@ export default async function VideoCustom({
             )}`
         );
       });
-      if (stream) {
-        return {
-          ffmpeg: ff,
-          filename: output
-            ? path.join(folder, filename)
-            : filename.replace("_)_", ")_"),
-        };
-      } else {
-        await new Promise<void>((resolve, reject) => {
-          ff.output(path.join(folder, filename.replace("_)_", ")_")));
-          ff.on("end", () => resolve());
-          ff.on("error", (error) => {
-            reject(new Error(colors.red("@error: ") + error.message));
+      switch (true) {
+        case stream:
+          return {
+            ffmpeg: ff,
+            filename: output
+              ? path.join(folder, filename)
+              : filename.replace("_)_", ")_"),
+          };
+        case extract:
+          return {
+            filename,
+            metaData: engineData.metaData,
+            ipAddress: engineData.ipAddress,
+            AudioLowF: engineData.AudioLowF,
+            AudioHighF: engineData.AudioHighF,
+            AudioLowDRC: engineData.AudioLowDRC,
+            AudioHighDRC: engineData.AudioHighDRC,
+          };
+        default:
+          await new Promise<void>((resolve, reject) => {
+            ff.output(path.join(folder, filename.replace("_)_", ")_")));
+            ff.on("end", () => resolve());
+            ff.on("error", (error) => {
+              reject(new Error(colors.red("@error: ") + error.message));
+            });
+            ff.run();
           });
-          ff.run();
-        });
+          break;
       }
     }
   } catch (error: any) {

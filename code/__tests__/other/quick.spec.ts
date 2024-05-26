@@ -1,22 +1,13 @@
 console.clear();
-import list_formats from "../../routes/command/list_formats";
+import AudioHighest from "../../routes/Audio/single/AudioHighest";
 
 (async () => {
-  const data = await list_formats({
+  const data = await AudioHighest({
     query: "21 savage - redrum",
     verbose: true,
+    extract: true,
+    stream: true,
+    useTor: true,
   });
-  // =============================================
-  console.log("@AudioLow:", data.AudioLow);
-  console.log("@AudioLowDRC:", data.AudioLowDRC);
-  console.log("@AudioHigh:", data.AudioHigh);
-  console.log("@AudioHighDRC:", data.AudioHighDRC);
-  // =============================================
-  console.log("@VideoLow:", data.VideoLow);
-  console.log("@VideoLowHDR:", data.VideoLowHDR);
-  console.log("@VideoHigh:", data.VideoHigh);
-  console.log("@VideoHighHDR:", data.VideoHighHDR);
-  // =============================================
-  console.log("@ManifestLow:", data.ManifestLow);
-  console.log("@ManifestHigh:", data.ManifestHigh);
+  console.log("@AudioHighest:", data);
 })();

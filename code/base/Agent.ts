@@ -1,50 +1,72 @@
 import web from "../web";
 import colors from "colors";
 import Engine from "./Engine";
+import retry from "async-retry";
 import { execSync } from "child_process";
 import YouTubeID from "../web/YouTubeId";
 import type EngineOutput from "../interfaces/EngineOutput";
 
-function sip(): string {
-  var op = execSync("curl https://checkip.amazonaws.com --insecure", {
-    stdio: "pipe",
-  });
-  return op.toString().trim();
-}
-function tip(): string {
-  var op = execSync(
-    "curl --socks5-hostname 127.0.0.1:9050 https://checkip.amazonaws.com --insecure",
-    {
+var reOpts = {
+  retries: 3,
+  minTimeout: 1000,
+  maxTimeout: 5000,
+  factor: 2,
+};
+
+async function sip(): Promise<string> {
+  return await retry(async () => {
+    var op = execSync("curl https://checkip.amazonaws.com --insecure", {
       stdio: "pipe",
+    });
+    return op.toString().trim();
+  }, reOpts);
+}
+
+async function tip(): Promise<string> {
+  return await retry(async () => {
+    var op = execSync(
+      "curl --socks5-hostname 127.0.0.1:9050 https://checkip.amazonaws.com --insecure",
+      {
+        stdio: "pipe",
+      }
+    );
+    return op.toString().trim();
+  }, reOpts);
+}
+
+async function service(): Promise<boolean> {
+  return await retry(async () => {
+    try {
+      execSync("service --version", { stdio: "ignore" });
+      execSync("service tor stop", { stdio: "ignore" });
+      return true;
+    } catch {
+      return false;
     }
-  );
-  return op.toString().trim();
+  }, reOpts);
 }
-function service(): boolean {
-  try {
-    execSync("service --version", { stdio: "ignore" });
-    execSync("service tor stop", { stdio: "ignore" });
-    return true;
-  } catch {
-    return false;
-  }
+
+async function systemctl(): Promise<boolean> {
+  return await retry(async () => {
+    try {
+      execSync("systemctl --version", { stdio: "ignore" });
+      execSync("systemctl tor stop", { stdio: "ignore" });
+      return true;
+    } catch {
+      return false;
+    }
+  }, reOpts);
 }
-function systemctl(): boolean {
-  try {
-    execSync("systemctl --version", { stdio: "ignore" });
-    execSync("systemctl tor stop", { stdio: "ignore" });
-    return true;
-  } catch {
-    return false;
-  }
-}
-function sudo(): boolean {
-  try {
-    execSync("sudo --version", { stdio: "ignore" });
-    return true;
-  } catch {
-    return false;
-  }
+
+async function sudo(): Promise<boolean> {
+  return await retry(async () => {
+    try {
+      execSync("sudo --version", { stdio: "ignore" });
+      return true;
+    } catch {
+      return false;
+    }
+  }, reOpts);
 }
 
 export default async function Agent({
@@ -60,25 +82,27 @@ export default async function Agent({
   var ipsys: string = "";
   var isservice: boolean = false;
   var issystemctl: boolean = false;
+
   if (useTor) {
     switch (true) {
-      case systemctl():
+      case await systemctl():
         execSync("systemctl restart tor", { stdio: "inherit" });
         issystemctl = true;
-        ipsys = sip();
-        iptor = tip();
+        ipsys = await sip();
+        iptor = await tip();
         break;
-      case service():
+      case await service():
         execSync("service tor restart", { stdio: "inherit" });
         isservice = true;
-        ipsys = sip();
-        iptor = tip();
+        ipsys = await sip();
+        iptor = await tip();
         break;
       default:
-        ipsys = sip();
+        ipsys = await sip();
         break;
     }
-  } else ipsys = sip();
+  } else ipsys = await sip();
+
   if (verbose) {
     switch (useTor) {
       case true:
@@ -89,13 +113,15 @@ export default async function Agent({
         console.log(colors.green("@info:"), "system ipAddress", ipsys);
         break;
     }
-    console.log(colors.green("@info:"), "is sudo available", sudo());
+    console.log(colors.green("@info:"), "is sudo available", await sudo());
     console.log(colors.green("@info:"), "is service available", isservice);
     console.log(colors.green("@info:"), "is systemctl available", issystemctl);
   }
+
   var TubeBody: any;
   var respEngine: EngineOutput | undefined = undefined;
   var videoId: string | undefined = await YouTubeID(query);
+
   if (!videoId) {
     TubeBody = await web.searchVideos({ query });
     if (!TubeBody[0]) throw new Error("Unable to get response!");
@@ -105,7 +131,7 @@ export default async function Agent({
       TubeBody[0].title
     );
     respEngine = await Engine({
-      sudo: sudo(),
+      sudo: await sudo(),
       ipAddress: iptor || ipsys,
       query: "https://www.youtube.com/watch?v=" + TubeBody[0].id,
     });
@@ -119,7 +145,7 @@ export default async function Agent({
       TubeBody.title
     );
     respEngine = await Engine({
-      sudo: sudo(),
+      sudo: await sudo(),
       ipAddress: iptor || ipsys,
       query: "https://www.youtube.com/watch?v=" + TubeBody.id,
     });

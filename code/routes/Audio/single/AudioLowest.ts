@@ -7,6 +7,7 @@ import ytdlx from "../../../base/Agent";
 import formatTime from "../../../base/formatTime";
 import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
+import EngineOutput from "../../../interfaces/EngineOutput";
 
 const ZodSchema = z.object({
   query: z.string().min(2),
@@ -14,6 +15,7 @@ const ZodSchema = z.object({
   useTor: z.boolean().optional(),
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
+  extract: z.boolean().optional(),
   filter: z
     .enum([
       "echo",
@@ -43,6 +45,7 @@ const ZodSchema = z.object({
  * @param stream - (optional) Whether to stream the processed video or not.
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
+ * @param extract - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
  * @param filter - (optional) The audio filter to apply. Available options: "echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed".
  * @returns A Promise that resolves with either `void` (if `stream` is false) or an object containing the `ffmpeg` instance and the output filename (if `stream` is true).
  */
@@ -52,13 +55,31 @@ export default async function AudioLowest({
   useTor,
   stream,
   verbose,
+  extract,
   filter,
-}: z.infer<typeof ZodSchema>): Promise<void | {
-  ffmpeg: FfmpegCommand;
-  filename: string;
-}> {
+}: z.infer<typeof ZodSchema>): Promise<
+  | void
+  | { ffmpeg: FfmpegCommand; filename: string }
+  | {
+      filename: string;
+      metaData: EngineOutput["metaData"];
+      ipAddress: EngineOutput["ipAddress"];
+      AudioLowF: EngineOutput["AudioLowF"];
+      AudioHighF: EngineOutput["AudioHighF"];
+      AudioLowDRC: EngineOutput["AudioLowDRC"];
+      AudioHighDRC: EngineOutput["AudioHighDRC"];
+    }
+> {
   try {
-    ZodSchema.parse({ query, output, useTor, stream, verbose, filter });
+    ZodSchema.parse({
+      query,
+      output,
+      useTor,
+      stream,
+      verbose,
+      extract,
+      filter,
+    });
     let startTime: Date;
     const engineData = await ytdlx({ query, verbose, useTor });
     if (engineData === undefined) {
@@ -168,22 +189,34 @@ export default async function AudioLowest({
             )}`
         );
       });
-      if (stream) {
-        return {
-          ffmpeg: ff,
-          filename: output
-            ? path.join(folder, filename)
-            : filename.replace("_)_", ")_"),
-        };
-      } else {
-        await new Promise<void>((resolve, reject) => {
-          ff.output(path.join(folder, filename.replace("_)_", ")_")));
-          ff.on("end", () => resolve());
-          ff.on("error", (error) => {
-            reject(new Error(colors.red("@error: ") + error.message));
+      switch (true) {
+        case stream:
+          return {
+            ffmpeg: ff,
+            filename: output
+              ? path.join(folder, filename)
+              : filename.replace("_)_", ")_"),
+          };
+        case extract:
+          return {
+            filename,
+            metaData: engineData.metaData,
+            ipAddress: engineData.ipAddress,
+            AudioLowF: engineData.AudioLowF,
+            AudioHighF: engineData.AudioHighF,
+            AudioLowDRC: engineData.AudioLowDRC,
+            AudioHighDRC: engineData.AudioHighDRC,
+          };
+        default:
+          await new Promise<void>((resolve, reject) => {
+            ff.output(path.join(folder, filename.replace("_)_", ")_")));
+            ff.on("end", () => resolve());
+            ff.on("error", (error) => {
+              reject(new Error(colors.red("@error: ") + error.message));
+            });
+            ff.run();
           });
-          ff.run();
-        });
+          break;
       }
     }
   } catch (error: any) {
