@@ -6,18 +6,21 @@ import type ManifestFormat from "./ManifestFormat";
 export default interface EngineOutput {
   ipAddress: string;
   metaData: VideoInfo;
+  // ==========================
   AudioLowF: AudioFormat;
   AudioHighF: AudioFormat;
-  VideoLowF: VideoFormat;
-  VideoHighF: VideoFormat;
-  AudioLowDRC: AudioFormat[];
-  AudioHighDRC: AudioFormat[];
   AudioLow: AudioFormat[];
   AudioHigh: AudioFormat[];
-  VideoLowHDR: VideoFormat[];
-  VideoHighHDR: VideoFormat[];
+  AudioLowDRC: AudioFormat[];
+  AudioHighDRC: AudioFormat[];
+  // ==========================
+  VideoLowF: VideoFormat;
+  VideoHighF: VideoFormat;
   VideoLow: VideoFormat[];
   VideoHigh: VideoFormat[];
+  VideoLowHDR: VideoFormat[];
+  VideoHighHDR: VideoFormat[];
+  // ==========================
   ManifestLow: ManifestFormat[];
   ManifestHigh: ManifestFormat[];
 }
