@@ -28,6 +28,7 @@ var ZodSchema = z.object({
     ])
     .optional(),
 });
+
 /**
  * Downloads audio and video from a YouTube video URL with the lowest available resolution.
  *
@@ -77,130 +78,102 @@ export default async function AudioVideoLowest({
       useTor,
       filter,
     });
-    var startTime: Date;
+    var startTime: Date = new Date();
     var engineData = await ytdlx({ query, verbose, useTor });
-    if (engineData === undefined) {
+    if (!engineData) {
       throw new Error(`${colors.red("@error:")} unable to get response!`);
-    } else {
-      var title: string = engineData.metaData.title.replace(
-        /[^a-zA-Z0-9_]+/g,
-        "_"
+    }
+    var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
+    var folder = output ? path.join(__dirname, output) : __dirname;
+    if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+    var ff: FfmpegCommand = ffmpeg()
+      .addInput(engineData.AudioLowF.url)
+      .addInput(engineData.ManifestLow[0]?.url)
+      .withOutputFormat("matroska")
+      .outputOptions("-c copy")
+      .addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+    var filenameBase = `yt-dlx_(AudioVideoLowest_`;
+    let filename = `${filenameBase}${
+      filter ? filter + ")_" : ")_"
+    }${title}.mkv`;
+    var filterMap: Record<string, string[]> = {
+      grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
+      invert: ["negate"],
+      rotate90: ["rotate=PI/2"],
+      rotate180: ["rotate=PI"],
+      rotate270: ["rotate=3*PI/2"],
+      flipHorizontal: ["hflip"],
+      flipVertical: ["vflip"],
+    };
+    if (filter && filterMap[filter]) ff.withVideoFilter(filterMap[filter]);
+    var logProgress = ({
+      percent,
+      timemark,
+    }: {
+      percent: number;
+      timemark: string;
+    }) => {
+      if (isNaN(percent)) percent = 0;
+      percent = Math.min(Math.max(percent, 0), 100);
+      var color =
+        percent < 25 ? colors.red : percent < 50 ? colors.yellow : colors.green;
+      var width = Math.floor(process.stdout.columns / 4);
+      var scomp = Math.round((width * percent) / 100);
+      var progb = color("━").repeat(scomp) + color(" ").repeat(width - scomp);
+      process.stdout.write(
+        `\r${color("@prog:")} ${progb} ${color(
+          "| @percent:"
+        )} ${percent.toFixed(2)}% ${color("| @timemark:")} ${timemark} ${color(
+          "| @eta:"
+        )} ${formatTime(calculateETA(startTime, percent))}`
       );
-      var folder = output ? path.join(__dirname, output) : __dirname;
-      if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
-      var ff: FfmpegCommand = ffmpeg();
-      var vdata = engineData.ManifestLow[0]?.url;
-      ff.addInput(engineData.AudioLowF.url);
-      ff.addInput(vdata.toString());
-      ff.outputOptions("-c copy");
-      ff.withOutputFormat("matroska");
-      ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
-      var filename: string = "yt-dlx_(AudioVideoLowest_";
-      switch (filter) {
-        case "grayscale":
-          ff.withVideoFilter(
-            "colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"
-          );
-          filename += `grayscale)_${title}.mkv`;
-          break;
-        case "invert":
-          ff.withVideoFilter("negate");
-          filename += `invert)_${title}.mkv`;
-          break;
-        case "rotate90":
-          ff.withVideoFilter("rotate=PI/2");
-          filename += `rotate90)_${title}.mkv`;
-          break;
-        case "rotate180":
-          ff.withVideoFilter("rotate=PI");
-          filename += `rotate180)_${title}.mkv`;
-          break;
-        case "rotate270":
-          ff.withVideoFilter("rotate=3*PI/2");
-          filename += `rotate270)_${title}.mkv`;
-          break;
-        case "flipHorizontal":
-          ff.withVideoFilter("hflip");
-          filename += `flipHorizontal)_${title}.mkv`;
-          break;
-        case "flipVertical":
-          ff.withVideoFilter("vflip");
-          filename += `flipVertical)_${title}.mkv`;
-          break;
-        default:
-          filename += `)_${title}.mkv`;
-          break;
-      }
-      ff.on("error", (error) => {
-        throw new Error(error.message);
-      });
-      ff.on("start", (comd) => {
-        startTime = new Date();
+    };
+    ff.on("error", (error) => {
+      throw new Error(error.message);
+    })
+      .on("start", (comd) => {
         if (verbose) console.info(colors.green("@comd:"), comd);
-      });
-      ff.on("end", () => process.stdout.write("\n"));
-      ff.on("progress", ({ percent, timemark }) => {
-        var color = colors.green;
-        if (isNaN(percent)) percent = 0;
-        if (percent > 98) percent = 100;
-        if (percent < 25) color = colors.red;
-        else if (percent < 50) color = colors.yellow;
-        var width = Math.floor(process.stdout.columns / 4);
-        var scomp = Math.round((width * percent) / 100);
-        var progb =
-          color("━").repeat(scomp) + color(" ").repeat(width - scomp);
-        process.stdout.write(
-          `\r${color("@prog:")} ${progb}` +
-            ` ${color("| @percent:")} ${percent.toFixed(2)}%` +
-            ` ${color("| @timemark:")} ${timemark}` +
-            ` ${color("| @eta:")} ${formatTime(
-              calculateETA(startTime, percent)
-            )}`
-        );
-      });
-      switch (true) {
-        case stream:
-          return {
-            ffmpeg: ff,
-            filename: output
-              ? path.join(folder, filename)
-              : filename.replace("_)_", ")_"),
-          };
-        case metadata:
-          return {
-            filename,
-            metaData: engineData.metaData,
-            ipAddress: engineData.ipAddress,
-            AudioLowF: engineData.AudioLowF,
-            AudioHighF: engineData.AudioHighF,
-            AudioLowDRC: engineData.AudioLowDRC,
-            AudioHighDRC: engineData.AudioHighDRC,
-            VideoLowF: engineData.videoLowF,
-            VideoHighF: engineData.VideoHighF,
-            VideoLowHDR: engineData.VideoLowHDR,
-            VideoHighHDR: engineData.VideoHighHDR,
-            ManifestLow: engineData.ManifestLow,
-            ManifestHigh: engineData.ManifestHigh,
-          };
-        default:
-          await new Promise<void>((resolve, reject) => {
-            ff.output(path.join(folder, filename.replace("_)_", ")_")));
-            ff.on("end", () => resolve());
-            ff.on("error", (error) => {
-              reject(new Error(colors.red("@error: ") + error.message));
-            });
-            ff.run();
-          });
-          break;
-      }
+      })
+      .on("end", () => process.stdout.write("\n"))
+      .on("progress", logProgress);
+    if (stream) {
+      return {
+        ffmpeg: ff,
+        filename: output
+          ? path.join(folder, filename)
+          : filename.replace("_)_", ")_"),
+      };
     }
+    if (metadata) {
+      return {
+        filename,
+        metaData: engineData.metaData,
+        ipAddress: engineData.ipAddress,
+        AudioLowF: engineData.AudioLowF,
+        AudioHighF: engineData.AudioHighF,
+        AudioLowDRC: engineData.AudioLowDRC,
+        AudioHighDRC: engineData.AudioHighDRC,
+        VideoLowF: engineData.VideoLowF,
+        VideoHighF: engineData.VideoHighF,
+        VideoLowHDR: engineData.VideoLowHDR,
+        VideoHighHDR: engineData.VideoHighHDR,
+        ManifestLow: engineData.ManifestLow,
+        ManifestHigh: engineData.ManifestHigh,
+      };
+    }
+    await new Promise<void>((resolve, reject) => {
+      ff.output(path.join(folder, filename.replace("_)_", ")_")))
+        .on("end", () => resolve())
+        .on("error", (error) =>
+          reject(new Error(colors.red("@error: ") + error.message))
+        )
+        .run();
+    });
   } catch (error: any) {
-    switch (true) {
-      case error instanceof ZodError:
-        throw new Error(colors.red("@zod-error:") + error.errors);
-      default:
-        throw new Error(colors.red("@error:") + error.message);
+    if (error instanceof ZodError) {
+      throw new Error(colors.red("@zod-error:") + error.errors);
     }
+    throw new Error(colors.red("@error:") + error.message);
   } finally {
     console.log(
       colors.green("@info:"),
