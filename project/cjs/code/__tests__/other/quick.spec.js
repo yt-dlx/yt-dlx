@@ -8,8 +8,8 @@ const AudioHighest_1 = __importDefault(require("../../routes/Audio/single/AudioH
 (async () => {
     const data = await (0, AudioHighest_1.default)({
         query: "21 savage - redrum",
+        metadata: true,
         verbose: true,
-        extract: true,
         stream: true,
         useTor: true,
     });
