@@ -80,20 +80,19 @@ export default async function Agent({
 }): Promise<any> {
   var iptor: string = "";
   var ipsys: string = "";
-  var isservice: boolean = false;
-  var issystemctl: boolean = false;
-
+  // var isservice: boolean = false;
+  // var issystemctl: boolean = false;
   if (useTor) {
     switch (true) {
       case await systemctl():
         execSync("systemctl restart tor", { stdio: "inherit" });
-        issystemctl = true;
+        // issystemctl = true;
         ipsys = await sip();
         iptor = await tip();
         break;
       case await service():
         execSync("service tor restart", { stdio: "inherit" });
-        isservice = true;
+        // isservice = true;
         ipsys = await sip();
         iptor = await tip();
         break;
@@ -113,15 +112,13 @@ export default async function Agent({
         console.log(colors.green("@info:"), "system ipAddress", ipsys);
         break;
     }
-    console.log(colors.green("@info:"), "is sudo available", await sudo());
-    console.log(colors.green("@info:"), "is service available", isservice);
-    console.log(colors.green("@info:"), "is systemctl available", issystemctl);
+    // console.log(colors.green("@info:"), "is sudo available", await sudo());
+    // console.log(colors.green("@info:"), "is service available", isservice);
+    // console.log(colors.green("@info:"), "is systemctl available", issystemctl);
   }
-
   var TubeBody: any;
   var respEngine: EngineOutput | undefined = undefined;
   var videoId: string | undefined = await YouTubeID(query);
-
   if (!videoId) {
     TubeBody = await web.searchVideos({ query });
     if (!TubeBody[0]) throw new Error("Unable to get response!");
