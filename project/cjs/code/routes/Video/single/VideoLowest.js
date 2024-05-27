@@ -76,123 +76,85 @@ async function VideoLowest({ query, stream, verbose, output, metadata, useTor, f
             useTor,
             filter,
         });
-        var startTime;
+        var startTime = new Date();
         var engineData = await (0, Agent_1.default)({ query, verbose, useTor });
-        if (engineData === undefined) {
+        if (!engineData) {
             throw new Error(`${colors_1.default.red("@error:")} unable to get response!`);
         }
-        else {
-            var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
-            var folder = output ? path.join(__dirname, output) : __dirname;
-            if (!fs.existsSync(folder))
-                fs.mkdirSync(folder, { recursive: true });
-            var ff = (0, fluent_ffmpeg_1.default)();
-            var vdata = engineData.ManifestLow[0].url;
-            ff.addInput(vdata.toString());
-            ff.videoCodec("copy");
-            ff.withOutputFormat("matroska");
-            ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
-            var filename = "yt-dlx_(VideoLowest_";
-            switch (filter) {
-                case "grayscale":
-                    ff.withVideoFilter("colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3");
-                    filename += `grayscale)_${title}.mkv`;
-                    break;
-                case "invert":
-                    ff.withVideoFilter("negate");
-                    filename += `invert)_${title}.mkv`;
-                    break;
-                case "rotate90":
-                    ff.withVideoFilter("rotate=PI/2");
-                    filename += `rotate90)_${title}.mkv`;
-                    break;
-                case "rotate180":
-                    ff.withVideoFilter("rotate=PI");
-                    filename += `rotate180)_${title}.mkv`;
-                    break;
-                case "rotate270":
-                    ff.withVideoFilter("rotate=3*PI/2");
-                    filename += `rotate270)_${title}.mkv`;
-                    break;
-                case "flipHorizontal":
-                    ff.withVideoFilter("hflip");
-                    filename += `flipHorizontal)_${title}.mkv`;
-                    break;
-                case "flipVertical":
-                    ff.withVideoFilter("vflip");
-                    filename += `flipVertical)_${title}.mkv`;
-                    break;
-                default:
-                    filename += `)_${title}.mkv`;
-                    break;
-            }
-            ff.on("error", (error) => {
-                throw new Error(error.message);
-            });
-            ff.on("start", (comd) => {
-                startTime = new Date();
-                if (verbose)
-                    console.info(colors_1.default.green("@comd:"), comd);
-            });
-            ff.on("end", () => process.stdout.write("\n"));
-            ff.on("progress", ({ percent, timemark }) => {
-                var color = colors_1.default.green;
-                if (isNaN(percent))
-                    percent = 0;
-                if (percent > 98)
-                    percent = 100;
-                if (percent < 25)
-                    color = colors_1.default.red;
-                else if (percent < 50)
-                    color = colors_1.default.yellow;
-                var width = Math.floor(process.stdout.columns / 4);
-                var scomp = Math.round((width * percent) / 100);
-                var progb = color("━").repeat(scomp) + color(" ").repeat(width - scomp);
-                process.stdout.write(`\r${color("@prog:")} ${progb}` +
-                    ` ${color("| @percent:")} ${percent.toFixed(2)}%` +
-                    ` ${color("| @timemark:")} ${timemark}` +
-                    ` ${color("| @eta:")} ${(0, formatTime_1.default)((0, calculateETA_1.default)(startTime, percent))}`);
-            });
-            switch (true) {
-                case stream:
-                    return {
-                        ffmpeg: ff,
-                        filename: output
-                            ? path.join(folder, filename)
-                            : filename.replace("_)_", ")_"),
-                    };
-                case metadata:
-                    return {
-                        filename,
-                        metaData: engineData.metaData,
-                        ipAddress: engineData.ipAddress,
-                        VideoLowF: engineData.videoLowF,
-                        VideoHighF: engineData.VideoHighF,
-                        VideoLowHDR: engineData.VideoLowHDR,
-                        VideoHighHDR: engineData.VideoHighHDR,
-                        ManifestLow: engineData.ManifestLow,
-                        ManifestHigh: engineData.ManifestHigh,
-                    };
-                default:
-                    await new Promise((resolve, reject) => {
-                        ff.output(path.join(folder, filename.replace("_)_", ")_")));
-                        ff.on("end", () => resolve());
-                        ff.on("error", (error) => {
-                            reject(new Error(colors_1.default.red("@error: ") + error.message));
-                        });
-                        ff.run();
-                    });
-                    break;
-            }
+        var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
+        var folder = output ? path.join(__dirname, output) : __dirname;
+        if (!fs.existsSync(folder))
+            fs.mkdirSync(folder, { recursive: true });
+        var ff = (0, fluent_ffmpeg_1.default)()
+            .addInput(engineData.ManifestLow[0].url)
+            .withOutputFormat("matroska")
+            .videoCodec("copy")
+            .addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+        var filenameBase = `yt-dlx_(VideoLowest_`;
+        let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
+        var filterMap = {
+            grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
+            invert: ["negate"],
+            rotate90: ["rotate=PI/2"],
+            rotate180: ["rotate=PI"],
+            rotate270: ["rotate=3*PI/2"],
+            flipHorizontal: ["hflip"],
+            flipVertical: ["vflip"],
+        };
+        if (filter && filterMap[filter])
+            ff.withVideoFilter(filterMap[filter]);
+        var logProgress = ({ percent, timemark, }) => {
+            if (isNaN(percent))
+                percent = 0;
+            percent = Math.min(Math.max(percent, 0), 100);
+            var color = percent < 25 ? colors_1.default.red : percent < 50 ? colors_1.default.yellow : colors_1.default.green;
+            var width = Math.floor(process.stdout.columns / 4);
+            var scomp = Math.round((width * percent) / 100);
+            var progb = color("━").repeat(scomp) + color(" ").repeat(width - scomp);
+            process.stdout.write(`\r${color("@prog:")} ${progb} ${color("| @percent:")} ${percent.toFixed(2)}% ${color("| @timemark:")} ${timemark} ${color("| @eta:")} ${(0, formatTime_1.default)((0, calculateETA_1.default)(startTime, percent))}`);
+        };
+        ff.on("error", (error) => {
+            throw new Error(error.message);
+        })
+            .on("start", (comd) => {
+            if (verbose)
+                console.info(colors_1.default.green("@comd:"), comd);
+        })
+            .on("end", () => process.stdout.write("\n"))
+            .on("progress", logProgress);
+        if (stream) {
+            return {
+                ffmpeg: ff,
+                filename: output
+                    ? path.join(folder, filename)
+                    : filename.replace("_)_", ")_"),
+            };
         }
+        if (metadata) {
+            return {
+                filename,
+                metaData: engineData.metaData,
+                ipAddress: engineData.ipAddress,
+                VideoLowF: engineData.VideoLowF,
+                VideoHighF: engineData.VideoHighF,
+                VideoLowHDR: engineData.VideoLowHDR,
+                VideoHighHDR: engineData.VideoHighHDR,
+                ManifestLow: engineData.ManifestLow,
+                ManifestHigh: engineData.ManifestHigh,
+            };
+        }
+        await new Promise((resolve, reject) => {
+            ff.output(path.join(folder, filename.replace("_)_", ")_")))
+                .on("end", () => resolve())
+                .on("error", (error) => reject(new Error(colors_1.default.red("@error: ") + error.message)))
+                .run();
+        });
     }
     catch (error) {
-        switch (true) {
-            case error instanceof zod_1.ZodError:
-                throw new Error(colors_1.default.red("@zod-error:") + error.errors);
-            default:
-                throw new Error(colors_1.default.red("@error:") + error.message);
+        if (error instanceof zod_1.ZodError) {
+            throw new Error(colors_1.default.red("@zod-error:") + error.errors);
         }
+        throw new Error(colors_1.default.red("@error:") + error.message);
     }
     finally {
         console.log(colors_1.default.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");

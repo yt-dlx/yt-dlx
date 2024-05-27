@@ -83,7 +83,7 @@ async function ListAudioCustom({ query, output, useTor, filter, verbose, resolut
             verbose,
             resolution,
         });
-        var startTime;
+        let startTime;
         var unique = new Set();
         for (var purl of query) {
             try {
@@ -125,7 +125,7 @@ async function ListAudioCustom({ query, output, useTor, filter, verbose, resolut
                 var folder = output ? path.join(__dirname, output) : __dirname;
                 if (!fs.existsSync(folder))
                     fs.mkdirSync(folder, { recursive: true });
-                var filename = `yt-dlx_(AudioCustom_${resolution}_`;
+                let filename = `yt-dlx_(AudioCustom_${resolution}_`;
                 var ff = (0, fluent_ffmpeg_1.default)();
                 var adata = engineData.AudioHigh.find((i) => i.format.includes(resolution.replace("p", "").toString()));
                 if (adata)
@@ -212,7 +212,7 @@ async function ListAudioCustom({ query, output, useTor, filter, verbose, resolut
                 });
                 ff.on("end", () => process.stdout.write("\n"));
                 ff.on("progress", ({ percent, timemark }) => {
-                    var color = colors_1.default.green;
+                    let color = colors_1.default.green;
                     if (isNaN(percent))
                         percent = 0;
                     if (percent > 98)

@@ -1,13 +1,14 @@
 console.clear();
-import AudioHighest from "../../routes/Audio/single/AudioHighest";
+import AudioCustom from "../../routes/Audio/single/AudioCustom";
 (async () => {
-    const data = await AudioHighest({
+    var core = await AudioCustom({
         query: "21 savage - redrum",
-        metadata: true,
+        resolution: "medium",
+        metadata: false,
         verbose: true,
-        stream: true,
+        stream: false,
         useTor: true,
     });
-    console.log("@AudioHighest:", data);
+    console.log("@AudioCustom:", core);
 })();
 //# sourceMappingURL=quick.spec.js.map

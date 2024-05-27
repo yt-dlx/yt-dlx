@@ -74,7 +74,7 @@ var ZodSchema = zod_1.z.object({
 async function ListAudioHighest({ query, output, useTor, verbose, filter, }) {
     try {
         ZodSchema.parse({ query, output, useTor, verbose, filter });
-        var startTime;
+        let startTime;
         var unique = new Set();
         for (var purl of query) {
             try {
@@ -116,7 +116,7 @@ async function ListAudioHighest({ query, output, useTor, verbose, filter, }) {
                 var folder = output ? path.join(__dirname, output) : __dirname;
                 if (!fs.existsSync(folder))
                     fs.mkdirSync(folder, { recursive: true });
-                var filename = "yt-dlx_(AudioHighest_";
+                let filename = "yt-dlx_(AudioHighest_";
                 var ff = (0, fluent_ffmpeg_1.default)();
                 ff.addInput(engineData.AudioHighF.url);
                 ff.addInput(engineData.metaData.thumbnail);
@@ -197,7 +197,7 @@ async function ListAudioHighest({ query, output, useTor, verbose, filter, }) {
                 });
                 ff.on("end", () => process.stdout.write("\n"));
                 ff.on("progress", ({ percent, timemark }) => {
-                    var color = colors_1.default.green;
+                    let color = colors_1.default.green;
                     if (isNaN(percent))
                         percent = 0;
                     if (percent > 98)
