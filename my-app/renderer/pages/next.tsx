@@ -1,7 +1,7 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function NextPage() {
   return (
@@ -22,8 +22,8 @@ export default function NextPage() {
         <span>⚡ Nextron ⚡</span>
       </div>
       <div className="mt-1 w-full flex-wrap flex justify-center">
-        <Link href="/home">Go to home page</Link>
+        <Link href="/">Go to home page</Link>
       </div>
     </React.Fragment>
-  )
+  );
 }
