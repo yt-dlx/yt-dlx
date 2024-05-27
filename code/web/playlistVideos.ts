@@ -19,9 +19,9 @@ export default async function playlistVideos({
   playlistId: string;
 }) {
   try {
-    const youtube = new Client();
-    const playlistVideos: any = await youtube.getPlaylist(playlistId);
-    const result = playlistVideos.videos.items.map((item: any) => ({
+    var youtube = new Client();
+    var playlistVideos: any = await youtube.getPlaylist(playlistId);
+    var result = playlistVideos.videos.items.map((item: any) => ({
       id: item.id,
       title: item.title,
       isLive: item.isLive,

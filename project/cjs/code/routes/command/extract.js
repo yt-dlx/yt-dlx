@@ -14,38 +14,38 @@ const Agent_1 = __importDefault(require("../../base/Agent"));
  * @returns A Promise that resolves with an object containing metadata information about the video.
  */
 async function extract({ query, verbose, }) {
-    const metaBody = await (0, Agent_1.default)({ query, verbose });
+    var metaBody = await (0, Agent_1.default)({ query, verbose });
     if (!metaBody) {
         return {
             message: "Unable to get response!",
             status: 500,
         };
     }
-    const uploadDate = new Date(metaBody.metaData.upload_date.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"));
-    const currentDate = new Date();
-    const daysAgo = Math.floor((currentDate.getTime() - uploadDate.getTime()) / (1000 * 60 * 60 * 24));
-    const prettyDate = uploadDate.toLocaleDateString("en-US", {
+    var uploadDate = new Date(metaBody.metaData.upload_date.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"));
+    var currentDate = new Date();
+    var daysAgo = Math.floor((currentDate.getTime() - uploadDate.getTime()) / (1000 * 60 * 60 * 24));
+    var prettyDate = uploadDate.toLocaleDateString("en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
     });
-    const uploadAgoObject = calculateUploadAgo(daysAgo);
-    const videoTimeInSeconds = metaBody.metaData.duration;
-    const videoDuration = calculateVideoDuration(videoTimeInSeconds);
-    const viewCountFormatted = formatCount(metaBody.metaData.view_count);
-    const likeCountFormatted = formatCount(metaBody.metaData.like_count);
+    var uploadAgoObject = calculateUploadAgo(daysAgo);
+    var videoTimeInSeconds = metaBody.metaData.duration;
+    var videoDuration = calculateVideoDuration(videoTimeInSeconds);
+    var viewCountFormatted = formatCount(metaBody.metaData.view_count);
+    var likeCountFormatted = formatCount(metaBody.metaData.like_count);
     function calculateUploadAgo(days) {
-        const years = Math.floor(days / 365);
-        const months = Math.floor((days % 365) / 30);
-        const remainingDays = days % 30;
-        const formattedString = `${years > 0 ? years + " years, " : ""}${months > 0 ? months + " months, " : ""}${remainingDays} days`;
+        var years = Math.floor(days / 365);
+        var months = Math.floor((days % 365) / 30);
+        var remainingDays = days % 30;
+        var formattedString = `${years > 0 ? years + " years, " : ""}${months > 0 ? months + " months, " : ""}${remainingDays} days`;
         return { years, months, days: remainingDays, formatted: formattedString };
     }
     function calculateVideoDuration(seconds) {
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        const remainingSeconds = seconds % 60;
-        const formattedString = `${hours > 0 ? hours + " hours, " : ""}${minutes > 0 ? minutes + " minutes, " : ""}${remainingSeconds} seconds`;
+        var hours = Math.floor(seconds / 3600);
+        var minutes = Math.floor((seconds % 3600) / 60);
+        var remainingSeconds = seconds % 60;
+        var formattedString = `${hours > 0 ? hours + " hours, " : ""}${minutes > 0 ? minutes + " minutes, " : ""}${remainingSeconds} seconds`;
         return {
             hours,
             minutes,
@@ -54,17 +54,17 @@ async function extract({ query, verbose, }) {
         };
     }
     function formatCount(count) {
-        const abbreviations = ["K", "M", "B", "T"];
-        for (let i = abbreviations.length - 1; i >= 0; i--) {
-            const size = Math.pow(10, (i + 1) * 3);
+        var abbreviations = ["K", "M", "B", "T"];
+        for (var i = abbreviations.length - 1; i >= 0; i--) {
+            var size = Math.pow(10, (i + 1) * 3);
             if (size <= count) {
-                const formattedCount = Math.round((count / size) * 10) / 10;
+                var formattedCount = Math.round((count / size) * 10) / 10;
                 return `${formattedCount}${abbreviations[i]}`;
             }
         }
         return `${count}`;
     }
-    const payload = {
+    var payload = {
         AudioLowF: metaBody.AudioLowF,
         AudioHighF: metaBody.AudioHighF,
         VideoLowF: metaBody.VideoLowF,

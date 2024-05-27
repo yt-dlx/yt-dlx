@@ -7,8 +7,8 @@ const colors_1 = __importDefault(require("colors"));
 const youtubei_1 = require("youtubei");
 async function singleVideo({ videoId }) {
     try {
-        const youtube = new youtubei_1.Client();
-        const singleVideo = await youtube.getVideo(videoId);
+        var youtube = new youtubei_1.Client();
+        var singleVideo = await youtube.getVideo(videoId);
         return {
             id: singleVideo.id,
             title: singleVideo.title,

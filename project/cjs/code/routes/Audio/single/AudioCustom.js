@@ -40,7 +40,7 @@ const ZodSchema = zod_1.z.object({
     useTor: zod_1.z.boolean().optional(),
     stream: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
-    extract: zod_1.z.boolean().optional(),
+    metadata: zod_1.z.boolean().optional(),
     resolution: zod_1.z.enum(["high", "medium", "low", "ultralow"]),
     filter: zod_1.z
         .enum([
@@ -72,10 +72,10 @@ const ZodSchema = zod_1.z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
  * @param resolution - The desired audio resolution. Available options: "high", "medium", "low", "ultralow".
- * @param extract - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
+ * @param metadata - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
  * @returns A Promise that resolves with either `void` (if `stream` is false) or an object containing the `ffmpeg` instance and the output filename (if `stream` is true).
  */
-async function AudioCustom({ query, output, useTor, stream, filter, verbose, extract, resolution, }) {
+async function AudioCustom({ query, output, useTor, stream, filter, verbose, metadata, resolution, }) {
     try {
         ZodSchema.parse({
             query,
@@ -84,10 +84,10 @@ async function AudioCustom({ query, output, useTor, stream, filter, verbose, ext
             stream,
             filter,
             verbose,
-            extract,
+            metadata,
             resolution,
         });
-        let startTime;
+        var startTime;
         const engineData = await (0, Agent_1.default)({ query, verbose, useTor });
         if (engineData === undefined) {
             throw new Error(`${colors_1.default.red("@error:")} unable to get response!`);
@@ -97,7 +97,7 @@ async function AudioCustom({ query, output, useTor, stream, filter, verbose, ext
             const folder = output ? path.join(__dirname, output) : __dirname;
             if (!fs.existsSync(folder))
                 fs.mkdirSync(folder, { recursive: true });
-            let filename = `yt-dlx_(AudioCustom_${resolution}_`;
+            var filename = `yt-dlx_(AudioCustom_${resolution}_`;
             const ff = (0, fluent_ffmpeg_1.default)();
             const adata = engineData.AudioHigh.find((i) => i.format.includes(resolution.replace("p", "").toString()));
             if (adata)
@@ -183,7 +183,7 @@ async function AudioCustom({ query, output, useTor, stream, filter, verbose, ext
             });
             ff.on("end", () => process.stdout.write("\n"));
             ff.on("progress", ({ percent, timemark }) => {
-                let color = colors_1.default.green;
+                var color = colors_1.default.green;
                 if (isNaN(percent))
                     percent = 0;
                 if (percent > 98)
@@ -208,7 +208,7 @@ async function AudioCustom({ query, output, useTor, stream, filter, verbose, ext
                             ? path.join(folder, filename)
                             : filename.replace("_)_", ")_"),
                     };
-                case extract:
+                case metadata:
                     return {
                         filename,
                         metaData: engineData.metaData,

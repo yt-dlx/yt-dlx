@@ -7,9 +7,9 @@ const colors_1 = __importDefault(require("colors"));
 const youtubei_1 = require("youtubei");
 async function playlistVideos({ playlistId, }) {
     try {
-        const youtube = new youtubei_1.Client();
-        const playlistVideos = await youtube.getPlaylist(playlistId);
-        const result = playlistVideos.videos.items.map((item) => ({
+        var youtube = new youtubei_1.Client();
+        var playlistVideos = await youtube.getPlaylist(playlistId);
+        var result = playlistVideos.videos.items.map((item) => ({
             id: item.id,
             title: item.title,
             isLive: item.isLive,

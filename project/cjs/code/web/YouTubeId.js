@@ -16,9 +16,9 @@ function YouTubeID(videoLink) {
             for (i = 0; i < patterns.length; ++i) {
                 if (patterns[i].test(videoLink)) {
                     if (i === patterns.length - 1) {
-                        const match = patterns[i].exec(videoLink);
-                        const playlistParams = new URLSearchParams(match[0]);
-                        const videoId = playlistParams.get("v");
+                        var match = patterns[i].exec(videoLink);
+                        var playlistParams = new URLSearchParams(match[0]);
+                        var videoId = playlistParams.get("v");
                         return resolve(videoId);
                     }
                     else

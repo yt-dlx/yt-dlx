@@ -7,7 +7,7 @@ import minimist from "minimist";
 import { spawn } from "child_process";
 import { version } from "../../package.json";
 
-const proTube = minimist(process.argv.slice(2), {
+var proTube = minimist(process.argv.slice(2), {
   string: ["query", "format"],
   alias: {
     h: "help",
@@ -19,15 +19,15 @@ const proTube = minimist(process.argv.slice(2), {
     ah: "audio-highest",
   },
 });
-let uLoc: string = "";
-let maxTries: number = 6;
-let currentDir: string = __dirname;
-const program = async () => {
-  const command = proTube._[0];
+var uLoc: string = "";
+var maxTries: number = 6;
+var currentDir: string = __dirname;
+var program = async () => {
+  var command = proTube._[0];
   switch (command) {
     case "install:deps":
       while (maxTries > 0) {
-        const enginePath = path.join(currentDir, "util");
+        var enginePath = path.join(currentDir, "util");
         if (fs.existsSync(enginePath)) {
           uLoc = enginePath;
           break;
@@ -36,7 +36,7 @@ const program = async () => {
           maxTries--;
         }
       }
-      const rox = spawn("sh", [
+      var rox = spawn("sh", [
         "-c",
         `chmod +x ${uLoc}/deps.sh && ${uLoc}/deps.sh`,
       ]);
@@ -63,7 +63,7 @@ const program = async () => {
       break;
     case "install:socks5":
       while (maxTries > 0) {
-        const enginePath = path.join(currentDir, "util");
+        var enginePath = path.join(currentDir, "util");
         if (fs.existsSync(enginePath)) {
           uLoc = enginePath;
           break;
@@ -72,7 +72,7 @@ const program = async () => {
           maxTries--;
         }
       }
-      const xrox = spawn("sh", [
+      var xrox = spawn("sh", [
         "-c",
         `chmod +x ${uLoc}/socks5.sh && ${uLoc}/socks5.sh`,
       ]);

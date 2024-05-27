@@ -14,12 +14,12 @@ const web_1 = __importDefault(require("../../web"));
  * @throws An error if the playlist link is incorrect or if unable to get a response.
  */
 async function playlist_data({ query, }) {
-    const playlistId = await (0, YouTubeId_1.default)(query);
+    var playlistId = await (0, YouTubeId_1.default)(query);
     if (!playlistId) {
         throw new Error(colors_1.default.red("@error: ") + "incorrect playlist link");
     }
     else {
-        const metaData = await web_1.default.playlistVideos({ playlistId });
+        var metaData = await web_1.default.playlistVideos({ playlistId });
         if (!metaData) {
             throw new Error(colors_1.default.red("@error: ") + "Unable to get response!");
         }

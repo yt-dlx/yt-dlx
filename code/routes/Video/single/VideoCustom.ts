@@ -9,13 +9,13 @@ import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
 import EngineOutput from "../../../interfaces/EngineOutput";
 
-const ZodSchema = z.object({
+var ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
   useTor: z.boolean().optional(),
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
-  extract: z.boolean().optional(),
+  metadata: z.boolean().optional(),
   resolution: z.enum([
     "144p",
     "240p",
@@ -52,7 +52,7 @@ const ZodSchema = z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
  * @param output - (optional) The output directory for the processed files.
- * @param extract - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
+ * @param metadata - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
  * @returns A Promise that resolves when the video has been processed, unless `stream` is `true`, in which case it resolves with an object containing the `ffmpeg` command and the `filename`.
  */
@@ -63,7 +63,7 @@ export default async function VideoCustom({
   filter,
   output,
   verbose,
-  extract,
+  metadata,
   resolution,
 }: z.infer<typeof ZodSchema>): Promise<
   | void
@@ -88,23 +88,23 @@ export default async function VideoCustom({
       filter,
       output,
       verbose,
-      extract,
+      metadata,
       resolution,
     });
-    let startTime: Date;
-    const engineData = await ytdlx({ query, verbose, useTor });
+    var startTime: Date;
+    var engineData = await ytdlx({ query, verbose, useTor });
     if (engineData === undefined) {
       throw new Error(`${colors.red("@error:")} unable to get response!`);
     } else {
-      const title: string = engineData.metaData.title.replace(
+      var title: string = engineData.metaData.title.replace(
         /[^a-zA-Z0-9_]+/g,
         "_"
       );
-      const folder = output ? path.join(__dirname, output) : __dirname;
+      var folder = output ? path.join(__dirname, output) : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
-      let filename: string = `yt-dlx_(VideoCustom_${resolution}_`;
-      const ff: FfmpegCommand = ffmpeg();
-      const vdata = engineData.ManifestHigh.find((i) =>
+      var filename: string = `yt-dlx_(VideoCustom_${resolution}_`;
+      var ff: FfmpegCommand = ffmpeg();
+      var vdata = engineData.ManifestHigh.find((i) =>
         i.format.includes(resolution.replace("p", "").toString())
       );
       ff.addInput(engineData.AudioHighF.url);
@@ -163,14 +163,14 @@ export default async function VideoCustom({
       });
       ff.on("end", () => process.stdout.write("\n"));
       ff.on("progress", ({ percent, timemark }) => {
-        let color = colors.green;
+        var color = colors.green;
         if (isNaN(percent)) percent = 0;
         if (percent > 98) percent = 100;
         if (percent < 25) color = colors.red;
         else if (percent < 50) color = colors.yellow;
-        const width = Math.floor(process.stdout.columns / 4);
-        const scomp = Math.round((width * percent) / 100);
-        const progb =
+        var width = Math.floor(process.stdout.columns / 4);
+        var scomp = Math.round((width * percent) / 100);
+        var progb =
           color("━").repeat(scomp) + color(" ").repeat(width - scomp);
         process.stdout.write(
           `\r${color("@prog:")} ${progb}` +
@@ -189,7 +189,7 @@ export default async function VideoCustom({
               ? path.join(folder, filename)
               : filename.replace("_)_", ")_"),
           };
-        case extract:
+        case metadata:
           return {
             filename,
             metaData: engineData.metaData,

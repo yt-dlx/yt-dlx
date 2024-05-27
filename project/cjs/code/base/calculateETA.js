@@ -8,9 +8,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @returns The estimated time remaining in seconds as a string with two decimal places.
  */
 function calculateETA(startTime, percent) {
-    const currentTime = new Date();
-    const elapsedTime = (currentTime.getTime() - startTime.getTime()) / 1000;
-    const remainingTime = (elapsedTime / percent) * (100 - percent);
+    var currentTime = new Date();
+    var elapsedTime = (currentTime.getTime() - startTime.getTime()) / 1000;
+    var remainingTime = (elapsedTime / percent) * (100 - percent);
     return remainingTime.toFixed(2);
 }
 exports.default = calculateETA;

@@ -9,13 +9,13 @@ import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
 import EngineOutput from "../../../interfaces/EngineOutput";
 
-const ZodSchema = z.object({
+var ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
   useTor: z.boolean().optional(),
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
-  extract: z.boolean().optional(),
+  metadata: z.boolean().optional(),
   filter: z
     .enum([
       "invert",
@@ -36,7 +36,7 @@ const ZodSchema = z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
  * @param output - (optional) The output directory for the processed file.
- * @param extract - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
+ * @param metadata - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
  * @returns A Promise that resolves when the audio and video processing is complete. If `stream` is true, it returns an object with the `ffmpeg` command and the `filename`.
  */
@@ -44,7 +44,7 @@ export default async function AudioVideoHighest({
   query,
   stream,
   verbose,
-  extract,
+  metadata,
   output,
   useTor,
   filter,
@@ -72,31 +72,31 @@ export default async function AudioVideoHighest({
       query,
       stream,
       verbose,
-      extract,
+      metadata,
       output,
       useTor,
       filter,
     });
-    let startTime: Date;
-    const engineData = await ytdlx({ query, verbose, useTor });
+    var startTime: Date;
+    var engineData = await ytdlx({ query, verbose, useTor });
     if (engineData === undefined) {
       throw new Error(`${colors.red("@error:")} unable to get response!`);
     } else {
-      const title: string = engineData.metaData.title.replace(
+      var title: string = engineData.metaData.title.replace(
         /[^a-zA-Z0-9_]+/g,
         "_"
       );
-      const folder = output ? path.join(__dirname, output) : __dirname;
+      var folder = output ? path.join(__dirname, output) : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
-      const ff: FfmpegCommand = ffmpeg();
-      const vdata =
+      var ff: FfmpegCommand = ffmpeg();
+      var vdata =
         engineData.ManifestHigh[engineData.ManifestHigh.length - 1].url;
       ff.addInput(engineData.AudioHighF.url);
       ff.addInput(vdata.toString());
       ff.outputOptions("-c copy");
       ff.withOutputFormat("matroska");
       ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
-      let filename: string = "yt-dlx_(AudioVideoHighest_";
+      var filename: string = "yt-dlx_(AudioVideoHighest_";
       switch (filter) {
         case "grayscale":
           ff.withVideoFilter(
@@ -141,14 +141,14 @@ export default async function AudioVideoHighest({
       });
       ff.on("end", () => process.stdout.write("\n"));
       ff.on("progress", ({ percent, timemark }) => {
-        let color = colors.green;
+        var color = colors.green;
         if (isNaN(percent)) percent = 0;
         if (percent > 98) percent = 100;
         if (percent < 25) color = colors.red;
         else if (percent < 50) color = colors.yellow;
-        const width = Math.floor(process.stdout.columns / 4);
-        const scomp = Math.round((width * percent) / 100);
-        const progb =
+        var width = Math.floor(process.stdout.columns / 4);
+        var scomp = Math.round((width * percent) / 100);
+        var progb =
           color("━").repeat(scomp) + color(" ").repeat(width - scomp);
         process.stdout.write(
           `\r${color("@prog:")} ${progb}` +
@@ -167,7 +167,7 @@ export default async function AudioVideoHighest({
               ? path.join(folder, filename)
               : filename.replace("_)_", ")_"),
           };
-        case extract:
+        case metadata:
           return {
             filename,
             metaData: engineData.metaData,

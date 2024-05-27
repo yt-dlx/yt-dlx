@@ -16,9 +16,9 @@ export default function YouTubeID(
       for (i = 0; i < patterns.length; ++i) {
         if (patterns[i].test(videoLink)) {
           if (i === patterns.length - 1) {
-            const match: any = patterns[i].exec(videoLink);
-            const playlistParams: any = new URLSearchParams(match[0]);
-            const videoId: any = playlistParams.get("v");
+            var match: any = patterns[i].exec(videoLink);
+            var playlistParams: any = new URLSearchParams(match[0]);
+            var videoId: any = playlistParams.get("v");
             return resolve(videoId);
           } else return resolve(patterns[i].exec(videoLink)[1]);
         }

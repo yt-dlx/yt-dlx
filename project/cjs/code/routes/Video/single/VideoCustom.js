@@ -34,13 +34,13 @@ const fluent_ffmpeg_1 = __importDefault(require("fluent-ffmpeg"));
 const Agent_1 = __importDefault(require("../../../base/Agent"));
 const formatTime_1 = __importDefault(require("../../../base/formatTime"));
 const calculateETA_1 = __importDefault(require("../../../base/calculateETA"));
-const ZodSchema = zod_1.z.object({
+var ZodSchema = zod_1.z.object({
     query: zod_1.z.string().min(2),
     output: zod_1.z.string().optional(),
     useTor: zod_1.z.boolean().optional(),
     stream: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
-    extract: zod_1.z.boolean().optional(),
+    metadata: zod_1.z.boolean().optional(),
     resolution: zod_1.z.enum([
         "144p",
         "240p",
@@ -77,11 +77,11 @@ const ZodSchema = zod_1.z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
  * @param output - (optional) The output directory for the processed files.
- * @param extract - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
+ * @param metadata - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
  * @returns A Promise that resolves when the video has been processed, unless `stream` is `true`, in which case it resolves with an object containing the `ffmpeg` command and the `filename`.
  */
-async function VideoCustom({ query, stream, useTor, filter, output, verbose, extract, resolution, }) {
+async function VideoCustom({ query, stream, useTor, filter, output, verbose, metadata, resolution, }) {
     try {
         ZodSchema.parse({
             query,
@@ -90,22 +90,22 @@ async function VideoCustom({ query, stream, useTor, filter, output, verbose, ext
             filter,
             output,
             verbose,
-            extract,
+            metadata,
             resolution,
         });
-        let startTime;
-        const engineData = await (0, Agent_1.default)({ query, verbose, useTor });
+        var startTime;
+        var engineData = await (0, Agent_1.default)({ query, verbose, useTor });
         if (engineData === undefined) {
             throw new Error(`${colors_1.default.red("@error:")} unable to get response!`);
         }
         else {
-            const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
-            const folder = output ? path.join(__dirname, output) : __dirname;
+            var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
+            var folder = output ? path.join(__dirname, output) : __dirname;
             if (!fs.existsSync(folder))
                 fs.mkdirSync(folder, { recursive: true });
-            let filename = `yt-dlx_(VideoCustom_${resolution}_`;
-            const ff = (0, fluent_ffmpeg_1.default)();
-            const vdata = engineData.ManifestHigh.find((i) => i.format.includes(resolution.replace("p", "").toString()));
+            var filename = `yt-dlx_(VideoCustom_${resolution}_`;
+            var ff = (0, fluent_ffmpeg_1.default)();
+            var vdata = engineData.ManifestHigh.find((i) => i.format.includes(resolution.replace("p", "").toString()));
             ff.addInput(engineData.AudioHighF.url);
             if (vdata)
                 ff.addInput(vdata.url.toString());
@@ -158,7 +158,7 @@ async function VideoCustom({ query, stream, useTor, filter, output, verbose, ext
             });
             ff.on("end", () => process.stdout.write("\n"));
             ff.on("progress", ({ percent, timemark }) => {
-                let color = colors_1.default.green;
+                var color = colors_1.default.green;
                 if (isNaN(percent))
                     percent = 0;
                 if (percent > 98)
@@ -167,9 +167,9 @@ async function VideoCustom({ query, stream, useTor, filter, output, verbose, ext
                     color = colors_1.default.red;
                 else if (percent < 50)
                     color = colors_1.default.yellow;
-                const width = Math.floor(process.stdout.columns / 4);
-                const scomp = Math.round((width * percent) / 100);
-                const progb = color("━").repeat(scomp) + color(" ").repeat(width - scomp);
+                var width = Math.floor(process.stdout.columns / 4);
+                var scomp = Math.round((width * percent) / 100);
+                var progb = color("━").repeat(scomp) + color(" ").repeat(width - scomp);
                 process.stdout.write(`\r${color("@prog:")} ${progb}` +
                     ` ${color("| @percent:")} ${percent.toFixed(2)}%` +
                     ` ${color("| @timemark:")} ${timemark}` +
@@ -183,7 +183,7 @@ async function VideoCustom({ query, stream, useTor, filter, output, verbose, ext
                             ? path.join(folder, filename)
                             : filename.replace("_)_", ")_"),
                     };
-                case extract:
+                case metadata:
                     return {
                         filename,
                         metaData: engineData.metaData,

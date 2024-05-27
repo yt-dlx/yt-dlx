@@ -36,7 +36,7 @@ const Agent_1 = __importDefault(require("../../../base/Agent"));
 const YouTubeId_1 = __importDefault(require("../../../web/YouTubeId"));
 const formatTime_1 = __importDefault(require("../../../base/formatTime"));
 const calculateETA_1 = __importDefault(require("../../../base/calculateETA"));
-const ZodSchema = zod_1.z.object({
+var ZodSchema = zod_1.z.object({
     output: zod_1.z.string().optional(),
     useTor: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
@@ -89,24 +89,24 @@ async function ListVideoCustom({ query, resolution, verbose, output, useTor, fil
             useTor,
             filter,
         });
-        let startTime;
-        const unique = new Set();
-        for (const purl of query) {
+        var startTime;
+        var unique = new Set();
+        for (var purl of query) {
             try {
-                const playlistId = await (0, YouTubeId_1.default)(purl);
+                var playlistId = await (0, YouTubeId_1.default)(purl);
                 if (!playlistId) {
                     console.log(colors_1.default.red("@error: "), "@error: invalid playlist", purl);
                     continue;
                 }
                 else {
-                    const punique = await web_1.default.playlistVideos({
+                    var punique = await web_1.default.playlistVideos({
                         playlistId,
                     });
                     if (punique === undefined) {
                         console.log(colors_1.default.red("@error:"), "unable to get response for", purl);
                         continue;
                     }
-                    for (const video of punique.result)
+                    for (var video of punique.result)
                         unique.add(video);
                 }
             }
@@ -118,7 +118,7 @@ async function ListVideoCustom({ query, resolution, verbose, output, useTor, fil
         console.log(colors_1.default.blue("@info:"), "total number of uncommon videos:", colors_1.default.blue(unique.size.toString()));
         for (const video of unique) {
             try {
-                const engineData = await (0, Agent_1.default)({
+                var engineData = await (0, Agent_1.default)({
                     query: video.videoLink,
                     verbose,
                     useTor,
@@ -127,13 +127,13 @@ async function ListVideoCustom({ query, resolution, verbose, output, useTor, fil
                     console.log(colors_1.default.red("@error:"), "unable to get response!");
                     continue;
                 }
-                const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
-                const folder = output ? path.join(__dirname, output) : __dirname;
+                var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
+                var folder = output ? path.join(__dirname, output) : __dirname;
                 if (!fs.existsSync(folder))
                     fs.mkdirSync(folder, { recursive: true });
-                let filename = `yt-dlx_(VideoCustom_${resolution}_`;
-                const ff = (0, fluent_ffmpeg_1.default)();
-                const vdata = engineData.ManifestHigh.find((i) => i.format.includes(resolution.replace("p", "").toString()));
+                var filename = `yt-dlx_(VideoCustom_${resolution}_`;
+                var ff = (0, fluent_ffmpeg_1.default)();
+                var vdata = engineData.ManifestHigh.find((i) => i.format.includes(resolution.replace("p", "").toString()));
                 ff.addInput(engineData.AudioHighF.url);
                 if (vdata)
                     ff.addInput(vdata.url.toString());
@@ -186,7 +186,7 @@ async function ListVideoCustom({ query, resolution, verbose, output, useTor, fil
                 });
                 ff.on("end", () => process.stdout.write("\n"));
                 ff.on("progress", ({ percent, timemark }) => {
-                    let color = colors_1.default.green;
+                    var color = colors_1.default.green;
                     if (isNaN(percent))
                         percent = 0;
                     if (percent > 98)
@@ -195,9 +195,9 @@ async function ListVideoCustom({ query, resolution, verbose, output, useTor, fil
                         color = colors_1.default.red;
                     else if (percent < 50)
                         color = colors_1.default.yellow;
-                    const width = Math.floor(process.stdout.columns / 4);
-                    const scomp = Math.round((width * percent) / 100);
-                    const progb = color("━").repeat(scomp) + color(" ").repeat(width - scomp);
+                    var width = Math.floor(process.stdout.columns / 4);
+                    var scomp = Math.round((width * percent) / 100);
+                    var progb = color("━").repeat(scomp) + color(" ").repeat(width - scomp);
                     process.stdout.write(`\r${color("@prog:")} ${progb}` +
                         ` ${color("| @percent:")} ${percent.toFixed(2)}%` +
                         ` ${color("| @timemark:")} ${timemark}` +

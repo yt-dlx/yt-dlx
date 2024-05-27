@@ -8,7 +8,7 @@ const relatedVideos_1 = __importDefault(require("./relatedVideos"));
 const searchPlaylists_1 = __importDefault(require("./searchPlaylists"));
 const searchVideos_1 = __importDefault(require("./searchVideos"));
 const singleVideo_1 = __importDefault(require("./singleVideo"));
-const web = {
+var web = {
     singleVideo: singleVideo_1.default,
     searchVideos: searchVideos_1.default,
     relatedVideos: relatedVideos_1.default,

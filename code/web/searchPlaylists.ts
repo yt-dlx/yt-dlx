@@ -9,9 +9,9 @@ export interface searchPlaylistsType {
 }
 export default async function searchPlaylists({ query }: { query: string }) {
   try {
-    const youtube = new Client();
-    const searchPlaylists = await youtube.search(query, { type: "playlist" });
-    const result: searchPlaylistsType[] = searchPlaylists.items.map(
+    var youtube = new Client();
+    var searchPlaylists = await youtube.search(query, { type: "playlist" });
+    var result: searchPlaylistsType[] = searchPlaylists.items.map(
       (item: any) => ({
         id: item.id,
         title: item.title,

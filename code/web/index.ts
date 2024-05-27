@@ -17,7 +17,7 @@ export type {
   searchPlaylistsType,
 };
 
-const web = {
+var web = {
   singleVideo,
   searchVideos,
   relatedVideos,

@@ -40,7 +40,7 @@ var ZodSchema = zod_1.z.object({
     useTor: zod_1.z.boolean().optional(),
     stream: zod_1.z.boolean().optional(),
     verbose: zod_1.z.boolean().optional(),
-    extract: zod_1.z.boolean().optional(),
+    metadata: zod_1.z.boolean().optional(),
     filter: zod_1.z
         .enum([
         "echo",
@@ -70,10 +70,10 @@ var ZodSchema = zod_1.z.object({
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
  * @param filter - (optional) The audio filter to apply. Available options: "echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed".
- * @param extract - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
- * @returns A Promise that resolves with either `void` (if `stream` is false and `extract` is false), an object containing the `ffmpeg` instance and the output filename (if `stream` is true), or an object containing the filename and extracted engine data (if `extract` is true).
+ * @param metadata - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
+ * @returns A Promise that resolves with either `void` (if `stream` is false and `metadata` is false), an object containing the `ffmpeg` instance and the output filename (if `stream` is true), or an object containing the filename and extracted engine data (if `metadata` is true).
  */
-async function AudioHighest({ query, output, useTor, stream, filter, extract, verbose, }) {
+async function AudioHighest({ query, output, useTor, stream, filter, metadata, verbose, }) {
     try {
         ZodSchema.parse({
             query,
@@ -81,10 +81,10 @@ async function AudioHighest({ query, output, useTor, stream, filter, extract, ve
             useTor,
             stream,
             filter,
-            extract,
+            metadata,
             verbose,
         });
-        let startTime;
+        var startTime;
         const engineData = await (0, Agent_1.default)({ query, verbose, useTor });
         if (engineData === undefined) {
             throw new Error(`${colors_1.default.red("@error:")} unable to get response!`);
@@ -94,7 +94,7 @@ async function AudioHighest({ query, output, useTor, stream, filter, extract, ve
             const folder = output ? path.join(__dirname, output) : __dirname;
             if (!fs.existsSync(folder))
                 fs.mkdirSync(folder, { recursive: true });
-            let filename = "yt-dlx_(AudioHighest_";
+            var filename = "yt-dlx_(AudioHighest_";
             const ff = (0, fluent_ffmpeg_1.default)();
             ff.addInput(engineData.AudioHighF.url);
             ff.addInput(engineData.metaData.thumbnail);
@@ -175,7 +175,7 @@ async function AudioHighest({ query, output, useTor, stream, filter, extract, ve
             });
             ff.on("end", () => process.stdout.write("\n"));
             ff.on("progress", ({ percent, timemark }) => {
-                let color = colors_1.default.green;
+                var color = colors_1.default.green;
                 if (isNaN(percent))
                     percent = 0;
                 if (percent > 98)
@@ -200,7 +200,7 @@ async function AudioHighest({ query, output, useTor, stream, filter, extract, ve
                             ? path.join(folder, filename)
                             : filename.replace("_)_", ")_"),
                     };
-                case extract:
+                case metadata:
                     return {
                         filename,
                         metaData: engineData.metaData,

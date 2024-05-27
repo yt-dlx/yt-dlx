@@ -10,7 +10,7 @@ import formatTime from "../../../base/formatTime";
 import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
 
-const ZodSchema = z.object({
+var ZodSchema = z.object({
   output: z.string().optional(),
   useTor: z.boolean().optional(),
   verbose: z.boolean().optional(),
@@ -70,8 +70,8 @@ export default async function ListAudioVideoCustom({
       useTor,
       filter,
     });
-    let startTime: Date;
-    const unique = new Set<{
+    var startTime: Date;
+    var unique = new Set<{
       ago: string;
       title: string;
       views: string;
@@ -81,14 +81,14 @@ export default async function ListAudioVideoCustom({
       authorUrl: string;
       thumbnailUrls: string[];
     }>();
-    for (const purl of query) {
+    for (var purl of query) {
       try {
-        const playlistId = await YouTubeID(purl);
+        var playlistId = await YouTubeID(purl);
         if (!playlistId) {
           console.log(colors.red("@error: "), "@error: invalid playlist", purl);
           continue;
         } else {
-          const punique = await web.playlistVideos({
+          var punique = await web.playlistVideos({
             playlistId,
           });
           if (punique === undefined) {
@@ -99,7 +99,7 @@ export default async function ListAudioVideoCustom({
             );
             continue;
           }
-          for (const video of punique.result) unique.add(video);
+          for (var video of punique.result) unique.add(video);
         }
       } catch (error: any) {
         console.log(colors.red("@error:"), error.message);
@@ -113,7 +113,7 @@ export default async function ListAudioVideoCustom({
     );
     for (const video of unique) {
       try {
-        const engineData = await ytdlx({
+        var engineData = await ytdlx({
           query: video.videoLink,
           verbose,
           useTor,
@@ -122,15 +122,15 @@ export default async function ListAudioVideoCustom({
           console.log(colors.red("@error:"), "unable to get response!");
           continue;
         }
-        const title: string = engineData.metaData.title.replace(
+        var title: string = engineData.metaData.title.replace(
           /[^a-zA-Z0-9_]+/g,
           "_"
         );
-        const folder = output ? path.join(__dirname, output) : __dirname;
+        var folder = output ? path.join(__dirname, output) : __dirname;
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
-        let filename: string = `yt-dlx_(AudioVideoCustom_${resolution}_`;
-        const ff: FfmpegCommand = ffmpeg();
-        const vdata = engineData.ManifestHigh.find((i) =>
+        var filename: string = `yt-dlx_(AudioVideoCustom_${resolution}_`;
+        var ff: FfmpegCommand = ffmpeg();
+        var vdata = engineData.ManifestHigh.find((i) =>
           i.format.includes(resolution.replace("p", "").toString())
         );
         ff.addInput(engineData.AudioHighF.url);
@@ -188,14 +188,14 @@ export default async function ListAudioVideoCustom({
         });
         ff.on("end", () => process.stdout.write("\n"));
         ff.on("progress", ({ percent, timemark }) => {
-          let color = colors.green;
+          var color = colors.green;
           if (isNaN(percent)) percent = 0;
           if (percent > 98) percent = 100;
           if (percent < 25) color = colors.red;
           else if (percent < 50) color = colors.yellow;
-          const width = Math.floor(process.stdout.columns / 4);
-          const scomp = Math.round((width * percent) / 100);
-          const progb =
+          var width = Math.floor(process.stdout.columns / 4);
+          var scomp = Math.round((width * percent) / 100);
+          var progb =
             color("━").repeat(scomp) + color(" ").repeat(width - scomp);
           process.stdout.write(
             `\r${color("@prog:")} ${progb}` +

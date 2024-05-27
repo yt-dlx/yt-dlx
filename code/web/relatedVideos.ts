@@ -11,9 +11,9 @@ export interface relatedVideosType {
 }
 export default async function relatedVideos({ videoId }: { videoId: string }) {
   try {
-    const youtube = new Client();
-    const relatedVideos: any = await youtube.getVideo(videoId);
-    const result: relatedVideosType[] = relatedVideos.related.items.map(
+    var youtube = new Client();
+    var relatedVideos: any = await youtube.getVideo(videoId);
+    var result: relatedVideosType[] = relatedVideos.related.items.map(
       (item: any) => ({
         id: item.id,
         title: item.title,
