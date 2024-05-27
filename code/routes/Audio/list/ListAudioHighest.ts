@@ -54,7 +54,7 @@ export default async function ListAudioHighest({
 }: z.infer<typeof ZodSchema>): Promise<void> {
   try {
     ZodSchema.parse({ query, output, useTor, verbose, filter });
-    var startTime: Date;
+    let startTime: Date;
     var unique = new Set<{
       ago: string;
       title: string;
@@ -116,7 +116,7 @@ export default async function ListAudioHighest({
         );
         var folder = output ? path.join(__dirname, output) : __dirname;
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
-        var filename: string = "yt-dlx_(AudioHighest_";
+        let filename: string = "yt-dlx_(AudioHighest_";
         var ff: FfmpegCommand = ffmpeg();
         ff.addInput(engineData.AudioHighF.url);
         ff.addInput(engineData.metaData.thumbnail);
@@ -196,7 +196,7 @@ export default async function ListAudioHighest({
         });
         ff.on("end", () => process.stdout.write("\n"));
         ff.on("progress", ({ percent, timemark }) => {
-          var color = colors.green;
+          let color = colors.green;
           if (isNaN(percent)) percent = 0;
           if (percent > 98) percent = 100;
           if (percent < 25) color = colors.red;
