@@ -83,6 +83,7 @@ export default async function Agent({
   // var isservice: boolean = false;
   // var issystemctl: boolean = false;
   if (useTor) {
+    if (process.platform === "win32") ipsys = await sip();
     switch (true) {
       case await systemctl():
         execSync("systemctl restart tor", { stdio: "inherit" });
@@ -106,7 +107,12 @@ export default async function Agent({
     switch (useTor) {
       case true:
         console.log(colors.green("@info:"), "system ipAddress", ipsys);
-        console.log(colors.green("@info:"), "socks5 ipAddress", iptor);
+        if (process.platform === "win32") {
+          console.log(
+            colors.red("@error:"),
+            "TOR can't be used on your system!"
+          );
+        } else console.log(colors.green("@info:"), "socks5 ipAddress", iptor);
         break;
       default:
         console.log(colors.green("@info:"), "system ipAddress", ipsys);

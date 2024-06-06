@@ -4,6 +4,7 @@ import * as path from "path";
 import { z, ZodError } from "zod";
 import ffmpeg from "fluent-ffmpeg";
 import ytdlx from "../../../base/Agent";
+import staticffmpeg from "ffmpeg-static";
 import formatTime from "../../../base/formatTime";
 import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
@@ -104,7 +105,8 @@ export default async function AudioCustom({
         )} no audio data found. use list_formats() maybe?`
       );
     }
-    var ff: FfmpegCommand = ffmpeg()
+    var ff = ffmpeg()
+      .setFfmpegPath(staticffmpeg as any)
       .addInput(adata.url)
       .addInput(engineData.metaData.thumbnail)
       .withOutputFormat("avi");

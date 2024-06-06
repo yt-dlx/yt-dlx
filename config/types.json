@@ -7,6 +7,6 @@
     "declarationMap": true,
     "removeComments": false,
     "emitDeclarationOnly": true,
-    "declarationDir": "../project/types"
+    "declarationDir": "../out/types"
   }
 }

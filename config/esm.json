@@ -3,6 +3,6 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "outDir": "../project/esm"
+    "outDir": "../out/esm"
   }
 }

@@ -145,10 +145,25 @@ export default async function Engine({
   var VideoLowF: VideoFormat | any = null;
   var VideoHighF: VideoFormat | any = null;
   var dirC = __dirname || process.cwd();
+  let platform = process.platform;
+  let fileExtension = "";
   var pLoc = "";
   var maxT = 8;
+  switch (platform) {
+    case "win32":
+      fileExtension = ".exe";
+      break;
+    case "darwin":
+      fileExtension = "_macos";
+      break;
+    case "linux":
+      fileExtension = "_linux";
+      break;
+    default:
+      throw new Error("Unsupported platform");
+  }
   while (maxT > 0) {
-    var cprobePath = path.join(dirC, "util", "cprobe");
+    var cprobePath = path.join(dirC, "util", "cprobe" + fileExtension);
     if (fs.existsSync(cprobePath)) {
       pLoc = cprobePath;
       break;
@@ -163,8 +178,8 @@ export default async function Engine({
         "Could not find cprobe file. maybe re-install yt-dlx?"
     );
   }
-  if (sudo) execSync(`sudo chmod +x ${pLoc}`);
-  else execSync(`chmod +x ${pLoc}`);
+  if (sudo) execSync(`sudo shx chmod +x ${pLoc}`);
+  else execSync(`shx chmod +x ${pLoc}`);
   var config = {
     factor: 2,
     retries: 3,

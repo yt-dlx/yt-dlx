@@ -3,6 +3,6 @@
   "compilerOptions": {
     "target": "esnext",
     "module": "commonjs",
-    "outDir": "../project/cjs"
+    "outDir": "../out/cjs"
   }
 }

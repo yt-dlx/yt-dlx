@@ -4,6 +4,7 @@ import * as path from "path";
 import { z, ZodError } from "zod";
 import ffmpeg from "fluent-ffmpeg";
 import ytdlx from "../../../base/Agent";
+import staticffmpeg from "ffmpeg-static";
 import formatTime from "../../../base/formatTime";
 import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
@@ -89,6 +90,7 @@ export default async function AudioLowest({
     var folder = output ? path.join(__dirname, output) : __dirname;
     if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
     var ff: FfmpegCommand = ffmpeg()
+      .setFfmpegPath(staticffmpeg as any)
       .addInput(engineData.AudioLowF.url)
       .addInput(engineData.metaData.thumbnail)
       .withOutputFormat("avi")

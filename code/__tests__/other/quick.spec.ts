@@ -1,14 +1,13 @@
 console.clear();
-import AudioCustom from "../../routes/Audio/single/AudioCustom";
+import AudioHighest from "../../routes/Audio/single/AudioHighest";
 
 (async () => {
-  var core = await AudioCustom({
+  var core = await AudioHighest({
     query: "21 savage - redrum",
-    resolution: "medium",
     metadata: false,
     verbose: true,
     stream: false,
-    useTor: true,
+    useTor: false,
   });
   console.log("@AudioCustom:", core);
 })();

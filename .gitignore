@@ -40,7 +40,6 @@ web_modules/
 .cache
 .parcel-cache
 .next
-out
 .nuxt
 .cache/
 .vuepress/dist
@@ -57,8 +56,10 @@ temp
 .yarn/install-state.gz
 .pnp.*
 others
-util/ffmpeg.tar.xz
-util/ffmpeg
-util/cprobe
-util/yt-dlp_linux
+util/cprobe_mac
+util/cprobe.exe
+util/cprobe_linux
 public
+ffprobe.**
+ffmpeg.**
+ffplay.**
