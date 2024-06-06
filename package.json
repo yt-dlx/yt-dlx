@@ -13,10 +13,10 @@
   },
   "homepage": "https://yt-dlx-shovit.koyeb.app",
   "bin": {
+    "youtube": "project/cjs/code/cli/main.js",
     "yt": "project/cjs/code/cli/main.js",
-    "ytdlx": "project/cjs/code/cli/main.js",
     "yt-dlx": "project/cjs/code/cli/main.js",
-    "youtube": "project/cjs/code/cli/main.js"
+    "ytdlx": "project/cjs/code/cli/main.js"
   },
   "scripts": {
     "start": "node util/dev.mjs",
