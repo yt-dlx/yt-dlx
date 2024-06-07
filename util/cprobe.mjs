@@ -1,9 +1,12 @@
-const { createWriteStream, existsSync } = require("fs");
-const { dirname, join } = require("path");
-const fetch = require("node-fetch");
+import { createWriteStream, existsSync } from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+import fetch from "node-fetch";
 
 (async () => {
   try {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
     let platform = process.platform;
     let fileExtension = "";
     switch (platform) {
@@ -19,7 +22,7 @@ const fetch = require("node-fetch");
       default:
         throw new Error("Unsupported platform");
     }
-    const filepath = join(dirname(__filename), `cprobe${fileExtension}`);
+    const filepath = join(__dirname, `cprobe${fileExtension}`);
     if (!existsSync(filepath)) {
       const url = `https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/latest/download/yt-dlp${fileExtension}`;
       let dSize = 0;

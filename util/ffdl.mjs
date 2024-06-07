@@ -1,6 +1,7 @@
-const fetch = require("node-fetch");
-const { dirname, join } = require("path");
-const { createWriteStream, existsSync } = require("fs");
+import { createWriteStream, existsSync } from "fs";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+import fetch from "node-fetch";
 
 const binDL = async (url, filepath, binaryName) => {
   try {
@@ -26,7 +27,9 @@ const binDL = async (url, filepath, binaryName) => {
 };
 
 (async () => {
-  for (const binary of [
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+  const binaries = [
     {
       name: "ffmpeg.exe",
       url: "https://github.com/yt-dlx/yt-dlx/releases/download/v1.0.0/ffmpeg.exe",
@@ -39,8 +42,9 @@ const binDL = async (url, filepath, binaryName) => {
       name: "ffprobe.exe",
       url: "https://github.com/yt-dlx/yt-dlx/releases/download/v1.0.0/ffprobe.exe",
     },
-  ]) {
-    const filepath = join(dirname(__filename), binary.name);
+  ];
+  for (const binary of binaries) {
+    const filepath = join(__dirname, binary.name);
     if (!existsSync(filepath)) await binDL(binary.url, filepath, binary.name);
   }
 })();
