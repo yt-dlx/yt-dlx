@@ -13,7 +13,7 @@ export default function AwesomePackage({ param }: any) {
       <section className="flex flex-col items-center justify-center mt-20">
         <div className="max-w-screen-2xl px-6 py-16 mx-auto space-y-12">
           <article className="space-y-8">
-<VerPackage />
+            <VerPackage />
             <p className="text-white/60">
               Uncover an unparalleled solution for effortless audio and video
               downloads powered by YT-DLX - An advanced{" "}
@@ -147,7 +147,7 @@ export default function AwesomePackage({ param }: any) {
                     </p>
                     <div className="mt-6">
                       <a
-                        href="https://github.com/yt-dlx/yt-dlx/blob/main/examples/typescript/Audio/single.custom.test.ts"
+                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/Audio/single.custom.test.ts"
                         className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-red-900 rounded-xl hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         View profile
@@ -178,7 +178,7 @@ export default function AwesomePackage({ param }: any) {
                     </p>
                     <div className="mt-6">
                       <a
-                        href="https://github.com/yt-dlx/yt-dlx/blob/main/examples/javascript/Audio/single.custom.test.js"
+                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/Audio/single.custom.test.js"
                         className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-red-900 rounded-xl hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         View profile
@@ -209,7 +209,7 @@ export default function AwesomePackage({ param }: any) {
                     </p>
                     <div className="mt-6">
                       <a
-                        href="https://github.com/yt-dlx/yt-dlx/blob/main/examples/ecmascript/Audio/single.custom.test.mjs"
+                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/Audio/single.custom.test.mjs"
                         className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-red-900 rounded-xl hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         View profile

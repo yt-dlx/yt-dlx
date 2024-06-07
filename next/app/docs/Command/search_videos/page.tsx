@@ -121,7 +121,7 @@ export default function AwesomePackage({ param }: any) {
                     </p>
                     <div className="mt-6">
                       <a
-                        href="https://github.com/yt-dlx/yt-dlx/blob/main/examples/typescript/Command/search_videos.test.ts"
+                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/Command/search_videos.test.ts"
                         className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-red-900 rounded-xl hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         View profile
@@ -152,7 +152,7 @@ export default function AwesomePackage({ param }: any) {
                     </p>
                     <div className="mt-6">
                       <a
-                        href="https://github.com/yt-dlx/yt-dlx/blob/main/examples/javascript/Command/search_videos.test.js"
+                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/Command/search_videos.test.js"
                         className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-red-900 rounded-xl hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         View profile
@@ -183,7 +183,7 @@ export default function AwesomePackage({ param }: any) {
                     </p>
                     <div className="mt-6">
                       <a
-                        href="https://github.com/yt-dlx/yt-dlx/blob/main/examples/ecmascript/Command/search_videos.test.mjs"
+                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/Command/search_videos.test.mjs"
                         className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-red-900 rounded-xl hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         View profile
