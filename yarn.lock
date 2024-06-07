@@ -1916,6 +1916,7 @@ spdx-license-ids@^3.0.0:
   integrity sha512-xxRs31BqRYHwiMzudOrpSiHtZ8i/GeionCBDSilhYRj+9gIcI8wCZTlXZKu9vZIVqViP3dcp9qE5G6AlIaD+TQ==
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0:
+  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -1972,6 +1973,7 @@ string.prototype.trimstart@^1.0.8:
     es-object-atoms "^1.0.0"
 
 "strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+  name strip-ansi-cjs
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -2287,6 +2289,32 @@ youtubei@^1.4.2:
   dependencies:
     node-fetch "2.6.7"
     protobufjs "7.2.6"
+
+yt-dlx@^11.0.0:
+  version "11.0.0"
+  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-11.0.0.tgz#fa41f407f1539803290eb75863d8275aeaeca8bb"
+  integrity sha512-u9dg6CR5e27tOqAshx4RJ0zGKDtpvtdYXixLTUI3cOhxjQy6zzflUGK2elvmeIVdBd4tVf5N00idc7OedFgNVw==
+  dependencies:
+    "@types/async" "^3.2.24"
+    "@types/async-retry" "^1.4.8"
+    "@types/express" "^4.17.21"
+    "@types/fluent-ffmpeg" "^2.1.24"
+    "@types/minimist" "^1.2.5"
+    "@types/node" "^20.14.1"
+    "@types/readline-sync" "^1.4.8"
+    async-retry "^1.3.3"
+    colors "^1.4.0"
+    fluent-ffmpeg "^2.1.3"
+    minimist "^1.2.8"
+    npm-run-all "^4.1.5"
+    readline-sync "^1.4.10"
+    shx "^0.3.4"
+    ts-node "^10.9.2"
+    tsc "^2.0.4"
+    tsup "^8.1.0"
+    typescript "^5.4.5"
+    youtubei "^1.4.2"
+    zod "^3.23.8"
 
 zod@^3.23.8:
   version "3.23.8"
