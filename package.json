@@ -19,12 +19,12 @@
     "yt": "out/cjs/code/cli/main.js"
   },
   "scripts": {
-    "remake": "yarn run clean && yarn run make && yarn run update && yarn run build",
-    "download-files": "node ./util/cprobe.js && node ./util/ffdl.js",
-    "postinstall": "run-s download-files setup-permissions",
-    "setup-permissions": "shx chmod -R +x util/*",
+    "start": "node index.js",
     "prepublishOnly": "yarn run clean:deps",
-    "start": "node util/dev.js",
+    "setup-permissions": "shx chmod -R +x util/*",
+    "postinstall": "run-s download-files setup-permissions",
+    "download-files": "node ./util/cprobe.js && node ./util/ffdl.js",
+    "remake": "yarn run clean && yarn run make && yarn run update && yarn run build",
     "next:dev": "cd next && yarn run dev",
     "next:lint": "cd next && yarn run lint",
     "next:build": "cd next && yarn run build",

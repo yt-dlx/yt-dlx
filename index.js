@@ -3,36 +3,51 @@ const readline = require("readline");
 const { spawn } = require("child_process");
 
 console.clear();
-
 const colors = {
   reset: "\x1b[0m",
   red: "\x1b[1;31m",
   green: "\x1b[1;32m",
 };
-
 const code = {
   remake:
     "yarn run clean && yarn run make && yarn run update && yarn run build",
+  "download-files": "node ./util/cprobe.js && node ./util/ffdl.js",
   postinstall: "run-s download-files setup-permissions",
   "setup-permissions": "shx chmod -R +x util/*",
-  "download-files": "node ./util/cprobe.js",
   prepublishOnly: "yarn run clean:deps",
   "next:dev": "cd next && yarn run dev",
   "next:lint": "cd next && yarn run lint",
   "next:build": "cd next && yarn run build",
   "next:start": "cd next && yarn run start",
   "next:clean": "cd next && yarn run clean",
-  clean: "yarn run clean:base && yarn run clean:next && yarn run clean:deps",
+  "client:typecheck": "cd client && yarn run typecheck",
+  "client:typecheck:web": "cd client && yarn run typecheck:web",
+  "client:typecheck:node": "cd client && yarn run typecheck:node",
+  "client:dev": "cd client && yarn run dev",
+  "client:lint": "cd client && yarn run lint",
+  "client:dist": "cd client && yarn run dist",
+  "client:build:mac": "cd client && yarn run build:mac",
+  "client:build:win": "cd client && yarn run build:win",
+  "client:build:linux": "cd client && yarn run build:linux",
+  "client:build:unpack": "cd client && yarn run build:unpack",
+  clean:
+    "yarn run clean:base && yarn run clean:next && yarn run clean:client && yarn run clean:deps && yarn run clean:ff",
+  "clean:ff": "node util/clean/ff.js",
   "clean:base": "node util/clean/base.js",
   "clean:deps": "node util/clean/deps.js",
   "clean:next": "node util/clean/next.js",
-  "make:base": "yarn install",
-  "make:next": "cd next && yarn install",
-  make: "yarn run make:base && yarn run make:next",
+  "clean:client": "node util/clean/client.js",
+  "make:base": "yarn install --silent",
+  "make:next": "cd next && yarn install --silent",
+  "make:client": "cd client && yarn install --silent",
+  make: "yarn run make:base && yarn run make:next && yarn run make:client",
   "update:base": "yarn upgrade --latest",
-  update: "yarn run update:base && yarn run update:next",
+  "update:client": "cd client && yarn upgrade --latest",
   "update:next": "cd next && yarn upgrade --latest && yarn add sharp@0.32.6",
+  update:
+    "yarn run update:base && yarn run update:next && yarn run update:client",
   "build:next": "cd next && yarn run build",
+  "build:client": "cd client && yarn run build",
   build: "yarn run build:base && yarn run build:next",
   "build:base":
     "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json",
@@ -47,7 +62,6 @@ const code = {
     "yarn run link && yt-dlx audio-lowest --query PERSONAL BY PLAZA && yt-dlx al --query SuaeRys5tTc && yarn run unlink",
   test: "yarn run test:scrape && yarn run test:mix && yarn run test:video && yarn run test:audio && yarn run test:command && yarn run test:cli",
 };
-
 function formatBytes(bytes) {
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
   if (bytes === 0) return "0 Byte";
