@@ -18,6 +18,6 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["../src/**/*.ts"],
+  "include": ["../code/**/*.ts"],
   "exclude": ["../out", "../client", "../node_modules"]
 }
