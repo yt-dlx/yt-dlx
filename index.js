@@ -9,12 +9,12 @@ const colors = {
   green: "\x1b[1;32m",
 };
 const code = {
+  prepublishOnly: "yarn run clean:deps",
+  postinstall: "run-s download-files setup-permissions",
+  "setup-permissions": "shx chmod -R +x ./core/util/*",
+  "download-files": "node ./core/util/cprobe.js && node ./core/util/ffdl.js",
   remake:
     "yarn run clean && yarn run make && yarn run update && yarn run build",
-  "download-files": "node ./util/cprobe.js && node ./util/ffdl.js",
-  postinstall: "run-s download-files setup-permissions",
-  "setup-permissions": "shx chmod -R +x util/*",
-  prepublishOnly: "yarn run clean:deps",
   "next:dev": "cd next && yarn run dev",
   "next:lint": "cd next && yarn run lint",
   "next:build": "cd next && yarn run build",
@@ -32,12 +32,12 @@ const code = {
   "client:build:unpack": "cd client && yarn run build:unpack",
   clean:
     "yarn run clean:base && yarn run clean:next && yarn run clean:client && yarn run clean:deps && yarn run clean:ff",
-  "clean:ff": "node util/clean/ff.js",
-  "clean:base": "node util/clean/base.js",
-  "clean:deps": "node util/clean/deps.js",
-  "clean:next": "node util/clean/next.js",
-  "clean:client": "node util/clean/client.js",
-  "make:base": "yarn install --silent",
+  "clean:ff": "node ./core/util/clean/ff.js",
+  "clean:base": "node ./core/util/clean/base.js",
+  "clean:deps": "node ./core/util/clean/deps.js",
+  "clean:next": "node ./core/util/clean/next.js",
+  "clean:client": "node ./core/util/clean/client.js",
+  "make:base": "cd core && yarn install --silent",
   "make:next": "cd next && yarn install --silent",
   "make:client": "cd client && yarn install --silent",
   make: "yarn run make:base && yarn run make:next && yarn run make:client",
@@ -51,14 +51,18 @@ const code = {
   "build:client": "cd client && yarn run build",
   build: "yarn run build:base && yarn run build:next",
   "build:base":
-    "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json",
-  spec: "tsup code/__tests__/other/quick.spec.ts --outDir temp && node temp/quick.spec.js",
-  "test:mix": "tsup code --outDir temp && node temp/__tests__/mix.js",
-  "test:video": "tsup code --outDir temp && node temp/__tests__/video.js",
-  "test:audio": "tsup code --outDir temp && node temp/__tests__/audio.js",
-  "test:command": "tsup code --outDir temp && node temp/__tests__/command.js",
+    "tsc -p ./core/config/cjs.json && tsc -p ./core/config/esm.json && tsc -p ./core/config/types.json",
+  spec: "tsup ./core/src/__tests__/other/quick.spec.ts --outDir ./core/temp && node ./core/temp/quick.spec.js",
+  "test:mix":
+    "tsup ./core/src --outDir ./core/temp && node ./core/temp/__tests__/mix.js",
+  "test:video":
+    "tsup ./core/src --outDir ./core/temp && node ./core/temp/__tests__/video.js",
+  "test:audio":
+    "tsup ./core/src --outDir ./core/temp && node ./core/temp/__tests__/audio.js",
+  "test:command":
+    "tsup ./core/src --outDir ./core/temp && node ./core/temp/__tests__/command.js",
   "test:scrape":
-    "tsup code/__tests__/other/scrape.spec.ts --outDir temp && node temp/scrape.spec.js",
+    "tsup ./core/src/__tests__/other/scrape.spec.ts --outDir ./core/temp && node ./core/temp/scrape.spec.js",
   "test:cli":
     "yarn run link && yt-dlx audio-lowest --query PERSONAL BY PLAZA && yt-dlx al --query SuaeRys5tTc && yarn run unlink",
   test: "yarn run test:scrape && yarn run test:mix && yarn run test:video && yarn run test:audio && yarn run test:command && yarn run test:cli",
