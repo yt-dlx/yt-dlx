@@ -14,8 +14,9 @@ export default async function handler(
       stream: true,
       verbose: true,
       query: videoId,
+      metadata: false,
     });
-    if (result && result.filename && result.ffmpeg) {
+    if (result && "ffmpeg" in result && "filename" in result) {
       res.setHeader(
         "Content-Disposition",
         `attachment; filename="${result.filename}"`
