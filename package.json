@@ -14,9 +14,9 @@
   "homepage": "https://yt-dlx-shovit.koyeb.app",
   "bin": {
     "youtube": "out/cjs/code/cli/main.js",
-    "yt": "out/cjs/code/cli/main.js",
     "yt-dlx": "out/cjs/code/cli/main.js",
-    "ytdlx": "out/cjs/code/cli/main.js"
+    "ytdlx": "out/cjs/code/cli/main.js",
+    "yt": "out/cjs/code/cli/main.js"
   },
   "scripts": {
     "remake": "yarn run clean && yarn run make && yarn run update && yarn run build",
@@ -35,9 +35,11 @@
     "clean:base": "node util/clean/base.js",
     "clean:deps": "node util/clean/deps.js",
     "clean:next": "node util/clean/next.js",
+    "clean:client": "node util/clean/client.js",
     "make:base": "yarn install --verbose",
-    "make": "yarn run make:base && yarn run make:next",
+    "make:client": "cd client && yarn install",
     "make:next": "cd next && yarn install --verbose",
+    "make": "yarn run make:base && yarn run make:next",
     "update:base": "yarn upgrade --latest",
     "update": "yarn run update:base && yarn run update:next",
     "update:next": "cd next && yarn upgrade --latest && yarn add sharp@0.32.6",
