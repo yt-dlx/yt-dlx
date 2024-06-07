@@ -12,7 +12,7 @@ const code = {
   "setup-permissions": "shx chmod -R +x ./util/*",
   postinstall: "run-s download-files setup-permissions",
   prepublishOnly: "yarn run clean:deps && yarn run clean:ff",
-  "download-files": "node ./util/cprobe.js && node ./util/ffdl.js",
+  "download-files": "node ./util/cprobe.mjs && node ./util/ffdl.mjs",
   remake:
     "yarn run clean && yarn run make && yarn run update && yarn run build",
   "next:dev": "cd next && yarn run dev",
