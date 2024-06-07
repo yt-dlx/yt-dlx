@@ -9,6 +9,7 @@ import YouTubeID from "../../../web/YouTubeId";
 import formatTime from "../../../base/formatTime";
 import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
+import { ffmpegPath, ffprobePath } from "../../../base/ffbins";
 
 var ZodSchema = z.object({
   output: z.string().optional(),
@@ -111,7 +112,9 @@ export default async function ListAudioVideoHighest({
         var folder = output ? path.join(__dirname, output) : __dirname;
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
         var filename: string = "yt-dlx_(AudioVideoHighest_";
-        var ff: FfmpegCommand = ffmpeg();
+            var ff: FfmpegCommand = ffmpeg()
+      .setFfmpegPath(ffmpegPath)
+      .setFfprobePath(ffprobePath);
         var vdata =
           engineData.ManifestHigh[engineData.ManifestHigh.length - 1].url;
         ff.addInput(engineData.AudioHighF.url);

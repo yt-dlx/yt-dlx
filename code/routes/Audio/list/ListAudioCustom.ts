@@ -9,6 +9,7 @@ import YouTubeID from "../../../web/YouTubeId";
 import formatTime from "../../../base/formatTime";
 import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
+import { ffmpegPath, ffprobePath } from "../../../base/ffbins";
 
 var ZodSchema = z.object({
   output: z.string().optional(),
@@ -127,7 +128,9 @@ export default async function ListAudioCustom({
         var folder = output ? path.join(__dirname, output) : __dirname;
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
         let filename: string = `yt-dlx_(AudioCustom_${resolution}_`;
-        var ff: FfmpegCommand = ffmpeg();
+            var ff: FfmpegCommand = ffmpeg()
+      .setFfmpegPath(ffmpegPath)
+      .setFfprobePath(ffprobePath);
         var adata = engineData.AudioHigh.find((i) =>
           i.format.includes(resolution.replace("p", "").toString())
         );

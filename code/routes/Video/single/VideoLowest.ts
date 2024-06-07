@@ -8,6 +8,7 @@ import formatTime from "../../../base/formatTime";
 import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
 import EngineOutput from "../../../interfaces/EngineOutput";
+import { ffmpegPath, ffprobePath } from "../../../base/ffbins";
 
 var ZodSchema = z.object({
   query: z.string().min(2),
@@ -83,6 +84,8 @@ export default async function VideoLowest({
     var folder = output ? path.join(__dirname, output) : __dirname;
     if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
     var ff: FfmpegCommand = ffmpeg()
+      .setFfmpegPath(ffmpegPath)
+      .setFfprobePath(ffprobePath)
       .addInput(engineData.ManifestLow[0].url)
       .withOutputFormat("matroska")
       .videoCodec("copy")
