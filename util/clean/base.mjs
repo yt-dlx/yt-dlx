@@ -1,5 +1,5 @@
-const { rm } = require("fs/promises");
-const { join, resolve } = require("path");
+import { rm } from "fs/promises";
+import { join, resolve } from "path";
 
 async function rmdir(folderPath, folders) {
   for (const folder of folders) {
@@ -12,4 +12,4 @@ async function rmdir(folderPath, folders) {
   }
 }
 
-rmdir(resolve(), ["./next/node_modules", "./next/.next"]);
+rmdir(resolve(), ["./node_modules", "./out", "./others", "./temp"]);

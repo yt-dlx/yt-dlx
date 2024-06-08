@@ -10,7 +10,6 @@ const ipcApi = async (): Promise<void> => {
       event.sender.send("AddGet", data.num1 + data.num2);
     }
   );
-
   setInterval(() => {
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send("TimeGet", new Date().toLocaleTimeString());
@@ -30,16 +29,13 @@ function createWindow(): void {
       sandbox: false,
     },
   });
-
   mainWindow.on("ready-to-show", () => {
     mainWindow.show();
   });
-
   mainWindow.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url);
     return { action: "deny" };
   });
-
   if (is.dev && process.env["ELECTRON_RENDERER_URL"]) {
     mainWindow.loadURL(process.env["ELECTRON_RENDERER_URL"]);
   } else {

@@ -1,5 +1,5 @@
-const { rm } = require("fs/promises");
-const { join, resolve } = require("path");
+import { rm } from "fs/promises";
+import { join, resolve } from "path";
 
 async function rmdir(folderPath, folders) {
   for (const folder of folders) {
@@ -13,7 +13,13 @@ async function rmdir(folderPath, folders) {
 }
 
 rmdir(resolve(), [
-  "./util/cprobe_linux",
-  "./util/cprobe_mac",
-  "./util/cprobe.exe",
+  "./util/ffprobe.exe",
+  "./util/ffprobe_mac",
+  "./util/ffprobe_linux",
+  "./util/ffmpeg.exe",
+  "./util/ffmpeg_mac",
+  "./util/ffmpeg_linux",
+  "./util/ffplay.exe",
+  "./util/ffplay_mac",
+  "./util/ffplay_linux",
 ]);
