@@ -2,29 +2,50 @@ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import { app, shell, BrowserWindow, ipcMain } from "electron";
 import icon from "../../resources/icon.png?asset";
 import { join } from "path";
+import colors from "colors";
 import ytdlx from "yt-dlx";
-import chalk from "chalk";
+import * as fs from "fs";
 
-const ipcApi = async (): Promise<void> => {
+var ipcApi = async (): Promise<void> => {
   ipcMain.on(
     "AddSend",
-    (event: Electron.IpcMainEvent, data: { num1: number; num2: number }) => {
-      event.sender.send("AddGet", data.num1 + data.num2);
-    }
+    async (
+      event: Electron.IpcMainEvent,
+      data: { num1: number; num2: number }
+    ) => event.sender.send("AddGet", data.num1 + data.num2)
   );
 
   ipcMain.on(
     "AudioSend",
-    async (event: Electron.IpcMainEvent, videoId: string) => {
-      console.log(chalk.green("❓ videoId:"), chalk.italic(videoId));
-      const result = await ytdlx.AudioOnly.Single.Highest({
-        useTor: true,
-        stream: false,
-        verbose: true,
-        query: videoId,
+    async (
+      event: Electron.IpcMainEvent,
+      data: {
+        output: string;
+        videoId: string;
+        useTor: boolean;
+        verbose: boolean;
+      }
+    ) => {
+      console.log(colors.green("❓ videoId:"), colors.italic(data.videoId));
+      var response = await ytdlx.AudioOnly.Single.Highest({
+        stream: true,
         metadata: false,
+        output: data.output,
+        useTor: data.useTor,
+        query: data.videoId,
+        verbose: data.verbose,
       });
-      event.sender.send("AudioGet", result);
+      if (response && "ffmpeg" in response && "filename" in response) {
+        response.ffmpeg.pipe(fs.createWriteStream(response.filename), {
+          end: true,
+        });
+        response.ffmpeg.on("progress", ({ percent, timemark }) => {
+          event.sender.send("AudioGet", {
+            percent,
+            timemark,
+          });
+        });
+      } else event.sender.send("AudioError", "ffmpeg or filename not found!");
     }
   );
 
@@ -36,7 +57,7 @@ const ipcApi = async (): Promise<void> => {
 };
 
 function createWindow(): void {
-  const mainWindow = new BrowserWindow({
+  var mainWindow = new BrowserWindow({
     width: 900,
     height: 670,
     show: false,
