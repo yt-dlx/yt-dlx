@@ -6,9 +6,9 @@ import { join } from "path";
 
 function createWindow(): void {
   var mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
     show: false,
-    width: 1920,
-    height: 1080,
     autoHideMenuBar: true,
     ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {

@@ -9,7 +9,6 @@ import { SiGradleplaypublisher } from "react-icons/si";
 export default function Playground(): JSX.Element {
   var [Query, setQuery] = react.useState<string>("");
   var [TubeSearch, setTubeSearch] = react.useState<any>(null);
-
   react.useEffect(() => {
     var search = (_event: Electron.IpcRendererEvent, result: any): void => {
       setTubeSearch(result);
@@ -19,7 +18,6 @@ export default function Playground(): JSX.Element {
       window.electron.ipcRenderer.on("SearchGet", search);
     };
   }, []);
-
   if (TubeSearch) console.log(TubeSearch);
 
   return (
