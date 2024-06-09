@@ -36,7 +36,7 @@ import * as fs from "fs";
         query: "video-NAME/ID/URL",
       });
 
-      if (result && result.filename && result.ffmpeg) {
+     if (result && "ffmpeg" in result && "filename" in result) {
         result.ffmpeg.pipe(fs.createWriteStream(result.filename), {
           end: true,
         });
@@ -71,7 +71,7 @@ import express from "express";
           query: queryParam,
           resolution: resparam,
         });
-        if (result && result.filename && result.ffmpeg) {
+       if (result && "ffmpeg" in result && "filename" in result) {
           result.ffmpeg.pipe(res, { end: true });
         } else res.status(404).send("ffmpeg or filename not found!");
       } catch (error) {

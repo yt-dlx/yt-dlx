@@ -28,7 +28,7 @@ const fs = require("fs");
       output: "public/video",
       query: "video-NAME/ID/URL",
     });
-    if (result && result.filename && result.ffmpeg) {
+   if (result && "ffmpeg" in result && "filename" in result) {
       result.ffmpeg.pipe(fs.createWriteStream(result.filename), {
         end: true,
       });
@@ -55,7 +55,7 @@ const express = require("express");
           useTor: false,
           query: queryParam,
         });
-        if (result && result.filename && result.ffmpeg) {
+       if (result && "ffmpeg" in result && "filename" in result) {
           result.ffmpeg.pipe(res, { end: true });
         } else res.status(404).send("ffmpeg or filename not found!");
       } catch (error) {
