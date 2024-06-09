@@ -1,66 +1,14 @@
 import { electronApp, optimizer, is } from "@electron-toolkit/utils";
-import { app, shell, BrowserWindow, ipcMain } from "electron";
+import { app, shell, BrowserWindow } from "electron";
 import icon from "../../resources/icon.png?asset";
+import ipcApi from "./ipcApi";
 import { join } from "path";
-import colors from "colors";
-import ytdlx from "yt-dlx";
-import * as fs from "fs";
-
-var ipcApi = async (): Promise<void> => {
-  ipcMain.on(
-    "AddSend",
-    async (
-      event: Electron.IpcMainEvent,
-      data: { num1: number; num2: number }
-    ) => event.sender.send("AddGet", data.num1 + data.num2)
-  );
-
-  ipcMain.on(
-    "AudioSend",
-    async (
-      event: Electron.IpcMainEvent,
-      data: {
-        output: string;
-        videoId: string;
-        useTor: boolean;
-        verbose: boolean;
-      }
-    ) => {
-      console.log(colors.green("❓ videoId:"), colors.italic(data.videoId));
-      var response = await ytdlx.AudioOnly.Single.Highest({
-        stream: true,
-        metadata: false,
-        output: data.output,
-        useTor: data.useTor,
-        query: data.videoId,
-        verbose: data.verbose,
-      });
-      if (response && "ffmpeg" in response && "filename" in response) {
-        response.ffmpeg.pipe(fs.createWriteStream(response.filename), {
-          end: true,
-        });
-        response.ffmpeg.on("progress", ({ percent, timemark }) => {
-          event.sender.send("AudioGet", {
-            percent,
-            timemark,
-          });
-        });
-      } else event.sender.send("AudioError", "ffmpeg or filename not found!");
-    }
-  );
-
-  setInterval(() => {
-    BrowserWindow.getAllWindows().forEach((window) => {
-      window.webContents.send("TimeGet", new Date().toLocaleTimeString());
-    });
-  }, 1000);
-};
 
 function createWindow(): void {
   var mainWindow = new BrowserWindow({
-    width: 900,
-    height: 670,
     show: false,
+    width: 1920,
+    height: 1080,
     autoHideMenuBar: true,
     ...(process.platform === "linux" ? { icon } : {}),
     webPreferences: {
@@ -77,9 +25,7 @@ function createWindow(): void {
   });
   if (is.dev && process.env["ELECTRON_RENDERER_URL"]) {
     mainWindow.loadURL(process.env["ELECTRON_RENDERER_URL"]);
-  } else {
-    mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
-  }
+  } else mainWindow.loadFile(join(__dirname, "../renderer/index.html"));
 }
 
 app.whenReady().then(() => {
