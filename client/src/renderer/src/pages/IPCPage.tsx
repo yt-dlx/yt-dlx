@@ -8,11 +8,19 @@ export default function IPCPage(): JSX.Element {
   const [num2, setNum2] = useState<number>(0);
 
   useEffect(() => {
-    const ApiAdd = (_event: Electron.IpcRendererEvent, result: number): void =>
+    const ApiAdd = (
+      _event: Electron.IpcRendererEvent,
+      result: number
+    ): void => {
       setAdditionResult(result);
+    };
 
-    const ApiTime = (_event: Electron.IpcRendererEvent, time: string): void =>
-      setClockMessage(time);
+    const ApiTime = (
+      _event: Electron.IpcRendererEvent,
+      result: string
+    ): void => {
+      setClockMessage(result);
+    };
 
     window.electron.ipcRenderer.on("TimeGet", ApiTime);
     window.electron.ipcRenderer.on("AddGet", ApiAdd);

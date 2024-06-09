@@ -1,6 +1,5 @@
 import react from "react";
 import { Link } from "react-router-dom";
-
 import { HiFire } from "react-icons/hi";
 import { GoNumber } from "react-icons/go";
 import { TbWorldSearch } from "react-icons/tb";
@@ -11,22 +10,17 @@ export default function Playground(): JSX.Element {
   var [Query, setQuery] = react.useState<string>("");
   var [TubeSearch, setTubeSearch] = react.useState<any>(null);
 
-  var ApiSearch = useMutation({
-    mutationFn: async () => {
-      var resp = await fetch("/api/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: Query,
-        }),
-      });
-      if (resp.status === 200) setTubeSearch(await resp.json());
-      else setTubeSearch(null);
-    },
-    onMutate: () => console.log("ApiSearch started!"),
-  });
+  react.useEffect(() => {
+    var search = (_event: Electron.IpcRendererEvent, result: any): void => {
+      setTubeSearch(result);
+    };
+    window.electron.ipcRenderer.on("SearchGet", search);
+    return () => {
+      window.electron.ipcRenderer.on("SearchGet", search);
+    };
+  }, []);
+
+  if (TubeSearch) console.log(TubeSearch);
 
   return (
     <react.Fragment>
@@ -36,9 +30,9 @@ export default function Playground(): JSX.Element {
       >
         <form
           onSubmit={(event) => {
-            event.preventDefault();
             setTubeSearch(null);
-            ApiSearch.mutate();
+            event.preventDefault();
+            window.electron.ipcRenderer.send("SearchSend", { query: Query });
           }}
           className="bg-stone-950 max-w-screen-2xl p-10 text-red-600 mx-auto my-8 rounded-2xl border-4 border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600"
         >
@@ -70,7 +64,7 @@ export default function Playground(): JSX.Element {
                 type="text"
                 value={Query}
                 placeholder="required"
-                disabled={ApiSearch.isPending}
+                // disabled={ApiSearch.isPending}
                 onChange={(e) => setQuery(e.target.value)}
                 className="input input-bordered w-full rounded-2xl bg-neutral-800"
               />
@@ -86,35 +80,13 @@ export default function Playground(): JSX.Element {
           <div className="flex justify-center">
             <button
               type="submit"
-              disabled={ApiSearch.isPending}
+              // disabled={ApiSearch.isPending}
               className="flex flex-row items-center justify-center whitespace-nowrap text-sm font-bold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 active:ring-2 active:ring-red-500 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 bg-red-900 hover:bg-red-800 text-white rounded-2xl shadow-md transition-all duration-300 hover:shadow-lg w-full"
             >
               <TbWorldSearch size={20} className="mr-1 font-bold" />
               Search YouTube
             </button>
           </div>
-          {/* <div className="mockup-code bg-stone-950 text-red-600">
-<pre data-prefix="$">
-<code className="text-red-600 font-bold lowercase">
-Copyright © {fdate}
-</code>
-</pre>
-{similar.length > 0 ? (
-similar.map((data: any, index: number) => (
-<pre
-key={index}
-data-prefix=">"
-className="text-sm overflow-x-auto overflow-y-auto"
->
-<code>{data.title}</code>
-</pre>
-))
-) : (
-<pre data-prefix=">" className="text-sm animate-pulse">
-<code>start typing to get suggestions...</code>
-</pre>
-)}
-</div> */}
           {TubeSearch && (
             <react.Fragment>
               <section className="px-4 mx-auto max-w-7xl">
@@ -152,7 +124,7 @@ className="text-sm overflow-x-auto overflow-y-auto"
                       TubeSearch.map((item: any, index: number) => (
                         <Link
                           key={index}
-                          href={`/${item.id}`}
+                          to={`/${item.id}`}
                           className="relative group mb-4 duration-700 bg-[#111111] p-1 shadow-red-900 hover:shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] rounded-2xl border-2 border-red-600/40 hover:border-red-600 flex flex-col justify-between"
                         >
                           <div className="relative">
