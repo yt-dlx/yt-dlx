@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import Playground from "./Playground";
 import Introduction from "./Introduction";
 import Documentation from "./Documentation";
 
@@ -6,6 +7,7 @@ export default function HomePage(): JSX.Element {
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#111111] scrollbar-track-[#111111] scrollbar-thumb-red-600">
       <Introduction />
+      <Playground />
       <Documentation />
       <motion.footer
         id="Footer"
