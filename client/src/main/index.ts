@@ -2,6 +2,8 @@ import { electronApp, optimizer, is } from "@electron-toolkit/utils";
 import { app, shell, BrowserWindow, ipcMain } from "electron";
 import icon from "../../resources/icon.png?asset";
 import { join } from "path";
+import ytdlx from "yt-dlx";
+import chalk from "chalk";
 
 const ipcApi = async (): Promise<void> => {
   ipcMain.on(
@@ -10,6 +12,22 @@ const ipcApi = async (): Promise<void> => {
       event.sender.send("AddGet", data.num1 + data.num2);
     }
   );
+
+  ipcMain.on(
+    "AudioSend",
+    async (event: Electron.IpcMainEvent, videoId: string) => {
+      console.log(chalk.green("❓ videoId:"), chalk.italic(videoId));
+      const result = await ytdlx.AudioOnly.Single.Highest({
+        useTor: true,
+        stream: false,
+        verbose: true,
+        query: videoId,
+        metadata: false,
+      });
+      event.sender.send("AudioGet", result);
+    }
+  );
+
   setInterval(() => {
     BrowserWindow.getAllWindows().forEach((window) => {
       window.webContents.send("TimeGet", new Date().toLocaleTimeString());
