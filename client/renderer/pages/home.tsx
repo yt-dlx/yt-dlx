@@ -56,7 +56,7 @@ export default function HomePage(): JSX.Element {
   const ToggleBun = () => setShowBun(!ShowBun);
 
   return (
-    <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600 font-semibold">
+    <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-[#CD322D] font-semibold">
       <NavPackage />
       {/* =================================================================[ Introduction ]=============================================== */}
       <motion.section
@@ -67,7 +67,7 @@ export default function HomePage(): JSX.Element {
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
               <motion.h1
-                className="text-4xl font-black tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-red-600"
+                className="text-4xl font-black tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-[#CD322D]"
                 {...FromTopToBottom}
               >
                 Yt-Dlx: The Ultimate Multimedia Downloader
@@ -84,28 +84,28 @@ export default function HomePage(): JSX.Element {
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
               <button
                 onClick={ToggleNpm}
-                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
               >
                 <TbBrandNpm className="mr-2 h-5 w-5" />
                 Install Using Npm
               </button>
               <button
                 onClick={ToggleYarn}
-                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
               >
                 <FaYarn className="mr-2 h-5 w-5" />
                 Install Using Yarn
               </button>
               <button
                 onClick={TogglePnpm}
-                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
               >
                 <SiPnpm className="mr-2 h-5 w-5" />
                 Install Using Pnpm
               </button>
               <button
                 onClick={ToggleBun}
-                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
               >
                 <SiBun className="mr-2 h-5 w-5" />
                 Install Using Bun
@@ -118,7 +118,7 @@ export default function HomePage(): JSX.Element {
             height={300}
             src="/youtube.gif"
             {...FromBottomToTop}
-            className="mx-auto aspect-[3/1] cursor-none overflow-hidden rounded-t-2xl object-cover object-center border-t-4 border-r-4 border-l-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600"
+            className="mx-auto aspect-[3/1] cursor-none overflow-hidden rounded-t-2xl object-cover object-center border-t-4 border-r-4 border-l-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
           />
         </div>
       </motion.section>
@@ -132,13 +132,13 @@ export default function HomePage(): JSX.Element {
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
                 <motion.div
-                  className="inline-block rounded-2xl bg-red-600 text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm"
+                  className="inline-block rounded-2xl bg-[#CD322D] text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm"
                   {...FromLeftToRight}
                 >
                   Key Features
                 </motion.div>
                 <motion.h2
-                  className="text-3xl font-black tracking-tighter sm:text-7xl text-red-600"
+                  className="text-3xl font-black tracking-tighter sm:text-7xl text-[#CD322D]"
                   {...FromLeftToRight}
                 >
                   Powerful Multimedia Downloading
@@ -155,19 +155,19 @@ export default function HomePage(): JSX.Element {
               </div>
               <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <motion.li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
+                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   Download audio and video from diverse sources
                 </motion.li>
                 <motion.li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
+                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   Customize download format, resolution, and more
                 </motion.li>
                 <motion.li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
+                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   Supports a wide range of media formats
                 </motion.li>
                 <motion.li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
+                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   Seamless integration with Node.js and other environments
                 </motion.li>
               </motion.ul>
@@ -178,7 +178,7 @@ export default function HomePage(): JSX.Element {
               height={310}
               src="/YouTube_Circle.gif"
               {...FromRightToLeft}
-              className="mx-auto aspect-video overflow-hidden rounded-2xl object-cover object-center sm:w-full border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600"
+              className="mx-auto aspect-video overflow-hidden rounded-2xl object-cover object-center sm:w-full border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
             />
           </div>
         </div>
@@ -196,18 +196,18 @@ export default function HomePage(): JSX.Element {
               height={310}
               src="/YouTube_Music.gif"
               {...FromLeftToRight}
-              className="mx-auto aspect-video overflow-hidden rounded-2xl object-cover object-center sm:w-full border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600"
+              className="mx-auto aspect-video overflow-hidden rounded-2xl object-cover object-center sm:w-full border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
             />
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
                 <motion.div
-                  className="inline-block rounded-2xl bg-red-600 text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm"
+                  className="inline-block rounded-2xl bg-[#CD322D] text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm"
                   {...FromRightToLeft}
                 >
                   Documentation
                 </motion.div>
                 <motion.h2
-                  className="text-3xl font-black tracking-tighter sm:text-7xl text-red-600"
+                  className="text-3xl font-black tracking-tighter sm:text-7xl text-[#CD322D]"
                   {...FromRightToLeft}
                 >
                   Comprehensive Guides
@@ -224,19 +224,19 @@ export default function HomePage(): JSX.Element {
               </div>
               <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <motion.li>
-                  <RiContactsBookFill className="mr-2 inline-block h-4 w-4 text-red-600" />
+                  <RiContactsBookFill className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   Detailed installation instructions
                 </motion.li>
                 <motion.li>
-                  <RiContactsBookFill className="mr-2 inline-block h-4 w-4 text-red-600" />
+                  <RiContactsBookFill className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   Usage examples and best practices
                 </motion.li>
                 <motion.li>
-                  <RiContactsBookFill className="mr-2 inline-block h-4 w-4 text-red-600" />
+                  <RiContactsBookFill className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   API reference and advanced configurations
                 </motion.li>
                 <motion.li>
-                  <RiContactsBookFill className="mr-2 inline-block h-4 w-4 text-red-600" />
+                  <RiContactsBookFill className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   Troubleshooting and FAQs
                 </motion.li>
               </motion.ul>
@@ -254,13 +254,13 @@ export default function HomePage(): JSX.Element {
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
                 <motion.div
-                  className="inline-block rounded-2xl bg-red-600 text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm"
+                  className="inline-block rounded-2xl bg-[#CD322D] text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm"
                   {...FromLeftToRight}
                 >
                   Support
                 </motion.div>
                 <motion.h2
-                  className="text-3xl font-black tracking-tighter sm:text-7xl text-red-600"
+                  className="text-3xl font-black tracking-tighter sm:text-7xl text-[#CD322D]"
                   {...FromLeftToRight}
                 >
                   We're Here to Help
@@ -276,19 +276,19 @@ export default function HomePage(): JSX.Element {
               </div>
               <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <motion.li>
-                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-red-600" />
+                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   24/7 customer support
                 </motion.li>
                 <motion.li>
-                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-red-600" />
+                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   Community forums and knowledge base
                 </motion.li>
                 <motion.li>
-                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-red-600" />
+                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   Regular updates and improvements
                 </motion.li>
                 <motion.li>
-                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-red-600" />
+                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   Contact us via email or live chat
                 </motion.li>
               </motion.ul>
@@ -299,7 +299,7 @@ export default function HomePage(): JSX.Element {
               height={310}
               src="/YouTube_Support.gif"
               {...FromRightToLeft}
-              className="mx-auto aspect-video overflow-hidden rounded-2xl object-cover object-center sm:w-full border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600"
+              className="mx-auto aspect-video overflow-hidden rounded-2xl object-cover object-center sm:w-full border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
             />
           </div>
         </div>
