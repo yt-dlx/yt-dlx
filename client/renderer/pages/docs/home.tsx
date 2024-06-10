@@ -1,12 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
-import NavPackage from "../../components/nav";
+import NavPackage from "../components/nav";
+import FootPackage from "../components/foot";
 import { MdDescription } from "react-icons/md";
-import FootPackage from "../../components/foot";
+import Introduction from "../home/Introduction";
 import { FaClipboardCheck } from "react-icons/fa";
 import { BiLogoTypescript } from "react-icons/bi";
 import { RiJavascriptFill } from "react-icons/ri";
-import Introduction from "../../home/Introduction";
 
 const FromLeftToRight = {
   initial: { opacity: 0, x: -100 },
@@ -28,7 +28,7 @@ const AndBounce = {
   exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
 };
 
-export default function AudioHighest(): JSX.Element {
+export default function AudioVideoHighest(): JSX.Element {
   return (
     <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-[#CD322D] font-semibold">
       <NavPackage />
@@ -44,13 +44,13 @@ export default function AudioHighest(): JSX.Element {
                 className="text-3xl font-black tracking-tighter sm:text-5xl lg:text-7xl text-[#CD322D]"
                 {...FromLeftToRight}
               >
-                YtDlx.AudioOnly.Single.Highest()
+                YtDlx.AudioVideo.Single.Lowest()
               </motion.h2>
               <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                  Downloads and processes the highest quality audio from a
-                  single YouTube video.
+                  Downloads audio and video from a YouTube video URL with the
+                  lowest available resolution.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
@@ -58,13 +58,8 @@ export default function AudioHighest(): JSX.Element {
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                  @param output - (optional) The output directory for the
-                  processed file.
-                </li>
-                <li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                  @param stream - (optional) Whether to stream the processed
-                  video or not.
+                  @param stream - (optional) Whether to stream the output or
+                  not.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
@@ -73,10 +68,14 @@ export default function AudioHighest(): JSX.Element {
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                  @param filter - (optional) The audio filter to apply.
-                  Available options: echo, slow, speed, phaser, flanger,
-                  panning, reverse, vibrato, subboost, surround, bassboost,
-                  nightcore, superslow, vaporwave, superspeed.
+                  @param output - (optional) The output directory for the
+                  processed file.
+                </li>
+                <li>
+                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  @param filter - (optional) The video filter to apply.
+                  Available options: invert, rotate90, rotate270, grayscale,
+                  rotate180, flipVertical, flipHorizontal.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
@@ -85,9 +84,9 @@ export default function AudioHighest(): JSX.Element {
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                  @returns A Promise that resolves with either `void` (if
-                  `stream` is false) or an object containing the `ffmpeg`
-                  instance and the output filename (if `stream` is true).
+                  @returns A Promise that resolves when the audio and video
+                  processing is complete. If `stream` is true, it returns an
+                  object with the `ffmpeg` command and the `filename`.
                 </li>
               </motion.ul>
               <motion.div className="flex flex-wrap gap-2">
@@ -95,7 +94,7 @@ export default function AudioHighest(): JSX.Element {
                   className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
                   onClick={() => {
                     window.open(
-                      "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/Audio/single.highest.test.ts",
+                      "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/AudioVideo/single.lowest.test.ts",
                       "_blank"
                     );
                   }}
@@ -107,7 +106,7 @@ export default function AudioHighest(): JSX.Element {
                   className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
                   onClick={() => {
                     window.open(
-                      "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/Audio/single.highest.test.js",
+                      "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/AudioVideo/single.lowest.test.js",
                       "_blank"
                     );
                   }}
@@ -119,7 +118,7 @@ export default function AudioHighest(): JSX.Element {
                   className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
                   onClick={() => {
                     window.open(
-                      "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/Audio/single.highest.test.mjs",
+                      "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/AudioVideo/single.lowest.test.mjs",
                       "_blank"
                     );
                   }}
