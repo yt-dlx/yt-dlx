@@ -47,8 +47,8 @@ export default function HomePage(): JSX.Element {
             alt="logo"
             width={1200}
             height={300}
-            src="/youtube.png"
-            className="mx-auto aspect-[3/1] overflow-hidden rounded-t-2xl object-cover object-center border-t-4 border-r-4 border-l-4 border-[#CD322D] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
+            src="/youtube.gif"
+            className="mx-auto aspect-[3/1] cursor-none overflow-hidden rounded-t-2xl object-cover object-center border-t-4 border-r-4 border-l-4 border-[#CD322D] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
           />
         </div>
       </motion.section>
@@ -186,7 +186,7 @@ export default function HomePage(): JSX.Element {
               alt="logo"
               width={550}
               height={310}
-              src="/logo.png"
+              src="/api.png"
               className="mx-auto aspect-video overflow-hidden rounded-2xl object-cover object-center sm:w-full border-2 border-[#CD322D] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
             />
           </div>
