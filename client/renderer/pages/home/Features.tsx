@@ -27,7 +27,7 @@ export default function Features(): JSX.Element {
   return (
     <react.Fragment>
       <motion.section
-        id="Playground"
+        id="Features"
         className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white"
       >
         <div className="container px-4 md:px-6">
