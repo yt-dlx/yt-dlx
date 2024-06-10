@@ -19,7 +19,7 @@ import { SiFirefoxbrowser } from "react-icons/si";
 import { SiGradleplaypublisher } from "react-icons/si";
 import { AiFillCodeSandboxCircle } from "react-icons/ai";
 
-export default function HomePage() {
+export default function HomePage(): JSX.Element {
   // const [Added, setAdd] = react.useState<any>();
   // react.useEffect(() => {
   // window.ipc.on("add", (response: string) => setAdd(response));
