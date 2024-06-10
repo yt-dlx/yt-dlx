@@ -10,7 +10,7 @@ import { app, ipcMain as api } from "electron";
 //
 //
 //
-// ============================================[ App Handlers ]============================================
+// ============================================[ App Handlers ]===========================================
 const isProd = process.env.NODE_ENV === "production";
 if (isProd) serve({ directory: "app" });
 else app.setPath("userData", `${app.getPath("userData")} (development)`);
@@ -29,11 +29,11 @@ else app.setPath("userData", `${app.getPath("userData")} (development)`);
   mainWindow.webContents.openDevTools();
 })();
 app.on("window-all-closed", () => app.quit());
-// ============================================[ App Handlers ]============================================
+// ============================================[ App Handlers ]===========================================
 //
 //
 //
-// ============================================[ IPC Handlers ]============================================
+// ============================================[ IPC Handlers ]===========================================
 api.on("time", async (event, response) => event.reply("time", response));
 api.on("add", async (event, response) => {
   try {
@@ -90,4 +90,4 @@ api.on("audio", async (event, response) => {
     event.reply("audio", error.message);
   }
 });
-// ============================================[ IPC Handlers ]============================================
+// ============================================[ IPC Handlers ]===========================================
