@@ -41,7 +41,7 @@ export default function AudioVideoHighest(): JSX.Element {
                 Viewing Documentation For:
               </motion.div>
               <motion.h2
-                className="text-3xl font-black tracking-tighter sm:text-5xl lg:text-7xl text-[#CD322D]"
+                className="text-3xl font-black tracking-tighter sm:text-4xl lg:text-5xl text-[#CD322D]"
                 {...FromLeftToRight}
               >
                 YtDlx.ytSearch.Video.Multiple()

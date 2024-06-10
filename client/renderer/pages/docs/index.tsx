@@ -31,7 +31,6 @@ export default function HomePage(): JSX.Element {
     <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-[#CD322D] font-semibold">
       <NavPackage />
       <Introduction />
-
       <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-8 md:py-16 lg:py-24 bg-black text-white">
         <div className="container px-4 md:px-6">
           <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
@@ -40,12 +39,11 @@ export default function HomePage(): JSX.Element {
                 Viewing Documentation For:
               </motion.div>
               <motion.h2
-                className="text-3xl font-black tracking-tighter sm:text-5xl lg:text-7xl text-[#CD322D]"
+                className="text-3xl font-black tracking-tighter sm:text-4xl lg:text-5xl text-[#CD322D]"
                 {...FromLeftToRight}
               >
                 Various API Functions
               </motion.h2>
-
               <motion.div className="overflow-x-auto" {...AndBounce}>
                 <table className="table">
                   <thead>
@@ -149,7 +147,6 @@ export default function HomePage(): JSX.Element {
                         with optional video filter.
                       </td>
                     </tr>
-
                     <tr>
                       <td>
                         <Link
@@ -157,7 +154,7 @@ export default function HomePage(): JSX.Element {
                           className="font-bold flex items-center justify-center gap-2 hover:text-[#CD322D]"
                         >
                           <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                          AudioiVideo.Single.Custom()
+                          AudioVideo.Single.Custom()
                         </Link>
                       </td>
                       <td className="italic">
@@ -172,7 +169,7 @@ export default function HomePage(): JSX.Element {
                           className="font-bold flex items-center justify-center gap-2 hover:text-[#CD322D]"
                         >
                           <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                          AudioiVideo.Single.Highest()
+                          AudioVideo.Single.Highest()
                         </Link>
                       </td>
                       <td className="italic">
@@ -187,7 +184,7 @@ export default function HomePage(): JSX.Element {
                           className="font-bold flex items-center justify-center gap-2 hover:text-[#CD322D]"
                         >
                           <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                          AudioiVideo.Single.Lowest()
+                          AudioVideo.Single.Lowest()
                         </Link>
                       </td>
                       <td className="italic">
@@ -203,7 +200,7 @@ export default function HomePage(): JSX.Element {
               alt="logo"
               width={550}
               height={310}
-              src="/eq.gif"
+              src="/Functions.gif"
               {...FromRightToLeft}
               className="mx-auto aspect-video overflow-hidden rounded-2xl object-cover object-center w-full max-w-[550px] border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
             />
