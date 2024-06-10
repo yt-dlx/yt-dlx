@@ -1,17 +1,17 @@
-import React from "react";
+import react from "react";
 import Head from "next/head";
 import { motion } from "framer-motion";
 
 export default function HomePage() {
-  const [num1, setNum1] = React.useState<number>(0);
-  const [num2, setNum2] = React.useState<number>(0);
-  const [Added, setAdd] = React.useState<any>();
-  React.useEffect(() => {
+  const [num1, setNum1] = react.useState<number>(0);
+  const [num2, setNum2] = react.useState<number>(0);
+  const [Added, setAdd] = react.useState<any>();
+  react.useEffect(() => {
     window.ipc.on("add", (response: string) => setAdd(response));
   }, []);
 
   return (
-    <React.Fragment>
+    <react.Fragment>
       <Head>
         <title>Home Page - Add Numbers with Electron IPC</title>
         <meta
@@ -49,7 +49,7 @@ export default function HomePage() {
           <motion.div className="mt-4 text-red-400">Result: {Added}</motion.div>
         )}
       </motion.div>
-    </React.Fragment>
+    </react.Fragment>
   );
 }
 
