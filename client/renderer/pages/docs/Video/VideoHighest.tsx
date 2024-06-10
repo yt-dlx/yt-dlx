@@ -2,9 +2,9 @@ import { SiBun } from "react-icons/si";
 import { FaYarn } from "react-icons/fa";
 import { SiPnpm } from "react-icons/si";
 import { TbBrandNpm } from "react-icons/tb";
-import NavPackage from "../../../components/nav";
-import FootPackage from "../../../components/foot";
-import VerPackage from "../../../components/version";
+import NavPackage from "../../components/nav";
+import FootPackage from "../../components/foot";
+import VerPackage from "../../components/version";
 
 export default function AwesomePackage({ param }: any) {
   return (
@@ -75,7 +75,7 @@ export default function AwesomePackage({ param }: any) {
         <div className="max-w-screen-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
           <div className="max-w-screen-2xl">
             <h2 className="text-3xl font-bold sm:text-4xl text-red-600">
-              Viewing YtDlx.AudioVideo.Single.Highest()
+              Viewing YtDlx.VideoOnly.Single.Highest()
             </h2>
             <p className="mt-4 text-white/60">
               yt-dlx accommodates various node.js coding flavours!{" "}
@@ -85,12 +85,13 @@ export default function AwesomePackage({ param }: any) {
             </p>
             <ul className="list-disc m-4 bg-neutral-800/40 shadow-black shadow-2xl p-8 rounded-3xl border border-dashed border-red-600">
               <li>
-                Downloads audio and video from a YouTube video URL with the
-                highest available resolution.
+                Downloads the highest quality version of a YouTube video with
+                optional video filter.
               </li>
               <li>@param query - The YouTube video URL or ID or name.</li>
               <li>
-                @param stream - (optional) Whether to stream the output or not.
+                @param stream - (optional) Whether to return the FfmpegCommand
+                instead of downloading the video.
               </li>
               <li>
                 @param verbose - (optional) Whether to log verbose output or
@@ -98,7 +99,7 @@ export default function AwesomePackage({ param }: any) {
               </li>
               <li>
                 @param output - (optional) The output directory for the
-                processed file.
+                processed files.
               </li>
               <li>
                 @param filter - (optional) The video filter to apply. Available
@@ -110,9 +111,10 @@ export default function AwesomePackage({ param }: any) {
                 or not.
               </li>
               <li>
-                @returns A Promise that resolves when the audio and video
-                processing is complete. If `stream` is true, it returns an
-                object with the `ffmpeg` command and the `filename`.
+                @returns A Promise that resolves when the video has been
+                processed, unless `stream` is `true`, in which case it resolves
+                with an object containing the `ffmpeg` command and the
+                `filename`.
               </li>
             </ul>
             <section className="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
@@ -140,7 +142,7 @@ export default function AwesomePackage({ param }: any) {
                     </p>
                     <div className="mt-6">
                       <a
-                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/AudioVideo/single.highest.test.ts"
+                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/Video/single.highest.test.ts"
                         className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-red-900 rounded-xl hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         View profile
@@ -171,7 +173,7 @@ export default function AwesomePackage({ param }: any) {
                     </p>
                     <div className="mt-6">
                       <a
-                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/AudioVideo/single.highest.test.js"
+                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/Video/single.highest.test.js"
                         className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-red-900 rounded-xl hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         View profile
@@ -202,7 +204,7 @@ export default function AwesomePackage({ param }: any) {
                     </p>
                     <div className="mt-6">
                       <a
-                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/AudioVideo/single.highest.test.mjs"
+                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/Video/single.highest.test.mjs"
                         className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-red-900 rounded-xl hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         View profile

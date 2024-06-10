@@ -2,9 +2,9 @@ import { SiBun } from "react-icons/si";
 import { FaYarn } from "react-icons/fa";
 import { SiPnpm } from "react-icons/si";
 import { TbBrandNpm } from "react-icons/tb";
-import NavPackage from "../../../components/nav";
-import FootPackage from "../../../components/foot";
-import VerPackage from "../../../components/version";
+import NavPackage from "../../components/nav";
+import FootPackage from "../../components/foot";
+import VerPackage from "../../components/version";
 
 export default function AwesomePackage({ param }: any) {
   return (
@@ -71,11 +71,12 @@ export default function AwesomePackage({ param }: any) {
           </div>
         </div>
       </section>
+
       <section className="flex flex-col items-center justify-center">
         <div className="max-w-screen-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
           <div className="max-w-screen-2xl">
             <h2 className="text-3xl font-bold sm:text-4xl text-red-600">
-              Viewing YtDlx.VideoOnly.Single.Custom()
+              Viewing YtDlx.ytSearch.Video.Multiple()
             </h2>
             <p className="mt-4 text-white/60">
               yt-dlx accommodates various node.js coding flavours!{" "}
@@ -84,42 +85,15 @@ export default function AwesomePackage({ param }: any) {
               compatibility and comprehensive type safety coverage.
             </p>
             <ul className="list-disc m-4 bg-neutral-800/40 shadow-black shadow-2xl p-8 rounded-3xl border border-dashed border-red-600">
+              <li>Searches for YouTube videos based on the query.</li>
+              <li>@param query - The search query for videos.</li>
               <li>
-                Downloads a YouTube video with custom resolution and optional
-                video filter.
-              </li>
-              <li>@param query - The YouTube video URL or ID or name.</li>
-              <li>
-                @param resolution - The desired resolution of the video.
-                options: 144p, 240p, 360p, 480p, 720p, 1080p, 1440p, 2160p,
-                3072p, 4320p, 6480p, 8640p, 12000p.
+                @returns A Promise that resolves with the search results for
+                videos.
               </li>
               <li>
-                @param stream - (optional) Whether to return the FfmpegCommand
-                instead of downloading the video.
-              </li>
-              <li>
-                @param verbose - (optional) Whether to log verbose output or
-                not.
-              </li>
-              <li>
-                @param output - (optional) The output directory for the
-                processed files.
-              </li>
-              <li>
-                @param filter - (optional) The video filter to apply. Available
-                options: invert, rotate90, rotate270, grayscale, rotate180,
-                flipVertical, flipHorizontal.
-              </li>
-              <li>
-                @param onionTor - (optional) Whether to use Tor for the download
-                or not.
-              </li>
-              <li>
-                @returns A Promise that resolves when the video has been
-                processed, unless `stream` is `true`, in which case it resolves
-                with an object containing the `ffmpeg` command and the
-                `filename`.
+                @throws An error if the input is a video link (use video_data
+                instead) or if unable to get a response.
               </li>
             </ul>
             <section className="relative items-center w-full px-5 py-12 mx-auto md:px-12 lg:px-24 max-w-7xl">
@@ -147,7 +121,7 @@ export default function AwesomePackage({ param }: any) {
                     </p>
                     <div className="mt-6">
                       <a
-                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/Video/single.custom.test.ts"
+                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/Command/search_videos.test.ts"
                         className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-red-900 rounded-xl hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         View profile
@@ -178,7 +152,7 @@ export default function AwesomePackage({ param }: any) {
                     </p>
                     <div className="mt-6">
                       <a
-                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/Video/single.custom.test.js"
+                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/Command/search_videos.test.js"
                         className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-red-900 rounded-xl hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         View profile
@@ -209,7 +183,7 @@ export default function AwesomePackage({ param }: any) {
                     </p>
                     <div className="mt-6">
                       <a
-                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/Video/single.custom.test.mjs"
+                        href="https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/Command/search_videos.test.mjs"
                         className="flex items-center justify-center w-full px-10 py-4 text-base font-medium text-center text-white transition duration-500 ease-in-out transform bg-red-900 rounded-xl hover:bg-red-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                       >
                         View profile
