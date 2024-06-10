@@ -15,7 +15,7 @@ export default function HomePage(): JSX.Element {
         <div className="container space-y-10 xl:space-y-16">
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
-              <h1 className="text-3xl font-black tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none text-[#CD322D]">
+              <h1 className="text-4xl font-black tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-[#CD322D]">
                 Yt-Dlx: The Ultimate Multimedia Downloader
               </h1>
               <p className="mx-auto max-w-[700px] text-gray-300 md:text-xl">
@@ -60,7 +60,7 @@ export default function HomePage(): JSX.Element {
                 <div className="inline-block rounded-2xl bg-neutral-950 px-3 py-1 text-sm">
                   Key Features
                 </div>
-                <h2 className="text-3xl font-black tracking-tighter sm:text-5xl text-[#CD322D]">
+                <h2 className="text-3xl font-black tracking-tighter sm:text-7xl text-[#CD322D]">
                   Powerful Multimedia Downloading
                 </h2>
                 <p className="max-w-[600px] text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
@@ -114,7 +114,7 @@ export default function HomePage(): JSX.Element {
                 <div className="inline-block rounded-2xl bg-neutral-950 px-3 py-1 text-sm">
                   Documentation
                 </div>
-                <h2 className="text-3xl font-black tracking-tighter sm:text-5xl text-[#CD322D]">
+                <h2 className="text-3xl font-black tracking-tighter sm:text-7xl text-[#CD322D]">
                   Comprehensive API Documentation
                 </h2>
                 <p className="max-w-[600px] text-gray-300 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
