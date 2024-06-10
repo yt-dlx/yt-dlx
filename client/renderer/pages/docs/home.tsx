@@ -1,12 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
-import NavPackage from "../components/nav";
-import FootPackage from "../components/foot";
+import NavPackage from "../../components/nav";
 import { MdDescription } from "react-icons/md";
-import Introduction from "../home/Introduction";
+import FootPackage from "../../components/foot";
 import { FaClipboardCheck } from "react-icons/fa";
 import { BiLogoTypescript } from "react-icons/bi";
 import { RiJavascriptFill } from "react-icons/ri";
+import Introduction from "../../home/Introduction";
 
 const FromLeftToRight = {
   initial: { opacity: 0, x: -100 },
@@ -44,13 +44,13 @@ export default function AudioVideoHighest(): JSX.Element {
                 className="text-3xl font-black tracking-tighter sm:text-5xl lg:text-7xl text-[#CD322D]"
                 {...FromLeftToRight}
               >
-                YtDlx.AudioVideo.Single.Lowest()
+                YtDlx.VideoOnly.Single.Lowest()
               </motion.h2>
               <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                  Downloads audio and video from a YouTube video URL with the
-                  lowest available resolution.
+                  Downloads the lowest quality version of a YouTube video with
+                  optional video filter.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
@@ -58,8 +58,8 @@ export default function AudioVideoHighest(): JSX.Element {
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                  @param stream - (optional) Whether to stream the output or
-                  not.
+                  @param stream - (optional) Whether to return the FfmpegCommand
+                  instead of downloading the video.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
@@ -69,7 +69,7 @@ export default function AudioVideoHighest(): JSX.Element {
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
                   @param output - (optional) The output directory for the
-                  processed file.
+                  processed files.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
@@ -84,9 +84,10 @@ export default function AudioVideoHighest(): JSX.Element {
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                  @returns A Promise that resolves when the audio and video
-                  processing is complete. If `stream` is true, it returns an
-                  object with the `ffmpeg` command and the `filename`.
+                  @returns A Promise that resolves when the video has been
+                  processed, unless `stream` is `true`, in which case it
+                  resolves with an object containing the `ffmpeg` command and
+                  the `filename`.
                 </li>
               </motion.ul>
               <motion.div className="flex flex-wrap gap-2">
@@ -94,7 +95,7 @@ export default function AudioVideoHighest(): JSX.Element {
                   className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
                   onClick={() => {
                     window.open(
-                      "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/AudioVideo/single.lowest.test.ts",
+                      "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/Video/single.lowest.test.ts",
                       "_blank"
                     );
                   }}
@@ -106,7 +107,7 @@ export default function AudioVideoHighest(): JSX.Element {
                   className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
                   onClick={() => {
                     window.open(
-                      "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/AudioVideo/single.lowest.test.js",
+                      "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/Video/single.lowest.test.js",
                       "_blank"
                     );
                   }}
@@ -118,7 +119,7 @@ export default function AudioVideoHighest(): JSX.Element {
                   className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
                   onClick={() => {
                     window.open(
-                      "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/AudioVideo/single.lowest.test.mjs",
+                      "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/Video/single.lowest.test.mjs",
                       "_blank"
                     );
                   }}
