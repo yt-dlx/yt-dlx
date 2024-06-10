@@ -2,9 +2,9 @@ import { SiBun } from "react-icons/si";
 import { FaYarn } from "react-icons/fa";
 import { SiPnpm } from "react-icons/si";
 import { TbBrandNpm } from "react-icons/tb";
-import NavPackage from "../../../components/nav";
-import FootPackage from "../../../components/foot";
-import VerPackage from "../../../components/version";
+import NavPackage from "../../components/nav";
+import FootPackage from "../../components/foot";
+import VerPackage from "../../components/version";
 
 export default function AwesomePackage({ param }: any) {
   return (
