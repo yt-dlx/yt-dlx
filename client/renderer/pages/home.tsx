@@ -1,17 +1,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { FaBook } from "react-icons/fa";
-import AndBounce from "./home/anim/home";
 import NavPackage from "./components/nav";
 import { HiSupport } from "react-icons/hi";
 import { TbBrandNpm } from "react-icons/tb";
 import FootPackage from "./components/foot";
 import NpmModel from "./home/models/NpmModel";
 import BunModel from "./home/models/BunModel";
-import FromBottomToTop from "./home/anim/home";
-import FromTopToBottom from "./home/anim/home";
-import FromLeftToRight from "./home/anim/home";
-import FromRightToLeft from "./home/anim/home";
 import { SiBun, SiPnpm } from "react-icons/si";
 import YarnModel from "./home/models/YarnModel";
 import PnpmModel from "./home/models/PnpmModel";
@@ -29,6 +24,36 @@ export default function HomePage(): JSX.Element {
   const TogglePnpm = () => setShowPnpm(!ShowPnpm);
   const ToggleNpm = () => setShowNpm(!ShowNpm);
   const ToggleBun = () => setShowBun(!ShowBun);
+
+  const FromBottomToTop = {
+    initial: { opacity: 0, y: 100 },
+    exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
+    whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+  const FromTopToBottom = {
+    initial: { opacity: 0, y: -100 },
+    exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
+    whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+  const FromLeftToRight = {
+    initial: { opacity: 0, x: -100 },
+    exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
+    whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+  };
+  const FromRightToLeft = {
+    initial: { opacity: 0, x: 100 },
+    exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
+    whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+  };
+  const AndBounce = {
+    initial: { opacity: 0, y: -50 },
+    whileInView: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.6, bounce: 0.3 },
+    },
+    exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
+  };
 
   return (
     <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-[#CD322D] font-semibold">
