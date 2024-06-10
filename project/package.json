@@ -1,10 +1,8 @@
 {
-  "private": true,
-  "name": "my-nextron-app",
-  "description": "My application description",
-  "version": "1.0.0",
-  "author": "Yoshihide Shiono <shiono.yoshihide@gmail.com>",
+  "name": "yt-dlx",
+  "version": "13.0.0",
   "main": "app/background.js",
+  "author": "Shovit Dutta <shovitdutta1@gmail.com>",
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",

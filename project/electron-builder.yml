@@ -1,6 +1,6 @@
-appId: com.example.nextron
-productName: My Nextron App
-copyright: Copyright © 2018 Yoshihide Shiono
+appId: com.shovitdutta.ytdlx
+productName: yt-dlx
+copyright: Copyright © 2024 Shovit Dutta
 directories:
   output: dist
   buildResources: resources
