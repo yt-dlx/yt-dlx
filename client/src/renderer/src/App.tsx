@@ -1,6 +1,7 @@
 import React from "react";
-import HomePage from "./pages/home";
+import HomePage from "./pages";
 import IPCPage from "./pages/IPCPage";
+import VideoId from "./pages/videoId";
 import { RiHome5Fill } from "react-icons/ri";
 import { IoCaretForward } from "react-icons/io5";
 import { IoCaretBackOutline } from "react-icons/io5";
@@ -64,6 +65,7 @@ export default function App(): JSX.Element {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/IPCPage" element={<IPCPage />} />
+          <Route path="/videoId/:id" element={<VideoId />} />
           <Route path="/AudioLowest" element={<AudioLowest />} />
           <Route path="/AudioCustom" element={<AudioCustom />} />
           <Route path="/AudioHighest" element={<AudioHighest />} />

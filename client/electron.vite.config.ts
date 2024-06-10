@@ -1,4 +1,5 @@
 import { resolve } from "path";
+import Pages from "vite-plugin-pages";
 import react from "@vitejs/plugin-react";
 import { defineConfig, externalizeDepsPlugin } from "electron-vite";
 
@@ -15,6 +16,11 @@ export default defineConfig({
         "@renderer": resolve("src/renderer/src"),
       },
     },
-    plugins: [react()],
+    plugins: [
+      react(),
+      Pages({
+        extensions: ["tsx"],
+      }),
+    ],
   },
 });
