@@ -23,7 +23,7 @@ const PnpmModel: React.FC<{
               <li>open an empty project or old project</li>
               <li>open terminal inside the project</li>
               <li>type the following commads</li>
-              <li>Pnpm add yt-dlx</li>
+              <li>pnpm add yt-dlx</li>
             </ul>
             <button
               onClick={onClose}

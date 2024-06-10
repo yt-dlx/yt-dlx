@@ -17,8 +17,7 @@ else app.setPath("userData", `${app.getPath("userData")} (development)`);
 (async () => {
   await app.whenReady();
   const mainWindow = createWindow("main", {
-    width: 800,
-    height: 600,
+    fullscreen: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
