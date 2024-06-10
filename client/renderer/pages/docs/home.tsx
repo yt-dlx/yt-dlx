@@ -192,6 +192,92 @@ export default function HomePage(): JSX.Element {
                         the lowest available resolution.
                       </td>
                     </tr>
+                    <tr>
+                      <td>
+                        <Link
+                          href="/docs/Command/extract"
+                          className="font-bold flex items-center justify-center gap-2 hover:text-[#CD322D]"
+                        >
+                          <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                          info.extract()
+                        </Link>
+                      </td>
+                      <td className="italic">
+                        Extracts metadata information from a YouTube video.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <Link
+                          href="/docs/Command/list_formats"
+                          className="font-bold flex items-center justify-center gap-2 hover:text-[#CD322D]"
+                        >
+                          <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                          info.list_formats()
+                        </Link>
+                      </td>
+                      <td className="italic">
+                        Lists the available formats and manifest information for
+                        a YouTube video.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <Link
+                          href="/docs/Command/playlist_data"
+                          className="font-bold flex items-center justify-center gap-2 hover:text-[#CD322D]"
+                        >
+                          <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                          ytSearch.Playlist.Single()
+                        </Link>
+                      </td>
+                      <td className="italic">
+                        Extracts metadata for videos in a YouTube playlist.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <Link
+                          href="/docs/Command/search_playlist"
+                          className="font-bold flex items-center justify-center gap-2 hover:text-[#CD322D]"
+                        >
+                          <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                          ytSearch.Playlist.Multiple()
+                        </Link>
+                      </td>
+                      <td className="italic">
+                        Searches for YouTube playlists based on the query.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <Link
+                          href="/docs/Command/search_videos"
+                          className="font-bold flex items-center justify-center gap-2 hover:text-[#CD322D]"
+                        >
+                          <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                          ytSearch.Video.Multiple()
+                        </Link>
+                      </td>
+                      <td className="italic">
+                        Searches for YouTube videos based on the query.
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <Link
+                          href="/docs/Command/video_data"
+                          className="font-bold flex items-center justify-center gap-2 hover:text-[#CD322D]"
+                        >
+                          <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                          ytSearch.Video.Single()
+                        </Link>
+                      </td>
+                      <td className="italic">
+                        Fetches data for a single YouTube video based on the
+                        video ID or link.
+                      </td>
+                    </tr>
                   </tbody>
                 </table>
               </motion.div>

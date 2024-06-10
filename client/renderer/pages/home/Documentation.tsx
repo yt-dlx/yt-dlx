@@ -2,6 +2,7 @@ import react from "react";
 import { motion } from "framer-motion";
 import { FaBook } from "react-icons/fa";
 import { RiContactsBookFill } from "react-icons/ri";
+import Link from "next/link";
 
 export default function Documentation(): JSX.Element {
   const FromLeftToRight = {
@@ -82,10 +83,13 @@ export default function Documentation(): JSX.Element {
                   Troubleshooting and FAQs
                 </motion.li>
               </motion.ul>
-              <button className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50">
+              <Link
+                href="/docs/home"
+                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+              >
                 <FaBook className="mr-2 h-5 w-5" />
                 Checkout Usage Documentations for Yt-Dlx
-              </button>
+              </Link>
             </div>
           </div>
         </div>
