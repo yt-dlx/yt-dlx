@@ -1,6 +1,5 @@
 node_modules
+*.log
+.next
+app
 dist
-out
-.DS_Store
-*.log*
-install-state.gz
