@@ -1,9 +1,26 @@
 import Link from "next/link";
 import { RiHome5Fill } from "react-icons/ri";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export default function NavPackage() {
   return (
     <nav className="navbar bg-red-800/10 shadow-red-800/20 shadow-2xl text-white/60 backdrop-blur-md fixed z-50 top-0 flex justify-between items-center px-4">
+      <div className="flex items-center gap-4">
+        <button
+          onClick={() => window.history.back()}
+          className="text-red-600 cursor-pointer text-2xl font-bold flex items-center gap-2 hover:scale-105 duration-500 hover:animate-pulse"
+        >
+          <FaArrowLeft size={20} />
+          Back
+        </button>
+        <button
+          onClick={() => window.history.forward()}
+          className="text-red-600 cursor-pointer text-2xl font-bold flex items-center gap-2 hover:scale-105 duration-500 hover:animate-pulse"
+        >
+          <FaArrowRight size={20} />
+          Forward
+        </button>
+      </div>
       <Link
         href="/"
         className="text-red-600 cursor-pointer text-4xl font-bold flex items-center gap-2 hover:scale-105 duration-500 hover:animate-pulse"
