@@ -3,7 +3,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { HiFire } from "react-icons/hi";
 import { GoNumber } from "react-icons/go";
-import Introduction from "./Introduction";
+import NavPackage from "./components/nav";
+import FootPackage from "./components/foot";
+import Introduction from "./home/Introduction";
 import { TbWorldSearch } from "react-icons/tb";
 import { TbDiamondFilled } from "react-icons/tb";
 import { SiGradleplaypublisher } from "react-icons/si";
@@ -17,6 +19,7 @@ export default function Playground(): JSX.Element {
 
   return (
     <react.Fragment>
+      <NavPackage />
       <Introduction />
       <motion.section className="flex flex-col items-center justify-center">
         <form
@@ -197,6 +200,7 @@ export default function Playground(): JSX.Element {
           )}
         </form>
       </motion.section>
+      <FootPackage />
     </react.Fragment>
   );
 }
