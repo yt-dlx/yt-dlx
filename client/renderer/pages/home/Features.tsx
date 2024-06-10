@@ -1,4 +1,5 @@
 import react from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { FaClipboardCheck } from "react-icons/fa";
 import { HiFolderDownload } from "react-icons/hi";
@@ -26,10 +27,7 @@ const AndBounce = {
 export default function Features(): JSX.Element {
   return (
     <react.Fragment>
-      <motion.section
-        id="Features"
-        className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white"
-      >
+      <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white">
         <div className="container px-4 md:px-6">
           <div className="grid items-center gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
             <div className="flex flex-col justify-center space-y-4">
@@ -74,10 +72,13 @@ export default function Features(): JSX.Element {
                   Seamless integration with Node.js and other environments
                 </li>
               </motion.ul>
-              <button className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50">
+              <Link
+                href="/home/Playground"
+                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+              >
                 <HiFolderDownload className="mr-2 h-5 w-5" />
                 Try Yt-Dlx in Graphical User Interface mode
-              </button>
+              </Link>
             </div>
             <motion.img
               alt="logo"

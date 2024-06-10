@@ -1,7 +1,9 @@
 import react from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { HiFire } from "react-icons/hi";
 import { GoNumber } from "react-icons/go";
+import Introduction from "./Introduction";
 import { TbWorldSearch } from "react-icons/tb";
 import { TbDiamondFilled } from "react-icons/tb";
 import { SiGradleplaypublisher } from "react-icons/si";
@@ -15,10 +17,8 @@ export default function Playground(): JSX.Element {
 
   return (
     <react.Fragment>
-      <section
-        id="Playground"
-        className="flex flex-col items-center justify-center"
-      >
+      <Introduction />
+      <motion.section className="flex flex-col items-center justify-center">
         <form
           onSubmit={(event) => {
             setTubeSearch(null);
@@ -196,7 +196,7 @@ export default function Playground(): JSX.Element {
             </react.Fragment>
           )}
         </form>
-      </section>
+      </motion.section>
     </react.Fragment>
   );
 }
