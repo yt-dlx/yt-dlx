@@ -1,7 +1,7 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
-import Image from 'next/image'
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function NextPage() {
   return (
@@ -13,8 +13,8 @@ export default function NextPage() {
         <div>
           <Image
             className="ml-auto mr-auto"
-            src="/images/logo.png"
             alt="Logo image"
+            src="/logo.png"
             width={256}
             height={256}
           />
@@ -25,5 +25,5 @@ export default function NextPage() {
         <Link href="/home">Go to home page</Link>
       </div>
     </React.Fragment>
-  )
+  );
 }
