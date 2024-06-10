@@ -24,10 +24,5 @@ else app.setPath("userData", `${app.getPath("userData")} (development)`);
   }
 })();
 
-app.on("window-all-closed", () => {
-  app.quit();
-});
-
-ipcMain.on("message", async (event, arg) => {
-  event.reply("message", `${arg} World!`);
-});
+app.on("window-all-closed", () => app.quit());
+ipcMain.on("time", async (event, arg) => event.reply("time", arg));

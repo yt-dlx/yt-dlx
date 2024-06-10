@@ -3,11 +3,9 @@ import Head from "next/head";
 import Image from "next/image";
 
 export default function HomePage() {
-  const [message, setMessage] = React.useState("No message found");
+  const [time, setMessage] = React.useState("No time found");
   React.useEffect(() => {
-    window.ipc.on("message", (message: string) => {
-      setMessage(message);
-    });
+    window.ipc.on("time", (time: string) => setMessage(time));
   }, []);
 
   return (
@@ -27,14 +25,12 @@ export default function HomePage() {
       </div>
       <div className="flex flex-col items-center mt-4">
         <button
-          onClick={() => {
-            window.ipc.send("message", "Hello");
-          }}
+          onClick={() => window.ipc.send("time", new Date().toISOString())}
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
         >
-          Test IPC
+          new Date().toISOString()
         </button>
-        <p className="mt-2 text-gray-700">{message}</p>
+        <p className="mt-2 text-gray-700">{time}</p>
       </div>
     </React.Fragment>
   );
