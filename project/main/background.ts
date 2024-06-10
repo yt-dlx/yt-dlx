@@ -31,5 +31,5 @@ app.on("window-all-closed", () => app.quit());
 //
 //
 // ============================================[ IPC Handlers ]============================================
-ipcMain.on("time", async (event, arg) => event.reply("time", arg));
+ipcMain.on("time", async (event, response) => event.reply("time", response));
 // ============================================[ IPC Handlers ]============================================
