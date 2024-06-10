@@ -1,8 +1,8 @@
 // ==============================================[ Imports ]==============================================
 import path from "path";
 import serve from "electron-serve";
-import { app, ipcMain } from "electron";
 import { createWindow } from "./helpers";
+import { app, ipcMain as api } from "electron";
 // ==============================================[ Imports ]==============================================
 //
 //
@@ -31,5 +31,5 @@ app.on("window-all-closed", () => app.quit());
 //
 //
 // ============================================[ IPC Handlers ]============================================
-ipcMain.on("time", async (event, response) => event.reply("time", response));
+api.on("time", async (event, response) => event.reply("time", response));
 // ============================================[ IPC Handlers ]============================================
