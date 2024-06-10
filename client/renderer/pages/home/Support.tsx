@@ -1,27 +1,9 @@
-import React from "react";
-import Support from "./home/Support";
+import react from "react";
 import { motion } from "framer-motion";
-import NavPackage from "./components/nav";
-import FootPackage from "./components/foot";
-import NpmModel from "./home/models/NpmModel";
-import BunModel from "./home/models/BunModel";
-import Introduction from "./home/Introduction";
-import YarnModel from "./home/models/YarnModel";
-import PnpmModel from "./home/models/PnpmModel";
-import Documentation from "./home/Documentation";
-import { FaClipboardCheck } from "react-icons/fa";
-import { HiFolderDownload } from "react-icons/hi";
+import { HiSupport } from "react-icons/hi";
+import { TbHelpHexagonFilled } from "react-icons/tb";
 
-export default function HomePage(): JSX.Element {
-  const [ShowYarn, setShowYarn] = React.useState(false);
-  const [ShowPnpm, setShowPnpm] = React.useState(false);
-  const [ShowNpm, setShowNpm] = React.useState(false);
-  const [ShowBun, setShowBun] = React.useState(false);
-  const ToggleYarn = () => setShowYarn(!ShowYarn);
-  const TogglePnpm = () => setShowPnpm(!ShowPnpm);
-  const ToggleNpm = () => setShowNpm(!ShowNpm);
-  const ToggleBun = () => setShowBun(!ShowBun);
-
+export default function Support(): JSX.Element {
   const FromLeftToRight = {
     initial: { opacity: 0, x: -100 },
     exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
@@ -43,12 +25,9 @@ export default function HomePage(): JSX.Element {
   };
 
   return (
-    <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-[#CD322D] font-semibold">
-      <NavPackage />
-      <Introduction />
-      {/* [ Playground ] */}
+    <react.Fragment>
       <motion.section
-        id="Playground"
+        id="Support"
         className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white"
       >
         <div className="container px-4 md:px-6">
@@ -59,67 +38,57 @@ export default function HomePage(): JSX.Element {
                   className="inline-block rounded-2xl bg-[#CD322D] text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm"
                   {...FromLeftToRight}
                 >
-                  Key Features
+                  Support
                 </motion.div>
                 <motion.h2
                   className="text-3xl font-black tracking-tighter sm:text-7xl text-[#CD322D]"
                   {...FromLeftToRight}
                 >
-                  Powerful Multimedia Downloading
+                  We're Here to Help
                 </motion.h2>
                 <motion.p
                   className="max-w-[600px] text-white md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
                   {...FromLeftToRight}
                 >
-                  Yt-Dlx allows you to download audio and video content from a
-                  wide range of sources, including YouTube, Vimeo, and many
-                  more. With its advanced capabilities, you can customize the
-                  download format, resolution, and more.
+                  If you have any questions or need assistance, our support team
+                  is here to help. We provide comprehensive support to ensure
+                  you have the best experience with Yt-Dlx.
                 </motion.p>
               </div>
               <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <motion.li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                  Download audio and video from diverse sources
+                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  24/7 customer support
                 </motion.li>
                 <motion.li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                  Customize download format, resolution, and more
+                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  Community forums and knowledge base
                 </motion.li>
                 <motion.li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                  Supports a wide range of media formats
+                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  Regular updates and improvements
                 </motion.li>
                 <motion.li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
-                  Seamless integration with Node.js and other environments
+                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  Contact us via email or live chat
                 </motion.li>
               </motion.ul>
               <button className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50">
-                <HiFolderDownload className="mr-2 h-5 w-5" />
-                Try Yt-Dlx in Graphical User Interface mode
+                <HiSupport className="mr-2 h-5 w-5" />
+                Create an Issue in Here
               </button>
             </div>
             <motion.img
               alt="logo"
               width={550}
               height={310}
-              src="/YouTube_Circle.gif"
+              src="/YouTube_Support.gif"
               {...FromRightToLeft}
               className="mx-auto aspect-video overflow-hidden rounded-2xl object-cover object-center sm:w-full border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
             />
           </div>
         </div>
       </motion.section>
-      {/* [ Playground ] */}
-      <Documentation />
-      <Support />
-      <FootPackage />
-      {/* [ Modals ] */}
-      <YarnModel isOpen={ShowYarn} onClose={ToggleYarn} />
-      <PnpmModel isOpen={ShowPnpm} onClose={TogglePnpm} />
-      <NpmModel isOpen={ShowNpm} onClose={ToggleNpm} />
-      <BunModel isOpen={ShowBun} onClose={ToggleBun} />
-    </main>
+    </react.Fragment>
   );
 }

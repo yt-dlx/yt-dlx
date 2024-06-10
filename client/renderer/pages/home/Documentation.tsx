@@ -1,394 +1,95 @@
 import react from "react";
-import Link from "next/link";
-import { FaLightbulb } from "react-icons/fa";
-import { MdAudioFile } from "react-icons/md";
-import { FaFileVideo } from "react-icons/fa6";
-import { SiFirefoxbrowser } from "react-icons/si";
-import { AiFillCodeSandboxCircle } from "react-icons/ai";
+import { motion } from "framer-motion";
+import { FaBook } from "react-icons/fa";
+import { RiContactsBookFill } from "react-icons/ri";
 
 export default function Documentation(): JSX.Element {
+  const FromLeftToRight = {
+    initial: { opacity: 0, x: -100 },
+    exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
+    whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+  };
+  const FromRightToLeft = {
+    initial: { opacity: 0, x: 100 },
+    exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
+    whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+  };
+  const AndBounce = {
+    initial: { opacity: 0, y: -50 },
+    whileInView: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.6, bounce: 0.3 },
+    },
+    exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
+  };
+
   return (
     <react.Fragment>
-      <section
+      <motion.section
         id="Documentation"
-        className="flex flex-col items-center justify-center"
+        className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-neutral-950 text-white"
       >
-        <div className="px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-          <h2 className="text-3xl font-bold sm:text-4xl text-[#CD322D]">
-            Explore All Available Functions
-          </h2>
-          <p className="mt-4 text-white/60">
-            YT-DLX accommodates various node.js coding flavours!{" "}
-            <span className="text-[#CD322D]">
-              (typescript), (commonjs) and (esm)
-            </span>
-            , ensuring 100% compatibility and comprehensive type safety
-            coverage.
-          </p>
-          <div className="bg-stone-950 mt-8 grid grid-cols-1 gap-8 md:mt-16 border-4 border-[#CD322D] rounded-3xl shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]">
-            <div className="overflow-x-auto">
-              {/* ========================[ AUDIO ONLY ]======================== */}
-              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-[#CD322D] shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]">
-                <li>
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <MdAudioFile className="text-[#CD322D]" size={30} />
-                  </div>
-                  <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      Audio Only
-                    </time>
-                    <div className="text-lg font-black">
-                      Audio.Single.Highest
-                    </div>
-                    Downloads and processes the highest quality audio from a
-                    single YouTube video.
-                    <br />
-                    <Link
-                      href="/docs/Audio/AudioHighest"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-                <li>
-                  <hr />
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <MdAudioFile className="text-[#CD322D]" size={30} />
-                  </div>
-                  <div className="timeline-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      Audio Only
-                    </time>
-                    <div className="text-lg font-black">
-                      Audio.Single.Lowest
-                    </div>
-                    Downloads and processes the lowest quality audio from a
-                    single YouTube video.
-                    <br />
-                    <Link
-                      href="/docs/Audio/AudioLowest"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-                <li>
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <MdAudioFile className="text-[#CD322D]" size={30} />
-                  </div>
-                  <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      Audio Only
-                    </time>
-                    <div className="text-lg font-black">
-                      Audio.Single.Custom
-                    </div>
-                    Downloads and processes a single YouTube video with audio
-                    customization options.
-                    <br />
-                    <Link
-                      href="/docs/Audio/AudioCustom"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-              </ul>
-              {/* ========================[ VIDEO ONLY ]======================== */}
-              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-[#CD322D] shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]">
-                <li>
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <FaFileVideo className="text-[#CD322D]" size={30} />
-                  </div>
-                  <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      Video Only
-                    </time>
-                    <div className="text-lg font-black">
-                      Video.Single.Highest
-                    </div>
-                    Downloads the highest quality version of a YouTube video
-                    with customization options.
-                    <br />
-                    <Link
-                      href="/docs/Video/VideoHighest"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-                <li>
-                  <hr />
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <FaFileVideo className="text-[#CD322D]" size={30} />
-                  </div>
-                  <div className="timeline-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      Video Only
-                    </time>
-                    <div className="text-lg font-black">
-                      Video.Single.Lowest
-                    </div>
-                    Downloads the lowest quality version of a YouTube video with
-                    customization options.
-                    <br />
-                    <Link
-                      href="/docs/Video/VideoLowest"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-                <li>
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <FaFileVideo className="text-[#CD322D]" size={30} />
-                  </div>
-                  <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      Video Only
-                    </time>
-                    <div className="text-lg font-black">
-                      Video.Single.Custom
-                    </div>
-                    Downloads a YouTube video with customization options.
-                    <br />
-                    <Link
-                      href="/docs/Video/VideoCustom"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-              </ul>
-              {/* ========================[ AUDIO VIDEO ]======================== */}
-              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-[#CD322D] shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]">
-                <li>
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <AiFillCodeSandboxCircle
-                      className="text-[#CD322D]"
-                      size={30}
-                    />
-                  </div>
-                  <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      Audio with Video
-                    </time>
-                    <div className="text-lg font-black">
-                      AudioVideo.Single.Highest
-                    </div>
-                    Downloads audio and video from a YouTube video URL with the
-                    highest available resolution.
-                    <br />
-                    <Link
-                      href="/docs/AudioVideo/AudioVideoHighest"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-                <li>
-                  <hr />
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <AiFillCodeSandboxCircle
-                      className="text-[#CD322D]"
-                      size={30}
-                    />
-                  </div>
-                  <div className="timeline-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      Audio with Video
-                    </time>
-                    <div className="text-lg font-black">
-                      AudioVideo.Single.Lowest
-                    </div>
-                    Downloads audio and video from a YouTube video URL with the
-                    lowest available resolution.
-                    <br />
-                    <Link
-                      href="/docs/AudioVideo/AudioVideoLowest"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-                <li>
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <AiFillCodeSandboxCircle
-                      className="text-[#CD322D]"
-                      size={30}
-                    />
-                  </div>
-                  <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      Audio with Video
-                    </time>
-                    <div className="text-lg font-black">
-                      AudioVideo.Single.Custom
-                    </div>
-                    Downloads audio and video from a YouTube video URL with
-                    customizable options.
-                    <br />
-                    <Link
-                      href="/docs/AudioVideo/AudioVideoCustom"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-              </ul>
-              {/* ========================[ YTSEARCH ]======================== */}
-              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-[#CD322D] shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]">
-                <li>
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <SiFirefoxbrowser className="text-[#CD322D]" size={30} />
-                  </div>
-                  <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      YouTube Search
-                    </time>
-                    <div className="text-lg font-black">Video.Single</div>
-                    Fetches data for a single YouTube video based on the video
-                    ID or link.
-                    <br />
-                    <Link
-                      href="/docs/Command/video_data"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-                <li>
-                  <hr />
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <SiFirefoxbrowser className="text-[#CD322D]" size={30} />
-                  </div>
-                  <div className="timeline-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      YouTube Search
-                    </time>
-                    <div className="text-lg font-black">Video.Multiple</div>
-                    Searches for YouTube videos based on the query.
-                    <br />
-                    <Link
-                      href="/docs/Command/search_videos"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-                <li>
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <SiFirefoxbrowser className="text-[#CD322D]" size={30} />
-                  </div>
-                  <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      YouTube Search
-                    </time>
-                    <div className="text-lg font-black">Playlist.Single</div>
-                    Extracts metadata for videos in a YouTube playlist.
-                    <br />
-                    <Link
-                      href="/docs/Command/playlist_data"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-                <li>
-                  <hr />
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <SiFirefoxbrowser className="text-[#CD322D]" size={30} />
-                  </div>
-                  <div className="timeline-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      YouTube Search
-                    </time>
-                    <div className="text-lg font-black">Playlist.Multiple</div>
-                    Searches for YouTube playlists based on the query.
-                    <br />
-                    <Link
-                      href="/docs/Command/search_playlist"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-              </ul>
-              {/* ========================[ INFO GATHERER ]======================== */}
-              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-[#CD322D] shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]">
-                <li>
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <FaLightbulb className="text-[#CD322D]" size={30} />
-                  </div>
-                  <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      Info Gatherer
-                    </time>
-                    <div className="text-lg font-black">info.extract</div>
-                    Extracts metadata information from a YouTube video.
-                    <br />
-                    <Link
-                      href="/docs/Command/extract"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-                <li>
-                  <hr />
-                  <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <FaLightbulb className="text-[#CD322D]" size={30} />
-                  </div>
-                  <div className="timeline-end mb-10">
-                    <time className="font-mono italic font-bold text-[#CD322D]">
-                      Info Gatherer
-                    </time>
-                    <div className="text-lg font-black">info.list_formats</div>
-                    Lists the available formats and manifest information for a
-                    YouTube video.
-                    <br />
-                    <Link
-                      href="/docs/Command/list_formats"
-                      className="text-white bg-red-900 hover:bg-red-800 btn btn-wide no-animation mt-4 font-mono"
-                    >
-                      check usage and example!
-                    </Link>
-                  </div>
-                  <hr />
-                </li>
-              </ul>
+        <div className="container px-4 md:px-6">
+          <div className="grid items-center gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
+            <motion.img
+              alt="logo"
+              width={550}
+              height={310}
+              src="/YouTube_Music.gif"
+              {...FromLeftToRight}
+              className="mx-auto aspect-video overflow-hidden rounded-2xl object-cover object-center sm:w-full border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
+            />
+            <div className="flex flex-col justify-center space-y-4">
+              <div className="space-y-2">
+                <motion.div
+                  className="inline-block rounded-2xl bg-[#CD322D] text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm"
+                  {...FromRightToLeft}
+                >
+                  Documentation
+                </motion.div>
+                <motion.h2
+                  className="text-3xl font-black tracking-tighter sm:text-7xl text-[#CD322D]"
+                  {...FromRightToLeft}
+                >
+                  Comprehensive Guides
+                </motion.h2>
+                <motion.p
+                  className="max-w-[600px] text-white md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+                  {...FromRightToLeft}
+                >
+                  Our extensive documentation provides detailed guides and
+                  tutorials to help you get the most out of Yt-Dlx. Whether
+                  you're a beginner or an advanced user, you'll find everything
+                  you need to know about installation, usage, and more.
+                </motion.p>
+              </div>
+              <motion.ul className="grid gap-2 py-4" {...AndBounce}>
+                <motion.li>
+                  <RiContactsBookFill className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  Detailed installation instructions
+                </motion.li>
+                <motion.li>
+                  <RiContactsBookFill className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  Usage examples and best practices
+                </motion.li>
+                <motion.li>
+                  <RiContactsBookFill className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  API reference and advanced configurations
+                </motion.li>
+                <motion.li>
+                  <RiContactsBookFill className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  Troubleshooting and FAQs
+                </motion.li>
+              </motion.ul>
+              <button className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50">
+                <FaBook className="mr-2 h-5 w-5" />
+                Checkout Usage Documentations for Yt-Dlx
+              </button>
             </div>
           </div>
         </div>
-      </section>
+      </motion.section>
     </react.Fragment>
   );
 }
