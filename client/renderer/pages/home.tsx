@@ -1,6 +1,13 @@
 import React from "react";
+import AndBounce from "./anim/home";
 import { motion } from "framer-motion";
+import { FaBook } from "react-icons/fa";
 import NavPackage from "./components/nav";
+import FromBottomToTop from "./anim/home";
+import FromTopToBottom from "./anim/home";
+import FromLeftToRight from "./anim/home";
+import FromRightToLeft from "./anim/home";
+import { HiSupport } from "react-icons/hi";
 import { TbBrandNpm } from "react-icons/tb";
 import FootPackage from "./components/foot";
 import NpmModel from "./home/models/NpmModel";
@@ -8,51 +15,19 @@ import BunModel from "./home/models/BunModel";
 import { SiBun, SiPnpm } from "react-icons/si";
 import YarnModel from "./home/models/YarnModel";
 import PnpmModel from "./home/models/PnpmModel";
+import { HiFolderDownload } from "react-icons/hi";
 import { RiContactsBookFill } from "react-icons/ri";
 import { TbHelpHexagonFilled } from "react-icons/tb";
 import { FaYarn, FaClipboardCheck } from "react-icons/fa";
 // ===============================================================================
-const FromBottomToTop = {
-  initial: { opacity: 0, y: 100 },
-  exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
-  whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-const FromTopToBottom = {
-  initial: { opacity: 0, y: -100 },
-  exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
-  whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
-const FromLeftToRight = {
-  initial: { opacity: 0, x: -100 },
-  exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
-  whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-};
-const FromRightToLeft = {
-  initial: { opacity: 0, x: 100 },
-  exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
-  whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-};
-const AndBounce = {
-  initial: { opacity: 0, y: -50 },
-  whileInView: {
-    y: 0,
-    opacity: 1,
-    transition: { duration: 0.6, bounce: 0.3 },
-  },
-  exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
-};
-// ===============================================================================
 export default function HomePage(): JSX.Element {
   const [ShowYarn, setShowYarn] = React.useState(false);
-  const ToggleYarn = () => setShowYarn(!ShowYarn);
-
   const [ShowPnpm, setShowPnpm] = React.useState(false);
-  const TogglePnpm = () => setShowPnpm(!ShowPnpm);
-
   const [ShowNpm, setShowNpm] = React.useState(false);
-  const ToggleNpm = () => setShowNpm(!ShowNpm);
-
   const [ShowBun, setShowBun] = React.useState(false);
+  const ToggleYarn = () => setShowYarn(!ShowYarn);
+  const TogglePnpm = () => setShowPnpm(!ShowPnpm);
+  const ToggleNpm = () => setShowNpm(!ShowNpm);
   const ToggleBun = () => setShowBun(!ShowBun);
 
   return (
@@ -84,28 +59,28 @@ export default function HomePage(): JSX.Element {
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
               <button
                 onClick={ToggleNpm}
-                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
               >
                 <TbBrandNpm className="mr-2 h-5 w-5" />
                 Install Using Npm
               </button>
               <button
                 onClick={ToggleYarn}
-                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
               >
                 <FaYarn className="mr-2 h-5 w-5" />
                 Install Using Yarn
               </button>
               <button
                 onClick={TogglePnpm}
-                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
               >
                 <SiPnpm className="mr-2 h-5 w-5" />
                 Install Using Pnpm
               </button>
               <button
                 onClick={ToggleBun}
-                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
               >
                 <SiBun className="mr-2 h-5 w-5" />
                 Install Using Bun
@@ -122,9 +97,9 @@ export default function HomePage(): JSX.Element {
           />
         </div>
       </motion.section>
-      {/* =================================================================[ Features ]==================================================== */}
+      {/* =================================================================[ Playground ]==================================================== */}
       <motion.section
-        id="Features"
+        id="Playground"
         className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white"
       >
         <div className="container px-4 md:px-6">
@@ -171,6 +146,10 @@ export default function HomePage(): JSX.Element {
                   Seamless integration with Node.js and other environments
                 </motion.li>
               </motion.ul>
+              <button className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50">
+                <HiFolderDownload className="mr-2 h-5 w-5" />
+                Try Yt-Dlx in Graphical User Interface mode
+              </button>
             </div>
             <motion.img
               alt="logo"
@@ -240,6 +219,10 @@ export default function HomePage(): JSX.Element {
                   Troubleshooting and FAQs
                 </motion.li>
               </motion.ul>
+              <button className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50">
+                <FaBook className="mr-2 h-5 w-5" />
+                Checkout Usage Documentations for Yt-Dlx
+              </button>
             </div>
           </div>
         </div>
@@ -292,6 +275,10 @@ export default function HomePage(): JSX.Element {
                   Contact us via email or live chat
                 </motion.li>
               </motion.ul>
+              <button className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50">
+                <HiSupport className="mr-2 h-5 w-5" />
+                Create an Issue in Here
+              </button>
             </div>
             <motion.img
               alt="logo"
