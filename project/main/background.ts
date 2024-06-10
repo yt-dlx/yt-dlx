@@ -1,5 +1,8 @@
 // ==============================================[ Imports ]==============================================
 import path from "path";
+import * as fs from "fs";
+import ytdlx from "yt-dlx";
+import colors from "colors";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import { app, ipcMain as api } from "electron";
@@ -32,14 +35,33 @@ app.on("window-all-closed", () => app.quit());
 //
 // ============================================[ IPC Handlers ]============================================
 api.on("time", async (event, response) => event.reply("time", response));
-//
-//
 api.on("add", async (event, response) => {
-  event.reply("add", response.num1 + response.num2);
+  try {
+    event.reply("add", response.num1 + response.num2);
+  } catch (error: any) {
+    event.reply("add", error.message);
+  }
 });
-//
-//
-api.on("add", async (event, response) => {
-  event.reply("add", response.num1 + response.num2);
+api.on("search", async (event, response) => {
+  try {
+    var TubeBody: any;
+    if (response.videoId) {
+      console.log(colors.green("❓ videoId:"), colors.italic(response.videoId));
+      TubeBody = await ytdlx.ytSearch.Video.Single({
+        query: "https://youtu.be/" + response.videoId,
+      });
+      if (TubeBody) event.reply("search", TubeBody);
+      else event.sender.send("search", null);
+    } else {
+      console.log(colors.green("❓ query:"), colors.italic(response.query));
+      TubeBody = await ytdlx.ytSearch.Video.Multiple({
+        query: response.query,
+      });
+      if (TubeBody) event.reply("search", TubeBody);
+      else event.sender.send("search", null);
+    }
+  } catch (error: any) {
+    event.reply("search", error.message);
+  }
 });
 // ============================================[ IPC Handlers ]============================================
