@@ -27,10 +27,10 @@ export default function Playground(): JSX.Element {
             event.preventDefault();
             window.ipc.send("search", { query: Query });
           }}
-          className="bg-stone-950 max-w-screen-2xl p-10 text-red-600 mx-auto my-8 rounded-2xl border-4 border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600"
+          className="bg-stone-950 max-w-screen-2xl p-10 text-[#CD322D] mx-auto my-8 rounded-2xl border-4 border-[#CD322D] shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
         >
           <h1 className="text-6xl mb-4 font-bold">Yt-Dlx PlayGround</h1>
-          <h2 className="text-3xl font-bold text-red-600 mb-4 font-mono">
+          <h2 className="text-3xl font-bold text-[#CD322D] mb-4 font-mono">
             Effortless Audio Video Downloader And Streamer!
           </h2>
           <p className="mb-8 italic text-white/60">
@@ -42,13 +42,13 @@ export default function Playground(): JSX.Element {
           <div className="flex items-center gap-4">
             <label className="form-control w-full">
               <div className="label">
-                <span className="flex flex-row items-center justify-center label-text text-red-600 text-sm">
-                  <HiFire size={20} className="text-red-600 animate-pulse" />
+                <span className="flex flex-row items-center justify-center label-text text-[#CD322D] text-sm">
+                  <HiFire size={20} className="text-[#CD322D] animate-pulse" />
                   option :
                   <span className="text-white/60">provide video name</span>
                 </span>
-                <span className="flex flex-row items-center justify-center label-text-alt text-red-600 text-sm">
-                  <HiFire size={20} className="text-red-600 animate-pulse" />
+                <span className="flex flex-row items-center justify-center label-text-alt text-[#CD322D] text-sm">
+                  <HiFire size={20} className="text-[#CD322D] animate-pulse" />
                   option :
                   <span className="text-white/60">provide video link</span>
                 </span>
@@ -62,8 +62,8 @@ export default function Playground(): JSX.Element {
                 className="input input-bordered w-full rounded-2xl bg-neutral-800"
               />
               <div className="label">
-                <span className="flex flex-row items-center justify-center label-text-alt text-red-600 text-sm">
-                  <HiFire size={20} className="text-red-600 animate-pulse" />
+                <span className="flex flex-row items-center justify-center label-text-alt text-[#CD322D] text-sm">
+                  <HiFire size={20} className="text-[#CD322D] animate-pulse" />
                   option :
                   <span className="text-white/60">provide video id</span>
                 </span>
@@ -83,26 +83,26 @@ export default function Playground(): JSX.Element {
           {TubeSearch && (
             <react.Fragment>
               <section className="px-4 mx-auto max-w-7xl">
-                <div className="px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 border-b-4 border-double border-red-600 mb-10">
+                <div className="px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 border-b-4 border-double border-[#CD322D] mb-10">
                   <div className="grid gap-10 row-gap-8 lg:grid-cols-5">
                     <div className="lg:col-span-2">
                       <div className="mb-3">
                         <a
                           aria-label="Article"
-                          className="inline-block text-red-600 transition-colors duration-200"
+                          className="inline-block text-[#CD322D] transition-colors duration-200"
                         >
                           <p className="font-sans text-xl font-thin leading-none tracking-tight lg:text-4xl xl:text-5xl">
                             You've Searched For <br></br>
-                            <span className="text-red-600 text-6xl font-extrabold">
+                            <span className="text-[#CD322D] text-6xl font-extrabold">
                               " {Query} "
                             </span>
                           </p>
                         </a>
                       </div>
                       <p className="mb-4 text-base text-white/60 md:text-lg flex flex-row">
-                        <GoNumber className="text-red-600" size={50} /> Found
+                        <GoNumber className="text-[#CD322D]" size={50} /> Found
                         Total{" "}
-                        <span className="text-red-600 text-4xl">
+                        <span className="text-[#CD322D] text-4xl">
                           " {TubeSearch.length || 0} "
                         </span>{" "}
                         Videos For Your Query !!
@@ -118,7 +118,7 @@ export default function Playground(): JSX.Element {
                         <Link
                           key={index}
                           href={`/home/${item.id}`}
-                          className="relative group mb-4 duration-700 bg-[#111111] p-1 shadow-red-900 hover:shadow-red-600 shadow-[0 0 20px rgba(255, 0, 0, 0.5)] rounded-2xl border-2 border-red-600/40 hover:border-red-600 flex flex-col justify-between"
+                          className="relative group mb-4 duration-700 bg-[#111111] p-1 shadow-red-900 hover:shadow-[#CD322D] shadow-[0 0 20px rgba(255, 0, 0, 0.5)] rounded-2xl border-2 border-[#CD322D]/40 hover:border-[#CD322D] flex flex-col justify-between"
                         >
                           <div className="relative">
                             <img
@@ -127,20 +127,20 @@ export default function Playground(): JSX.Element {
                               height={400}
                               loading="lazy"
                               src={item.thumbnails[0].url}
-                              className="object-cover w-full h-56 mb-5 bg-center rounded-t-2xl duration-700 group-hover:shadow-red-600 shadow-red-600/40 shadow-[0_0_20px_rgba(255,0,0,0.5)] group-hover:blur-sm"
+                              className="object-cover w-full h-56 mb-5 bg-center rounded-t-2xl duration-700 group-hover:shadow-[#CD322D] shadow-[#CD322D]/40 shadow-[0_0_20px_rgba(255,0,0,0.5)] group-hover:blur-sm"
                             />
                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                               <SiGradleplaypublisher
-                                className="text-red-600 animate-spin"
+                                className="text-[#CD322D] animate-spin"
                                 size={140}
                               />
                             </div>
                           </div>
                           <div className="flex-1 flex flex-col">
-                            <p className="mb-2 text-xs font-semibold tracking-wider text-red-600 uppercase">
+                            <p className="mb-2 text-xs font-semibold tracking-wider text-[#CD322D] uppercase">
                               number :: {index}
                             </p>
-                            <h2 className="mb-2 text-xl font-bold leading-snug text-red-600">
+                            <h2 className="mb-2 text-xl font-bold leading-snug text-[#CD322D]">
                               {item.title}
                             </h2>
                             <p className="mb-4 text-sm font-normal text-white/60">
@@ -149,37 +149,37 @@ export default function Playground(): JSX.Element {
                             <div className="flex items-center text-white/60">
                               <ul className="mb-3 list-disc ml-4 text-xs">
                                 <li>
-                                  <span className="text-red-600 text-sm">
+                                  <span className="text-[#CD322D] text-sm">
                                     videoId:
                                   </span>{" "}
                                   {item.id}
                                 </li>
                                 <li>
-                                  <span className="text-red-600 text-sm">
+                                  <span className="text-[#CD322D] text-sm">
                                     channelid:
                                   </span>{" "}
                                   {item.channelid}
                                 </li>
                                 <li>
-                                  <span className="text-red-600 text-sm">
+                                  <span className="text-[#CD322D] text-sm">
                                     channelname:
                                   </span>{" "}
                                   {item.channelname}
                                 </li>
                                 <li>
-                                  <span className="text-red-600 text-sm">
+                                  <span className="text-[#CD322D] text-sm">
                                     duration:
                                   </span>{" "}
                                   {item.duration}
                                 </li>
                                 <li>
-                                  <span className="text-red-600 text-sm">
+                                  <span className="text-[#CD322D] text-sm">
                                     uploadDate:
                                   </span>{" "}
                                   {item.uploadDate}
                                 </li>
                                 <li>
-                                  <span className="text-red-600 text-sm">
+                                  <span className="text-[#CD322D] text-sm">
                                     viewCount:
                                   </span>{" "}
                                   {item.viewCount}
@@ -187,7 +187,7 @@ export default function Playground(): JSX.Element {
                               </ul>
                             </div>
                           </div>
-                          <div className="flex items-center justify-center p-2 duration-700 group-hover:bg-red-600/60 bg-red-600/40 text-white/90 mt-0.5 w-full text-sm gap-1 rounded-b-xl">
+                          <div className="flex items-center justify-center p-2 duration-700 group-hover:bg-[#CD322D]/60 bg-[#CD322D]/40 text-white/90 mt-0.5 w-full text-sm gap-1 rounded-b-xl">
                             powered by <TbDiamondFilled size={20} /> yt-dlx{" "}
                           </div>
                         </Link>

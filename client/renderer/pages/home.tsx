@@ -2,6 +2,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { IoBook } from "react-icons/io5";
 import { FaQuora } from "react-icons/fa6";
+import NavPackage from "./components/nav";
 import { TbPackages } from "react-icons/tb";
 import { MdFileDownload } from "react-icons/md";
 import { FaClipboardCheck } from "react-icons/fa";
@@ -11,6 +12,7 @@ import { TbHelpHexagonFilled } from "react-icons/tb";
 export default function HomePage(): JSX.Element {
   return (
     <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-[#CD322D] font-semibold">
+      <NavPackage />
       <motion.section className="flex items-center justify-center border-b-8 border-t-8 border-double border-[#CD322D] w-full pt-12 md:pt-24 lg:pt-32 bg-neutral-950 text-white">
         <div className="container space-y-10 xl:space-y-16">
           <div className="flex flex-col items-center space-y-4 text-center">
@@ -196,7 +198,7 @@ export default function HomePage(): JSX.Element {
   );
 }
 // =========================================================================================================================================================
-// import NavPackage from "./components/nav";
+// import NavPackage from './components/nav';
 // import Playground from "./home/Playground";
 // import FootPackage from "./components/foot";
 // import Introduction from "./home/Introduction";

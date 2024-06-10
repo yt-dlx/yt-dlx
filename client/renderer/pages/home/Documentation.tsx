@@ -14,27 +14,27 @@ export default function Documentation(): JSX.Element {
         className="flex flex-col items-center justify-center"
       >
         <div className="px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
-          <h2 className="text-3xl font-bold sm:text-4xl text-red-600">
+          <h2 className="text-3xl font-bold sm:text-4xl text-[#CD322D]">
             Explore All Available Functions
           </h2>
           <p className="mt-4 text-white/60">
             YT-DLX accommodates various node.js coding flavours!{" "}
-            <span className="text-red-600">
+            <span className="text-[#CD322D]">
               (typescript), (commonjs) and (esm)
             </span>
             , ensuring 100% compatibility and comprehensive type safety
             coverage.
           </p>
-          <div className="bg-stone-950 mt-8 grid grid-cols-1 gap-8 md:mt-16 border-4 border-red-600 rounded-3xl shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600">
+          <div className="bg-stone-950 mt-8 grid grid-cols-1 gap-8 md:mt-16 border-4 border-[#CD322D] rounded-3xl shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]">
             <div className="overflow-x-auto">
               {/* ========================[ AUDIO ONLY ]======================== */}
-              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600">
+              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-[#CD322D] shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]">
                 <li>
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <MdAudioFile className="text-red-600" size={30} />
+                    <MdAudioFile className="text-[#CD322D]" size={30} />
                   </div>
                   <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       Audio Only
                     </time>
                     <div className="text-lg font-black">
@@ -55,10 +55,10 @@ export default function Documentation(): JSX.Element {
                 <li>
                   <hr />
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <MdAudioFile className="text-red-600" size={30} />
+                    <MdAudioFile className="text-[#CD322D]" size={30} />
                   </div>
                   <div className="timeline-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       Audio Only
                     </time>
                     <div className="text-lg font-black">
@@ -78,10 +78,10 @@ export default function Documentation(): JSX.Element {
                 </li>
                 <li>
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <MdAudioFile className="text-red-600" size={30} />
+                    <MdAudioFile className="text-[#CD322D]" size={30} />
                   </div>
                   <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       Audio Only
                     </time>
                     <div className="text-lg font-black">
@@ -101,13 +101,13 @@ export default function Documentation(): JSX.Element {
                 </li>
               </ul>
               {/* ========================[ VIDEO ONLY ]======================== */}
-              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600">
+              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-[#CD322D] shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]">
                 <li>
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <FaFileVideo className="text-red-600" size={30} />
+                    <FaFileVideo className="text-[#CD322D]" size={30} />
                   </div>
                   <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       Video Only
                     </time>
                     <div className="text-lg font-black">
@@ -128,10 +128,10 @@ export default function Documentation(): JSX.Element {
                 <li>
                   <hr />
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <FaFileVideo className="text-red-600" size={30} />
+                    <FaFileVideo className="text-[#CD322D]" size={30} />
                   </div>
                   <div className="timeline-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       Video Only
                     </time>
                     <div className="text-lg font-black">
@@ -151,10 +151,10 @@ export default function Documentation(): JSX.Element {
                 </li>
                 <li>
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <FaFileVideo className="text-red-600" size={30} />
+                    <FaFileVideo className="text-[#CD322D]" size={30} />
                   </div>
                   <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       Video Only
                     </time>
                     <div className="text-lg font-black">
@@ -173,16 +173,16 @@ export default function Documentation(): JSX.Element {
                 </li>
               </ul>
               {/* ========================[ AUDIO VIDEO ]======================== */}
-              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600">
+              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-[#CD322D] shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]">
                 <li>
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
                     <AiFillCodeSandboxCircle
-                      className="text-red-600"
+                      className="text-[#CD322D]"
                       size={30}
                     />
                   </div>
                   <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       Audio with Video
                     </time>
                     <div className="text-lg font-black">
@@ -204,12 +204,12 @@ export default function Documentation(): JSX.Element {
                   <hr />
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
                     <AiFillCodeSandboxCircle
-                      className="text-red-600"
+                      className="text-[#CD322D]"
                       size={30}
                     />
                   </div>
                   <div className="timeline-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       Audio with Video
                     </time>
                     <div className="text-lg font-black">
@@ -230,12 +230,12 @@ export default function Documentation(): JSX.Element {
                 <li>
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
                     <AiFillCodeSandboxCircle
-                      className="text-red-600"
+                      className="text-[#CD322D]"
                       size={30}
                     />
                   </div>
                   <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       Audio with Video
                     </time>
                     <div className="text-lg font-black">
@@ -255,13 +255,13 @@ export default function Documentation(): JSX.Element {
                 </li>
               </ul>
               {/* ========================[ YTSEARCH ]======================== */}
-              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600">
+              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-[#CD322D] shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]">
                 <li>
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <SiFirefoxbrowser className="text-red-600" size={30} />
+                    <SiFirefoxbrowser className="text-[#CD322D]" size={30} />
                   </div>
                   <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       YouTube Search
                     </time>
                     <div className="text-lg font-black">Video.Single</div>
@@ -280,10 +280,10 @@ export default function Documentation(): JSX.Element {
                 <li>
                   <hr />
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <SiFirefoxbrowser className="text-red-600" size={30} />
+                    <SiFirefoxbrowser className="text-[#CD322D]" size={30} />
                   </div>
                   <div className="timeline-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       YouTube Search
                     </time>
                     <div className="text-lg font-black">Video.Multiple</div>
@@ -300,10 +300,10 @@ export default function Documentation(): JSX.Element {
                 </li>
                 <li>
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <SiFirefoxbrowser className="text-red-600" size={30} />
+                    <SiFirefoxbrowser className="text-[#CD322D]" size={30} />
                   </div>
                   <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       YouTube Search
                     </time>
                     <div className="text-lg font-black">Playlist.Single</div>
@@ -321,10 +321,10 @@ export default function Documentation(): JSX.Element {
                 <li>
                   <hr />
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <SiFirefoxbrowser className="text-red-600" size={30} />
+                    <SiFirefoxbrowser className="text-[#CD322D]" size={30} />
                   </div>
                   <div className="timeline-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       YouTube Search
                     </time>
                     <div className="text-lg font-black">Playlist.Multiple</div>
@@ -341,13 +341,13 @@ export default function Documentation(): JSX.Element {
                 </li>
               </ul>
               {/* ========================[ INFO GATHERER ]======================== */}
-              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600">
+              <ul className="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical p-2 border-b-4 border-[#CD322D] shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-[#CD322D]">
                 <li>
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <FaLightbulb className="text-red-600" size={30} />
+                    <FaLightbulb className="text-[#CD322D]" size={30} />
                   </div>
                   <div className="timeline-start md:text-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       Info Gatherer
                     </time>
                     <div className="text-lg font-black">info.extract</div>
@@ -365,10 +365,10 @@ export default function Documentation(): JSX.Element {
                 <li>
                   <hr />
                   <div className="timeline-middle bg-stone-800 p-2 rounded-2xl">
-                    <FaLightbulb className="text-red-600" size={30} />
+                    <FaLightbulb className="text-[#CD322D]" size={30} />
                   </div>
                   <div className="timeline-end mb-10">
-                    <time className="font-mono italic font-bold text-red-600">
+                    <time className="font-mono italic font-bold text-[#CD322D]">
                       Info Gatherer
                     </time>
                     <div className="text-lg font-black">info.list_formats</div>
