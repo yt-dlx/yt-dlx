@@ -97,7 +97,7 @@ export default function HomePage(): JSX.Element {
           />
         </div>
       </motion.section>
-      {/* =================================================================[ Playground ]==================================================== */}
+      {/* =================================================================[ Playground ]================================================== */}
       <motion.section
         id="Playground"
         className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white"
