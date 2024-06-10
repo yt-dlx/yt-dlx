@@ -1,6 +1,6 @@
-import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link'
+import React from "react";
+import Head from "next/head";
+import Link from "next/link";
 
 export default function NextPage() {
   return (
@@ -14,5 +14,5 @@ export default function NextPage() {
         </p>
       </div>
     </React.Fragment>
-  )
+  );
 }
