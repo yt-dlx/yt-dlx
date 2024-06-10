@@ -9,11 +9,9 @@ import { SiGradleplaypublisher } from "react-icons/si";
 export default function Playground(): JSX.Element {
   var [Query, setQuery] = react.useState<string>("");
   var [TubeSearch, setTubeSearch] = react.useState<any>(null);
-
   react.useEffect(() => {
     window.ipc.on("search", (response: string) => setTubeSearch(response));
   }, []);
-  //
 
   return (
     <react.Fragment>
