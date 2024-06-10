@@ -1,7 +1,7 @@
 import React from "react";
 import HomePage from "./pages";
 import IPCPage from "./pages/IPCPage";
-import VideoId from "./pages/videoId";
+import VideoId from "./pages/videoId/id";
 import { RiHome5Fill } from "react-icons/ri";
 import { IoCaretForward } from "react-icons/io5";
 import { IoCaretBackOutline } from "react-icons/io5";
