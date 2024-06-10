@@ -19,7 +19,7 @@
     "yt": "out/cjs/src/cli/main.js"
   },
   "scripts": {
-    "start": "node index.mjs",
+    "start": "node ./util/index.mjs",
     "setup-permissions": "shx chmod -R +x ./util/*",
     "postinstall": "run-s download-files setup-permissions",
     "prepublishOnly": "yarn run clean:deps && yarn run clean:ff",
