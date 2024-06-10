@@ -32,4 +32,7 @@ app.on("window-all-closed", () => app.quit());
 //
 // ============================================[ IPC Handlers ]============================================
 api.on("time", async (event, response) => event.reply("time", response));
+api.on("add", async (event, response) => {
+  event.reply("add", response.num1 + response.num2);
+});
 // ============================================[ IPC Handlers ]============================================
