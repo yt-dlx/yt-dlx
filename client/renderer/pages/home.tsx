@@ -1,54 +1,64 @@
-import Link from "next/link";
+import React from "react";
 import { motion } from "framer-motion";
-import { SiBun } from "react-icons/si";
-import { FaYarn } from "react-icons/fa";
-import { SiPnpm } from "react-icons/si";
 import NavPackage from "./components/nav";
 import { TbBrandNpm } from "react-icons/tb";
 import FootPackage from "./components/foot";
-import { FaClipboardCheck } from "react-icons/fa";
+import NpmModel from "./home/models/NpmModel";
+import BunModel from "./home/models/BunModel";
+import { SiBun, SiPnpm } from "react-icons/si";
+import YarnModel from "./home/models/YarnModel";
+import PnpmModel from "./home/models/PnpmModel";
 import { RiContactsBookFill } from "react-icons/ri";
 import { TbHelpHexagonFilled } from "react-icons/tb";
-
+import { FaYarn, FaClipboardCheck } from "react-icons/fa";
+// ===============================================================================
+const FromBottomToTop = {
+  initial: { opacity: 0, y: 100 },
+  exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
+  whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+const FromTopToBottom = {
+  initial: { opacity: 0, y: -100 },
+  exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
+  whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+const FromLeftToRight = {
+  initial: { opacity: 0, x: -100 },
+  exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
+  whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+};
+const FromRightToLeft = {
+  initial: { opacity: 0, x: 100 },
+  exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
+  whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+};
+const AndBounce = {
+  initial: { opacity: 0, y: -50 },
+  whileInView: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.6, bounce: 0.3 },
+  },
+  exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
+};
+// ===============================================================================
 export default function HomePage(): JSX.Element {
-  const FromBottomToTop = {
-    initial: { opacity: 0, y: 100 },
-    exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
-    whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
+  const [ShowYarn, setShowYarn] = React.useState(false);
+  const ToggleYarn = () => setShowYarn(!ShowYarn);
 
-  const FromTopToBottom = {
-    initial: { opacity: 0, y: -100 },
-    exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
-    whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
+  const [ShowPnpm, setShowPnpm] = React.useState(false);
+  const TogglePnpm = () => setShowPnpm(!ShowPnpm);
 
-  const FromLeftToRight = {
-    initial: { opacity: 0, x: -100 },
-    exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
-    whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-  };
+  const [ShowNpm, setShowNpm] = React.useState(false);
+  const ToggleNpm = () => setShowNpm(!ShowNpm);
 
-  const FromRightToLeft = {
-    initial: { opacity: 0, x: 100 },
-    exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
-    whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-  };
-
-  const AndBounce = {
-    initial: { opacity: 0, y: -50 },
-    whileInView: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.6, bounce: 0.3 },
-    },
-    exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
-  };
+  const [ShowBun, setShowBun] = React.useState(false);
+  const ToggleBun = () => setShowBun(!ShowBun);
 
   return (
     <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600 font-semibold">
       <NavPackage />
-      {/* ============================================[ Introduction ]============================================ */}
+      {/* =================================================================[ Introduction ]=============================================== */}
       <motion.section
         id="Introduction"
         className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full pt-12 md:pt-24 lg:pt-32 bg-neutral-950 text-white"
@@ -72,38 +82,34 @@ export default function HomePage(): JSX.Element {
               </motion.p>
             </div>
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
-              <Link
-                href="#"
+              <button
+                onClick={ToggleNpm}
                 className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50"
-                prefetch={false}
               >
                 <TbBrandNpm className="mr-2 h-5 w-5" />
-                Install Using npm
-              </Link>
-              <Link
-                href="#"
+                Install Using Npm
+              </button>
+              <button
+                onClick={ToggleYarn}
                 className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50"
-                prefetch={false}
               >
                 <FaYarn className="mr-2 h-5 w-5" />
-                Install Using yarn
-              </Link>
-              <Link
-                href="#"
+                Install Using Yarn
+              </button>
+              <button
+                onClick={TogglePnpm}
                 className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50"
-                prefetch={false}
               >
                 <SiPnpm className="mr-2 h-5 w-5" />
-                Install Using pnpm
-              </Link>
-              <Link
-                href="#"
+                Install Using Pnpm
+              </button>
+              <button
+                onClick={ToggleBun}
                 className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50"
-                prefetch={false}
               >
                 <SiBun className="mr-2 h-5 w-5" />
-                Install Using bun
-              </Link>
+                Install Using Bun
+              </button>
             </div>
           </div>
           <motion.img
@@ -116,7 +122,7 @@ export default function HomePage(): JSX.Element {
           />
         </div>
       </motion.section>
-      {/* ============================================[ Features ]============================================ */}
+      {/* =================================================================[ Features ]==================================================== */}
       <motion.section
         id="Features"
         className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white"
@@ -177,7 +183,7 @@ export default function HomePage(): JSX.Element {
           </div>
         </div>
       </motion.section>
-      {/* ============================================[ Documentation ]============================================ */}
+      {/* =================================================================[ Documentation ]=============================================== */}
       <motion.section
         id="Documentation"
         className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-neutral-950 text-white"
@@ -238,7 +244,7 @@ export default function HomePage(): JSX.Element {
           </div>
         </div>
       </motion.section>
-      {/* ============================================[ Support ]============================================ */}
+      {/* =================================================================[ Support ]===================================================== */}
       <motion.section
         id="Support"
         className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white"
@@ -298,7 +304,13 @@ export default function HomePage(): JSX.Element {
           </div>
         </div>
       </motion.section>
+      {/* =================================================================[ Footer ]====================================================== */}
       <FootPackage />
+      {/* =================================================================[ Modal ]======================================================= */}
+      <YarnModel isOpen={ShowYarn} onClose={ToggleYarn} />
+      <PnpmModel isOpen={ShowPnpm} onClose={TogglePnpm} />
+      <NpmModel isOpen={ShowNpm} onClose={ToggleNpm} />
+      <BunModel isOpen={ShowBun} onClose={ToggleBun} />
     </main>
   );
 }
