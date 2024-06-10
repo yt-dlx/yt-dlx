@@ -3,50 +3,36 @@ import Support from "./home/Support";
 import { motion } from "framer-motion";
 import NavPackage from "./components/nav";
 import FootPackage from "./components/foot";
-import NpmModel from "./home/models/NpmModel";
-import BunModel from "./home/models/BunModel";
 import Introduction from "./home/Introduction";
-import YarnModel from "./home/models/YarnModel";
-import PnpmModel from "./home/models/PnpmModel";
 import Documentation from "./home/Documentation";
 import { FaClipboardCheck } from "react-icons/fa";
 import { HiFolderDownload } from "react-icons/hi";
 
+const FromLeftToRight = {
+  initial: { opacity: 0, x: -100 },
+  exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
+  whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+};
+const FromRightToLeft = {
+  initial: { opacity: 0, x: 100 },
+  exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
+  whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+};
+const AndBounce = {
+  initial: { opacity: 0, y: -50 },
+  whileInView: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.6, bounce: 0.3 },
+  },
+  exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
+};
+
 export default function HomePage(): JSX.Element {
-  const [ShowYarn, setShowYarn] = React.useState(false);
-  const [ShowPnpm, setShowPnpm] = React.useState(false);
-  const [ShowNpm, setShowNpm] = React.useState(false);
-  const [ShowBun, setShowBun] = React.useState(false);
-  const ToggleYarn = () => setShowYarn(!ShowYarn);
-  const TogglePnpm = () => setShowPnpm(!ShowPnpm);
-  const ToggleNpm = () => setShowNpm(!ShowNpm);
-  const ToggleBun = () => setShowBun(!ShowBun);
-
-  const FromLeftToRight = {
-    initial: { opacity: 0, x: -100 },
-    exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
-    whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-  };
-  const FromRightToLeft = {
-    initial: { opacity: 0, x: 100 },
-    exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
-    whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
-  };
-  const AndBounce = {
-    initial: { opacity: 0, y: -50 },
-    whileInView: {
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.6, bounce: 0.3 },
-    },
-    exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
-  };
-
   return (
     <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-[#CD322D] font-semibold">
       <NavPackage />
       <Introduction />
-      {/* [ Playground ] */}
       <motion.section
         id="Playground"
         className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white"
@@ -111,15 +97,9 @@ export default function HomePage(): JSX.Element {
           </div>
         </div>
       </motion.section>
-      {/* [ Playground ] */}
       <Documentation />
       <Support />
       <FootPackage />
-      {/* [ Modals ] */}
-      <YarnModel isOpen={ShowYarn} onClose={ToggleYarn} />
-      <PnpmModel isOpen={ShowPnpm} onClose={TogglePnpm} />
-      <NpmModel isOpen={ShowNpm} onClose={ToggleNpm} />
-      <BunModel isOpen={ShowBun} onClose={ToggleBun} />
     </main>
   );
 }

@@ -3,7 +3,10 @@ import { motion } from "framer-motion";
 import { FaYarn } from "react-icons/fa";
 import { TbBrandNpm } from "react-icons/tb";
 import { SiBun, SiPnpm } from "react-icons/si";
-// ===============================================================================
+import NpmModel from "../home/models/NpmModel";
+import BunModel from "../home/models/BunModel";
+import YarnModel from "../home/models/YarnModel";
+import PnpmModel from "../home/models/PnpmModel";
 
 export default function Introduction(): JSX.Element {
   const [ShowYarn, setShowYarn] = react.useState(false);
@@ -91,6 +94,11 @@ export default function Introduction(): JSX.Element {
           />
         </div>
       </motion.section>
+      {/* [ Modals ] */}
+      <YarnModel isOpen={ShowYarn} onClose={ToggleYarn} />
+      <PnpmModel isOpen={ShowPnpm} onClose={TogglePnpm} />
+      <NpmModel isOpen={ShowNpm} onClose={ToggleNpm} />
+      <BunModel isOpen={ShowBun} onClose={ToggleBun} />
     </react.Fragment>
   );
 }
