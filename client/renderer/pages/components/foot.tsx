@@ -2,15 +2,10 @@ export default function FootPackage() {
   return (
     <footer
       id="Footer"
-      className="pt-20 pb-6 flex flex-wrap items-baseline justify-center"
+      className="pt-20 pb-6 flex flex-wrap items-baseline justify-center text-[#CD322D]"
     >
-      <span className="text-[#e73d75] text-3xl mr-2">
-        Mixly <span className="text-[#C4C4C4] text-lg">&</span>{" "}
-        <span className="text-[#CD322D]">Yt-Dlx</span>
-      </span>
-      <span className="mt-2 text-sm font-light text-[#C4C4C4]">
-        Copyright © 2024
-      </span>
+      <span className="text-4xl font-black mr-2">Yt-Dlx</span>
+      <span className="mt-2 text-sm font-bold">Copyright © 2024</span>
     </footer>
   );
 }
