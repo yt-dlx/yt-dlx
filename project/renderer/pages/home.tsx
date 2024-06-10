@@ -16,10 +16,10 @@ export default function HomePage() {
       <div className="flex flex-col items-center justify-center min-h-screen py-2">
         <p className="text-xl mb-4">⚡ Electron + Next.js ⚡ - </p>
         <Image
-          src="/images/logo.png"
-          alt="Logo image"
           width={256}
           height={256}
+          src="/logo.png"
+          alt="Logo image"
           className="mb-4"
         />
       </div>
