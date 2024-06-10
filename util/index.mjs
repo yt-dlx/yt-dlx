@@ -11,12 +11,14 @@ const colors = {
   red: "\x1b[1;31m",
   green: "\x1b[1;32m",
 };
+
 function formatBytes(bytes) {
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
   if (bytes === 0) return "0 Byte";
   const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
   return Math.round(bytes / Math.pow(1024, i), 2) + " " + sizes[i];
 }
+
 function runScript() {
   console.log(colors.red + "=================================" + colors.reset);
   console.log(
@@ -113,20 +115,20 @@ function runScript() {
     return;
   }
   console.log(colors.red + "=================================" + colors.reset);
-  Object.keys(scripts).forEach((script, index) => {
-    if (script !== "start") {
-      console.log(
-        colors.green +
-          "@script:" +
-          colors.reset +
-          " " +
-          colors.red +
-          (index + 1) +
-          colors.reset +
-          ": " +
-          script
-      );
-    }
+  const scriptKeys = Object.keys(scripts).filter((key) => key !== "start");
+  scriptKeys.forEach((script, index) => {
+    const displayIndex = index + 1;
+    console.log(
+      colors.green +
+        "@script:" +
+        colors.reset +
+        " " +
+        colors.red +
+        displayIndex +
+        colors.reset +
+        ": " +
+        script
+    );
   });
   console.log(colors.red + "=================================" + colors.reset);
   rl.question(
@@ -146,7 +148,6 @@ function runScript() {
     (answer) => {
       console.log(colors.reset);
       const scriptIndex = parseInt(answer) - 1;
-      const scriptKeys = Object.keys(scripts).filter((key) => key !== "start");
       if (scriptIndex >= 0 && scriptIndex < scriptKeys.length) {
         const scriptName = scriptKeys[scriptIndex];
         const command = scripts[scriptName];
