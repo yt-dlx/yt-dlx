@@ -33,14 +33,6 @@ app.on("window-all-closed", () => app.quit());
 //
 //
 // ============================================[ IPC Handlers ]===========================================
-api.on("time", async (event, response) => event.reply("time", response));
-api.on("add", async (event, response) => {
-  try {
-    event.reply("add", response.num1 + response.num2);
-  } catch (error: any) {
-    event.reply("add", error.message);
-  }
-});
 api.on("search", async (event, response) => {
   try {
     var TubeBody: any;
@@ -61,6 +53,19 @@ api.on("search", async (event, response) => {
     }
   } catch (error: any) {
     event.reply("search", error.message);
+  }
+});
+api.on("formats", async (event, response) => {
+  try {
+    console.log(colors.green("❓ query:"), colors.italic(response.query));
+    var io = await ytdlx.info.list_formats({
+      query: response.query,
+      verbose: response.verbose || false,
+    });
+    if (io) event.reply("formats", io);
+    else event.sender.send("formats", null);
+  } catch (error: any) {
+    event.reply("formats", error.message);
   }
 });
 api.on("audio", async (event, response) => {
@@ -84,9 +89,61 @@ api.on("audio", async (event, response) => {
           event.reply("audio", { percent, timemark });
         }
       );
-    } else event.sender.send("AudioError", "ffmpeg or filename not found!");
+    } else event.sender.send("audio", "ffmpeg or filename not found!");
   } catch (error: any) {
     event.reply("audio", error.message);
+  }
+});
+api.on("video", async (event, response) => {
+  try {
+    console.log(colors.green("❓ videoId:"), colors.italic(response.videoId));
+    var io = await ytdlx.VideoOnly.Single.Highest({
+      stream: true,
+      metadata: false,
+      query: response.videoId,
+      useTor: response.useTor || false,
+      verbose: response.verbose || false,
+      output: response.output || undefined,
+    });
+    if (io && "ffmpeg" in io && "filename" in io) {
+      io.ffmpeg.pipe(fs.createWriteStream(io.filename), {
+        end: true,
+      });
+      io.ffmpeg.on(
+        "progress",
+        ({ percent, timemark }: { percent: number; timemark: string }) => {
+          event.reply("video", { percent, timemark });
+        }
+      );
+    } else event.sender.send("video", "ffmpeg or filename not found!");
+  } catch (error: any) {
+    event.reply("video", error.message);
+  }
+});
+api.on("audiovideo", async (event, response) => {
+  try {
+    console.log(colors.green("❓ videoId:"), colors.italic(response.videoId));
+    var io = await ytdlx.AudioVideo.Single.Highest({
+      stream: true,
+      metadata: false,
+      query: response.videoId,
+      useTor: response.useTor || false,
+      verbose: response.verbose || false,
+      output: response.output || undefined,
+    });
+    if (io && "ffmpeg" in io && "filename" in io) {
+      io.ffmpeg.pipe(fs.createWriteStream(io.filename), {
+        end: true,
+      });
+      io.ffmpeg.on(
+        "progress",
+        ({ percent, timemark }: { percent: number; timemark: string }) => {
+          event.reply("audiovideo", { percent, timemark });
+        }
+      );
+    } else event.sender.send("audiovideo", "ffmpeg or filename not found!");
+  } catch (error: any) {
+    event.reply("audiovideo", error.message);
   }
 });
 // ============================================[ IPC Handlers ]===========================================
