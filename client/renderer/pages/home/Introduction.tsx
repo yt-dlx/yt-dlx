@@ -36,7 +36,7 @@ export default function Introduction(): JSX.Element {
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
               <motion.h1
-                className="text-4xl font-black tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-[#CD322D]"
+                className="text-4xl font-black tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-red-600"
                 {...FromTopToBottom}
               >
                 Yt-Dlx: The Ultimate Multimedia Downloader
@@ -53,28 +53,28 @@ export default function Introduction(): JSX.Element {
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
               <button
                 onClick={ToggleNpm}
-                className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50"
               >
                 <TbBrandNpm className="mr-2 h-5 w-5" />
                 Install Using Npm
               </button>
               <button
                 onClick={ToggleYarn}
-                className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50"
               >
                 <FaYarn className="mr-2 h-5 w-5" />
                 Install Using Yarn
               </button>
               <button
                 onClick={TogglePnpm}
-                className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50"
               >
                 <SiPnpm className="mr-2 h-5 w-5" />
                 Install Using Pnpm
               </button>
               <button
                 onClick={ToggleBun}
-                className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+                className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50"
               >
                 <SiBun className="mr-2 h-5 w-5" />
                 Install Using Bun
@@ -87,7 +87,7 @@ export default function Introduction(): JSX.Element {
             height={300}
             src="/youtube.gif"
             {...FromBottomToTop}
-            className="mx-auto aspect-[3/1] overflow-hidden rounded-t-2xl object-cover object-center border-t-4 border-r-4 border-l-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
+            className="mx-auto aspect-[3/1] overflow-hidden rounded-t-2xl object-cover object-center border-t-4 border-r-4 border-l-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600"
           />
         </div>
       </motion.section>

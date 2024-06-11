@@ -31,13 +31,13 @@ export default function Support(): JSX.Element {
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
                 <motion.div
-                  className="inline-block rounded-3xl bg-[#CD322D] text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm"
+                  className="inline-block rounded-3xl bg-red-600 text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm"
                   {...FromLeftToRight}
                 >
                   Support
                 </motion.div>
                 <motion.h2
-                  className="text-3xl font-black tracking-tighter sm:text-7xl text-[#CD322D]"
+                  className="text-3xl font-black tracking-tighter sm:text-7xl text-red-600"
                   {...FromLeftToRight}
                 >
                   We're Here to Help
@@ -53,23 +53,23 @@ export default function Support(): JSX.Element {
               </div>
               <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <motion.li>
-                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-red-600" />
                   24/7 customer support
                 </motion.li>
                 <motion.li>
-                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-red-600" />
                   Community forums and knowledge base
                 </motion.li>
                 <motion.li>
-                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-red-600" />
                   Regular updates and improvements
                 </motion.li>
                 <motion.li>
-                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-[#CD322D]" />
+                  <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-red-600" />
                   Contact us via email or live chat
                 </motion.li>
               </motion.ul>
-              <button className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50">
+              <button className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50">
                 <TbHelpHexagonFilled className="mr-2 h-5 w-5" />
                 Create an Issue in Here
               </button>
@@ -80,7 +80,7 @@ export default function Support(): JSX.Element {
               height={310}
               src="/YouTube_Support.gif"
               {...FromRightToLeft}
-              className="mx-auto aspect-video overflow-hidden rounded-3xl object-cover object-center sm:w-full border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
+              className="mx-auto aspect-video overflow-hidden rounded-3xl object-cover object-center sm:w-full border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600"
             />
           </div>
         </div>

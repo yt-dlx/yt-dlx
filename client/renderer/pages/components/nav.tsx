@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { RiHome5Fill } from "react-icons/ri";
-import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { IoCaretBackOutline } from "react-icons/io5";
+import { IoCaretForwardOutline } from "react-icons/io5";
 
 export default function NavPackage() {
   return (
-    <nav className="navbar bg-red-800/10 border-b border-[#CD322D] shadow-red-800/20 shadow-2xl text-white/60 backdrop-blur-lg fixed z-50 top-0 flex justify-between items-center px-6 py-6">
+    <nav className="navbar bg-red-800/10 border-b border-red-600 shadow-red-800/20 shadow-2xl text-white/60 backdrop-blur-lg fixed z-50 top-0 flex justify-between items-center px-6 py-6">
       <Link
         href="/home"
-        className="text-[#CD322D] cursor-pointer text-4xl font-black flex items-center gap-2 hover:scale-105 duration-500 hover:animate-pulse"
+        className="text-red-600 cursor-pointer text-4xl font-black flex items-center gap-2 hover:scale-105 duration-500 hover:animate-pulse"
       >
         <RiHome5Fill size={30} />
         Yt-Dlx <span className="text-sm">Copyright © 2024</span>
@@ -15,15 +16,15 @@ export default function NavPackage() {
       <div className="flex items-center gap-4">
         <button
           onClick={() => window.history.back()}
-          className="text-[#CD322D] cursor-pointer text-xs font-bold flex items-center gap-2 hover:scale-105 duration-500 hover:animate-pulse"
+          className="text-red-600 cursor-pointer flex items-center hover:scale-105 duration-500 hover:animate-pulse"
         >
-          <FaArrowLeft size={20} />
+          <IoCaretBackOutline size={40} />
         </button>
         <button
           onClick={() => window.history.forward()}
-          className="text-[#CD322D] cursor-pointer text-xs font-bold flex items-center gap-2 hover:scale-105 duration-500 hover:animate-pulse"
+          className="text-red-600 cursor-pointer flex items-center hover:scale-105 duration-500 hover:animate-pulse"
         >
-          <FaArrowRight size={20} />
+          <IoCaretForwardOutline size={40} />
         </button>
       </div>
     </nav>
