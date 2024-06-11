@@ -1,8 +1,25 @@
 import react from "react";
+import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import NavPackage from "../components/nav";
 import FootPackage from "../components/foot";
 import Introduction from "../home/Introduction";
+
+const FromBottomToTop = {
+  initial: { opacity: 0, y: 100 },
+  exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
+  whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+const FromLeftToRight = {
+  initial: { opacity: 0, x: -100 },
+  exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
+  whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+};
+const FromRightToLeft = {
+  initial: { opacity: 0, x: 100 },
+  exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
+  whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+};
 
 export default function VideoId(): JSX.Element {
   const router = useRouter();
@@ -46,52 +63,58 @@ export default function VideoId(): JSX.Element {
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         className="w-full h-64 mt-4 rounded-t-3xl md:h-80 border-b-4 border-[#cd322d6e] shadow-red-600 shadow-2xl"
                       />
-                      <h2 className="mt-6 text-6xl font-black text-red-600">
+                      <motion.h2
+                        className="mt-6 text-6xl font-black text-red-600"
+                        {...FromBottomToTop}
+                      >
                         {TubeSearch.title}
-                      </h2>
-                      <p className="mt-8 leading-loose text-white font-semibold lowercase text-sm">
+                      </motion.h2>
+                      <motion.p
+                        className="mt-8 leading-loose text-white font-semibold lowercase text-sm"
+                        {...FromRightToLeft}
+                      >
                         <span className="text-red-600 font-black text-lg">
                           @description:{" "}
                         </span>
                         {TubeSearch.description}
-                      </p>
+                      </motion.p>
                       <ul className="text-white font-semibold p-1 mb-4 text-sm">
-                        <li>
+                        <motion.li {...FromLeftToRight}>
                           <span className="text-red-600 font-black text-lg">
                             @videoId:
                           </span>{" "}
                           {TubeSearch.id}
-                        </li>
-                        <li>
+                        </motion.li>
+                        <motion.li {...FromLeftToRight}>
                           <span className="text-red-600 font-black text-lg">
                             @channelid:
                           </span>{" "}
                           {TubeSearch.channelid}
-                        </li>
-                        <li>
+                        </motion.li>
+                        <motion.li {...FromLeftToRight}>
                           <span className="text-red-600 font-black text-lg">
                             @channelname:
                           </span>{" "}
                           {TubeSearch.channelname}
-                        </li>
-                        <li>
+                        </motion.li>
+                        <motion.li {...FromLeftToRight}>
                           <span className="text-red-600 font-black text-lg">
                             @duration:
                           </span>{" "}
                           {TubeSearch.duration}
-                        </li>
-                        <li>
+                        </motion.li>
+                        <motion.li {...FromLeftToRight}>
                           <span className="text-red-600 font-black text-lg">
                             @uploadDate:
                           </span>{" "}
                           {TubeSearch.uploadDate}
-                        </li>
-                        <li>
+                        </motion.li>
+                        <motion.li {...FromLeftToRight}>
                           <span className="text-red-600 font-black text-lg">
                             @viewCount:
                           </span>{" "}
                           {TubeSearch.viewCount}
-                        </li>
+                        </motion.li>
                       </ul>
                     </section>
                   </div>

@@ -8,6 +8,17 @@ import BunModel from "../home/models/BunModel";
 import YarnModel from "../home/models/YarnModel";
 import PnpmModel from "../home/models/PnpmModel";
 
+const FromBottomToTop = {
+  initial: { opacity: 0, y: 100 },
+  exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
+  whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+const FromTopToBottom = {
+  initial: { opacity: 0, y: -100 },
+  exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
+  whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
+
 export default function Introduction(): JSX.Element {
   const [ShowYarn, setShowYarn] = react.useState(false);
   const [ShowPnpm, setShowPnpm] = react.useState(false);
@@ -17,17 +28,6 @@ export default function Introduction(): JSX.Element {
   const TogglePnpm = () => setShowPnpm(!ShowPnpm);
   const ToggleNpm = () => setShowNpm(!ShowNpm);
   const ToggleBun = () => setShowBun(!ShowBun);
-
-  const FromBottomToTop = {
-    initial: { opacity: 0, y: 100 },
-    exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
-    whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
-  const FromTopToBottom = {
-    initial: { opacity: 0, y: -100 },
-    exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
-    whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-  };
 
   return (
     <react.Fragment>

@@ -2,11 +2,18 @@ import react from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { HiFire } from "react-icons/hi";
-import Introduction from "../home/Introduction";
 import NavPackage from "../components/nav";
+import FootPackage from "../components/foot";
 import { TbWorldSearch } from "react-icons/tb";
+import Introduction from "../home/Introduction";
 import { TbDiamondFilled } from "react-icons/tb";
 import { SiGradleplaypublisher } from "react-icons/si";
+
+const FromBottomToTop = {
+  initial: { opacity: 0, y: 100 },
+  exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
+  whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+};
 
 export default function Gui(): JSX.Element {
   var [Query, setQuery] = react.useState<string>("");
@@ -29,16 +36,27 @@ export default function Gui(): JSX.Element {
             }}
             className="bg-neutral-900 max-w-screen-2xl p-10 text-red-600 mx-auto my-8 rounded-3xl border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600"
           >
-            <h1 className="text-7xl mb-4 font-black">Yt-Dlx PlayGround</h1>
-            <h2 className="text-3xl font-black text-red-600 mb-4">
+            <motion.h1
+              className="text-7xl mb-4 font-black"
+              {...FromBottomToTop}
+            >
+              Yt-Dlx PlayGround
+            </motion.h1>
+            <motion.h2
+              className="text-3xl font-black text-red-600 mb-4"
+              {...FromBottomToTop}
+            >
               Effortless Audio Video Downloader And Streamer!
-            </h2>
-            <p className="mb-8 italic text-white font-semibold">
+            </motion.h2>
+            <motion.p
+              className="mb-8 italic text-white font-semibold"
+              {...FromBottomToTop}
+            >
               Unlock the power of YT-DLX, the ultimate node.js toolkit for
               seamless audio and video downloading and streaming. Effortlessly
               handle various coding flavors, from TypeScript to CommonJS and
               ESM, ensuring 100% compatibility and comprehensive type safety.
-            </p>
+            </motion.p>
             <div className="flex items-center gap-4">
               <label className="form-control w-full">
                 <div className="label">
@@ -111,7 +129,10 @@ export default function Gui(): JSX.Element {
                               />
                             </div>
                           </div>
-                          <div className="flex-1 flex flex-col">
+                          <motion.div
+                            className="flex-1 flex flex-col"
+                            {...FromBottomToTop}
+                          >
                             <p className="mb-2 text-xs font-semibold tracking-wider text-red-600 uppercase">
                               number :: {index}
                             </p>
@@ -161,7 +182,7 @@ export default function Gui(): JSX.Element {
                                 </li>
                               </ul>
                             </div>
-                          </div>
+                          </motion.div>
                           <div className="flex items-center justify-center p-2 duration-700 group-hover:bg-red-600/60 bg-red-600/40 text-white/90 mt-0.5 w-full text-sm gap-1 rounded-b-xl">
                             powered by <TbDiamondFilled size={20} /> yt-dlx{" "}
                           </div>
@@ -174,6 +195,7 @@ export default function Gui(): JSX.Element {
           </form>
         </div>
       </motion.section>
+      <FootPackage />
     </main>
   );
 }
