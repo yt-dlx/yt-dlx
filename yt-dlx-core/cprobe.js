@@ -1,11 +1,11 @@
-import { createWriteStream, existsSync } from "fs";
-import fetch from "node-fetch";
-import { join } from "path";
+const fs = require("fs");
+const path = require("path");
+const axios = require("axios");
 
 (async () => {
   try {
     const platform = process.platform;
-    let fileExtension;
+    let fileExtension = "";
     switch (platform) {
       case "win32":
         fileExtension = ".exe";
@@ -19,29 +19,26 @@ import { join } from "path";
       default:
         throw new Error("Unsupported platform");
     }
-    const filepath = join(__dirname, `cprobe${fileExtension}`);
-    if (!existsSync(filepath)) {
+    const filepath = path.join(__dirname, `cprobe${fileExtension}`);
+    if (!fs.existsSync(filepath)) {
       const url = `https://github.com/yt-dlp/yt-dlp-nightly-builds/releases/latest/download/yt-dlp${fileExtension}`;
       let downloadedSize = 0;
-      const response = await fetch(url);
-      if (!response.ok) throw new Error(`@error: ${response.statusText}`);
-      const totalSize = parseInt(
-        response.headers.get("content-length") || "0",
-        10
-      );
-      const writer = createWriteStream(filepath);
-      if (!response.body) throw new Error("No response body");
-      response.body.on("data", (chunk) => {
+      const response = await axios.get(url, { responseType: "stream" });
+      if (response.status !== 200) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      const totalSize = parseInt(response.headers["content-length"], 10);
+      const writer = fs.createWriteStream(filepath);
+      response.data.on("data", (chunk) => {
         downloadedSize += chunk.length;
         const progress = Math.round((downloadedSize / totalSize) * 100);
         process.stdout.write(`@cprobe: ${progress}%\r`);
       });
-      response.body.pipe(writer);
+      response.data.pipe(writer);
       await new Promise((resolve, reject) => {
         writer.on("finish", resolve);
         writer.on("error", reject);
       });
-      process.stdout.write(`@cprobe: Download complete\n`);
     }
   } catch (error) {
     console.error("@error:", error.message);

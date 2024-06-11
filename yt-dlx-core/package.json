@@ -15,7 +15,7 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "postinstall": "ts-node FFdl.ts && ts-node cprobe.ts && shx chmod -R +x ./*",
+    "postinstall": "node ffdl.js && node cprobe.js && shx chmod -R +x ./*",
     "build": "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json"
   },
   "files": [
