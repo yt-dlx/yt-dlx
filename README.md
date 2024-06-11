@@ -1,5 +1,5 @@
 <div style="text-align: center;">
-    <img src="https://i.postimg.cc/13BjP8sW/yt-dlx.png" alt="yt-dlx Logo" style="max-width: 100%; height: 100;">
+    <img src="/logo.png" alt="yt-dlx Logo" style="max-width: 100%; height: 100;">
 </div>
 
 # YT-DLX: Elevate Your Video Downloading & Streaming Experience 🚀
@@ -24,6 +24,10 @@
 ## Overview 🌟
 
 YT-DLX is a robust multimedia downloading tool meticulously crafted to elevate your media consumption experience. With its advanced capabilities, it offers an all-encompassing solution for effortlessly acquiring audio and video content from diverse sources. Drawing inspiration from renowned projects such as python-yt-dlp and python-youtube-dl, YT-DLX combines cutting-edge features with real-time data acquisition facilitated by Puppeteer technologies. Whether you seek to enrich your audio library or curate a collection of high-quality videos, YT-DLX stands as your indispensable companion, ensuring seamless and efficient media acquisition.
+
+<div style="text-align: center;">
+    <img src="/showcase.mp4" alt="yt-dlx video" style="max-width: 100%; height: 100;">
+</div>
 
 ## Key Features 🔑
 
