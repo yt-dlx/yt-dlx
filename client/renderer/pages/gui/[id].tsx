@@ -60,7 +60,7 @@ export default function VideoId(): JSX.Element {
           <section className="flex flex-col items-center justify-center">
             <div className="max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
               <section className="flex flex-col items-center justify-center">
-                <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-neutral-900 border-4 border-[#cd322d6e] rounded-3xl shadow-red-600 shadow-[0_0_80px_rgba(255,0,0,0.5)]">
+                <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-neutral-950 border-4 border-[#cd322d6e] rounded-3xl shadow-red-600 shadow-[0_0_80px_rgba(255,0,0,0.5)]">
                   <div className="overflow-x-auto">
                     <section className="max-w-screen-2xl px-6 mx-auto p-1">
                       <motion.img
@@ -75,13 +75,13 @@ export default function VideoId(): JSX.Element {
                         }
                         className="object-cover w-full h-80 mt-4 rounded-t-3xl md:h-80 border-b-4 border-[#cd322d6e] shadow-red-600 shadow-2xl"
                       />
-                      <div className="flex mt-1 flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
+                      <div className="flex mt-1 flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-2 mb-4">
                         <button
                           onClick={() => {
                             window.ipc.send("formats", { query: id });
                             ToggleAudio();
                           }}
-                          className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl border hover:border-neutral-800 text-red-600 font-black border-red-600/50 bg-neutral-800 hover:bg-red-600 hover:text-neutral-800 text-sm duration-700 transition-transform hover:scale-105 shadow-red-600 shadow-2xl"
+                          className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95"
                         >
                           <AiFillAudio className="mr-2 h-6 w-6" /> Download
                           Audio only
@@ -91,7 +91,7 @@ export default function VideoId(): JSX.Element {
                             window.ipc.send("formats", { query: id });
                             ToggleVideo();
                           }}
-                          className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl border hover:border-neutral-800 text-red-600 font-black border-red-600/50 bg-neutral-800 hover:bg-red-600 hover:text-neutral-800 text-sm duration-700 transition-transform hover:scale-105 shadow-red-600 shadow-2xl"
+                          className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95"
                         >
                           <IoVideocam className="mr-2 h-6 w-6" /> Download Video
                           only
@@ -101,7 +101,7 @@ export default function VideoId(): JSX.Element {
                             window.ipc.send("formats", { query: id });
                             ToggleAudioVideo();
                           }}
-                          className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl border hover:border-neutral-800 text-red-600 font-black border-red-600/50 bg-neutral-800 hover:bg-red-600 hover:text-neutral-800 text-sm duration-700 transition-transform hover:scale-105 shadow-red-600 shadow-2xl"
+                          className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95"
                         >
                           <PiTelevisionFill className="mr-2 h-6 w-6" /> Download
                           Audio + Video

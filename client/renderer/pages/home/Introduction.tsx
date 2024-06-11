@@ -27,7 +27,7 @@ export default function Introduction(): JSX.Element {
   return (
     <react.Fragment>
       <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full pt-12 md:pt-24 lg:pt-32 bg-neutral-950 text-white">
-        <div className="container space-y-10 xl:space-y-16">
+        <div className="container space-y-10 xl:space-y-16 h-auto">
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
               <motion.h1
@@ -80,7 +80,7 @@ export default function Introduction(): JSX.Element {
             alt="logo"
             width={1200}
             height={300}
-            src="/youtube.gif"
+            src="/radio.gif"
             className="mx-auto aspect-[3/1] overflow-hidden rounded-t-2xl object-cover object-center border-t-4 border-r-4 border-l-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600"
           />
         </div>

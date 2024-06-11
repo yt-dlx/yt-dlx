@@ -24,7 +24,7 @@ const AndBounce = {
   exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
 };
 
-export default function Features(): JSX.Element {
+export default function Playground(): JSX.Element {
   return (
     <react.Fragment>
       <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white">
@@ -33,13 +33,13 @@ export default function Features(): JSX.Element {
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
                 <motion.div className="inline-block rounded-3xl bg-red-600 text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm">
-                  Key Features
+                  Playground
                 </motion.div>
                 <motion.h2
                   className="text-3xl font-black tracking-tighter sm:text-7xl text-red-600"
                   {...FromLeftToRight}
                 >
-                  Powerful Multimedia Downloading
+                  Powerful Multimedia Downloading Playground
                 </motion.h2>
                 <motion.p className="max-w-[600px] text-white md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Yt-Dlx allows you to download audio and video content from a

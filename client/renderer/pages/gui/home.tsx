@@ -34,7 +34,7 @@ export default function Gui(): JSX.Element {
               event.preventDefault();
               window.ipc.send("search", { query: Query });
             }}
-            className="bg-neutral-900 max-w-screen-2xl p-10 text-red-600 mx-auto my-8 rounded-3xl border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600"
+            className="bg-neutral-950 max-w-screen-2xl p-10 text-red-600 mx-auto my-8 rounded-3xl border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600"
           >
             <motion.h1
               className="text-7xl mb-4 font-black"

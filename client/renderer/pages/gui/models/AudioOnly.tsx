@@ -25,7 +25,7 @@ const AudioOnly: React.FC<{
               Choose Your Poison For <br></br>
               <span className="text-6xl block">Audio</span>
             </h2>
-            <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start pl-6">
+            <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start m-6">
               <li
                 onClick={() => {
                   window.ipc.send("video", { videoId });
