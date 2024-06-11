@@ -1,4 +1,5 @@
 import react from "react";
+import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import NavPackage from "../components/nav";
 import AudioOnly from "./models/AudioOnly";
@@ -9,7 +10,6 @@ import AudioVideo from "./models/AudioVideo";
 import { IoVideocam } from "react-icons/io5";
 import Introduction from "../home/Introduction";
 import { PiTelevisionFill } from "react-icons/pi";
-import { motion, AnimatePresence } from "framer-motion";
 
 const FromBottomToTop = {
   initial: { opacity: 0, y: 100 },
@@ -55,7 +55,7 @@ export default function VideoId(): JSX.Element {
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600">
       <NavPackage />
       <Introduction />
-      <AnimatePresence>
+      <react.Fragment>
         {TubeSearch ? (
           <section className="flex flex-col items-center justify-center">
             <div className="max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
@@ -189,7 +189,7 @@ export default function VideoId(): JSX.Element {
             </div>
           </section>
         )}
-      </AnimatePresence>
+      </react.Fragment>
       <FootPackage />
     </main>
   );

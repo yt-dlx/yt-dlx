@@ -1,12 +1,12 @@
 import react from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
 const yarnModel: React.FC<{
   isOpen: boolean;
   onClose: () => void;
 }> = ({ isOpen, onClose }) => {
   return (
-    <AnimatePresence>
+    <react.Fragment>
       {isOpen && (
         <motion.div
           exit={{ opacity: 0 }}
@@ -34,7 +34,7 @@ const yarnModel: React.FC<{
           </div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </react.Fragment>
   );
 };
 

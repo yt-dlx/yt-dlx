@@ -1,5 +1,6 @@
 import react from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { HiFire } from "react-icons/hi";
 import NavPackage from "../components/nav";
 import FootPackage from "../components/foot";
@@ -7,7 +8,6 @@ import { TbWorldSearch } from "react-icons/tb";
 import Introduction from "../home/Introduction";
 import { TbDiamondFilled } from "react-icons/tb";
 import { SiGradleplaypublisher } from "react-icons/si";
-import { motion, AnimatePresence } from "framer-motion";
 
 const FromBottomToTop = {
   initial: { opacity: 0, y: 100 },
@@ -103,7 +103,7 @@ export default function Gui(): JSX.Element {
               </button>
             </div>
             {TubeSearch && (
-              <AnimatePresence>
+              <react.Fragment>
                 <section className="w-full mx-auto p-6">
                   <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
                     {TubeSearch &&
@@ -190,7 +190,7 @@ export default function Gui(): JSX.Element {
                       ))}
                   </div>
                 </section>
-              </AnimatePresence>
+              </react.Fragment>
             )}
           </form>
         </div>

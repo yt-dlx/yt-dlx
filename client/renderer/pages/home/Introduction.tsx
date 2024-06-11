@@ -1,4 +1,5 @@
 import react from "react";
+import { motion } from "framer-motion";
 import { FaYarn } from "react-icons/fa";
 import { TbBrandNpm } from "react-icons/tb";
 import { SiBun, SiPnpm } from "react-icons/si";
@@ -6,7 +7,6 @@ import NpmModel from "../home/models/NpmModel";
 import BunModel from "../home/models/BunModel";
 import YarnModel from "../home/models/YarnModel";
 import PnpmModel from "../home/models/PnpmModel";
-import { motion, AnimatePresence } from "framer-motion";
 
 const FromTopToBottom = {
   initial: { opacity: 0, y: -100 },
@@ -25,7 +25,7 @@ export default function Introduction(): JSX.Element {
   const ToggleBun = () => setShowBun(!ShowBun);
 
   return (
-    <AnimatePresence>
+    <react.Fragment>
       <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full pt-12 md:pt-24 lg:pt-32 bg-neutral-950 text-white">
         <div className="container space-y-10 xl:space-y-16">
           <div className="flex flex-col items-center space-y-4 text-center">
@@ -90,6 +90,6 @@ export default function Introduction(): JSX.Element {
       <PnpmModel isOpen={ShowPnpm} onClose={TogglePnpm} />
       <NpmModel isOpen={ShowNpm} onClose={ToggleNpm} />
       <BunModel isOpen={ShowBun} onClose={ToggleBun} />
-    </AnimatePresence>
+    </react.Fragment>
   );
 }

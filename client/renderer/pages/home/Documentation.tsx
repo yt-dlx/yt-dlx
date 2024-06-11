@@ -1,8 +1,8 @@
 import react from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { FaBook } from "react-icons/fa";
 import { RiContactsBookFill } from "react-icons/ri";
-import { motion, AnimatePresence } from "framer-motion";
 
 export default function Documentation(): JSX.Element {
   const FromLeftToRight = {
@@ -26,7 +26,7 @@ export default function Documentation(): JSX.Element {
   };
 
   return (
-    <AnimatePresence>
+    <react.Fragment>
       <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-neutral-950 text-white">
         <div className="container px-4 md:px-6">
           <div className="grid items-center gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
@@ -91,6 +91,6 @@ export default function Documentation(): JSX.Element {
           </div>
         </div>
       </motion.section>
-    </AnimatePresence>
+    </react.Fragment>
   );
 }
