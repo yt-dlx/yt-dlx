@@ -27,7 +27,8 @@
   "dependencies": {
     "shx": "^0.3.4",
     "tsc": "^2.0.4",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "yt-dlx-encore": "^0.0.5"
   },
   "devDependencies": {
     "@types/node": "^20.14.1",
