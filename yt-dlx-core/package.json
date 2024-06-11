@@ -19,10 +19,10 @@
     "build": "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json"
   },
   "files": [
-    "util",
     "out",
     "LICENSE",
-    "examples",
+    "FFdl.ts",
+    "cprobe.ts",
     "package.json"
   ],
   "dependencies": {
