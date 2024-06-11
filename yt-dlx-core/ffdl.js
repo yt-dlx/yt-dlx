@@ -35,15 +35,11 @@ const binDL = async (url, filepath, binaryName) => {
   const binaries = [
     {
       name: "ffmpeg.exe",
-      url: "https://github.com/yt-dlx/yt-dlx/releases/download/v1.0.0/ffmpeg.exe",
-    },
-    {
-      name: "ffplay.exe",
-      url: "https://github.com/yt-dlx/yt-dlx/releases/download/v1.0.0/ffplay.exe",
+      url: "https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffmpeg.exe",
     },
     {
       name: "ffprobe.exe",
-      url: "https://github.com/yt-dlx/yt-dlx/releases/download/v1.0.0/ffprobe.exe",
+      url: "https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffprobe.exe",
     },
   ];
 
