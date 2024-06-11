@@ -1,5 +1,5 @@
 {
-  "version": "0.0.6",
+  "version": "0.0.7",
   "name": "yt-dlx-encore",
   "license": "Apache-2.0",
   "main": "out/cjs/index.js",
@@ -29,8 +29,7 @@
     "fs-extra": "^11.2.0",
     "shx": "^0.3.4",
     "tsc": "^2.0.4",
-    "typescript": "^5.4.5",
-    "yt-dlx-encore": "^0.0.5"
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
     "@types/fs-extra": "^11.0.4",
