@@ -2,9 +2,10 @@ import react from "react";
 import { motion } from "framer-motion";
 
 const AudioVideo: React.FC<{
+  Query: string;
   isOpen: boolean;
   onClose: () => void;
-}> = ({ isOpen, onClose }) => {
+}> = ({ isOpen, onClose, Query }) => {
   return (
     <react.Fragment>
       {isOpen && (
@@ -20,8 +21,12 @@ const AudioVideo: React.FC<{
               <span className="text-6xl block">Audio + Video</span>
             </h2>
             <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start p-4">
-              <li>Highest Possible</li>
-              <li>Lowest Posible</li>
+              <li className="hover:text-red-600 hover:font-black cursor-pointer">
+                Highest Possible Download
+              </li>
+              <li className="hover:text-red-600 hover:font-black cursor-pointer">
+                Lowest Posible Download
+              </li>
             </ul>
             <button
               onClick={onClose}

@@ -161,9 +161,21 @@ export default function VideoId(): JSX.Element {
               </section>
             </div>
             {/* [ Modals ] */}
-            <AudioOnly isOpen={ShowAudio} onClose={ToggleAudio} />
-            <VideoOnly isOpen={ShowVideo} onClose={ToggleVideo} />
-            <AudioVideo isOpen={ShowAudioVideo} onClose={ToggleAudioVideo} />
+            <AudioOnly
+              isOpen={ShowAudio}
+              onClose={ToggleAudio}
+              Query={TubeSearch.id}
+            />
+            <VideoOnly
+              isOpen={ShowVideo}
+              onClose={ToggleVideo}
+              Query={TubeSearch.id}
+            />
+            <AudioVideo
+              isOpen={ShowAudioVideo}
+              onClose={ToggleAudioVideo}
+              Query={TubeSearch.id}
+            />
           </section>
         ) : (
           <section className="flex flex-col items-center justify-center w-full">
