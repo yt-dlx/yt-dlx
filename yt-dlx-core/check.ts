@@ -1,3 +1,3 @@
-import { main } from ".";
+import { encore } from "yt-dlx-encore";
 
-main().then((filePath) => console.log(filePath));
+encore().then((fp) => console.log(fp));

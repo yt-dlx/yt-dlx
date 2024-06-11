@@ -1,6 +1,22 @@
 import * as fsx from "fs-extra";
 import * as path from "path";
 
+async function findRootDirectory(currentPath: string): Promise<string | null> {
+  const markerFile = "package.json";
+  try {
+    const files = await fsx.readdir(currentPath);
+    if (files.includes(markerFile)) {
+      return currentPath;
+    } else {
+      const parentDir = path.resolve(currentPath, "..");
+      if (parentDir === currentPath) return null;
+      else return findRootDirectory(parentDir);
+    }
+  } catch (error) {
+    return null;
+  }
+}
+
 async function scanner(
   directory: string,
   execName: string
@@ -13,27 +29,32 @@ async function scanner(
       if (stat.isDirectory()) {
         const result = await scanner(filePath, execName);
         if (result) return result;
-      } else if (
-        file.toLowerCase() === execName.toLowerCase() ||
-        file.toLowerCase() === execName.toLowerCase() + ".exe"
-      ) {
-        return filePath;
+      } else {
+        if (
+          file.toLowerCase() === execName.toLowerCase() ||
+          file.toLowerCase() === execName.toLowerCase() + ".exe"
+        ) {
+          return filePath;
+        }
       }
     }
     return null;
   } catch (error) {
-    console.error(`Error while searching for ${execName}:`, error);
     return null;
   }
 }
 
-export async function main() {
-  const projectDirectory = __dirname;
-  const executablesToFind = ["ffmpeg", "ffprobe", "cprobe"];
-  const results: { [key: string]: string } = {};
-  for (const execName of executablesToFind) {
-    const execPath = await scanner(projectDirectory, execName);
-    results[execName] = execPath || "";
+export async function encore() {
+  try {
+    const rootDirectory = await findRootDirectory(__dirname);
+    if (!rootDirectory) return {};
+    const results: { [key: string]: string } = {};
+    for (const execName of ["ffmpeg", "ffprobe", "cprobe"]) {
+      const execPath = await scanner(rootDirectory, execName);
+      results[execName] = execPath || "";
+    }
+    return results;
+  } catch (error) {
+    return {};
   }
-  return results;
 }
