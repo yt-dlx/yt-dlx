@@ -19,6 +19,7 @@
     "yt": "out/cjs/src/cli/main.js"
   },
   "scripts": {
+    "format": "prettier --write .",
     "start": "node ./util/index.mjs",
     "prepublishOnly": "yarn run clean:deps && yarn run clean:ff",
     "remake": "yarn run clean && yarn run make && yarn run update && yarn run build",
