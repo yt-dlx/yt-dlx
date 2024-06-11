@@ -1,6 +1,6 @@
 {
-  "name": "yt-dlx",
-  "version": "12.5.0",
+  "version": "0.0.0",
+  "name": "yt-dlx-encore",
   "license": "Apache-2.0",
   "main": "out/cjs/index.js",
   "module": "out/esm/index.js",
