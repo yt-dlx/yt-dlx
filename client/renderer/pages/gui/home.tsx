@@ -12,7 +12,7 @@ import { SiGradleplaypublisher } from "react-icons/si";
 const FromBottomToTop = {
   initial: { opacity: 0, y: 100 },
   exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
-  whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  whileInView: { opacity: 1, y: 0, transition: { duration: 0.8 } },
 };
 
 export default function Gui(): JSX.Element {

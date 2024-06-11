@@ -6,19 +6,19 @@ export default function Support(): JSX.Element {
   const FromLeftToRight = {
     initial: { opacity: 0, x: -100 },
     exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
-    whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+    whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } },
   };
   const FromRightToLeft = {
     initial: { opacity: 0, x: 100 },
     exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
-    whileInView: { opacity: 1, x: 0, transition: { duration: 0.6 } },
+    whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } },
   };
   const AndBounce = {
     initial: { opacity: 0, y: -50 },
     whileInView: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.6, bounce: 0.3 },
+      transition: { duration: 0.8, bounce: 0.3 },
     },
     exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
   };
@@ -30,10 +30,7 @@ export default function Support(): JSX.Element {
           <div className="grid items-center gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
-                <motion.div
-                  className="inline-block rounded-3xl bg-red-600 text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm"
-                  {...FromLeftToRight}
-                >
+                <motion.div className="inline-block rounded-3xl bg-red-600 text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm">
                   Support
                 </motion.div>
                 <motion.h2
@@ -42,16 +39,13 @@ export default function Support(): JSX.Element {
                 >
                   We're Here to Help
                 </motion.h2>
-                <motion.p
-                  className="max-w-[600px] text-white md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
-                  {...FromLeftToRight}
-                >
+                <motion.p className="max-w-[600px] text-white md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   If you have any questions or need assistance, our support team
                   is here to help. We provide comprehensive support to ensure
                   you have the best experience with Yt-Dlx.
                 </motion.p>
               </div>
-              <motion.ul className="grid gap-2 py-4" {...AndBounce}>
+              <motion.ul className="grid gap-2 py-4">
                 <motion.li>
                   <TbHelpHexagonFilled className="mr-2 inline-block h-4 w-4 text-red-600" />
                   24/7 customer support

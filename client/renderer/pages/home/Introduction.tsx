@@ -11,7 +11,7 @@ import PnpmModel from "../home/models/PnpmModel";
 const FromTopToBottom = {
   initial: { opacity: 0, y: -100 },
   exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
-  whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  whileInView: { opacity: 1, y: 0, transition: { duration: 0.8 } },
 };
 
 export default function Introduction(): JSX.Element {
