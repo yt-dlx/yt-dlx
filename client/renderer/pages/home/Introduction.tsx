@@ -8,11 +8,6 @@ import BunModel from "../home/models/BunModel";
 import YarnModel from "../home/models/YarnModel";
 import PnpmModel from "../home/models/PnpmModel";
 
-const FromBottomToTop = {
-  initial: { opacity: 0, y: 100 },
-  exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
-  whileInView: { opacity: 1, y: 0, transition: { duration: 0.6 } },
-};
 const FromTopToBottom = {
   initial: { opacity: 0, y: -100 },
   exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
@@ -86,7 +81,6 @@ export default function Introduction(): JSX.Element {
             width={1200}
             height={300}
             src="/youtube.gif"
-            {...FromBottomToTop}
             className="mx-auto aspect-[3/1] overflow-hidden rounded-t-2xl object-cover object-center border-t-4 border-r-4 border-l-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600"
           />
         </div>
