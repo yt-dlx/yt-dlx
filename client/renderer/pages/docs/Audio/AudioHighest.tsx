@@ -1,5 +1,4 @@
 import React from "react";
-import { motion } from "framer-motion";
 import NavPackage from "../../components/nav";
 import { MdDescription } from "react-icons/md";
 import FootPackage from "../../components/foot";
@@ -7,6 +6,7 @@ import { FaClipboardCheck } from "react-icons/fa";
 import { BiLogoTypescript } from "react-icons/bi";
 import { RiJavascriptFill } from "react-icons/ri";
 import Introduction from "../../home/Introduction";
+import { motion, AnimatePresence } from "framer-motion";
 
 const FromLeftToRight = {
   initial: { opacity: 0, x: -100 },

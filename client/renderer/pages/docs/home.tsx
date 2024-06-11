@@ -1,10 +1,10 @@
 import React from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import NavPackage from "../components/nav";
 import FootPackage from "../components/foot";
 import Introduction from "../home/Introduction";
 import { FaClipboardCheck } from "react-icons/fa";
+import { motion, AnimatePresence } from "framer-motion";
 
 const FromLeftToRight = {
   initial: { opacity: 0, x: -100 },

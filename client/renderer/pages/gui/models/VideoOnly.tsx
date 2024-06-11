@@ -1,5 +1,5 @@
 import react from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 const VideoOnly: React.FC<{
   videoId: string;
@@ -12,7 +12,7 @@ const VideoOnly: React.FC<{
   }, []);
 
   return (
-    <react.Fragment>
+    <AnimatePresence>
       {isOpen && (
         <motion.div
           exit={{ opacity: 0 }}
@@ -59,7 +59,7 @@ const VideoOnly: React.FC<{
           </div>
         </motion.div>
       )}
-    </react.Fragment>
+    </AnimatePresence>
   );
 };
 
