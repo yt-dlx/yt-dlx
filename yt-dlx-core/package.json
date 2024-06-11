@@ -2,9 +2,9 @@
   "name": "yt-dlx",
   "version": "12.5.0",
   "license": "Apache-2.0",
-  "main": "out/cjs/src/index.js",
+  "main": "out/cjs/index.js",
+  "module": "out/esm/index.js",
   "types": "out/types/index.d.ts",
-  "module": "out/esm/src/index.js",
   "author": "yt-dlx <yt-dlx@proton.me>",
   "description": "Effortless Audio-Video Downloader And Streamer!",
   "repository": {
@@ -13,8 +13,9 @@
   },
   "homepage": "https://yt-dlx-shovit.koyeb.app",
   "scripts": {
-    "postinstall": "shx chmod -R +x ./util/*",
-    "build": "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json"
+    "postinstall": "shx chmod -R +x ./*",
+    "build": "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json",
+    "test": "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json && jest"
   },
   "files": [
     "util",
@@ -30,5 +31,10 @@
     "ts-node": "^10.9.2",
     "tsc": "^2.0.4",
     "typescript": "^5.4.5"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.4"
   }
 }
