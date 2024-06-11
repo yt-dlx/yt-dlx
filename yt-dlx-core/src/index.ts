@@ -13,16 +13,17 @@ async function scanner(
       if (stat.isDirectory()) {
         const result = await scanner(filePath, execName);
         if (result) return result;
-      } else if (
-        file.toLowerCase() === execName.toLowerCase() ||
-        file.toLowerCase() === execName.toLowerCase() + ".exe"
-      ) {
-        return filePath;
+      } else {
+        if (
+          file.toLowerCase() === execName.toLowerCase() ||
+          file.toLowerCase() === execName.toLowerCase() + ".exe"
+        ) {
+          return filePath;
+        }
       }
     }
     return null;
   } catch (error) {
-    console.error(`Error while searching for ${execName}:`, error);
     return null;
   }
 }
