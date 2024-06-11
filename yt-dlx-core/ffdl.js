@@ -25,7 +25,6 @@ const binDL = async (url, filepath, binaryName) => {
       writer.on("finish", resolve);
       writer.on("error", reject);
     });
-    console.log(`\n@${binaryName}: Download complete`);
   } catch (error) {
     console.error(`@error: ${binaryName}: ${error.message}`);
   }
