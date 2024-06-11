@@ -1,17 +1,39 @@
-import * as fs from "fs";
+import * as fsx from "fs-extra";
 import * as path from "path";
 
-const getFiles = (dir: string, files: string[]): Record<string, string> => {
-  const filesObject: Record<string, string> = {};
-  files.forEach((file) => {
-    const filePath = path.join(dir, file);
-    if (fs.existsSync(filePath)) filesObject[file] = filePath;
-  });
-  return filesObject;
-};
-const encore = getFiles(path.resolve(__dirname, ".."), [
-  "cprobe.exe",
-  "ffmpeg.exe",
-  "ffprobe.exe",
-]);
-export { encore };
+async function scanner(
+  directory: string,
+  execName: string
+): Promise<string | null> {
+  try {
+    const files = await fsx.readdir(directory);
+    for (const file of files) {
+      const filePath = path.join(directory, file);
+      const stat = await fsx.stat(filePath);
+      if (stat.isDirectory()) {
+        const result = await scanner(filePath, execName);
+        if (result) return result;
+      } else if (
+        file.toLowerCase() === execName.toLowerCase() ||
+        file.toLowerCase() === execName.toLowerCase() + ".exe"
+      ) {
+        return filePath;
+      }
+    }
+    return null;
+  } catch (error) {
+    console.error(`Error while searching for ${execName}:`, error);
+    return null;
+  }
+}
+
+export async function main() {
+  const projectDirectory = __dirname;
+  const executablesToFind = ["ffmpeg", "ffprobe", "cprobe"];
+  const results: { [key: string]: string } = {};
+  for (const execName of executablesToFind) {
+    const execPath = await scanner(projectDirectory, execName);
+    results[execName] = execPath || "";
+  }
+  return results;
+}
