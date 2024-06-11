@@ -129,16 +129,16 @@ export default function Gui(): JSX.Element {
                               />
                             </div>
                           </div>
-                          <motion.div
-                            className="flex-1 flex flex-col"
-                            {...FromBottomToTop}
-                          >
+                          <div className="flex-1 flex flex-col p-2">
                             <p className="mb-2 text-xs font-semibold tracking-wider text-red-600 uppercase">
                               number :: {index}
                             </p>
-                            <h2 className="mb-2 text-xl font-black leading-snug text-red-600">
+                            <motion.h2
+                              className="mb-2 text-xl font-black leading-snug text-red-600"
+                              {...FromBottomToTop}
+                            >
                               {item.title}
-                            </h2>
+                            </motion.h2>
                             <p className="mb-4 text-sm font-normal text-white">
                               {item.description}
                             </p>
@@ -182,7 +182,7 @@ export default function Gui(): JSX.Element {
                                 </li>
                               </ul>
                             </div>
-                          </motion.div>
+                          </div>
                           <div className="flex items-center justify-center p-2 duration-700 group-hover:bg-red-600/60 bg-red-600/40 text-white/90 mt-0.5 w-full text-sm gap-1 rounded-b-xl">
                             powered by <TbDiamondFilled size={20} /> yt-dlx{" "}
                           </div>
