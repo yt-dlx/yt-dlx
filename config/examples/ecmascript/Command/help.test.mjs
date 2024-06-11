@@ -2,7 +2,6 @@
 //
 import YouTube from "yt-dlx"
 import colors from "colors"
-
 ;(async () => {
   try {
     const result = await YouTube.default.info.help()

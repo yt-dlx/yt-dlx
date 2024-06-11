@@ -2,7 +2,6 @@
 //
 import YouTube from "yt-dlx"
 import colors from "colors"
-
 ;(async () => {
   try {
     await YouTube.info.extract({

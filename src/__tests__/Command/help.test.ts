@@ -1,6 +1,5 @@
 import YouTube from "../../"
 import colors from "colors"
-
 ;(async () => {
   try {
     console.log(colors.blue("@test:"), "help")

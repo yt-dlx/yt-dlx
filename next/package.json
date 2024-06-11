@@ -13,12 +13,13 @@
     "lint": "next lint",
     "build": "next build",
     "start": "next start",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "postinstall": "yarn remove sharp && yarn add sharp@0.32.6"
   },
   "dependencies": {
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.13",
-    "@tanstack/react-query": "^5.40.1",
+    "@tanstack/react-query": "^5.44.0",
     "axios": "^1.7.2",
     "colors": "^1.4.0",
     "daisyui": "^4.12.2",
@@ -32,7 +33,6 @@
     "react-h5-audio-player": "^3.9.1",
     "react-icons": "^5.2.1",
     "react-syntax-highlighter": "^15.5.0",
-    "sharp": "0.32.6",
     "socket.io": "^4.7.4",
     "socket.io-client": "^4.7.4",
     "tailwind-scrollbar": "^3.0.5",
@@ -40,7 +40,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@tanstack/react-query-devtools": "^5.40.1",
+    "@tanstack/react-query-devtools": "^5.44.0",
     "@types/node": "^20.14.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
