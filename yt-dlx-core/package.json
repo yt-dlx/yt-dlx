@@ -1,5 +1,5 @@
 {
-  "version": "0.0.3",
+  "version": "0.0.4",
   "name": "yt-dlx-encore",
   "license": "Apache-2.0",
   "main": "out/cjs/index.js",
@@ -13,6 +13,7 @@
   },
   "homepage": "https://yt-dlx-shovit.koyeb.app",
   "scripts": {
+    "prepublishOnly": "yarn run build",
     "postinstall": "node ffdl.js && node cprobe.js && shx chmod -R +x ./*",
     "build": "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json"
   },
