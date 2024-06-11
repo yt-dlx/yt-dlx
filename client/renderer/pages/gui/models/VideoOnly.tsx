@@ -2,10 +2,10 @@ import react from "react";
 import { motion } from "framer-motion";
 
 const VideoOnly: React.FC<{
-  Query: string;
+  videoId: string;
   isOpen: boolean;
   onClose: () => void;
-}> = ({ isOpen, onClose, Query }) => {
+}> = ({ isOpen, onClose, videoId }) => {
   var [progress, setProgress] = react.useState<any>(null);
   react.useEffect(() => {
     window.ipc.on("video", (response: string) => setProgress(response));
@@ -28,7 +28,7 @@ const VideoOnly: React.FC<{
             <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start pl-6">
               <li
                 onClick={() => {
-                  window.ipc.send("video", { videoId: Query });
+                  window.ipc.send("video", { videoId });
                 }}
                 className="hover:text-red-600 hover:font-black cursor-pointer"
               >
@@ -36,7 +36,7 @@ const VideoOnly: React.FC<{
               </li>
               <li
                 onClick={() => {
-                  window.ipc.send("video", { videoId: Query });
+                  window.ipc.send("video", { videoId });
                 }}
                 className="hover:text-red-600 hover:font-black cursor-pointer"
               >

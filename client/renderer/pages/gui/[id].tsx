@@ -25,20 +25,17 @@ const FromRightToLeft = {
 export default function VideoId(): JSX.Element {
   const router = useRouter();
   const { id } = router.query;
-  const [TubeSearch, setTubeSearch] = react.useState<any>(null);
-  // const [TubeFormat, setTubeFormat] = react.useState<any>(null);
-
   const [ShowAudio, setShowAudio] = react.useState(false);
   const [ShowVideo, setShowVideo] = react.useState(false);
+  const [TubeSearch, setTubeSearch] = react.useState<any>(null);
   const [ShowAudioVideo, setShowAudioVideo] = react.useState(false);
+  const ToggleAudioVideo = () => setShowAudioVideo(!ShowAudioVideo);
   const ToggleAudio = () => setShowAudio(!ShowAudio);
   const ToggleVideo = () => setShowVideo(!ShowVideo);
-  const ToggleAudioVideo = () => setShowAudioVideo(!ShowAudioVideo);
 
   react.useEffect(() => {
     if (typeof id === "string" && /^[a-zA-Z0-9_-]{11}$/.test(id)) {
       window.ipc.send("search", { videoId: id });
-      // window.ipc.send("formats", { query: id });
     } else {
       try {
         window.history.back();
@@ -51,7 +48,6 @@ export default function VideoId(): JSX.Element {
   react.useEffect(() => {
     if (typeof id === "string") {
       window.ipc.on("search", (response: string) => setTubeSearch(response));
-      // window.ipc.on("formats", (response: string) => setTubeFormat(response));
     }
   }, [id]);
 
@@ -91,14 +87,20 @@ export default function VideoId(): JSX.Element {
                           Audio only
                         </button>
                         <button
-                          onClick={ToggleVideo}
+                          onClick={() => {
+                            window.ipc.send("formats", { query: id });
+                            ToggleVideo();
+                          }}
                           className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl border hover:border-neutral-800 text-red-600 font-black border-red-600/50 bg-neutral-800 hover:bg-red-600 hover:text-neutral-800 text-sm duration-700 transition-transform hover:scale-105 shadow-red-600 shadow-2xl"
                         >
                           <IoVideocam className="mr-2 h-6 w-6" /> Download Video
                           only
                         </button>
                         <button
-                          onClick={ToggleAudioVideo}
+                          onClick={() => {
+                            window.ipc.send("formats", { query: id });
+                            ToggleAudioVideo();
+                          }}
                           className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl border hover:border-neutral-800 text-red-600 font-black border-red-600/50 bg-neutral-800 hover:bg-red-600 hover:text-neutral-800 text-sm duration-700 transition-transform hover:scale-105 shadow-red-600 shadow-2xl"
                         >
                           <PiTelevisionFill className="mr-2 h-6 w-6" /> Download
@@ -164,17 +166,17 @@ export default function VideoId(): JSX.Element {
             <AudioOnly
               isOpen={ShowAudio}
               onClose={ToggleAudio}
-              Query={TubeSearch.id}
+              videoId={TubeSearch.id}
             />
             <VideoOnly
               isOpen={ShowVideo}
               onClose={ToggleVideo}
-              Query={TubeSearch.id}
+              videoId={TubeSearch.id}
             />
             <AudioVideo
               isOpen={ShowAudioVideo}
               onClose={ToggleAudioVideo}
-              Query={TubeSearch.id}
+              videoId={TubeSearch.id}
             />
           </section>
         ) : (
