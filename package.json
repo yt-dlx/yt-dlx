@@ -24,7 +24,7 @@
     "format:next": "cd next && prettier --write .",
     "format:client": "cd client && prettier --write .",
     "format": "yarn run format:base && yarn run format:next && yarn run format:client",
-    "prepublishOnly": "yarn run clean:deps && yarn run clean:ff",
+    "prepublishOnly": "yarn run clean:deps && yarn run clean:ff && yarn run build && yarn run format",
     "remake": "yarn run clean && yarn run make && yarn run update && yarn run build",
     "next:dev": "cd next && yarn run dev",
     "next:lint": "cd next && yarn run lint",
