@@ -4,12 +4,12 @@ import * as path from "path";
 import web from "../../../web";
 import { z, ZodError } from "zod";
 import ffmpeg from "fluent-ffmpeg";
+import { encore } from "yt-dlx-encore";
 import ytdlx from "../../../base/Agent";
 import YouTubeID from "../../../web/YouTubeId";
 import formatTime from "../../../base/formatTime";
 import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
-import { ffmpegPath, ffprobePath } from "../../../base/ffbins";
 
 var ZodSchema = z.object({
   output: z.string().optional(),
@@ -118,9 +118,9 @@ export default async function ListAudioLowest({
         var folder = output ? path.join(__dirname, output) : __dirname;
         if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
         var filename: string = "yt-dlx_(AudioLowest_";
-            var ff: FfmpegCommand = ffmpeg()
-      .setFfmpegPath(ffmpegPath)
-      .setFfprobePath(ffprobePath);
+        var ff: FfmpegCommand = ffmpeg()
+          .setFfmpegPath((await encore().then((fp) => fp.ffmpeg)).toString())
+          .setFfprobePath((await encore().then((fp) => fp.ffprobe)).toString());
         ff.addInput(engineData.AudioLowF.url);
         ff.addInput(engineData.metaData.thumbnail);
         ff.withOutputFormat("avi");

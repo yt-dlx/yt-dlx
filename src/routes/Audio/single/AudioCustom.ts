@@ -3,12 +3,12 @@ import colors from "colors";
 import * as path from "path";
 import { z, ZodError } from "zod";
 import ffmpeg from "fluent-ffmpeg";
+import { encore } from "yt-dlx-encore";
 import ytdlx from "../../../base/Agent";
 import formatTime from "../../../base/formatTime";
 import type { FfmpegCommand } from "fluent-ffmpeg";
 import calculateETA from "../../../base/calculateETA";
 import EngineOutput from "../../../interfaces/EngineOutput";
-import { ffmpegPath, ffprobePath } from "../../../base/ffbins";
 
 var ZodSchema = z.object({
   query: z.string().min(2),
@@ -106,8 +106,8 @@ export default async function AudioCustom({
       );
     }
     var ff: FfmpegCommand = ffmpeg()
-      .setFfmpegPath(ffmpegPath)
-      .setFfprobePath(ffprobePath)
+      .setFfmpegPath((await encore().then((fp) => fp.ffmpeg)).toString())
+      .setFfprobePath((await encore().then((fp) => fp.ffprobe)).toString())
       .addInput(adata.url)
       .addInput(engineData.metaData.thumbnail)
       .withOutputFormat("avi");
