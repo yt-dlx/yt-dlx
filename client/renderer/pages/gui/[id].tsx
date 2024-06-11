@@ -2,8 +2,11 @@ import react from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import NavPackage from "../components/nav";
+import AudioOnly from "./models/AudioOnly";
+import VideoOnly from "./models/VideoOnly";
 import { AiFillAudio } from "react-icons/ai";
 import FootPackage from "../components/foot";
+import AudioVideo from "./models/AudioVideo";
 import { IoVideocam } from "react-icons/io5";
 import Introduction from "../home/Introduction";
 import { PiTelevisionFill } from "react-icons/pi";
@@ -25,6 +28,13 @@ export default function VideoId(): JSX.Element {
   const [TubeSearch, setTubeSearch] = react.useState<any>(null);
   const [TubeFormat, setTubeFormat] = react.useState<any>(null);
 
+  const [ShowAudio, setShowAudio] = react.useState(false);
+  const [ShowVideo, setShowVideo] = react.useState(false);
+  const [ShowAudioVideo, setShowAudioVideo] = react.useState(false);
+  const ToggleYarn = () => setShowAudio(!ShowAudio);
+  const TogglePnpm = () => setShowVideo(!ShowVideo);
+  const ToggleNpm = () => setShowAudioVideo(!ShowAudioVideo);
+
   react.useEffect(() => {
     if (typeof id === "string" && /^[a-zA-Z0-9_-]{11}$/.test(id)) {
       window.ipc.send("search", { videoId: id });
@@ -44,9 +54,6 @@ export default function VideoId(): JSX.Element {
       window.ipc.on("formats", (response: string) => setTubeFormat(response));
     }
   }, [id]);
-
-  console.clear();
-  console.log(TubeFormat);
 
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600">
@@ -141,6 +148,10 @@ export default function VideoId(): JSX.Element {
                 </div>
               </section>
             </div>
+            {/* [ Modals ] */}
+            <AudioOnly isOpen={ShowAudio} onClose={ToggleYarn} />
+            <VideoOnly isOpen={ShowVideo} onClose={TogglePnpm} />
+            <AudioVideo isOpen={ShowAudioVideo} onClose={ToggleNpm} />
           </section>
         ) : (
           <section className="flex flex-col items-center justify-center w-full">
