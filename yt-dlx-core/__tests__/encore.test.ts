@@ -8,7 +8,6 @@ test("should find the required files with correct paths", () => {
     expect.arrayContaining([
       path.join(dir, "cprobe.exe"),
       path.join(dir, "ffmpeg.exe"),
-      path.join(dir, "ffplay.exe"),
       path.join(dir, "ffprobe.exe"),
     ])
   );

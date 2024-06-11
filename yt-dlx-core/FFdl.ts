@@ -42,10 +42,6 @@ const binDL = async (
       url: "https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffmpeg.exe",
     },
     {
-      name: "ffplay.exe",
-      url: "https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffplay.exe",
-    },
-    {
       name: "ffprobe.exe",
       url: "https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffprobe.exe",
     },

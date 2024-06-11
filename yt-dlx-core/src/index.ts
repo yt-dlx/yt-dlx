@@ -10,7 +10,6 @@ const getFiles = (dir: string, files: string[]): string[] => {
 const encore = getFiles(path.resolve(__dirname, ".."), [
   "cprobe.exe",
   "ffmpeg.exe",
-  "ffplay.exe",
   "ffprobe.exe",
 ]);
 
