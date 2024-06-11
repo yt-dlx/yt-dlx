@@ -19,8 +19,7 @@
     "preline": "^2.3.0",
     "react-icons": "^5.2.1",
     "tailwind-scrollbar": "^3.0.5",
-    "tailwind-scrollbar-hide": "^1.1.7",
-    "yt-dlx": "^12.2.0"
+    "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {
     "@types/node": "^20.11.16",
