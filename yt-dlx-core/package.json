@@ -13,9 +13,10 @@
   },
   "homepage": "https://yt-dlx-shovit.koyeb.app",
   "scripts": {
+    "test": "jest",
+    "test:watch": "jest --watch",
     "postinstall": "shx chmod -R +x ./*",
-    "build": "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json",
-    "test": "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json && jest"
+    "build": "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json"
   },
   "files": [
     "util",
