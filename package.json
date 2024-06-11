@@ -20,7 +20,11 @@
   },
   "scripts": {
     "start": "node ./util/index.mjs",
+    "format:base": "prettier --write .",
+    "format:next": "cd next && prettier --write .",
+    "format:client": "cd client && prettier --write .",
     "remake": "yarn clean && yarn make && yarn update && yarn build",
+    "format": "yarn format:base && yarn format:next && yarn format:client",
     "prepublishOnly": "yarn clean:deps && yarn clean:ff && yarn build && yarn format",
     "next:dev": "cd next && yarn dev",
     "next:lint": "cd next && yarn lint",
