@@ -5,7 +5,7 @@ import { join } from "path";
 (async () => {
   try {
     const platform = process.platform;
-    let fileExtension: string;
+    let fileExtension;
     switch (platform) {
       case "win32":
         fileExtension = ".exe";
@@ -31,19 +31,19 @@ import { join } from "path";
       );
       const writer = createWriteStream(filepath);
       if (!response.body) throw new Error("No response body");
-      response.body.on("data", (chunk: Buffer) => {
+      response.body.on("data", (chunk) => {
         downloadedSize += chunk.length;
         const progress = Math.round((downloadedSize / totalSize) * 100);
         process.stdout.write(`@cprobe: ${progress}%\r`);
       });
       response.body.pipe(writer);
-      await new Promise<void>((resolve, reject) => {
+      await new Promise((resolve, reject) => {
         writer.on("finish", resolve);
         writer.on("error", reject);
       });
       process.stdout.write(`@cprobe: Download complete\n`);
     }
   } catch (error) {
-    console.error("@error:", (error as Error).message);
+    console.error("@error:", error.message);
   }
 })();

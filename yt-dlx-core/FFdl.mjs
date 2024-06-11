@@ -2,16 +2,7 @@ import { createWriteStream, existsSync } from "fs";
 import fetch from "node-fetch";
 import { join } from "path";
 
-interface Binary {
-  name: string;
-  url: string;
-}
-
-const binDL = async (
-  url: string,
-  filepath: string,
-  binaryName: string
-): Promise<void> => {
+const binDL = async (url, filepath, binaryName) => {
   try {
     const response = await fetch(url);
     if (!response.ok) throw new Error(`@error: ${response.statusText}`);
@@ -19,24 +10,24 @@ const binDL = async (
     const writer = createWriteStream(filepath);
     let dSize = 0;
     if (!response.body) throw new Error("No response body");
-    response.body.on("data", (chunk: Buffer) => {
+    response.body.on("data", (chunk) => {
       dSize += chunk.length;
       const progress = Math.round((dSize / tSize) * 100);
       process.stdout.write(`@${binaryName}: ${progress}%\r`);
     });
     response.body.pipe(writer);
-    await new Promise<void>((resolve, reject) => {
+    await new Promise((resolve, reject) => {
       writer.on("finish", resolve);
       writer.on("error", reject);
     });
     process.stdout.write(`@${binaryName}: Download complete\n`);
   } catch (error) {
-    console.error(`@error: ${binaryName}: ${(error as Error).message}`);
+    console.error(`@error: ${binaryName}: ${error.message}`);
   }
 };
 
 (async () => {
-  const binaries: Binary[] = [
+  const binaries = [
     {
       name: "ffmpeg.exe",
       url: "https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffmpeg.exe",

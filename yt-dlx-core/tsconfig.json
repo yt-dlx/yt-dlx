@@ -3,6 +3,6 @@
     "target": "esnext"
   },
   "extends": "./config/base.json",
+  "include": ["src/**/*.ts", "src/index.ts"],
   "exclude": ["out", "client", "node_modules"],
-  "include": ["src/**/*.ts", "FFdl.ts", "cprobe.ts", "src/index.ts"],
 }
