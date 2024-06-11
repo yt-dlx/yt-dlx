@@ -39,7 +39,6 @@ import axios from "axios";
         writer.on("finish", resolve);
         writer.on("error", reject);
       });
-      console.log(`\n@cprobe: Download complete`);
     }
   } catch (error) {
     console.error("@error:", (error as Error).message);
