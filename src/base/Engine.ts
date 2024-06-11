@@ -1,9 +1,7 @@
-import * as fs from "fs";
-import colors from "colors";
-import * as path from "path";
 import retry from "async-retry";
 import { promisify } from "util";
-import { exec, execSync } from "child_process";
+import { exec } from "child_process";
+import { encore } from "yt-dlx-encore";
 import type sizeFormat from "../interfaces/sizeFormat";
 import type AudioFormat from "../interfaces/AudioFormat";
 import type VideoFormat from "../interfaces/VideoFormat";
@@ -144,42 +142,8 @@ export default async function Engine({
   var AudioHighF: AudioFormat | any = null;
   var VideoLowF: VideoFormat | any = null;
   var VideoHighF: VideoFormat | any = null;
-  var dirC = __dirname || process.cwd();
-  let platform = process.platform;
-  let fileExtension = "";
-  var pLoc = "";
-  var maxT = 8;
-  switch (platform) {
-    case "win32":
-      fileExtension = ".exe";
-      break;
-    case "darwin":
-      fileExtension = "_macos";
-      break;
-    case "linux":
-      fileExtension = "_linux";
-      break;
-    default:
-      throw new Error("Unsupported platform");
-  }
-  while (maxT > 0) {
-    var cprobePath = path.join(dirC, "util", "cprobe" + fileExtension);
-    if (fs.existsSync(cprobePath)) {
-      pLoc = cprobePath;
-      break;
-    } else {
-      dirC = path.join(dirC, "..");
-      maxT--;
-    }
-  }
-  if (pLoc === "") {
-    throw new Error(
-      colors.red("@error: ") +
-        "Could not find cprobe file. maybe re-install yt-dlx?"
-    );
-  }
-  if (sudo) execSync(`sudo shx chmod +x ${pLoc}`);
-  else execSync(`shx chmod +x ${pLoc}`);
+  var cprobe = encore().then((fp) => fp.cprobe);
+  var pLoc = (await cprobe).toString();
   var config = {
     factor: 2,
     retries: 3,
