@@ -27,7 +27,7 @@ export default function Gui(): JSX.Element {
               event.preventDefault();
               window.ipc.send("search", { query: Query });
             }}
-            className="bg-neutral-900 max-w-screen-2xl p-10 text-[#CD322D] mx-auto my-8 rounded-2xl border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
+            className="bg-neutral-900 max-w-screen-2xl p-10 text-[#CD322D] mx-auto my-8 rounded-3xl border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
           >
             <h1 className="text-7xl mb-4 font-black">Yt-Dlx PlayGround</h1>
             <h2 className="text-3xl font-black text-[#CD322D] mb-4">
@@ -68,7 +68,7 @@ export default function Gui(): JSX.Element {
                   value={Query}
                   placeholder="required"
                   onChange={(e) => setQuery(e.target.value)}
-                  className="input input-bordered w-full rounded-2xl bg-neutral-800"
+                  className="input input-bordered w-full rounded-3xl bg-neutral-800"
                 />
                 <div className="label">
                   <span className="flex flex-row items-center justify-center label-text-alt text-[#CD322D] text-sm font-black">
@@ -87,7 +87,7 @@ export default function Gui(): JSX.Element {
             <div className="flex justify-center">
               <button
                 type="submit"
-                className="flex flex-row items-center justify-center whitespace-nowrap text-sm font-semibold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 active:ring-2 active:ring-red-500 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 bg-[#CD322D] hover:bg-red-800 text-white rounded-2xl shadow-md transition-all duration-300 hover:shadow-lg w-full"
+                className="flex flex-row items-center justify-center whitespace-nowrap text-sm font-semibold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 active:ring-2 active:ring-red-500 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 bg-[#CD322D] hover:bg-red-800 text-white rounded-3xl shadow-md transition-all duration-300 hover:shadow-lg w-full"
               >
                 <TbWorldSearch size={20} className="mr-1 font-black" />
                 Search YouTube
@@ -101,8 +101,8 @@ export default function Gui(): JSX.Element {
                       TubeSearch.map((item: any, index: number) => (
                         <Link
                           key={index}
-                          href={`/${item.id}`}
-                          className="relative group mb-4 duration-700 bg-[#111111] p-1 shadow-[#CD322D] hover:shadow-[0_0_400px_rgba(255,0,0,0.5)] rounded-2xl border-2 border-[#CD322D]/40 hover:border-[#CD322D] flex flex-col justify-between"
+                          href={`/gui/${item.id}`}
+                          className="relative group mb-4 duration-700 bg-[#111111] p-1 shadow-[#CD322D] hover:shadow-[0_0_400px_rgba(255,0,0,0.5)] rounded-3xl border-2 border-[#CD322D]/40 hover:border-[#CD322D] flex flex-col justify-between"
                         >
                           <div className="relative">
                             <img

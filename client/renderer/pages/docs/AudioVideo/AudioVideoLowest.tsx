@@ -37,7 +37,7 @@ export default function AudioVideoHighest(): JSX.Element {
         <div className="container px-4 md:px-6">
           <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
             <div className="flex flex-col justify-center space-y-4">
-              <motion.div className="inline-block rounded-2xl bg-[#CD322D] text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm">
+              <motion.div className="inline-block rounded-3xl bg-[#CD322D] text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm">
                 Viewing Documentation For:
               </motion.div>
               <motion.h2
@@ -91,7 +91,7 @@ export default function AudioVideoHighest(): JSX.Element {
               </motion.ul>
               <motion.div className="flex flex-wrap gap-2">
                 <button
-                  className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+                  className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
                   onClick={() => {
                     window.open(
                       "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/AudioVideo/single.lowest.test.ts",
@@ -103,7 +103,7 @@ export default function AudioVideoHighest(): JSX.Element {
                   Typescript Example
                 </button>
                 <button
-                  className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+                  className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
                   onClick={() => {
                     window.open(
                       "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/AudioVideo/single.lowest.test.js",
@@ -115,7 +115,7 @@ export default function AudioVideoHighest(): JSX.Element {
                   Javascript Example
                 </button>
                 <button
-                  className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
+                  className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
                   onClick={() => {
                     window.open(
                       "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/AudioVideo/single.lowest.test.mjs",
@@ -134,7 +134,7 @@ export default function AudioVideoHighest(): JSX.Element {
               height={310}
               src="/eq.gif"
               {...FromRightToLeft}
-              className="mx-auto aspect-video overflow-hidden rounded-2xl object-cover object-center w-full max-w-[550px] border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
+              className="mx-auto aspect-video overflow-hidden rounded-3xl object-cover object-center w-full max-w-[550px] border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
             />
           </div>
         </div>
