@@ -16,14 +16,12 @@ const AudioVideo: React.FC<{
         >
           <div className="bg-neutral-900/90 backdrop-blur-lg border-4 border-double border-red-600 p-4 rounded-3xl max-w-lg w-full shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#707070]">
             <h2 className="text-4xl text-red-600 font-black mb-4">
-              Steps To Install Using <br></br>
-              <span className="text-6xl block">npm</span>
+              Choose Your Poison For <br></br>
+              <span className="text-6xl block">Audio + Video</span>
             </h2>
             <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start p-4">
-              <li>open an empty project or old project</li>
-              <li>open terminal inside the project</li>
-              <li>type the following commads</li>
-              <li>npm install yt-dlx</li>
+              <li>Highest Possible</li>
+              <li>Lowest Posible</li>
             </ul>
             <button
               onClick={onClose}
