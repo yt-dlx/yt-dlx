@@ -42,7 +42,7 @@ export default function Introduction(): JSX.Element {
                 Yt-Dlx: The Ultimate Multimedia Downloader
               </motion.h1>
               <motion.p
-                className="mx-auto max-w-[700px] text-white md:text-xl"
+                className="mx-auto max-w-[700px] text-white font-semibold md:text-xl"
                 {...FromTopToBottom}
               >
                 Yt-Dlx is a powerful and versatile tool that allows you to
@@ -87,7 +87,7 @@ export default function Introduction(): JSX.Element {
             height={300}
             src="/youtube.gif"
             {...FromBottomToTop}
-            className="mx-auto aspect-[3/1] cursor-none overflow-hidden rounded-t-2xl object-cover object-center border-t-4 border-r-4 border-l-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
+            className="mx-auto aspect-[3/1] overflow-hidden rounded-t-2xl object-cover object-center border-t-4 border-r-4 border-l-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#CD322D]"
           />
         </div>
       </motion.section>

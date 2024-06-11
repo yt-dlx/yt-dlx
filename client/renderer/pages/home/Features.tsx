@@ -73,7 +73,7 @@ export default function Features(): JSX.Element {
                 </li>
               </motion.ul>
               <Link
-                href="/home/gui"
+                href="/gui/home"
                 className="inline-flex h-10 items-center justify-center rounded-2xl border hover:border-neutral-900 text-[#CD322D] font-black border-[#CD322D]/50 bg-neutral-900 hover:bg-[#CD322D] hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#CD322D] disabled:pointer-events-none disabled:opacity-50"
               >
                 <HiFolderDownload className="mr-2 h-5 w-5" />
