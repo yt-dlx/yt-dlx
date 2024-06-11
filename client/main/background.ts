@@ -14,18 +14,24 @@ import { app, ipcMain as api } from "electron";
 const isProd = process.env.NODE_ENV === "production";
 if (isProd) serve({ directory: "app" });
 else app.setPath("userData", `${app.getPath("userData")} (development)`);
+
 (async () => {
   await app.whenReady();
   const mainWindow = createWindow("main", {
     fullscreen: true,
+    autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
   });
+
   if (isProd) await mainWindow.loadURL("app://./home");
-  const port = process.argv[2];
-  await mainWindow.loadURL(`http://localhost:${port}/home`);
-  mainWindow.webContents.openDevTools();
+  else {
+    const port = process.argv[2];
+    await mainWindow.loadURL(`http://localhost:${port}/home`);
+    mainWindow.webContents.openDevTools();
+    mainWindow.setFullScreen(true);
+  }
 })();
 app.on("window-all-closed", () => app.quit());
 // ============================================[ App Handlers ]===========================================

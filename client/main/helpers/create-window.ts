@@ -18,9 +18,7 @@ export const createWindow = (
     height: options.height,
   };
   let state = {};
-
   const restore = () => store.get(key, defaultSize);
-
   const getCurrentPosition = () => {
     const position = win.getPosition();
     const size = win.getSize();
@@ -31,7 +29,6 @@ export const createWindow = (
       height: size[1],
     };
   };
-
   const windowWithinBounds = (windowState, bounds) => {
     return (
       windowState.x >= bounds.x &&
@@ -40,7 +37,6 @@ export const createWindow = (
       windowState.y + windowState.height <= bounds.y + bounds.height
     );
   };
-
   const resetToDefaults = () => {
     const bounds = screen.getPrimaryDisplay().bounds;
     return Object.assign({}, defaultSize, {
@@ -48,28 +44,20 @@ export const createWindow = (
       y: (bounds.height - defaultSize.height) / 2,
     });
   };
-
   const ensureVisibleOnSomeDisplay = (windowState) => {
     const visible = screen.getAllDisplays().some((display) => {
       return windowWithinBounds(windowState, display.bounds);
     });
-    if (!visible) {
-      // Window is partially or fully not visible now.
-      // Reset it to safe defaults.
-      return resetToDefaults();
-    }
+    if (!visible) return resetToDefaults();
     return windowState;
   };
-
   const saveState = () => {
     if (!win.isMinimized() && !win.isMaximized()) {
       Object.assign(state, getCurrentPosition());
     }
     store.set(key, state);
   };
-
   state = ensureVisibleOnSomeDisplay(restore());
-
   const win = new BrowserWindow({
     ...state,
     ...options,
@@ -79,8 +67,6 @@ export const createWindow = (
       ...options.webPreferences,
     },
   });
-
   win.on("close", saveState);
-
   return win;
 };
