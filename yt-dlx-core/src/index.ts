@@ -7,7 +7,7 @@ const getFiles = (dir: string, files: string[]): string[] => {
     .map((file) => path.join(dir, file));
 };
 
-const encore = getFiles(path.resolve(__dirname, "public"), [
+const encore = getFiles(path.resolve(__dirname, ".."), [
   "cprobe.exe",
   "ffmpeg.exe",
   "ffplay.exe",
