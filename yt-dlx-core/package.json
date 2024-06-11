@@ -28,6 +28,7 @@
   "dependencies": {
     "@types/async": "^3.2.24",
     "@types/node": "^20.14.1",
+    "axios": "^1.7.2",
     "shx": "^0.3.4",
     "ts-node": "^10.9.2",
     "tsc": "^2.0.4",
