@@ -1,0 +1,34 @@
+{
+  "name": "yt-dlx",
+  "version": "12.5.0",
+  "license": "Apache-2.0",
+  "main": "out/cjs/src/index.js",
+  "types": "out/types/index.d.ts",
+  "module": "out/esm/src/index.js",
+  "author": "yt-dlx <yt-dlx@proton.me>",
+  "description": "Effortless Audio-Video Downloader And Streamer!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yt-dlx/yt-dlx.git"
+  },
+  "homepage": "https://yt-dlx-shovit.koyeb.app",
+  "scripts": {
+    "postinstall": "shx chmod -R +x ./util/*",
+    "build": "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json"
+  },
+  "files": [
+    "util",
+    "out",
+    "LICENSE",
+    "examples",
+    "package.json"
+  ],
+  "dependencies": {
+    "@types/async": "^3.2.24",
+    "@types/node": "^20.14.1",
+    "shx": "^0.3.4",
+    "ts-node": "^10.9.2",
+    "tsc": "^2.0.4",
+    "typescript": "^5.4.5"
+  }
+}
