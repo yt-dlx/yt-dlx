@@ -56,13 +56,13 @@ export default function VideoId(): JSX.Element {
                 <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-neutral-900 border-4 border-[#cd322d6e] rounded-3xl shadow-red-600 shadow-[0_0_80px_rgba(255,0,0,0.5)]">
                   <div className="overflow-x-auto">
                     <section className="max-w-screen-2xl px-6 mx-auto p-1">
-                      <iframe
-                        allowFullScreen
-                        title="yt-dlx player"
-                        src={`https://www.youtube.com/embed/${id}`}
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        className="w-full h-64 mt-4 rounded-t-3xl md:h-80 border-b-4 border-[#cd322d6e] shadow-red-600 shadow-2xl"
-                      />
+                      {/* <iframe
+allowFullScreen
+title="yt-dlx player"
+src={`https://www.youtube.com/embed/${id}`}
+allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+className="w-full h-64 mt-4 rounded-t-3xl md:h-80 border-b-4 border-[#cd322d6e] shadow-red-600 shadow-2xl"
+/> */}
                       <motion.h2
                         className="mt-6 text-6xl font-black text-red-600"
                         {...FromBottomToTop}
