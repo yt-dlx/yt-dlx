@@ -1,14 +1,14 @@
-import * as fs from "fs";
-import colors from "colors";
-import * as path from "path";
-import { z, ZodError } from "zod";
-import ffmpeg from "fluent-ffmpeg";
-import { encore } from "yt-dlx-encore";
-import ytdlx from "../../../base/Agent";
-import formatTime from "../../../base/formatTime";
-import type { FfmpegCommand } from "fluent-ffmpeg";
-import calculateETA from "../../../base/calculateETA";
-import EngineOutput from "../../../interfaces/EngineOutput";
+import * as fs from "fs"
+import colors from "colors"
+import * as path from "path"
+import { z, ZodError } from "zod"
+import ffmpeg from "fluent-ffmpeg"
+import { encore } from "yt-dlx-encore"
+import ytdlx from "../../../base/Agent"
+import formatTime from "../../../base/formatTime"
+import type { FfmpegCommand } from "fluent-ffmpeg"
+import calculateETA from "../../../base/calculateETA"
+import EngineOutput from "../../../interfaces/EngineOutput"
 
 var ZodSchema = z.object({
   query: z.string().min(2),
@@ -28,7 +28,7 @@ var ZodSchema = z.object({
       "flipHorizontal",
     ])
     .optional(),
-});
+})
 
 /**
  * Downloads the lowest quality version of a YouTube video with optional video filter.
@@ -54,15 +54,15 @@ export default async function VideoLowest({
   | void
   | { ffmpeg: FfmpegCommand; filename: string }
   | {
-      filename: string;
-      metaData: EngineOutput["metaData"];
-      ipAddress: EngineOutput["ipAddress"];
-      VideoLowF: EngineOutput["VideoLowF"];
-      VideoHighF: EngineOutput["VideoHighF"];
-      VideoLowHDR: EngineOutput["VideoLowHDR"];
-      VideoHighHDR: EngineOutput["VideoHighHDR"];
-      ManifestLow: EngineOutput["ManifestLow"];
-      ManifestHigh: EngineOutput["ManifestHigh"];
+      filename: string
+      metaData: EngineOutput["metaData"]
+      ipAddress: EngineOutput["ipAddress"]
+      VideoLowF: EngineOutput["VideoLowF"]
+      VideoHighF: EngineOutput["VideoHighF"]
+      VideoLowHDR: EngineOutput["VideoLowHDR"]
+      VideoHighHDR: EngineOutput["VideoHighHDR"]
+      ManifestLow: EngineOutput["ManifestLow"]
+      ManifestHigh: EngineOutput["ManifestHigh"]
     }
 > {
   try {
@@ -74,26 +74,24 @@ export default async function VideoLowest({
       metadata,
       useTor,
       filter,
-    });
-    var startTime: Date = new Date();
-    var engineData = await ytdlx({ query, verbose, useTor });
+    })
+    var startTime: Date = new Date()
+    var engineData = await ytdlx({ query, verbose, useTor })
     if (!engineData) {
-      throw new Error(`${colors.red("@error:")} unable to get response!`);
+      throw new Error(`${colors.red("@error:")} unable to get response!`)
     }
-    var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
-    var folder = output ? path.join(__dirname, output) : __dirname;
-    if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+    var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_")
+    var folder = output ? path.join(__dirname, output) : __dirname
+    if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true })
     var ff: FfmpegCommand = ffmpeg()
-      .setFfmpegPath((await encore().then((fp) => fp.ffmpeg)).toString())
-      .setFfprobePath((await encore().then((fp) => fp.ffprobe)).toString())
+      .setFfmpegPath((await encore().then(fp => fp.ffmpeg)).toString())
+      .setFfprobePath((await encore().then(fp => fp.ffprobe)).toString())
       .addInput(engineData.ManifestLow[0].url)
       .withOutputFormat("matroska")
       .videoCodec("copy")
-      .addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-    var filenameBase = `yt-dlx_(VideoLowest_`;
-    let filename = `${filenameBase}${
-      filter ? filter + ")_" : ")_"
-    }${title}.mkv`;
+      .addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`)
+    var filenameBase = `yt-dlx_(VideoLowest_`
+    let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`
     var filterMap: Record<string, string[]> = {
       grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
       invert: ["negate"],
@@ -102,45 +100,45 @@ export default async function VideoLowest({
       rotate270: ["rotate=3*PI/2"],
       flipHorizontal: ["hflip"],
       flipVertical: ["vflip"],
-    };
-    if (filter && filterMap[filter]) ff.withVideoFilter(filterMap[filter]);
+    }
+    if (filter && filterMap[filter]) ff.withVideoFilter(filterMap[filter])
     var logProgress = ({
       percent,
       timemark,
     }: {
-      percent: number;
-      timemark: string;
+      percent: number
+      timemark: string
     }) => {
-      if (isNaN(percent)) percent = 0;
-      percent = Math.min(Math.max(percent, 0), 100);
+      if (isNaN(percent)) percent = 0
+      percent = Math.min(Math.max(percent, 0), 100)
       var color =
-        percent < 25 ? colors.red : percent < 50 ? colors.yellow : colors.green;
-      var width = Math.floor(process.stdout.columns / 4);
-      var scomp = Math.round((width * percent) / 100);
-      var progb = color("━").repeat(scomp) + color(" ").repeat(width - scomp);
+        percent < 25 ? colors.red : percent < 50 ? colors.yellow : colors.green
+      var width = Math.floor(process.stdout.columns / 4)
+      var scomp = Math.round((width * percent) / 100)
+      var progb = color("━").repeat(scomp) + color(" ").repeat(width - scomp)
       process.stdout.write(
         `\r${color("@prog:")} ${progb} ${color(
-          "| @percent:"
+          "| @percent:",
         )} ${percent.toFixed(2)}% ${color("| @timemark:")} ${timemark} ${color(
-          "| @eta:"
-        )} ${formatTime(calculateETA(startTime, percent))}`
-      );
-    };
-    ff.on("error", (error) => {
-      throw new Error(error.message);
+          "| @eta:",
+        )} ${formatTime(calculateETA(startTime, percent))}`,
+      )
+    }
+    ff.on("error", error => {
+      throw new Error(error.message)
     })
-      .on("start", (comd) => {
-        if (verbose) console.info(colors.green("@comd:"), comd);
+      .on("start", comd => {
+        if (verbose) console.info(colors.green("@comd:"), comd)
       })
       .on("end", () => process.stdout.write("\n"))
-      .on("progress", logProgress);
+      .on("progress", logProgress)
     if (stream) {
       return {
         ffmpeg: ff,
         filename: output
           ? path.join(folder, filename)
           : filename.replace("_)_", ")_"),
-      };
+      }
     }
     if (metadata) {
       return {
@@ -153,25 +151,25 @@ export default async function VideoLowest({
         VideoHighHDR: engineData.VideoHighHDR,
         ManifestLow: engineData.ManifestLow,
         ManifestHigh: engineData.ManifestHigh,
-      };
+      }
     }
     await new Promise<void>((resolve, reject) => {
       ff.output(path.join(folder, filename.replace("_)_", ")_")))
         .on("end", () => resolve())
-        .on("error", (error) =>
-          reject(new Error(colors.red("@error: ") + error.message))
+        .on("error", error =>
+          reject(new Error(colors.red("@error: ") + error.message)),
         )
-        .run();
-    });
+        .run()
+    })
   } catch (error: any) {
     if (error instanceof ZodError) {
-      throw new Error(colors.red("@zod-error:") + error.errors);
+      throw new Error(colors.red("@zod-error:") + error.errors)
     }
-    throw new Error(colors.red("@error:") + error.message);
+    throw new Error(colors.red("@error:") + error.message)
   } finally {
     console.log(
       colors.green("@info:"),
-      "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx."
-    );
+      "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.",
+    )
   }
 }

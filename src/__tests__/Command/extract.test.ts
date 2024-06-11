@@ -1,14 +1,14 @@
-import YouTube from "../../";
-import colors from "colors";
+import YouTube from "../../"
+import colors from "colors"
 
-(async () => {
+;(async () => {
   try {
-    console.log(colors.blue("@test:"), "Extract");
+    console.log(colors.blue("@test:"), "Extract")
     await YouTube.info.extract({
       verbose: true,
       query: "21 savage - redrum",
-    });
+    })
   } catch (error: any) {
-    console.error(colors.red(error.message));
+    console.error(colors.red(error.message))
   }
-})();
+})()

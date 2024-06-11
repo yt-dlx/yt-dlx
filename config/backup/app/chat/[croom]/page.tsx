@@ -1,60 +1,59 @@
-"use client";
-import Link from "next/link";
-import io from "socket.io-client";
-import { MdSend } from "react-icons/md";
-import { useEffect, useState } from "react";
-import * as socketIO from "socket.io-client";
-import { useParams, useRouter } from "next/navigation";
+"use client"
+import Link from "next/link"
+import io from "socket.io-client"
+import { MdSend } from "react-icons/md"
+import { useEffect, useState } from "react"
+import * as socketIO from "socket.io-client"
+import { useParams, useRouter } from "next/navigation"
 
 export default function Mixly() {
-  const { push } = useRouter();
-  const { croom }: any = useParams();
-  const [messages, setMessages] = useState<string[]>([]);
-  const [socket, setSocket] = useState<socketIO.Socket>();
-  const [newMessage, setNewMessage] = useState<string>("");
+  const { push } = useRouter()
+  const { croom }: any = useParams()
+  const [messages, setMessages] = useState<string[]>([])
+  const [socket, setSocket] = useState<socketIO.Socket>()
+  const [newMessage, setNewMessage] = useState<string>("")
   useEffect(() => {
     fetch("/ioSocket").finally(() => {
-      let ioSocket = io();
+      let ioSocket = io()
       const handleJoinError = () => {
-        push("/chat");
-      };
+        push("/chat")
+      }
       const handleCreateError = () => {
-        push("/chat");
-      };
+        push("/chat")
+      }
       const handleMsgResp = (data: any) => {
-        setMessages((prev) => [...prev, data]);
-      };
-      ioSocket.emit("room[join]", { rQuery: croom, User: ioSocket.id });
-      ioSocket.on("room[crErr]", handleCreateError);
-      ioSocket.on("room[jrErr]", handleJoinError);
-      ioSocket.on("msg[Resp]", handleMsgResp);
-      setSocket(ioSocket);
+        setMessages(prev => [...prev, data])
+      }
+      ioSocket.emit("room[join]", { rQuery: croom, User: ioSocket.id })
+      ioSocket.on("room[crErr]", handleCreateError)
+      ioSocket.on("room[jrErr]", handleJoinError)
+      ioSocket.on("msg[Resp]", handleMsgResp)
+      setSocket(ioSocket)
       return () => {
-        ioSocket.off("room[crErr]", handleCreateError);
-        ioSocket.off("room[jrErr]", handleJoinError);
-        ioSocket.off("msg[Resp]", handleMsgResp);
-        ioSocket.disconnect();
-      };
-    });
-  }, [push, croom]);
+        ioSocket.off("room[crErr]", handleCreateError)
+        ioSocket.off("room[jrErr]", handleJoinError)
+        ioSocket.off("msg[Resp]", handleMsgResp)
+        ioSocket.disconnect()
+      }
+    })
+  }, [push, croom])
 
   const reqMessages = (e: any) => {
-    e.preventDefault();
+    e.preventDefault()
     socket?.emit("msg[Req]", {
       text: newMessage,
       user: socket.id,
       room: croom,
-    });
-    setNewMessage("");
-  };
+    })
+    setNewMessage("")
+  }
 
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#18181b] scrollbar-track-[#18181b] scrollbar-thumb-[#e73d75]">
       <nav className="navbar py-4 fixed top-0 z-50 bg-[#100E0D]/40 backdrop-blur-lg w-full border-b border-[#e73d75]/20 shadow-2xl shadow-black">
         <Link
           href="/"
-          className="text-6xl text-[#e73d75] font-thin px-4 cursor-pointer"
-        >
+          className="text-6xl text-[#e73d75] font-thin px-4 cursor-pointer">
           Mixly
         </Link>
       </nav>
@@ -88,8 +87,7 @@ export default function Mixly() {
             </div>
             <form
               onSubmit={reqMessages}
-              className="flex flex-col items-center py-4 justify-center gap-2 mx-auto max-w-4xl mt-8 bg-[#100E0D] p-4 rounded-3xl border border-[#e73d75]/30 hover:border-[#e73d75] hover:border-dashed shadow-xl shadow-black"
-            >
+              className="flex flex-col items-center py-4 justify-center gap-2 mx-auto max-w-4xl mt-8 bg-[#100E0D] p-4 rounded-3xl border border-[#e73d75]/30 hover:border-[#e73d75] hover:border-dashed shadow-xl shadow-black">
               <span className="text-[#e73d75] text-2xl">#CollabMode📢</span>
               {messages.map((i: any, index: number) => (
                 <ul key={index} className="list-disc">
@@ -106,14 +104,13 @@ export default function Mixly() {
                     type="text"
                     value={newMessage}
                     placeholder="Type your message..."
-                    onChange={(e) => setNewMessage(e.target.value)}
+                    onChange={e => setNewMessage(e.target.value)}
                     className="flex-1 input bg-neutral-800/20 rounded-full shadow-xl shadow-black/20 border border-neutral-700 hover:border-[#e73d75] hover:bg-[#100E0D] text-white"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="flex items-center btn bg-[#e73d75]/50 w-full rounded-3xl font-thin text-lg text-cyan-100 hover:text-cyan-50 hover:bg-[#e73d75]"
-                >
+                  className="flex items-center btn bg-[#e73d75]/50 w-full rounded-3xl font-thin text-lg text-cyan-100 hover:text-cyan-50 hover:bg-[#e73d75]">
                   <MdSend size={20} /> Send
                 </button>
               </div>
@@ -133,5 +130,5 @@ export default function Mixly() {
         </div>
       </footer>
     </main>
-  );
+  )
 }

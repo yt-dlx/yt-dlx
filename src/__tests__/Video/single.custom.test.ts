@@ -1,8 +1,8 @@
 // =============================[ CORE TESTER ]=============================
 //
-import colors from "colors";
-import YouTube from "../../";
-(async () => {
+import colors from "colors"
+import YouTube from "../../"
+;(async () => {
   try {
     const resolutions = [
       "144p",
@@ -18,7 +18,7 @@ import YouTube from "../../";
       "6480p",
       "8640p",
       "12000p",
-    ] as const;
+    ] as const
     for (const resolution of resolutions) {
       await YouTube.VideoOnly.Single.Custom({
         resolution,
@@ -27,11 +27,11 @@ import YouTube from "../../";
         stream: false,
         output: "public/video",
         query: "21 savage - redrum",
-      });
+      })
     }
   } catch (error: any) {
-    console.error(colors.red(error.message));
+    console.error(colors.red(error.message))
   }
-})();
+})()
 //
 // =============================[ CORE TESTER ]=============================

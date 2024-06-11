@@ -1,17 +1,17 @@
 // =============================[ EXAMPLE CODE ]=============================
 //
-import YouTube from "yt-dlx";
-import colors from "colors";
+import YouTube from "yt-dlx"
+import colors from "colors"
 
-(async () => {
+;(async () => {
   try {
     const result = await YouTube.default.ytSearch.Playlist.Multiple({
       query: "8k dolby nature",
-    });
-    console.log(result);
+    })
+    console.log(result)
   } catch (error) {
-    console.error(colors.red(error.message));
+    console.error(colors.red(error.message))
   }
-})();
+})()
 //
 // =============================[ EXAMPLE CODE ]=============================

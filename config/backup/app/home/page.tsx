@@ -1,26 +1,26 @@
-"use client";
-import Link from "next/link";
-import Image from "next/image";
-import { TiPlus } from "react-icons/ti";
-import { FaLink } from "react-icons/fa6";
-import { useState, useEffect } from "react";
-import { LuSearchCode } from "react-icons/lu";
-import { FaAddressCard } from "react-icons/fa6";
-import { MdPermIdentity } from "react-icons/md";
-import { TbDiamondFilled } from "react-icons/tb";
-import { MdFamilyRestroom } from "react-icons/md";
-import { AiOutlineLoading } from "react-icons/ai";
-import { FaAngleDoubleDown } from "react-icons/fa";
-import { MdDriveFileRenameOutline } from "react-icons/md";
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useQueryClient, useMutation } from "@tanstack/react-query";
+"use client"
+import Link from "next/link"
+import Image from "next/image"
+import { TiPlus } from "react-icons/ti"
+import { FaLink } from "react-icons/fa6"
+import { useState, useEffect } from "react"
+import { LuSearchCode } from "react-icons/lu"
+import { FaAddressCard } from "react-icons/fa6"
+import { MdPermIdentity } from "react-icons/md"
+import { TbDiamondFilled } from "react-icons/tb"
+import { MdFamilyRestroom } from "react-icons/md"
+import { AiOutlineLoading } from "react-icons/ai"
+import { FaAngleDoubleDown } from "react-icons/fa"
+import { MdDriveFileRenameOutline } from "react-icons/md"
+import { AiOutlineLoading3Quarters } from "react-icons/ai"
+import { useQueryClient, useMutation } from "@tanstack/react-query"
 
 export default function Component() {
-  const QueryClient = useQueryClient();
-  const [Tube, setTube] = useState<any>(null);
-  const [Query, setQuery] = useState<string>("");
-  const [TubeSearch, setTubeSearch] = useState<any>(null);
-  const [GeneralError, setGeneralError] = useState<string | any>(null);
+  const QueryClient = useQueryClient()
+  const [Tube, setTube] = useState<any>(null)
+  const [Query, setQuery] = useState<string>("")
+  const [TubeSearch, setTubeSearch] = useState<any>(null)
+  const [GeneralError, setGeneralError] = useState<string | any>(null)
 
   const ApiSearch = useMutation({
     mutationFn: async () => {
@@ -32,17 +32,17 @@ export default function Component() {
         body: JSON.stringify({
           Query,
         }),
-      });
-      setTubeSearch(null);
-      if (resp.status === 200) setTubeSearch(await resp.json());
-      else setGeneralError("Error fetching SearchData ...");
+      })
+      setTubeSearch(null)
+      if (resp.status === 200) setTubeSearch(await resp.json())
+      else setGeneralError("Error fetching SearchData ...")
     },
-    onError: (error) => setGeneralError(error.message),
+    onError: error => setGeneralError(error.message),
     onMutate: () => console.log("ApiSearch started!"),
-  });
+  })
 
   const getTube = useMutation({
-    mutationFn: async (yturl) => {
+    mutationFn: async yturl => {
       const resp = await fetch("/api/util/EnResp", {
         method: "POST",
         headers: {
@@ -51,21 +51,21 @@ export default function Component() {
         body: JSON.stringify({
           yturl,
         }),
-      });
-      setTube(null);
-      if (resp.status === 200) setTube(await resp.json());
-      else setGeneralError("Error fetching AudioData ...");
+      })
+      setTube(null)
+      if (resp.status === 200) setTube(await resp.json())
+      else setGeneralError("Error fetching AudioData ...")
     },
-    onError: (error) => setGeneralError(error.message),
+    onError: error => setGeneralError(error.message),
     onMutate: () => console.log("getTube started!"),
-  });
+  })
 
   useEffect(() => {
     if (TubeSearch && ApiSearch.isSuccess) {
-      const searchSelect = document.getElementById("TubeSearch()");
-      if (searchSelect) searchSelect.scrollIntoView({ behavior: "smooth" });
+      const searchSelect = document.getElementById("TubeSearch()")
+      if (searchSelect) searchSelect.scrollIntoView({ behavior: "smooth" })
     }
-  }, [TubeSearch, ApiSearch.isSuccess]);
+  }, [TubeSearch, ApiSearch.isSuccess])
 
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#101318] scrollbar-track-[#101318] scrollbar-thumb-pink-600">
@@ -77,8 +77,7 @@ export default function Component() {
           <span className="animate-pulse mr-2">with</span>
           <Link
             href="/docs"
-            className="text-red-600 cursor-pointer text-3xl mr-2"
-          >
+            className="text-red-600 cursor-pointer text-3xl mr-2">
             yt-dlx
           </Link>
         </div>
@@ -93,8 +92,7 @@ export default function Component() {
           <div className="relative h-full flex flex-col items-center justify-center text-center text-[#C4C4C4]">
             <Link
               href="/docs"
-              className="flex items-center justify-center px-4 -mb-14 text-sm gap-2 p-1 italic text-pink-600 bg-red-900/20 rounded-xl"
-            >
+              className="flex items-center justify-center px-4 -mb-14 text-sm gap-2 p-1 italic text-pink-600 bg-red-900/20 rounded-xl">
               powered by
               <TbDiamondFilled size={20} />
               <span className="font-bold not-italic text-red-600">yt-dlx</span>
@@ -115,12 +113,11 @@ export default function Component() {
               videos.
             </p>
             <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                ApiSearch.mutate();
+              onSubmit={event => {
+                event.preventDefault()
+                ApiSearch.mutate()
               }}
-              className="flex justify-center mt-8"
-            >
+              className="flex justify-center mt-8">
               <label className="form-control w-full max-w-4xl">
                 <div className="label gap-12">
                   <span className="label-text text-[#020101] flex items-center gap-2">
@@ -141,7 +138,7 @@ export default function Component() {
                   value={Query}
                   placeholder="video name"
                   disabled={ApiSearch.isPending}
-                  onChange={(e) => setQuery(e.target.value)}
+                  onChange={e => setQuery(e.target.value)}
                   className="input max-w-6xl rounded-xl border hover:border-pink-600 border-neutral-600 bg-[#101318]"
                 />
                 <div className="flex gap-1 justify-center">
@@ -150,8 +147,7 @@ export default function Component() {
                     disabled={ApiSearch.isPending}
                     className={`text-sm hover:bg-neutral-900 p-2 mt-0.5 w-36 border hover:border-pink-600 border-neutral-600 rounded-b-xl hover:text-pink-600 text-[#C4C4C4] flex items-center gap-2 transition-transform transform duration-500 hover:scale-105 ${
                       ApiSearch.isPending ? " cursor-not-allowed" : ""
-                    }`}
-                  >
+                    }`}>
                     {ApiSearch.isPending ? (
                       <>
                         <AiOutlineLoading
@@ -169,8 +165,7 @@ export default function Component() {
                   </button>
                   <Link
                     href="/chat"
-                    className="text-sm hover:bg-neutral-900 p-2 mt-0.5 w-36 border hover:border-pink-600 border-neutral-600 rounded-b-xl hover:text-pink-600 text-[#C4C4C4] flex items-center gap-2 transition-transform transform duration-500 hover:scale-105"
-                  >
+                    className="text-sm hover:bg-neutral-900 p-2 mt-0.5 w-36 border hover:border-pink-600 border-neutral-600 rounded-b-xl hover:text-pink-600 text-[#C4C4C4] flex items-center gap-2 transition-transform transform duration-500 hover:scale-105">
                     Listen Together
                     <MdFamilyRestroom className="text-pink-600" size={18} />
                   </Link>
@@ -201,8 +196,7 @@ export default function Component() {
       {TubeSearch && (
         <section
           id="TubeSearch()"
-          className="relative items-center w-full mx-auto md:px-12 lg:px-24 max-w-9xl"
-        >
+          className="relative items-center w-full mx-auto md:px-12 lg:px-24 max-w-9xl">
           <div className="grid w-full grid-cols-1 px-4 gap-6 mx-auto xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2">
             {TubeSearch.map((item: any, index: number) => (
               <div
@@ -212,8 +206,7 @@ export default function Component() {
                   Tube.TubeUrl === `https://www.youtube.com/watch?v=${item.id}`
                     ? "border-pink-600 shadow-pink-600"
                     : "border-pink-600/30 hover:shadow-pink-600"
-                }  shadow-2xl shadow-black hover:border-pink-600`}
-              >
+                }  shadow-2xl shadow-black hover:border-pink-600`}>
                 <Image
                   width={400}
                   height={400}
@@ -237,8 +230,7 @@ export default function Component() {
                       <div className="flex flex-col">
                         <Link
                           href="/docs"
-                          className="flex items-center justify-center p-2 bg-pink-700/50 hover:bg-pink-700/60 text-white/90 mt-0.5 w-full text-sm gap-1 rounded"
-                        >
+                          className="flex items-center justify-center p-2 bg-pink-700/50 hover:bg-pink-700/60 text-white/90 mt-0.5 w-full text-sm gap-1 rounded">
                           powered by <TbDiamondFilled size={20} /> yt-dlx{" "}
                         </Link>
                         <audio
@@ -247,7 +239,7 @@ export default function Component() {
                           autoFocus
                           id="AudioStreamer"
                           src={`/api/saudio?url=${encodeURIComponent(
-                            Tube.EnResp
+                            Tube.EnResp,
                           )}`}
                           className="w-full bg-[#18181b] shadow-2xl shadow-pink-600"
                         />
@@ -255,15 +247,14 @@ export default function Component() {
                     ) : (
                       <div className="flex flex-col">
                         <button
-                          onClick={(event) => {
-                            event.preventDefault();
-                            setTube(null);
+                          onClick={event => {
+                            event.preventDefault()
+                            setTube(null)
                             getTube.mutate(
-                              `https://www.youtube.com/watch?v=${item.id}` as any
-                            );
+                              `https://www.youtube.com/watch?v=${item.id}` as any,
+                            )
                           }}
-                          className="p-0.5 mt-1 w-full text-sm flex text-white/90 items-center gap-2 justify-center bg-pink-600/40 hover:bg-pink-700/60 hover:animate-pulse"
-                        >
+                          className="p-0.5 mt-1 w-full text-sm flex text-white/90 items-center gap-2 justify-center bg-pink-600/40 hover:bg-pink-700/60 hover:animate-pulse">
                           Checkout Streaming <TiPlus size={30} /> Downloading
                           Options
                         </button>
@@ -338,7 +329,7 @@ export default function Component() {
         </span>
       </footer>
     </main>
-  );
+  )
 }
 
 // {

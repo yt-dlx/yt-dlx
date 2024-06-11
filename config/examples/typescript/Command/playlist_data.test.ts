@@ -1,17 +1,17 @@
 // =============================[ EXAMPLE CODE ]=============================
 //
-import YouTube from "yt-dlx";
-import colors from "colors";
+import YouTube from "yt-dlx"
+import colors from "colors"
 
-(async () => {
+;(async () => {
   try {
     const result = await YouTube.ytSearch.Playlist.Single({
       query: "playlist-LINK/ID",
-    });
-    console.log(result);
+    })
+    console.log(result)
   } catch (error: any) {
-    console.error(colors.red(error.message));
+    console.error(colors.red(error.message))
   }
-})();
+})()
 //
 // =============================[ EXAMPLE CODE ]=============================

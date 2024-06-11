@@ -1,4 +1,4 @@
-console.clear();
+console.clear()
 // import bytes from "bytes";
 // import colors from "colors";
 // import readline from "readline";

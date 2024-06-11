@@ -1,14 +1,14 @@
-"use client";
-import Link from "next/link";
-import { SiBun } from "react-icons/si";
-import { FaYarn } from "react-icons/fa";
-import { SiPnpm } from "react-icons/si";
-import { TbBrandNpm } from "react-icons/tb";
-import { MdAudioFile } from "react-icons/md";
-import { FaFileVideo } from "react-icons/fa6";
-import NavPackage from "@/pages/components/nav";
-import { SiFirefoxbrowser } from "react-icons/si";
-import { AiFillCodeSandboxCircle } from "react-icons/ai";
+"use client"
+import Link from "next/link"
+import { SiBun } from "react-icons/si"
+import { FaYarn } from "react-icons/fa"
+import { SiPnpm } from "react-icons/si"
+import { TbBrandNpm } from "react-icons/tb"
+import { MdAudioFile } from "react-icons/md"
+import { FaFileVideo } from "react-icons/fa6"
+import NavPackage from "@/pages/components/nav"
+import { SiFirefoxbrowser } from "react-icons/si"
+import { AiFillCodeSandboxCircle } from "react-icons/ai"
 
 export default function AwesomePackage() {
   // import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
@@ -288,8 +288,7 @@ export default function AwesomePackage() {
                     <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white">
                       <Link
                         href="/docs/Audio/AudioHighest"
-                        className="font-bold"
-                      >
+                        className="font-bold">
                         click here!
                       </Link>
                     </td>
@@ -310,8 +309,7 @@ export default function AwesomePackage() {
                     <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white">
                       <Link
                         href="/docs/Audio/AudioLowest"
-                        className="font-bold"
-                      >
+                        className="font-bold">
                         click here!
                       </Link>
                     </td>
@@ -332,8 +330,7 @@ export default function AwesomePackage() {
                     <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white">
                       <Link
                         href="/docs/Audio/AudioCustom"
-                        className="font-bold"
-                      >
+                        className="font-bold">
                         click here!
                       </Link>
                     </td>
@@ -355,8 +352,7 @@ export default function AwesomePackage() {
                     <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white">
                       <Link
                         href="/docs/Video/VideoHighest"
-                        className="font-bold"
-                      >
+                        className="font-bold">
                         click here!
                       </Link>
                     </td>
@@ -377,8 +373,7 @@ export default function AwesomePackage() {
                     <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white">
                       <Link
                         href="/docs/Video/VideoLowest"
-                        className="font-bold"
-                      >
+                        className="font-bold">
                         click here!
                       </Link>
                     </td>
@@ -398,8 +393,7 @@ export default function AwesomePackage() {
                     <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white">
                       <Link
                         href="/docs/Video/VideoCustom"
-                        className="font-bold"
-                      >
+                        className="font-bold">
                         click here!
                       </Link>
                     </td>
@@ -421,8 +415,7 @@ export default function AwesomePackage() {
                     <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white">
                       <Link
                         href="/docs/AudioVideo/AudioVideoHighest"
-                        className="font-bold"
-                      >
+                        className="font-bold">
                         click here!
                       </Link>
                     </td>
@@ -443,8 +436,7 @@ export default function AwesomePackage() {
                     <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white">
                       <Link
                         href="/docs/AudioVideo/AudioVideoLowest"
-                        className="font-bold"
-                      >
+                        className="font-bold">
                         click here!
                       </Link>
                     </td>
@@ -465,8 +457,7 @@ export default function AwesomePackage() {
                     <td className="cursor-pointer hover:bg-red-800 hover:animate-pulse rounded-r-3xl text-white">
                       <Link
                         href="/docs/AudioVideo/AudioVideoCustom"
-                        className="font-bold"
-                      >
+                        className="font-bold">
                         click here!
                       </Link>
                     </td>
@@ -556,5 +547,5 @@ export default function AwesomePackage() {
         </span>
       </footer>
     </main>
-  );
+  )
 }

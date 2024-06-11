@@ -1,68 +1,67 @@
-"use client";
-import Link from "next/link";
-import io from "socket.io-client";
-import { useRouter } from "next/navigation";
-import * as socketIO from "socket.io-client";
-import { MdNearbyError } from "react-icons/md";
-import React, { useEffect, useState } from "react";
-import { MdCreateNewFolder, MdJoinRight } from "react-icons/md";
+"use client"
+import Link from "next/link"
+import io from "socket.io-client"
+import { useRouter } from "next/navigation"
+import * as socketIO from "socket.io-client"
+import { MdNearbyError } from "react-icons/md"
+import React, { useEffect, useState } from "react"
+import { MdCreateNewFolder, MdJoinRight } from "react-icons/md"
 
 export default function Mixly() {
-  const { push } = useRouter();
-  const [newRoom, setRoomName] = useState<string>("");
-  const [joinRoom, setJoinRoom] = useState<string>("");
-  const [newError, setNewError] = useState<string>("");
-  const [joinError, setJoinError] = useState<string>("");
-  const [socket, setSocket] = useState<socketIO.Socket>();
-  const [isRooming, setIsRooming] = useState<boolean>(false);
+  const { push } = useRouter()
+  const [newRoom, setRoomName] = useState<string>("")
+  const [joinRoom, setJoinRoom] = useState<string>("")
+  const [newError, setNewError] = useState<string>("")
+  const [joinError, setJoinError] = useState<string>("")
+  const [socket, setSocket] = useState<socketIO.Socket>()
+  const [isRooming, setIsRooming] = useState<boolean>(false)
 
   useEffect(() => {
     fetch("/ioSocket").finally(() => {
-      let ioSocket = io();
+      let ioSocket = io()
       const handleCrErr = (data: any) => {
-        setIsRooming(false);
-        setNewError(data);
-      };
+        setIsRooming(false)
+        setNewError(data)
+      }
       const handleJrErr = (data: any) => {
-        setIsRooming(false);
-        setJoinError(data);
-      };
+        setIsRooming(false)
+        setJoinError(data)
+      }
       const handleInside = (data: any) => {
-        setIsRooming(false);
-        push("/chat/" + data);
-      };
-      ioSocket.on("room[crErr]", handleCrErr);
-      ioSocket.on("room[jrErr]", handleJrErr);
-      ioSocket.on("room[inside]", handleInside);
-      setSocket(ioSocket);
+        setIsRooming(false)
+        push("/chat/" + data)
+      }
+      ioSocket.on("room[crErr]", handleCrErr)
+      ioSocket.on("room[jrErr]", handleJrErr)
+      ioSocket.on("room[inside]", handleInside)
+      setSocket(ioSocket)
       return () => {
-        ioSocket.off("room[crErr]", handleCrErr);
-        ioSocket.off("room[jrErr]", handleJrErr);
-        ioSocket.off("room[inside]", handleInside);
-        ioSocket.disconnect();
-      };
-    });
-  }, [push]);
+        ioSocket.off("room[crErr]", handleCrErr)
+        ioSocket.off("room[jrErr]", handleJrErr)
+        ioSocket.off("room[inside]", handleInside)
+        ioSocket.disconnect()
+      }
+    })
+  }, [push])
 
   const reqCreateRoom = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsRooming(true);
-    socket?.emit("room[init]", { rQuery: newRoom, User: socket.id });
-  };
+    e.preventDefault()
+    setIsRooming(true)
+    socket?.emit("room[init]", { rQuery: newRoom, User: socket.id })
+  }
 
   const reqJoinRoom = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setIsRooming(true);
-    socket?.emit("room[join]", { rQuery: joinRoom, User: socket.id });
-  };
+    e.preventDefault()
+    setIsRooming(true)
+    socket?.emit("room[join]", { rQuery: joinRoom, User: socket.id })
+  }
 
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#18181b] scrollbar-track-[#18181b] scrollbar-thumb-[#e73d75]">
       <nav className="navbar py-4 fixed top-0 z-50 bg-[#100E0D]/40 backdrop-blur-lg w-full border-b border-[#e73d75]/20 shadow-2xl shadow-black">
         <Link
           href="/"
-          className="text-6xl text-[#e73d75] font-thin px-4 cursor-pointer"
-        >
+          className="text-6xl text-[#e73d75] font-thin px-4 cursor-pointer">
           Mixly
         </Link>
       </nav>
@@ -96,8 +95,7 @@ export default function Mixly() {
             </div>
             <form
               onSubmit={reqCreateRoom}
-              className="flex flex-col py-4 gap-2 mx-auto max-w-4xl mt-8 bg-[#100E0D] p-4 rounded-3xl border border-[#e73d75]/30 hover:border-[#e73d75] hover:border-dashed shadow-xl shadow-black"
-            >
+              className="flex flex-col py-4 gap-2 mx-auto max-w-4xl mt-8 bg-[#100E0D] p-4 rounded-3xl border border-[#e73d75]/30 hover:border-[#e73d75] hover:border-dashed shadow-xl shadow-black">
               <span className="text-[#e73d75] text-2xl">
                 #Create-Your-Groove🚀
               </span>
@@ -118,7 +116,7 @@ export default function Mixly() {
                   value={newRoom}
                   disabled={isRooming}
                   placeholder="new room name"
-                  onChange={(e) => setRoomName(e.target.value.toLowerCase())}
+                  onChange={e => setRoomName(e.target.value.toLowerCase())}
                   className="input w-full bg-neutral-800/20 rounded-full shadow-xl shadow-black/20 border border-neutral-700 hover:border-[#e73d75] hover:bg-[#100E0D]"
                 />
               </label>
@@ -128,8 +126,7 @@ export default function Mixly() {
                   isRooming
                     ? "loading loading-dots text-[#e73d75] ml-4 animate-bounce"
                     : "flex items-center btn bg-[#e73d75]/50 w-full rounded-3xl font-thin text-lg text-orange-100 hover:text-orange-50 hover:bg-[#e73d75] mt-2"
-                }`}
-              >
+                }`}>
                 <MdCreateNewFolder size={20} /> Create New Room
               </button>
               {newError && (
@@ -141,8 +138,7 @@ export default function Mixly() {
             </form>
             <form
               onSubmit={reqJoinRoom}
-              className="flex flex-col py-4 gap-2 mx-auto max-w-4xl mt-8 bg-[#100E0D] p-4 rounded-3xl border border-[#e73d75]/30 hover:border-[#e73d75] hover:border-dashed shadow-xl shadow-black"
-            >
+              className="flex flex-col py-4 gap-2 mx-auto max-w-4xl mt-8 bg-[#100E0D] p-4 rounded-3xl border border-[#e73d75]/30 hover:border-[#e73d75] hover:border-dashed shadow-xl shadow-black">
               <span className="text-[#e73d75] text-2xl">#Join-The-Beats🔊</span>
               <p className="text-orange-50/80">
                 Immerse yourself in instant musical camaraderie! Jump into a
@@ -160,7 +156,7 @@ export default function Mixly() {
                   type="text"
                   value={joinRoom}
                   placeholder="joinning room name"
-                  onChange={(e) => setJoinRoom(e.target.value.toLowerCase())}
+                  onChange={e => setJoinRoom(e.target.value.toLowerCase())}
                   className="input bg-neutral-800/20 rounded-full shadow-xl shadow-black/20 border border-neutral-700 hover:border-[#e73d75] hover:bg-[#100E0D]"
                 />
               </label>
@@ -170,8 +166,7 @@ export default function Mixly() {
                   isRooming
                     ? "loading loading-dots text-[#e73d75] ml-4 animate-bounce"
                     : "flex items-center btn bg-[#e73d75]/50 w-full rounded-3xl font-thin text-lg text-orange-100 hover:text-orange-50 hover:bg-[#e73d75] mt-2"
-                }`}
-              >
+                }`}>
                 <MdJoinRight size={25} /> Join a Room
               </button>
               {joinError && (
@@ -196,5 +191,5 @@ export default function Mixly() {
         </div>
       </footer>
     </main>
-  );
+  )
 }

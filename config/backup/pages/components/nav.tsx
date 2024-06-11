@@ -1,6 +1,6 @@
-"use client";
-import Link from "next/link";
-import { RiHome5Fill } from "react-icons/ri";
+"use client"
+import Link from "next/link"
+import { RiHome5Fill } from "react-icons/ri"
 
 export default function NavPackage() {
   return (
@@ -8,8 +8,7 @@ export default function NavPackage() {
       <div className="flex items-baseline">
         <Link
           href="/"
-          className="text-red-600 cursor-pointer text-4xl font-bold flex items-center gap-2"
-        >
+          className="text-red-600 cursor-pointer text-4xl font-bold flex items-center gap-2">
           <RiHome5Fill
             size={30}
             className="hover:scale-125 duration-300 hover:animate-pulse"
@@ -18,5 +17,5 @@ export default function NavPackage() {
         </Link>
       </div>
     </nav>
-  );
+  )
 }

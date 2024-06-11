@@ -19,8 +19,11 @@
     "yt": "out/cjs/src/cli/main.js"
   },
   "scripts": {
-    "format": "prettier --write .",
     "start": "node ./util/index.mjs",
+    "format:base": "prettier --write .",
+    "format:next": "cd next && prettier --write .",
+    "format:client": "cd client && prettier --write .",
+    "format": "yarn run format:base && yarn run format:next && yarn run format:client",
     "prepublishOnly": "yarn run clean:deps && yarn run clean:ff",
     "remake": "yarn run clean && yarn run make && yarn run update && yarn run build",
     "next:dev": "cd next && yarn run dev",
@@ -169,5 +172,8 @@
     "retrieve",
     "fetch",
     "fetcher"
-  ]
+  ],
+  "devDependencies": {
+    "prettier": "^3.3.2"
+  }
 }

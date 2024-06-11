@@ -1,5 +1,5 @@
-import type { Config } from "tailwindcss";
-import plugin from "tailwindcss/plugin";
+import type { Config } from "tailwindcss"
+import plugin from "tailwindcss/plugin"
 
 const config: Config = {
   darkMode: "class",
@@ -24,12 +24,12 @@ const config: Config = {
     plugin(function ({ matchUtilities, theme }) {
       matchUtilities(
         {
-          "text-shadow": (value) => ({
+          "text-shadow": value => ({
             textShadow: value,
           }),
         },
-        { values: theme("textShadow") }
-      );
+        { values: theme("textShadow") },
+      )
     }),
     require("daisyui"),
     require("flowbite/plugin"),
@@ -74,6 +74,6 @@ const config: Config = {
       "sunset",
     ],
   },
-};
+}
 
-export default config;
+export default config

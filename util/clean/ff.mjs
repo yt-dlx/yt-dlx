@@ -1,13 +1,13 @@
-import { rm } from "fs/promises";
-import { join, resolve } from "path";
+import { rm } from "fs/promises"
+import { join, resolve } from "path"
 
 async function rmdir(folderPath, folders) {
   for (const folder of folders) {
-    const folderToDelete = join(folderPath, folder);
+    const folderToDelete = join(folderPath, folder)
     try {
-      await rm(folderToDelete, { recursive: true, force: true });
+      await rm(folderToDelete, { recursive: true, force: true })
     } catch (err) {
-      console.error("@error:", `${folder}: ${err.message}`);
+      console.error("@error:", `${folder}: ${err.message}`)
     }
   }
 }
@@ -22,4 +22,4 @@ rmdir(resolve(), [
   "./util/ffplay.exe",
   "./util/ffplay_mac",
   "./util/ffplay_linux",
-]);
+])
