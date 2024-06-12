@@ -1,8 +1,8 @@
 {
   "name": "yt-dlx",
   "version": "12.6.0",
+  "main": "app/main.js",
   "license": "Apache-2.0",
-  "main": "app/background.js",
   "author": "yt-dlx <yt-dlx@proton.me>",
   "description": "Effortless Audio-Video Downloader And Streamer!",
   "repository": {
