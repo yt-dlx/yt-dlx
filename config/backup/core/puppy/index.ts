@@ -18,25 +18,25 @@ import type { singleVideoType } from "./vercel/singleVideo";
 export type { TypeVideo, TypePlaylist, VideoInfoType, PlaylistInfoType };
 
 export type {
-  singleVideoType,
-  searchVideosType,
-  relatedVideosType,
-  playlistVideosType,
-  searchPlaylistsType,
+    singleVideoType,
+    searchVideosType,
+    relatedVideosType,
+    playlistVideosType,
+    searchPlaylistsType,
 };
 
 const web = {
-  browser: {
-    VideoInfo,
-    SearchVideos,
-    PlaylistInfo,
-  },
-  browserLess: {
-    singleVideo,
-    searchVideos,
-    relatedVideos,
-    playlistVideos,
-    searchPlaylists,
-  },
+    browser: {
+        VideoInfo,
+        SearchVideos,
+        PlaylistInfo,
+    },
+    browserLess: {
+        singleVideo,
+        searchVideos,
+        relatedVideos,
+        playlistVideos,
+        searchPlaylists,
+    },
 };
 export default web;
