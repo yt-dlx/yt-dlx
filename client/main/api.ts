@@ -19,20 +19,20 @@ api.handle("select-save-location", async () => {
 
 api.on("search", async (event, response) => {
   try {
-    let TubeBody: singleVideoType | searchVideosType[];
+    let io: singleVideoType | searchVideosType[];
     if (response.videoId) {
       console.log(colors.green("❓ videoId:"), colors.italic(response.videoId));
-      TubeBody = await ytdlx.ytSearch.Video.Single({
+      io = await ytdlx.ytSearch.Video.Single({
         query: "https://youtu.be/" + response.videoId,
       });
-      if (TubeBody) event.reply("search", TubeBody);
+      if (io) event.reply("search", io);
       else event.sender.send("search", null);
     } else {
       console.log(colors.green("❓ query:"), colors.italic(response.query));
-      TubeBody = await ytdlx.ytSearch.Video.Multiple({
+      io = await ytdlx.ytSearch.Video.Multiple({
         query: response.query,
       });
-      if (TubeBody) event.reply("search", TubeBody);
+      if (io) event.reply("search", io);
       else event.sender.send("search", null);
     }
   } catch (error) {
