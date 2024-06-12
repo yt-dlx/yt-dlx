@@ -3,6 +3,7 @@ import * as fs from "fs";
 import ytdlx from "yt-dlx";
 import colors from "colors";
 import { ipcMain as api, dialog } from "electron";
+import { singleVideoType, searchVideosType } from "yt-dlx/out/types/web";
 
 api.handle("select-save-location", async () => {
   const result = await dialog.showOpenDialog({
@@ -18,7 +19,7 @@ api.handle("select-save-location", async () => {
 
 api.on("search", async (event, response) => {
   try {
-    let TubeBody;
+    let TubeBody: singleVideoType | searchVideosType[];
     if (response.videoId) {
       console.log(colors.green("❓ videoId:"), colors.italic(response.videoId));
       TubeBody = await ytdlx.ytSearch.Video.Single({
