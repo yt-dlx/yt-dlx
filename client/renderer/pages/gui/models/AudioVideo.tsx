@@ -1,4 +1,4 @@
-import React from "react";
+import react from "react";
 import { motion } from "framer-motion";
 
 const AudioVideo: React.FC<{
@@ -6,27 +6,13 @@ const AudioVideo: React.FC<{
   isOpen: boolean;
   onClose: () => void;
 }> = ({ isOpen, onClose, videoId }) => {
-  const [progress, setProgress] = React.useState<any>(null);
-  const [saveLocation, setSaveLocation] = React.useState<string | null>(null);
-
-  React.useEffect(() => {
-    window.ipc.on("audiovideo", (response: any) => setProgress(response));
+  var [progress, setProgress] = react.useState<any>(null);
+  react.useEffect(() => {
+    window.ipc.on("audiovideo", (response: string) => setProgress(response));
   }, []);
 
-  const handleSaveLocation = async (quality: string) => {
-    try {
-      const { filePath } = await window.ipc.invoke("select-save-location");
-      if (filePath) {
-        setSaveLocation(filePath);
-        window.ipc.send("audiovideo", { videoId, output: filePath, quality });
-      }
-    } catch (error) {
-      console.error("Failed to select save location:", error);
-    }
-  };
-
   return (
-    <React.Fragment>
+    <react.Fragment>
       {isOpen && (
         <motion.div
           exit={{ opacity: 0 }}
@@ -35,26 +21,25 @@ const AudioVideo: React.FC<{
           className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50">
           <div className="bg-neutral-900/90 backdrop-blur-lg border-4 border-double border-red-600 p-4 rounded-3xl max-w-lg w-full shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#707070]">
             <h2 className="text-4xl text-red-600 font-black mb-4">
-              Choose Your Poison For <br />
-              <span className="text-6xl block">AudioVideo</span>
+              Choose Your Poison For <br></br>
+              <span className="text-6xl block">Audio + Video</span>
             </h2>
-            <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start m-6">
+            <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start pl-6">
               <li
-                onClick={() => handleSaveLocation("highest")}
+                onClick={() => {
+                  window.ipc.send("audiovideo", { videoId });
+                }}
                 className="hover:text-red-600 hover:font-black cursor-pointer">
                 Highest Possible Download
               </li>
               <li
-                onClick={() => handleSaveLocation("lowest")}
+                onClick={() => {
+                  window.ipc.send("audiovideo", { videoId });
+                }}
                 className="hover:text-red-600 hover:font-black cursor-pointer">
-                Lowest Possible Download
+                Lowest Posible Download
               </li>
             </ul>
-            {saveLocation && (
-              <div className="text-white font-semibold m-4">
-                Save Location: {saveLocation}
-              </div>
-            )}
             {progress && (
               <progress
                 className="progress h-4 w-80 m-4"
@@ -65,12 +50,12 @@ const AudioVideo: React.FC<{
             <button
               onClick={onClose}
               className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110">
-              Close Modal Box
+              Close Model Box
             </button>
           </div>
         </motion.div>
       )}
-    </React.Fragment>
+    </react.Fragment>
   );
 };
 
