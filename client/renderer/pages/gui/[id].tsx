@@ -78,7 +78,7 @@ export default function VideoId(): JSX.Element {
                       <div className="flex mt-1 flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-2 mb-4">
                         <button
                           onClick={() => {
-                            window.ipc.send("formats", { query: id })
+                            // window.ipc.send("formats", { query: id })
                             ToggleAudio()
                           }}
                           className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
@@ -87,7 +87,7 @@ export default function VideoId(): JSX.Element {
                         </button>
                         <button
                           onClick={() => {
-                            window.ipc.send("formats", { query: id })
+                            // window.ipc.send("formats", { query: id })
                             ToggleVideo()
                           }}
                           className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
@@ -96,7 +96,7 @@ export default function VideoId(): JSX.Element {
                         </button>
                         <button
                           onClick={() => {
-                            window.ipc.send("formats", { query: id })
+                            // window.ipc.send("formats", { query: id })
                             ToggleAudioVideo()
                           }}
                           className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
