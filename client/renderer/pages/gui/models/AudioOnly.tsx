@@ -13,12 +13,19 @@ const AudioOnly: React.FC<{
     window.ipc.on("audio", (response: any) => setProgress(response));
   }, []);
 
-  const handleSaveLocation = async (quality: string) => {
+  const hLoc = async (quality: string) => {
     try {
       const { filePath } = await window.ipc.invoke("select-save-location");
       if (filePath) {
         setSaveLocation(filePath);
-        window.ipc.send("audio", { videoId, output: filePath, quality });
+        window.ipc.send("audio", {
+          videoId,
+          quality,
+          useTor: true,
+          verbose: true,
+          metadata: false,
+          output: filePath,
+        });
       }
     } catch (error) {
       console.error("Failed to select save location:", error);
@@ -40,12 +47,12 @@ const AudioOnly: React.FC<{
             </h2>
             <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start m-6">
               <li
-                onClick={() => handleSaveLocation("highest")}
+                onClick={() => hLoc("highest")}
                 className="hover:text-red-600 hover:font-black cursor-pointer">
                 Highest Possible Download
               </li>
               <li
-                onClick={() => handleSaveLocation("lowest")}
+                onClick={() => hLoc("lowest")}
                 className="hover:text-red-600 hover:font-black cursor-pointer">
                 Lowest Possible Download
               </li>

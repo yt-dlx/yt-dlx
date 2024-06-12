@@ -2,7 +2,10 @@ import path from "path";
 import * as fs from "fs";
 import ytdlx from "yt-dlx";
 import colors from "colors";
+import { FfmpegCommand } from "fluent-ffmpeg";
 import { ipcMain as api, dialog } from "electron";
+import VideoInfo from "yt-dlx/out/types/interfaces/VideoInfo";
+import AudioFormat from "yt-dlx/out/types/interfaces/AudioFormat";
 import { singleVideoType, searchVideosType } from "yt-dlx/out/types/web";
 
 api.handle("select-save-location", async () => {
@@ -16,7 +19,6 @@ api.handle("select-save-location", async () => {
   }
   return { filePath: result.filePaths[0] };
 });
-
 api.on("search", async (event, response) => {
   try {
     let io: singleVideoType | searchVideosType[];
@@ -39,7 +41,6 @@ api.on("search", async (event, response) => {
     event.reply("search", error.message);
   }
 });
-
 api.on("formats", async (event, response) => {
   try {
     console.log(colors.green("❓ query:"), colors.italic(response.query));
@@ -53,28 +54,38 @@ api.on("formats", async (event, response) => {
     event.reply("formats", error.message);
   }
 });
-
 api.on("audio", async (event, response) => {
   try {
     console.log(colors.green("❓ videoId:"), colors.italic(response.videoId));
-    let io;
+    let io:
+      | void
+      | { ffmpeg: FfmpegCommand; filename: string }
+      | {
+          filename: string;
+          metaData: VideoInfo;
+          ipAddress: string;
+          AudioLowF: AudioFormat;
+          AudioHighF: AudioFormat;
+          AudioLowDRC: AudioFormat[];
+          AudioHighDRC: AudioFormat[];
+        };
     if (response.quality === "highest") {
       io = await ytdlx.AudioOnly.Single.Highest({
         stream: true,
         metadata: false,
         query: response.videoId,
+        output: response.output,
         useTor: response.useTor || false,
         verbose: response.verbose || false,
-        output: response.output,
       });
     } else {
       io = await ytdlx.AudioOnly.Single.Lowest({
         stream: true,
         metadata: false,
         query: response.videoId,
+        output: response.output,
         useTor: response.useTor || false,
         verbose: response.verbose || false,
-        output: response.output,
       });
     }
     if (io && "ffmpeg" in io && "filename" in io) {
@@ -92,7 +103,6 @@ api.on("audio", async (event, response) => {
     event.reply("audio", error.message);
   }
 });
-
 api.on("video", async (event, response) => {
   try {
     console.log(colors.green("❓ videoId:"), colors.italic(response.videoId));
@@ -119,7 +129,6 @@ api.on("video", async (event, response) => {
     event.reply("video", error.message);
   }
 });
-
 api.on("audiovideo", async (event, response) => {
   try {
     console.log(colors.green("❓ videoId:"), colors.italic(response.videoId));
