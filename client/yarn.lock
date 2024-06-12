@@ -5965,7 +5965,7 @@ yt-dlx-encore@^0.0.7:
     tsc "^2.0.4"
     typescript "^5.4.5"
 
-yt-dlx@^12.2.0, yt-dlx@^12.5.0:
+yt-dlx@^12.5.0, yt-dlx@^12.6.0:
   version "12.6.0"
   resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-12.6.0.tgz#67501d0ee8806212f2a373ff75df36c06e64a1ba"
   integrity sha512-84kxYohfjGEOXGbRsG0p6lul3b8j5P3UWbZdw/oEFopHOxUGQRcYza073mi91wqB3Fc7Slf6p2cc6mgeprV0Vg==
