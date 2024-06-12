@@ -5,7 +5,7 @@ import ytdlx from "yt-dlx"
 import colors from "colors"
 import serve from "electron-serve"
 import { createWindow } from "./helpers"
-import { app, ipcMain as api } from "electron"
+import { app, ipcMain as api, dialog } from "electron"
 // ==============================================[ Imports ]==============================================
 //
 //
@@ -39,9 +39,21 @@ app.on("window-all-closed", () => app.quit())
 //
 //
 // ============================================[ IPC Handlers ]===========================================
+api.handle("select-save-location", async () => {
+  const result = await dialog.showOpenDialog({
+    title: "Select Save Location",
+    buttonLabel: "Select Folder",
+    properties: ["openDirectory"],
+  })
+  if (result.canceled || result.filePaths.length === 0) {
+    return { filePath: null }
+  }
+  return { filePath: result.filePaths[0] }
+})
+
 api.on("search", async (event, response) => {
   try {
-    var TubeBody: any
+    var TubeBody
     if (response.videoId) {
       console.log(colors.green("❓ videoId:"), colors.italic(response.videoId))
       TubeBody = await ytdlx.ytSearch.Video.Single({
@@ -57,7 +69,7 @@ api.on("search", async (event, response) => {
       if (TubeBody) event.reply("search", TubeBody)
       else event.sender.send("search", null)
     }
-  } catch (error: any) {
+  } catch (error) {
     event.reply("search", error.message)
   }
 })
@@ -70,33 +82,45 @@ api.on("formats", async (event, response) => {
     })
     if (io) event.reply("formats", io)
     else event.sender.send("formats", null)
-  } catch (error: any) {
+  } catch (error) {
     event.reply("formats", error.message)
   }
 })
 api.on("audio", async (event, response) => {
   try {
     console.log(colors.green("❓ videoId:"), colors.italic(response.videoId))
-    var io = await ytdlx.AudioOnly.Single.Highest({
-      stream: true,
-      metadata: false,
-      query: response.videoId,
-      useTor: response.useTor || false,
-      verbose: response.verbose || false,
-      output: response.output || undefined,
-    })
-    if (io && "ffmpeg" in io && "filename" in io) {
-      io.ffmpeg.pipe(fs.createWriteStream(io.filename), {
-        end: true,
+    var io
+    if (response.quality === "highest") {
+      io = await ytdlx.AudioOnly.Single.Highest({
+        stream: true,
+        metadata: false,
+        query: response.videoId,
+        useTor: response.useTor || false,
+        verbose: response.verbose || false,
+        output: response.output,
       })
-      io.ffmpeg.on(
-        "progress",
-        ({ percent, timemark }: { percent: number; timemark: string }) => {
-          event.reply("audio", { percent, timemark })
+    } else {
+      io = await ytdlx.AudioOnly.Single.Lowest({
+        stream: true,
+        metadata: false,
+        query: response.videoId,
+        useTor: response.useTor || false,
+        verbose: response.verbose || false,
+        output: response.output,
+      })
+    }
+    if (io && "ffmpeg" in io && "filename" in io) {
+      io.ffmpeg.pipe(
+        fs.createWriteStream(path.join(response.output, io.filename)),
+        {
+          end: true,
         },
       )
+      io.ffmpeg.on("progress", ({ percent, timemark }) => {
+        event.reply("audio", { percent, timemark })
+      })
     } else event.sender.send("audio", "ffmpeg or filename not found!")
-  } catch (error: any) {
+  } catch (error) {
     event.reply("audio", error.message)
   }
 })
@@ -109,20 +133,20 @@ api.on("video", async (event, response) => {
       query: response.videoId,
       useTor: response.useTor || false,
       verbose: response.verbose || false,
-      output: response.output || undefined,
+      output: response.output,
     })
     if (io && "ffmpeg" in io && "filename" in io) {
-      io.ffmpeg.pipe(fs.createWriteStream(io.filename), {
-        end: true,
-      })
-      io.ffmpeg.on(
-        "progress",
-        ({ percent, timemark }: { percent: number; timemark: string }) => {
-          event.reply("video", { percent, timemark })
+      io.ffmpeg.pipe(
+        fs.createWriteStream(path.join(response.output, io.filename)),
+        {
+          end: true,
         },
       )
+      io.ffmpeg.on("progress", ({ percent, timemark }) => {
+        event.reply("video", { percent, timemark })
+      })
     } else event.sender.send("video", "ffmpeg or filename not found!")
-  } catch (error: any) {
+  } catch (error) {
     event.reply("video", error.message)
   }
 })
@@ -135,22 +159,21 @@ api.on("audiovideo", async (event, response) => {
       query: response.videoId,
       useTor: response.useTor || false,
       verbose: response.verbose || false,
-      output: response.output || undefined,
+      output: response.output,
     })
     if (io && "ffmpeg" in io && "filename" in io) {
-      io.ffmpeg.pipe(fs.createWriteStream(io.filename), {
-        end: true,
-      })
-      io.ffmpeg.on(
-        "progress",
-        ({ percent, timemark }: { percent: number; timemark: string }) => {
-          event.reply("audiovideo", { percent, timemark })
+      io.ffmpeg.pipe(
+        fs.createWriteStream(path.join(response.output, io.filename)),
+        {
+          end: true,
         },
       )
+      io.ffmpeg.on("progress", ({ percent, timemark }) => {
+        event.reply("audiovideo", { percent, timemark })
+      })
     } else event.sender.send("audiovideo", "ffmpeg or filename not found!")
-  } catch (error: any) {
+  } catch (error) {
     event.reply("audiovideo", error.message)
   }
 })
 // ============================================[ IPC Handlers ]===========================================
-
