@@ -1,55 +1,55 @@
-import react from "react"
-import { motion } from "framer-motion"
-import { useRouter } from "next/router"
-import NavPackage from "../components/nav"
-import AudioOnly from "./models/AudioOnly"
-import VideoOnly from "./models/VideoOnly"
-import { AiFillAudio } from "react-icons/ai"
-import FootPackage from "../components/foot"
-import AudioVideo from "./models/AudioVideo"
-import { IoVideocam } from "react-icons/io5"
-import Introduction from "../home/Introduction"
-import { PiTelevisionFill } from "react-icons/pi"
+import react from "react";
+import { motion } from "framer-motion";
+import { useRouter } from "next/router";
+import NavPackage from "../components/nav";
+import AudioOnly from "./models/AudioOnly";
+import VideoOnly from "./models/VideoOnly";
+import { AiFillAudio } from "react-icons/ai";
+import FootPackage from "../components/foot";
+import AudioVideo from "./models/AudioVideo";
+import { IoVideocam } from "react-icons/io5";
+import Introduction from "../home/Introduction";
+import { PiTelevisionFill } from "react-icons/pi";
 
 const FromBottomToTop = {
   initial: { opacity: 0, y: 100 },
   exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
   whileInView: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-}
+};
 const FromRightToLeft = {
   initial: { opacity: 0, x: 100 },
   exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
   whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } },
-}
+};
 
 export default function VideoId(): JSX.Element {
-  const router = useRouter()
-  const { id } = router.query
-  const [ShowAudio, setShowAudio] = react.useState(false)
-  const [ShowVideo, setShowVideo] = react.useState(false)
-  const [TubeSearch, setTubeSearch] = react.useState<any>(null)
-  const [ShowAudioVideo, setShowAudioVideo] = react.useState(false)
-  const ToggleAudioVideo = () => setShowAudioVideo(!ShowAudioVideo)
-  const ToggleAudio = () => setShowAudio(!ShowAudio)
-  const ToggleVideo = () => setShowVideo(!ShowVideo)
+  const router = useRouter();
+  const { id } = router.query;
+  const [ShowAudio, setShowAudio] = react.useState(false);
+  const [ShowVideo, setShowVideo] = react.useState(false);
+  const [TubeSearch, setTubeSearch] = react.useState<any>(null);
+  const [ShowAudioVideo, setShowAudioVideo] = react.useState(false);
+  const ToggleAudioVideo = () => setShowAudioVideo(!ShowAudioVideo);
+  const ToggleAudio = () => setShowAudio(!ShowAudio);
+  const ToggleVideo = () => setShowVideo(!ShowVideo);
 
   react.useEffect(() => {
     if (typeof id === "string" && /^[a-zA-Z0-9_-]{11}$/.test(id)) {
-      window.ipc.send("search", { videoId: id })
+      window.ipc.send("search", { videoId: id });
     } else {
       try {
-        window.history.back()
+        window.history.back();
       } catch {
-        router.push("/home")
+        router.push("/home");
       }
     }
-  }, [id])
+  }, [id]);
 
   react.useEffect(() => {
     if (typeof id === "string") {
-      window.ipc.on("search", (response: string) => setTubeSearch(response))
+      window.ipc.on("search", (response: string) => setTubeSearch(response));
     }
-  }, [id])
+  }, [id]);
 
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600">
@@ -79,7 +79,7 @@ export default function VideoId(): JSX.Element {
                         <button
                           onClick={() => {
                             // window.ipc.send("formats", { query: id })
-                            ToggleAudio()
+                            ToggleAudio();
                           }}
                           className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
                           <AiFillAudio className="mr-2 h-6 w-6" /> Download
@@ -88,7 +88,7 @@ export default function VideoId(): JSX.Element {
                         <button
                           onClick={() => {
                             // window.ipc.send("formats", { query: id })
-                            ToggleVideo()
+                            ToggleVideo();
                           }}
                           className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
                           <IoVideocam className="mr-2 h-6 w-6" /> Download Video
@@ -97,7 +97,7 @@ export default function VideoId(): JSX.Element {
                         <button
                           onClick={() => {
                             // window.ipc.send("formats", { query: id })
-                            ToggleAudioVideo()
+                            ToggleAudioVideo();
                           }}
                           className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
                           <PiTelevisionFill className="mr-2 h-6 w-6" /> Download
@@ -188,5 +188,5 @@ export default function VideoId(): JSX.Element {
       </react.Fragment>
       <FootPackage />
     </main>
-  )
+  );
 }

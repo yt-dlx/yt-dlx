@@ -1,26 +1,29 @@
-import React from "react"
-import { motion } from "framer-motion"
+import React from "react";
+import { motion } from "framer-motion";
 
 const AudioOnly: React.FC<{
-  videoId: string
-  isOpen: boolean
-  onClose: () => void
+  videoId: string;
+  isOpen: boolean;
+  onClose: () => void;
 }> = ({ isOpen, onClose, videoId }) => {
-  const [progress, setProgress] = React.useState<any>(null)
+  const [progress, setProgress] = React.useState<any>(null);
+  const [saveLocation, setSaveLocation] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    window.ipc.on("audio", (response: any) => setProgress(response))
-  }, [])
+    window.ipc.on("audio", (response: any) => setProgress(response));
+  }, []);
 
   const handleSaveLocation = async (quality: string) => {
     try {
-      const { filePath } = await window.ipc.invoke("select-save-location")
-      if (filePath)
-        window.ipc.send("audio", { videoId, output: filePath, quality })
+      const { filePath } = await window.ipc.invoke("select-save-location");
+      if (filePath) {
+        setSaveLocation(filePath);
+        window.ipc.send("audio", { videoId, output: filePath, quality });
+      }
     } catch (error) {
-      console.error("Failed to select save location:", error)
+      console.error("Failed to select save location:", error);
     }
-  }
+  };
 
   return (
     <React.Fragment>
@@ -47,6 +50,11 @@ const AudioOnly: React.FC<{
                 Lowest Possible Download
               </li>
             </ul>
+            {saveLocation && (
+              <div className="text-white font-semibold m-4">
+                Save Location: {saveLocation}
+              </div>
+            )}
             {progress && (
               <progress
                 className="progress h-4 w-80 m-4"
@@ -63,7 +71,7 @@ const AudioOnly: React.FC<{
         </motion.div>
       )}
     </React.Fragment>
-  )
-}
+  );
+};
 
-export default AudioOnly
+export default AudioOnly;
