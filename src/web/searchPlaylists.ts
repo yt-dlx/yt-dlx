@@ -1,16 +1,16 @@
-import colors from "colors"
-import { Client } from "youtubei"
+import colors from "colors";
+import { Client } from "youtubei";
 
 export interface searchPlaylistsType {
-  id: string
-  title: string
-  videoCount: number
-  thumbnails: string[]
+  id: string;
+  title: string;
+  videoCount: number;
+  thumbnails: string[];
 }
 export default async function searchPlaylists({ query }: { query: string }) {
   try {
-    var youtube = new Client()
-    var searchPlaylists = await youtube.search(query, { type: "playlist" })
+    var youtube = new Client();
+    var searchPlaylists = await youtube.search(query, { type: "playlist" });
     var result: searchPlaylistsType[] = searchPlaylists.items.map(
       (item: any) => ({
         id: item.id,
@@ -18,9 +18,9 @@ export default async function searchPlaylists({ query }: { query: string }) {
         videoCount: item.videoCount,
         thumbnails: item.thumbnails,
       }),
-    )
-    return result
+    );
+    return result;
   } catch (error: any) {
-    throw new Error(colors.red("@error: ") + error.message)
+    throw new Error(colors.red("@error: ") + error.message);
   }
 }

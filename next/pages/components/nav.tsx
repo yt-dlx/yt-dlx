@@ -1,5 +1,5 @@
-import Link from "next/link"
-import { RiHome5Fill } from "react-icons/ri"
+import Link from "next/link";
+import { RiHome5Fill } from "react-icons/ri";
 
 export default function NavPackage() {
   return (
@@ -11,5 +11,5 @@ export default function NavPackage() {
         yt-dlx <span className="text-sm">Copyright © 2024</span>
       </Link>
     </nav>
-  )
+  );
 }

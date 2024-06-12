@@ -1,10 +1,10 @@
-import YouTube from "../../"
-import colors from "colors"
-;(async () => {
+import YouTube from "../../";
+import colors from "colors";
+(async () => {
   try {
-    console.log(colors.blue("@test:"), "help")
-    await YouTube.info.help()
+    console.log(colors.blue("@test:"), "help");
+    await YouTube.info.help();
   } catch (error: any) {
-    console.error(colors.red(error.message))
+    console.error(colors.red(error.message));
   }
-})()
+})();

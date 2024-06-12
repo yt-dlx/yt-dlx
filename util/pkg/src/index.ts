@@ -1,19 +1,19 @@
-import * as fsx from "fs-extra"
-import * as path from "path"
+import * as fsx from "fs-extra";
+import * as path from "path";
 
 async function findRootDirectory(currentPath: string): Promise<string | null> {
-  const markerFile = "package.json"
+  const markerFile = "package.json";
   try {
-    const files = await fsx.readdir(currentPath)
+    const files = await fsx.readdir(currentPath);
     if (files.includes(markerFile)) {
-      return currentPath
+      return currentPath;
     } else {
-      const parentDir = path.resolve(currentPath, "..")
-      if (parentDir === currentPath) return null
-      else return findRootDirectory(parentDir)
+      const parentDir = path.resolve(currentPath, "..");
+      if (parentDir === currentPath) return null;
+      else return findRootDirectory(parentDir);
     }
   } catch (error) {
-    return null
+    return null;
   }
 }
 
@@ -22,39 +22,39 @@ async function scanner(
   execName: string,
 ): Promise<string | null> {
   try {
-    const files = await fsx.readdir(directory)
+    const files = await fsx.readdir(directory);
     for (const file of files) {
-      const filePath = path.join(directory, file)
-      const stat = await fsx.stat(filePath)
+      const filePath = path.join(directory, file);
+      const stat = await fsx.stat(filePath);
       if (stat.isDirectory()) {
-        const result = await scanner(filePath, execName)
-        if (result) return result
+        const result = await scanner(filePath, execName);
+        if (result) return result;
       } else {
         if (
           file.toLowerCase() === execName.toLowerCase() ||
           file.toLowerCase() === execName.toLowerCase() + ".exe"
         ) {
-          return filePath
+          return filePath;
         }
       }
     }
-    return null
+    return null;
   } catch (error) {
-    return null
+    return null;
   }
 }
 
 export async function encore() {
   try {
-    const rootDirectory = await findRootDirectory(__dirname)
-    if (!rootDirectory) return {}
-    const results: { [key: string]: string } = {}
+    const rootDirectory = await findRootDirectory(__dirname);
+    if (!rootDirectory) return {};
+    const results: { [key: string]: string } = {};
     for (const execName of ["ffmpeg", "ffprobe", "cprobe"]) {
-      const execPath = await scanner(rootDirectory, execName)
-      results[execName] = execPath || ""
+      const execPath = await scanner(rootDirectory, execName);
+      results[execName] = execPath || "";
     }
-    return results
+    return results;
   } catch (error) {
-    return {}
+    return {};
   }
 }

@@ -1,65 +1,65 @@
-import retry from "async-retry"
-import { promisify } from "util"
-import { exec } from "child_process"
-import { encore } from "yt-dlx-encore"
-import type sizeFormat from "../interfaces/sizeFormat"
-import type AudioFormat from "../interfaces/AudioFormat"
-import type VideoFormat from "../interfaces/VideoFormat"
-import type EngineOutput from "../interfaces/EngineOutput"
+import retry from "async-retry";
+import { promisify } from "util";
+import { exec } from "child_process";
+import { encore } from "yt-dlx-encore";
+import type sizeFormat from "../interfaces/sizeFormat";
+import type AudioFormat from "../interfaces/AudioFormat";
+import type VideoFormat from "../interfaces/VideoFormat";
+import type EngineOutput from "../interfaces/EngineOutput";
 
 export var sizeFormat: sizeFormat = (filesize: number): string | number => {
-  if (isNaN(filesize) || filesize < 0) return filesize
-  var bytesPerMegabyte = 1024 * 1024
-  var bytesPerGigabyte = bytesPerMegabyte * 1024
-  var bytesPerTerabyte = bytesPerGigabyte * 1024
-  if (filesize < bytesPerMegabyte) return filesize + " B"
+  if (isNaN(filesize) || filesize < 0) return filesize;
+  var bytesPerMegabyte = 1024 * 1024;
+  var bytesPerGigabyte = bytesPerMegabyte * 1024;
+  var bytesPerTerabyte = bytesPerGigabyte * 1024;
+  if (filesize < bytesPerMegabyte) return filesize + " B";
   else if (filesize < bytesPerGigabyte) {
-    return (filesize / bytesPerMegabyte).toFixed(2) + " MB"
+    return (filesize / bytesPerMegabyte).toFixed(2) + " MB";
   } else if (filesize < bytesPerTerabyte) {
-    return (filesize / bytesPerGigabyte).toFixed(2) + " GB"
-  } else return (filesize / bytesPerTerabyte).toFixed(2) + " TB"
-}
+    return (filesize / bytesPerGigabyte).toFixed(2) + " GB";
+  } else return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
+};
 
 function nAudio(i: any) {
-  i.filesizeP = sizeFormat(i.filesize)
-  delete i.format_id
-  delete i.source_preference
-  delete i.has_drm
-  delete i.quality
-  delete i.fps
-  delete i.height
-  delete i.width
-  delete i.language
-  delete i.language_preference
-  delete i.preference
-  delete i.dynamic_range
-  delete i.downloader_options
-  delete i.protocol
-  delete i.aspect_ratio
-  delete i.vbr
-  delete i.vcodec
-  delete i.http_headers
-  delete i.video_ext
-  return i
+  i.filesizeP = sizeFormat(i.filesize);
+  delete i.format_id;
+  delete i.source_preference;
+  delete i.has_drm;
+  delete i.quality;
+  delete i.fps;
+  delete i.height;
+  delete i.width;
+  delete i.language;
+  delete i.language_preference;
+  delete i.preference;
+  delete i.dynamic_range;
+  delete i.downloader_options;
+  delete i.protocol;
+  delete i.aspect_ratio;
+  delete i.vbr;
+  delete i.vcodec;
+  delete i.http_headers;
+  delete i.video_ext;
+  return i;
 }
 function nVideo(i: any) {
-  i.filesizeP = sizeFormat(i.filesize)
-  delete i.asr
-  delete i.format_id
-  delete i.has_drm
-  delete i.quality
-  delete i.source_preference
-  delete i.audio_channels
-  delete i.protocol
-  delete i.language
-  delete i.language_preference
-  delete i.preference
-  delete i.acodec
-  delete i.downloader_options
-  delete i.http_headers
-  delete i.audio_ext
-  delete i.abr
-  return i
+  i.filesizeP = sizeFormat(i.filesize);
+  delete i.asr;
+  delete i.format_id;
+  delete i.has_drm;
+  delete i.quality;
+  delete i.source_preference;
+  delete i.audio_channels;
+  delete i.protocol;
+  delete i.language;
+  delete i.language_preference;
+  delete i.preference;
+  delete i.acodec;
+  delete i.downloader_options;
+  delete i.http_headers;
+  delete i.audio_ext;
+  delete i.abr;
+  return i;
 }
 function pAudio(i: any) {
   return {
@@ -76,7 +76,7 @@ function pAudio(i: any) {
     audio_ext: i.audio_ext as string,
     abr: parseFloat(i.abr) as number,
     format: i.format as string,
-  }
+  };
 }
 function pVideo(i: any) {
   return {
@@ -97,7 +97,7 @@ function pVideo(i: any) {
     video_ext: i.video_ext as string,
     vbr: parseFloat(i.vbr) as number,
     format: i.format as string,
-  }
+  };
 }
 function pManifest(i: any) {
   return {
@@ -114,7 +114,7 @@ function pManifest(i: any) {
     video_ext: i.video_ext as string,
     vbr: parseFloat(i.vbr) as number,
     format: i.format as string,
-  }
+  };
 }
 
 export default async function Engine({
@@ -123,43 +123,43 @@ export default async function Engine({
   useTor,
   ipAddress,
 }: {
-  query: string
-  sudo?: boolean
-  useTor?: boolean
-  ipAddress: string
+  query: string;
+  sudo?: boolean;
+  useTor?: boolean;
+  ipAddress: string;
 }) {
-  var AudioLow: any = {}
-  var AudioHigh: any = {}
-  var VideoLow: any = {}
-  var VideoHigh: any = {}
-  var ManifestLow: any = {}
-  var ManifestHigh: any = {}
-  var AudioLowDRC: any = {}
-  var AudioHighDRC: any = {}
-  var VideoLowHDR: any = {}
-  var VideoHighHDR: any = {}
-  var AudioLowF: AudioFormat | any = null
-  var AudioHighF: AudioFormat | any = null
-  var VideoLowF: VideoFormat | any = null
-  var VideoHighF: VideoFormat | any = null
-  var cprobe = encore().then(fp => fp.cprobe)
-  var pLoc = (await cprobe).toString()
+  var AudioLow: any = {};
+  var AudioHigh: any = {};
+  var VideoLow: any = {};
+  var VideoHigh: any = {};
+  var ManifestLow: any = {};
+  var ManifestHigh: any = {};
+  var AudioLowDRC: any = {};
+  var AudioHighDRC: any = {};
+  var VideoLowHDR: any = {};
+  var VideoHighHDR: any = {};
+  var AudioLowF: AudioFormat | any = null;
+  var AudioHighF: AudioFormat | any = null;
+  var VideoLowF: VideoFormat | any = null;
+  var VideoHighF: VideoFormat | any = null;
+  var cprobe = encore().then(fp => fp.cprobe);
+  var pLoc = (await cprobe).toString();
   var config = {
     factor: 2,
     retries: 3,
     minTimeout: 1000,
     maxTimeout: 3000,
-  }
+  };
   var metaCore = await retry(async () => {
-    if (useTor) pLoc += ` --proxy "socks5://127.0.0.1:9050"`
-    pLoc += ` --dump-single-json "${query}"`
-    pLoc += ` --no-check-certificate --prefer-insecure --no-call-home --skip-download --no-warnings --geo-bypass`
-    pLoc += ` --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"`
-    return await promisify(exec)(pLoc)
-  }, config)
-  var i = JSON.parse(metaCore.stdout.toString())
+    if (useTor) pLoc += ` --proxy "socks5://127.0.0.1:9050"`;
+    pLoc += ` --dump-single-json "${query}"`;
+    pLoc += ` --no-check-certificate --prefer-insecure --no-call-home --skip-download --no-warnings --geo-bypass`;
+    pLoc += ` --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"`;
+    return await promisify(exec)(pLoc);
+  }, config);
+  var i = JSON.parse(metaCore.stdout.toString());
   i.formats.forEach((tube: any) => {
-    var rm = new Set(["storyboard", "Default"])
+    var rm = new Set(["storyboard", "Default"]);
     if (
       !rm.has(tube.format_note) &&
       tube.protocol === "m3u8_native" &&
@@ -169,104 +169,104 @@ export default async function Engine({
         !ManifestLow[tube.resolution] ||
         tube.vbr < ManifestLow[tube.resolution].vbr
       )
-        ManifestLow[tube.resolution] = tube
+        ManifestLow[tube.resolution] = tube;
       if (
         !ManifestHigh[tube.resolution] ||
         tube.vbr > ManifestHigh[tube.resolution].vbr
       )
-        ManifestHigh[tube.resolution] = tube
+        ManifestHigh[tube.resolution] = tube;
     }
-    if (rm.has(tube.format_note) || tube.filesize === undefined || null) return
+    if (rm.has(tube.format_note) || tube.filesize === undefined || null) return;
     if (tube.format_note.includes("DRC")) {
       if (AudioLow[tube.resolution] && !AudioLowDRC[tube.resolution]) {
-        AudioLowDRC[tube.resolution] = AudioLow[tube.resolution]
+        AudioLowDRC[tube.resolution] = AudioLow[tube.resolution];
       }
       if (AudioHigh[tube.resolution] && !AudioHighDRC[tube.resolution]) {
-        AudioHighDRC[tube.resolution] = AudioHigh[tube.resolution]
+        AudioHighDRC[tube.resolution] = AudioHigh[tube.resolution];
       }
-      AudioLowDRC[tube.format_note] = tube
-      AudioHighDRC[tube.format_note] = tube
+      AudioLowDRC[tube.format_note] = tube;
+      AudioHighDRC[tube.format_note] = tube;
     } else if (tube.format_note.includes("HDR")) {
       if (
         !VideoLowHDR[tube.format_note] ||
         tube.filesize < VideoLowHDR[tube.format_note].filesize
       )
-        VideoLowHDR[tube.format_note] = tube
+        VideoLowHDR[tube.format_note] = tube;
       if (
         !VideoHighHDR[tube.format_note] ||
         tube.filesize > VideoHighHDR[tube.format_note].filesize
       )
-        VideoHighHDR[tube.format_note] = tube
+        VideoHighHDR[tube.format_note] = tube;
     }
-    var prevLowVideo = VideoLow[tube.format_note]
-    var prevHighVideo = VideoHigh[tube.format_note]
-    var prevLowAudio = AudioLow[tube.format_note]
-    var prevHighAudio = AudioHigh[tube.format_note]
+    var prevLowVideo = VideoLow[tube.format_note];
+    var prevHighVideo = VideoHigh[tube.format_note];
+    var prevLowAudio = AudioLow[tube.format_note];
+    var prevHighAudio = AudioHigh[tube.format_note];
     switch (true) {
       case tube.format_note.includes("p"):
         if (!prevLowVideo || tube.filesize < prevLowVideo.filesize)
-          VideoLow[tube.format_note] = tube
+          VideoLow[tube.format_note] = tube;
         if (!prevHighVideo || tube.filesize > prevHighVideo.filesize)
-          VideoHigh[tube.format_note] = tube
-        break
+          VideoHigh[tube.format_note] = tube;
+        break;
       default:
         if (!prevLowAudio || tube.filesize < prevLowAudio.filesize)
-          AudioLow[tube.format_note] = tube
+          AudioLow[tube.format_note] = tube;
         if (!prevHighAudio || tube.filesize > prevHighAudio.filesize)
-          AudioHigh[tube.format_note] = tube
-        break
+          AudioHigh[tube.format_note] = tube;
+        break;
     }
-  })
-  ;(Object.values(AudioLow) as AudioFormat[]).forEach((audio: AudioFormat) => {
+  });
+  (Object.values(AudioLow) as AudioFormat[]).forEach((audio: AudioFormat) => {
     if (audio.filesize !== null) {
       switch (true) {
         case !AudioLowF || audio.filesize < AudioLowF.filesize:
-          AudioLowF = audio
-          break
+          AudioLowF = audio;
+          break;
         case !AudioHighF || audio.filesize > AudioHighF.filesize:
-          AudioHighF = audio
-          break
+          AudioHighF = audio;
+          break;
         default:
-          break
+          break;
       }
     }
-  })
-  ;(Object.values(VideoLow) as VideoFormat[]).forEach((video: VideoFormat) => {
+  });
+  (Object.values(VideoLow) as VideoFormat[]).forEach((video: VideoFormat) => {
     if (video.filesize !== null) {
       switch (true) {
         case !VideoLowF || video.filesize < VideoLowF.filesize:
-          VideoLowF = video
-          break
+          VideoLowF = video;
+          break;
         case !VideoHighF || video.filesize > VideoHighF.filesize:
-          VideoHighF = video
-          break
+          VideoHighF = video;
+          break;
         default:
-          break
+          break;
       }
     }
-  })
+  });
   function propfilter(formats: any[]) {
     return formats.filter(i => {
-      return !i.format_note.includes("DRC") && !i.format_note.includes("HDR")
-    })
+      return !i.format_note.includes("DRC") && !i.format_note.includes("HDR");
+    });
   }
   var payLoad: EngineOutput = {
     ipAddress,
     AudioLowF: (() => {
-      var i = AudioLowF || ({} as AudioFormat)
-      return nAudio(i)
+      var i = AudioLowF || ({} as AudioFormat);
+      return nAudio(i);
     })(),
     AudioHighF: (() => {
-      var i = AudioHighF || ({} as AudioFormat)
-      return nAudio(i)
+      var i = AudioHighF || ({} as AudioFormat);
+      return nAudio(i);
     })(),
     VideoLowF: (() => {
-      var i = VideoLowF || ({} as VideoFormat)
-      return nVideo(i)
+      var i = VideoLowF || ({} as VideoFormat);
+      return nVideo(i);
     })(),
     VideoHighF: (() => {
-      var i = VideoHighF || ({} as VideoFormat)
-      return nVideo(i)
+      var i = VideoHighF || ({} as VideoFormat);
+      return nVideo(i);
     })(),
     AudioLowDRC: Object.values(AudioLowDRC).map((i: any) => pAudio(i)),
     AudioHighDRC: Object.values(AudioHighDRC).map((i: any) => pAudio(i)),
@@ -304,6 +304,6 @@ export default async function Engine({
       uploader_url: i.uploader_url as string,
       duration_string: i.duration_string as string,
     },
-  }
-  return payLoad
+  };
+  return payLoad;
 }

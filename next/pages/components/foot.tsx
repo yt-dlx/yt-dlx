@@ -11,5 +11,5 @@ export default function FootPackage() {
         Copyright © 2024
       </span>
     </footer>
-  )
+  );
 }

@@ -1,6 +1,6 @@
-import colors from "colors"
-import YouTubeID from "../../web/YouTubeId"
-import web, { playlistVideosType } from "../../web"
+import colors from "colors";
+import YouTubeID from "../../web/YouTubeId";
+import web, { playlistVideosType } from "../../web";
 
 /**
  * Extracts metadata for videos in a YouTube playlist.
@@ -12,15 +12,15 @@ import web, { playlistVideosType } from "../../web"
 export default async function playlist_data({
   query,
 }: {
-  query: string
+  query: string;
 }): Promise<playlistVideosType> {
-  var playlistId = await YouTubeID(query)
+  var playlistId = await YouTubeID(query);
   if (!playlistId) {
-    throw new Error(colors.red("@error: ") + "incorrect playlist link")
+    throw new Error(colors.red("@error: ") + "incorrect playlist link");
   } else {
-    var metaData = await web.playlistVideos({ playlistId })
+    var metaData = await web.playlistVideos({ playlistId });
     if (!metaData) {
-      throw new Error(colors.red("@error: ") + "Unable to get response!")
-    } else return metaData
+      throw new Error(colors.red("@error: ") + "Unable to get response!");
+    } else return metaData;
   }
 }
