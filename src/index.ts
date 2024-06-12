@@ -34,56 +34,56 @@ import ListAudioVideoLowest from "./routes/AudioVideo/list/ListAudioVideoLowest"
 import ListAudioVideoCustom from "./routes/AudioVideo/list/ListAudioVideoCustom";
 //
 var ytdlx = {
-  ytSearch: {
-    Video: {
-      Single: video_data,
-      Multiple: search_videos,
+    ytSearch: {
+        Video: {
+            Single: video_data,
+            Multiple: search_videos,
+        },
+        Playlist: {
+            Single: playlist_data,
+            Multiple: search_playlists,
+        },
     },
-    Playlist: {
-      Single: playlist_data,
-      Multiple: search_playlists,
+    info: {
+        help,
+        extract,
+        list_formats,
     },
-  },
-  info: {
-    help,
-    extract,
-    list_formats,
-  },
-  AudioOnly: {
-    Single: {
-      Lowest: AudioLowest,
-      Highest: AudioHighest,
-      Custom: AudioCustom,
+    AudioOnly: {
+        Single: {
+            Lowest: AudioLowest,
+            Highest: AudioHighest,
+            Custom: AudioCustom,
+        },
+        List: {
+            Lowest: ListAudioLowest,
+            Highest: ListAudioHighest,
+            Custom: ListAudioCustom,
+        },
     },
-    List: {
-      Lowest: ListAudioLowest,
-      Highest: ListAudioHighest,
-      Custom: ListAudioCustom,
+    VideoOnly: {
+        Single: {
+            Lowest: VideoLowest,
+            Highest: VideoHighest,
+            Custom: VideoCustom,
+        },
+        List: {
+            Lowest: ListVideoLowest,
+            Highest: ListVideoHighest,
+            Custom: ListVideoCustom,
+        },
     },
-  },
-  VideoOnly: {
-    Single: {
-      Lowest: VideoLowest,
-      Highest: VideoHighest,
-      Custom: VideoCustom,
+    AudioVideo: {
+        Single: {
+            Lowest: AudioVideoLowest,
+            Highest: AudioVideoHighest,
+            Custom: AudioVideoCustom,
+        },
+        List: {
+            Lowest: ListAudioVideoLowest,
+            Highest: ListAudioVideoHighest,
+            Custom: ListAudioVideoCustom,
+        },
     },
-    List: {
-      Lowest: ListVideoLowest,
-      Highest: ListVideoHighest,
-      Custom: ListVideoCustom,
-    },
-  },
-  AudioVideo: {
-    Single: {
-      Lowest: AudioVideoLowest,
-      Highest: AudioVideoHighest,
-      Custom: AudioVideoCustom,
-    },
-    List: {
-      Lowest: ListAudioVideoLowest,
-      Highest: ListAudioVideoHighest,
-      Custom: ListAudioVideoCustom,
-    },
-  },
 };
 export default ytdlx;

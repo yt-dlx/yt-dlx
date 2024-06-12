@@ -10,17 +10,17 @@ import web, { singleVideoType } from "../../web";
  * @throws An error if the input is an incorrect video link or if unable to get a response.
  */
 export default async function video_data({
-  query,
+    query,
 }: {
-  query: string;
+    query: string;
 }): Promise<singleVideoType> {
-  var videoId = await YouTubeID(query);
-  if (!videoId) {
-    throw new Error(colors.red("@error: ") + "incorrect playlist link");
-  } else {
-    var metaData = await web.singleVideo({ videoId });
-    if (!metaData) {
-      throw new Error(colors.red("@error: ") + "Unable to get response!");
-    } else return metaData;
-  }
+    var videoId = await YouTubeID(query);
+    if (!videoId) {
+        throw new Error(colors.red("@error: ") + "incorrect playlist link");
+    } else {
+        var metaData = await web.singleVideo({ videoId });
+        if (!metaData) {
+            throw new Error(colors.red("@error: ") + "Unable to get response!");
+        } else return metaData;
+    }
 }
