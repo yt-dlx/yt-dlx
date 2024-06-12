@@ -1,10 +1,10 @@
-import React from "react"
-import Support from "./home/Support"
-import NavPackage from "./components/nav"
-import Playground from "./home/Playground"
-import FootPackage from "./components/foot"
-import Introduction from "./home/Introduction"
-import Documentation from "./home/Documentation"
+import React from "react";
+import Support from "./home/Support";
+import NavPackage from "./components/nav";
+import Playground from "./home/Playground";
+import FootPackage from "./components/foot";
+import Introduction from "./home/Introduction";
+import Documentation from "./home/Documentation";
 
 export default function HomePage(): JSX.Element {
   return (
@@ -16,5 +16,5 @@ export default function HomePage(): JSX.Element {
       <Support />
       <FootPackage />
     </main>
-  )
+  );
 }

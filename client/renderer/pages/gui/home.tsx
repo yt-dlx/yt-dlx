@@ -1,26 +1,26 @@
-import react from "react"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { HiFire } from "react-icons/hi"
-import NavPackage from "../components/nav"
-import FootPackage from "../components/foot"
-import { TbWorldSearch } from "react-icons/tb"
-import Introduction from "../home/Introduction"
-import { TbDiamondFilled } from "react-icons/tb"
-import { SiGradleplaypublisher } from "react-icons/si"
+import react from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { HiFire } from "react-icons/hi";
+import NavPackage from "../components/nav";
+import FootPackage from "../components/foot";
+import { TbWorldSearch } from "react-icons/tb";
+import Introduction from "../home/Introduction";
+import { TbDiamondFilled } from "react-icons/tb";
+import { SiGradleplaypublisher } from "react-icons/si";
 
 const FromBottomToTop = {
   initial: { opacity: 0, y: 100 },
   exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
   whileInView: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-}
+};
 
 export default function Gui(): JSX.Element {
-  var [Query, setQuery] = react.useState<string>("")
-  var [TubeSearch, setTubeSearch] = react.useState<any>(null)
+  var [Query, setQuery] = react.useState<string>("");
+  var [TubeSearch, setTubeSearch] = react.useState<any>(null);
   react.useEffect(() => {
-    window.ipc.on("search", (response: string) => setTubeSearch(response))
-  }, [])
+    window.ipc.on("search", (response: string) => setTubeSearch(response));
+  }, []);
 
   return (
     <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600 font-semibold">
@@ -30,9 +30,9 @@ export default function Gui(): JSX.Element {
         <div className="container px-4 md:px-6">
           <form
             onSubmit={event => {
-              setTubeSearch(null)
-              event.preventDefault()
-              window.ipc.send("search", { query: Query })
+              setTubeSearch(null);
+              event.preventDefault();
+              window.ipc.send("search", { query: Query });
             }}
             className="bg-neutral-950 max-w-screen-2xl p-10 text-red-600 mx-auto my-8 rounded-3xl border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600">
             <motion.h1
@@ -190,5 +190,5 @@ export default function Gui(): JSX.Element {
       </motion.section>
       <FootPackage />
     </main>
-  )
+  );
 }

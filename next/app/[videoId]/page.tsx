@@ -1,21 +1,21 @@
-"use client"
-import react from "react"
-import { SiBun } from "react-icons/si"
-import { FaYarn } from "react-icons/fa"
-import { SiPnpm } from "react-icons/si"
-import { TbBrandNpm } from "react-icons/tb"
-import NavPackage from "@/pages/components/nav"
-import FootPackage from "@/pages/components/foot"
-import VerPackage from "@/pages/components/version"
-import { useParams, useRouter } from "next/navigation"
-import { useQueryClient, useMutation } from "@tanstack/react-query"
+"use client";
+import react from "react";
+import { SiBun } from "react-icons/si";
+import { FaYarn } from "react-icons/fa";
+import { SiPnpm } from "react-icons/si";
+import { TbBrandNpm } from "react-icons/tb";
+import NavPackage from "@/pages/components/nav";
+import FootPackage from "@/pages/components/foot";
+import VerPackage from "@/pages/components/version";
+import { useParams, useRouter } from "next/navigation";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 export default function home() {
-  var { push } = useRouter()
-  var { videoId }: any = useParams()
-  var QueryClient = useQueryClient()
-  var [Formats, setFormats] = react.useState<any>(null)
-  var [TubeSearch, setTubeSearch] = react.useState<any>(null)
+  var { push } = useRouter();
+  var { videoId }: any = useParams();
+  var QueryClient = useQueryClient();
+  var [Formats, setFormats] = react.useState<any>(null);
+  var [TubeSearch, setTubeSearch] = react.useState<any>(null);
 
   var ApiSearch = useMutation({
     mutationFn: async () => {
@@ -25,11 +25,11 @@ export default function home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ videoId }),
-      })
-      if (resp.status === 200) setTubeSearch(await resp.json())
+      });
+      if (resp.status === 200) setTubeSearch(await resp.json());
     },
     onMutate: () => console.log("ApiSearch started!"),
-  })
+  });
 
   var ApiFormats = useMutation({
     mutationFn: async () => {
@@ -39,18 +39,18 @@ export default function home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ videoId }),
-      })
-      if (resp.status === 200) setFormats(await resp.json())
+      });
+      if (resp.status === 200) setFormats(await resp.json());
     },
     onMutate: () => console.log("ApiFormats started!"),
-  })
+  });
   react.useEffect(() => {
-    if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId)) push("/")
-    ApiSearch.mutate()
-    ApiFormats.mutate()
-  }, [videoId])
+    if (!/^[a-zA-Z0-9_-]{11}$/.test(videoId)) push("/");
+    ApiSearch.mutate();
+    ApiFormats.mutate();
+  }, [videoId]);
 
-  console.log(Formats)
+  console.log(Formats);
 
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#111111] scrollbar-track-[#111111] scrollbar-thumb-red-600">
@@ -165,13 +165,13 @@ export default function home() {
                           </option>
                           <option
                             onClick={() => {
-                              window.location.href = `/api/audio?videoId=${videoId}`
+                              window.location.href = `/api/audio?videoId=${videoId}`;
                             }}>
                             Highest
                           </option>
                           <option
                             onClick={() => {
-                              window.location.href = `/api/audio?videoId=${videoId}`
+                              window.location.href = `/api/audio?videoId=${videoId}`;
                             }}>
                             Lowest
                           </option>
@@ -182,13 +182,13 @@ export default function home() {
                           </option>
                           <option
                             onClick={() => {
-                              window.location.href = `/api/video?videoId=${videoId}`
+                              window.location.href = `/api/video?videoId=${videoId}`;
                             }}>
                             Highest
                           </option>
                           <option
                             onClick={() => {
-                              window.location.href = `/api/video?videoId=${videoId}`
+                              window.location.href = `/api/video?videoId=${videoId}`;
                             }}>
                             Lowest
                           </option>
@@ -199,13 +199,13 @@ export default function home() {
                           </option>
                           <option
                             onClick={() => {
-                              window.location.href = `/api/audio_video?videoId=${videoId}`
+                              window.location.href = `/api/audio_video?videoId=${videoId}`;
                             }}>
                             Highest
                           </option>
                           <option
                             onClick={() => {
-                              window.location.href = `/api/audio_video?videoId=${videoId}`
+                              window.location.href = `/api/audio_video?videoId=${videoId}`;
                             }}>
                             Lowest
                           </option>
@@ -279,5 +279,5 @@ export default function home() {
       </react.Fragment>
       <FootPackage />
     </main>
-  )
+  );
 }

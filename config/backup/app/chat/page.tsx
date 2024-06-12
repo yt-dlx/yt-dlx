@@ -1,60 +1,60 @@
-"use client"
-import Link from "next/link"
-import io from "socket.io-client"
-import { useRouter } from "next/navigation"
-import * as socketIO from "socket.io-client"
-import { MdNearbyError } from "react-icons/md"
-import React, { useEffect, useState } from "react"
-import { MdCreateNewFolder, MdJoinRight } from "react-icons/md"
+"use client";
+import Link from "next/link";
+import io from "socket.io-client";
+import { useRouter } from "next/navigation";
+import * as socketIO from "socket.io-client";
+import { MdNearbyError } from "react-icons/md";
+import React, { useEffect, useState } from "react";
+import { MdCreateNewFolder, MdJoinRight } from "react-icons/md";
 
 export default function Mixly() {
-  const { push } = useRouter()
-  const [newRoom, setRoomName] = useState<string>("")
-  const [joinRoom, setJoinRoom] = useState<string>("")
-  const [newError, setNewError] = useState<string>("")
-  const [joinError, setJoinError] = useState<string>("")
-  const [socket, setSocket] = useState<socketIO.Socket>()
-  const [isRooming, setIsRooming] = useState<boolean>(false)
+  const { push } = useRouter();
+  const [newRoom, setRoomName] = useState<string>("");
+  const [joinRoom, setJoinRoom] = useState<string>("");
+  const [newError, setNewError] = useState<string>("");
+  const [joinError, setJoinError] = useState<string>("");
+  const [socket, setSocket] = useState<socketIO.Socket>();
+  const [isRooming, setIsRooming] = useState<boolean>(false);
 
   useEffect(() => {
     fetch("/ioSocket").finally(() => {
-      let ioSocket = io()
+      let ioSocket = io();
       const handleCrErr = (data: any) => {
-        setIsRooming(false)
-        setNewError(data)
-      }
+        setIsRooming(false);
+        setNewError(data);
+      };
       const handleJrErr = (data: any) => {
-        setIsRooming(false)
-        setJoinError(data)
-      }
+        setIsRooming(false);
+        setJoinError(data);
+      };
       const handleInside = (data: any) => {
-        setIsRooming(false)
-        push("/chat/" + data)
-      }
-      ioSocket.on("room[crErr]", handleCrErr)
-      ioSocket.on("room[jrErr]", handleJrErr)
-      ioSocket.on("room[inside]", handleInside)
-      setSocket(ioSocket)
+        setIsRooming(false);
+        push("/chat/" + data);
+      };
+      ioSocket.on("room[crErr]", handleCrErr);
+      ioSocket.on("room[jrErr]", handleJrErr);
+      ioSocket.on("room[inside]", handleInside);
+      setSocket(ioSocket);
       return () => {
-        ioSocket.off("room[crErr]", handleCrErr)
-        ioSocket.off("room[jrErr]", handleJrErr)
-        ioSocket.off("room[inside]", handleInside)
-        ioSocket.disconnect()
-      }
-    })
-  }, [push])
+        ioSocket.off("room[crErr]", handleCrErr);
+        ioSocket.off("room[jrErr]", handleJrErr);
+        ioSocket.off("room[inside]", handleInside);
+        ioSocket.disconnect();
+      };
+    });
+  }, [push]);
 
   const reqCreateRoom = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsRooming(true)
-    socket?.emit("room[init]", { rQuery: newRoom, User: socket.id })
-  }
+    e.preventDefault();
+    setIsRooming(true);
+    socket?.emit("room[init]", { rQuery: newRoom, User: socket.id });
+  };
 
   const reqJoinRoom = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setIsRooming(true)
-    socket?.emit("room[join]", { rQuery: joinRoom, User: socket.id })
-  }
+    e.preventDefault();
+    setIsRooming(true);
+    socket?.emit("room[join]", { rQuery: joinRoom, User: socket.id });
+  };
 
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#18181b] scrollbar-track-[#18181b] scrollbar-thumb-[#e73d75]">
@@ -191,5 +191,5 @@ export default function Mixly() {
         </div>
       </footer>
     </main>
-  )
+  );
 }

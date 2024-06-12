@@ -38,7 +38,7 @@ const nextConfig = {
         source: "/video[Custom]",
         destination: "/api/video/metaCustom",
       },
-    ]
+    ];
   },
-}
-export default nextConfig
+};
+export default nextConfig;

@@ -1,18 +1,18 @@
-import react from "react"
-import { motion } from "framer-motion"
-import { TbHelpHexagonFilled } from "react-icons/tb"
+import react from "react";
+import { motion } from "framer-motion";
+import { TbHelpHexagonFilled } from "react-icons/tb";
 
 export default function Support(): JSX.Element {
   const FromLeftToRight = {
     initial: { opacity: 0, x: -100 },
     exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
     whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } },
-  }
+  };
   const FromRightToLeft = {
     initial: { opacity: 0, x: 100 },
     exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
     whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } },
-  }
+  };
   const AndBounce = {
     initial: { opacity: 0, y: -50 },
     whileInView: {
@@ -21,7 +21,7 @@ export default function Support(): JSX.Element {
       transition: { duration: 0.8, bounce: 0.3 },
     },
     exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
-  }
+  };
 
   return (
     <react.Fragment>
@@ -79,5 +79,5 @@ export default function Support(): JSX.Element {
         </div>
       </motion.section>
     </react.Fragment>
-  )
+  );
 }

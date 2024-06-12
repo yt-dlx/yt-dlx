@@ -1,5 +1,5 @@
-const colors = require("tailwindcss/colors")
-const plugin = require("tailwindcss/plugin")
+const colors = require("tailwindcss/colors");
+const plugin = require("tailwindcss/plugin");
 
 module.exports = {
   darkMode: "class",
@@ -28,7 +28,7 @@ module.exports = {
           }),
         },
         { values: theme("textShadow") },
-      )
+      );
     }),
     require("daisyui"),
     require("preline/plugin"),
@@ -74,4 +74,4 @@ module.exports = {
       "sunset",
     ],
   },
-}
+};

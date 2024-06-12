@@ -1,10 +1,10 @@
-import { SiBun } from "react-icons/si"
-import { FaYarn } from "react-icons/fa"
-import { SiPnpm } from "react-icons/si"
-import { TbBrandNpm } from "react-icons/tb"
-import NavPackage from "@/pages/components/nav"
-import FootPackage from "@/pages/components/foot"
-import VerPackage from "@/pages/components/version"
+import { SiBun } from "react-icons/si";
+import { FaYarn } from "react-icons/fa";
+import { SiPnpm } from "react-icons/si";
+import { TbBrandNpm } from "react-icons/tb";
+import NavPackage from "@/pages/components/nav";
+import FootPackage from "@/pages/components/foot";
+import VerPackage from "@/pages/components/version";
 
 export default function AwesomePackage({ param }: any) {
   return (
@@ -219,5 +219,5 @@ export default function AwesomePackage({ param }: any) {
       </section>
       <FootPackage />
     </main>
-  )
+  );
 }

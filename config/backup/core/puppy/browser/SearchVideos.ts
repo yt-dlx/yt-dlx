@@ -1,37 +1,37 @@
-import { z } from "zod"
-import colors from "colors"
-import { load } from "cheerio"
-import closers from "../closers"
-import YouTubeId from "../YouTubeId"
-import crawler, { browser, page } from "../crawler"
+import { z } from "zod";
+import colors from "colors";
+import { load } from "cheerio";
+import closers from "../closers";
+import YouTubeId from "../YouTubeId";
+import crawler, { browser, page } from "../crawler";
 
 export interface IpOp {
-  query: string
-  verbose?: boolean
-  onionTor?: boolean
-  screenshot?: boolean
-  type: keyof { video: "video"; playlist: "playlist" }
+  query: string;
+  verbose?: boolean;
+  onionTor?: boolean;
+  screenshot?: boolean;
+  type: keyof { video: "video"; playlist: "playlist" };
 }
 
 export interface TypePlaylist {
-  playlistId: string
-  playlistLink: string
-  title: string | undefined
-  author: string | undefined
-  authorUrl: string | undefined
-  videoCount: number | undefined
+  playlistId: string;
+  playlistLink: string;
+  title: string | undefined;
+  author: string | undefined;
+  authorUrl: string | undefined;
+  videoCount: number | undefined;
 }
 
 export interface TypeVideo {
-  videoId: string
-  videoLink: string
-  thumbnailUrls: string[]
-  title: string | undefined
-  views: string | undefined
-  author: string | undefined
-  uploadOn: string | undefined
-  authorUrl: string | undefined
-  description: string | undefined
+  videoId: string;
+  videoLink: string;
+  thumbnailUrls: string[];
+  title: string | undefined;
+  views: string | undefined;
+  author: string | undefined;
+  uploadOn: string | undefined;
+  authorUrl: string | undefined;
+  description: string | undefined;
 }
 
 export default async function SearchVideos(
@@ -43,8 +43,8 @@ export default async function SearchVideos(
       .min(1)
       .refine(
         async query => {
-          const result = await YouTubeId(query)
-          return result === undefined
+          const result = await YouTubeId(query);
+          return result === undefined;
         },
         {
           message: "Query must not be a YouTube video/Playlist link",
@@ -53,46 +53,46 @@ export default async function SearchVideos(
     verbose: z.boolean().optional(),
     onionTor: z.boolean().optional(),
     screenshot: z.boolean().optional(),
-  })
+  });
   const { query, screenshot, verbose, onionTor } =
-    await QuerySchema.parseAsync(input)
-  await crawler(verbose, onionTor)
-  let $: any
-  let url: string
-  let content: string | Buffer
-  let videoElements: any
-  let metaTube: TypeVideo[] = []
-  let playlistMeta: TypePlaylist[] = []
-  let TubeResp: TypeVideo[] | TypePlaylist[] | undefined
+    await QuerySchema.parseAsync(input);
+  await crawler(verbose, onionTor);
+  let $: any;
+  let url: string;
+  let content: string | Buffer;
+  let videoElements: any;
+  let metaTube: TypeVideo[] = [];
+  let playlistMeta: TypePlaylist[] = [];
+  let TubeResp: TypeVideo[] | TypePlaylist[] | undefined;
   switch (input.type) {
     case "video":
       url =
         "https://www.youtube.com/results?search_query=" +
         encodeURIComponent(query) +
-        "&sp=EgIQAQ%253D%253D"
-      await page.goto(url)
+        "&sp=EgIQAQ%253D%253D";
+      await page.goto(url);
       for (let i = 0; i < 40; i++) {
-        await page.evaluate(() => window.scrollBy(0, window.innerHeight))
+        await page.evaluate(() => window.scrollBy(0, window.innerHeight));
       }
       if (screenshot) {
         await page.screenshot({
           path: "TypeVideo.png",
-        })
-        console.log(colors.yellow("@scrape:"), "took snapshot...")
+        });
+        console.log(colors.yellow("@scrape:"), "took snapshot...");
       }
-      content = await page.content()
-      $ = load(content)
+      content = await page.content();
+      $ = load(content);
       videoElements = $(
         "ytd-video-renderer:not([class*='ytd-rich-grid-video-renderer'])",
-      )
+      );
       videoElements.each(async (_: any, vide: any) => {
         const videoId: any = await YouTubeId(
           "https://www.youtube.com" + $(vide).find("a").attr("href"),
-        )
-        const authorContainer = $(vide).find(".ytd-channel-name a")
+        );
+        const authorContainer = $(vide).find(".ytd-channel-name a");
         const uploadedOnElement = $(vide).find(
           ".inline-metadata-item.style-scope.ytd-video-meta-block",
-        )
+        );
         metaTube.push({
           title: $(vide).find("#video-title").text().trim() || undefined,
           views:
@@ -121,38 +121,38 @@ export default async function SearchVideos(
           ],
           description:
             $(vide).find(".metadata-snippet-text").text().trim() || undefined,
-        })
-      })
+        });
+      });
       console.log(
         colors.green("@info:"),
         colors.white("scrapping done for"),
         colors.green(query),
-      )
-      TubeResp = metaTube
-      break
+      );
+      TubeResp = metaTube;
+      break;
     case "playlist":
       url =
         "https://www.youtube.com/results?search_query=" +
         encodeURIComponent(query) +
-        "&sp=EgIQAw%253D%253D"
-      await page.goto(url)
+        "&sp=EgIQAw%253D%253D";
+      await page.goto(url);
       for (let i = 0; i < 80; i++) {
-        await page.evaluate(() => window.scrollBy(0, window.innerHeight))
+        await page.evaluate(() => window.scrollBy(0, window.innerHeight));
       }
       if (screenshot) {
         await page.screenshot({
           path: "TypePlaylist.png",
-        })
-        console.log(colors.yellow("@scrape:"), "took snapshot...")
+        });
+        console.log(colors.yellow("@scrape:"), "took snapshot...");
       }
-      content = await page.content()
-      $ = load(content)
-      const playlistElements = $("ytd-playlist-renderer")
+      content = await page.content();
+      $ = load(content);
+      const playlistElements = $("ytd-playlist-renderer");
       playlistElements.each((_index: any, element: any) => {
         const playlistLink: any = $(element)
           .find(".style-scope.ytd-playlist-renderer #view-more a")
-          .attr("href")
-        const vCount = $(element).text().trim()
+          .attr("href");
+        const vCount = $(element).text().trim();
         playlistMeta.push({
           title:
             $(element)
@@ -178,28 +178,28 @@ export default async function SearchVideos(
             : undefined,
           videoCount:
             parseInt(vCount.replace(/ videos\nNOW PLAYING/g, "")) || undefined,
-        })
-      })
+        });
+      });
       console.log(
         colors.green("@info:"),
         colors.white("scrapping done for"),
         colors.green(query),
-      )
-      TubeResp = playlistMeta
-      break
+      );
+      TubeResp = playlistMeta;
+      break;
     default:
       console.log(
         colors.red("@error:"),
         colors.white("wrong filter type provided."),
-      )
-      TubeResp = undefined
-      break
+      );
+      TubeResp = undefined;
+      break;
   }
-  await closers(browser)
-  return TubeResp
+  await closers(browser);
+  return TubeResp;
 }
 
-process.on("SIGINT", async () => await closers(browser))
-process.on("SIGTERM", async () => await closers(browser))
-process.on("uncaughtException", async () => await closers(browser))
-process.on("unhandledRejection", async () => await closers(browser))
+process.on("SIGINT", async () => await closers(browser));
+process.on("SIGTERM", async () => await closers(browser));
+process.on("uncaughtException", async () => await closers(browser));
+process.on("unhandledRejection", async () => await closers(browser));

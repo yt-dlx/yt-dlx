@@ -1,52 +1,52 @@
-"use client"
-import Link from "next/link"
-import io from "socket.io-client"
-import { MdSend } from "react-icons/md"
-import { useEffect, useState } from "react"
-import * as socketIO from "socket.io-client"
-import { useParams, useRouter } from "next/navigation"
+"use client";
+import Link from "next/link";
+import io from "socket.io-client";
+import { MdSend } from "react-icons/md";
+import { useEffect, useState } from "react";
+import * as socketIO from "socket.io-client";
+import { useParams, useRouter } from "next/navigation";
 
 export default function Mixly() {
-  const { push } = useRouter()
-  const { croom }: any = useParams()
-  const [messages, setMessages] = useState<string[]>([])
-  const [socket, setSocket] = useState<socketIO.Socket>()
-  const [newMessage, setNewMessage] = useState<string>("")
+  const { push } = useRouter();
+  const { croom }: any = useParams();
+  const [messages, setMessages] = useState<string[]>([]);
+  const [socket, setSocket] = useState<socketIO.Socket>();
+  const [newMessage, setNewMessage] = useState<string>("");
   useEffect(() => {
     fetch("/ioSocket").finally(() => {
-      let ioSocket = io()
+      let ioSocket = io();
       const handleJoinError = () => {
-        push("/chat")
-      }
+        push("/chat");
+      };
       const handleCreateError = () => {
-        push("/chat")
-      }
+        push("/chat");
+      };
       const handleMsgResp = (data: any) => {
-        setMessages(prev => [...prev, data])
-      }
-      ioSocket.emit("room[join]", { rQuery: croom, User: ioSocket.id })
-      ioSocket.on("room[crErr]", handleCreateError)
-      ioSocket.on("room[jrErr]", handleJoinError)
-      ioSocket.on("msg[Resp]", handleMsgResp)
-      setSocket(ioSocket)
+        setMessages(prev => [...prev, data]);
+      };
+      ioSocket.emit("room[join]", { rQuery: croom, User: ioSocket.id });
+      ioSocket.on("room[crErr]", handleCreateError);
+      ioSocket.on("room[jrErr]", handleJoinError);
+      ioSocket.on("msg[Resp]", handleMsgResp);
+      setSocket(ioSocket);
       return () => {
-        ioSocket.off("room[crErr]", handleCreateError)
-        ioSocket.off("room[jrErr]", handleJoinError)
-        ioSocket.off("msg[Resp]", handleMsgResp)
-        ioSocket.disconnect()
-      }
-    })
-  }, [push, croom])
+        ioSocket.off("room[crErr]", handleCreateError);
+        ioSocket.off("room[jrErr]", handleJoinError);
+        ioSocket.off("msg[Resp]", handleMsgResp);
+        ioSocket.disconnect();
+      };
+    });
+  }, [push, croom]);
 
   const reqMessages = (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
     socket?.emit("msg[Req]", {
       text: newMessage,
       user: socket.id,
       room: croom,
-    })
-    setNewMessage("")
-  }
+    });
+    setNewMessage("");
+  };
 
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#18181b] scrollbar-track-[#18181b] scrollbar-thumb-[#e73d75]">
@@ -130,5 +130,5 @@ export default function Mixly() {
         </div>
       </footer>
     </main>
-  )
+  );
 }

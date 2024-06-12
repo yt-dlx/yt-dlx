@@ -1,6 +1,6 @@
-import colors from "colors"
-import ytdlx from "../../base/Agent"
-import type EngineOutput from "../../interfaces/EngineOutput"
+import colors from "colors";
+import ytdlx from "../../base/Agent";
+import type EngineOutput from "../../interfaces/EngineOutput";
 
 /**
  * Extracts metadata information from a YouTube video.
@@ -14,66 +14,66 @@ export default async function extract({
   query,
   verbose,
 }: {
-  query: string
-  verbose?: boolean
+  query: string;
+  verbose?: boolean;
 }) {
-  var metaBody: EngineOutput = await ytdlx({ query, verbose })
+  var metaBody: EngineOutput = await ytdlx({ query, verbose });
   if (!metaBody) {
     return {
       message: "Unable to get response!",
       status: 500,
-    }
+    };
   }
   var uploadDate = new Date(
     metaBody.metaData.upload_date.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
-  )
-  var currentDate = new Date()
+  );
+  var currentDate = new Date();
   var daysAgo = Math.floor(
     (currentDate.getTime() - uploadDate.getTime()) / (1000 * 60 * 60 * 24),
-  )
+  );
   var prettyDate = uploadDate.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
-  })
-  var uploadAgoObject = calculateUploadAgo(daysAgo)
-  var videoTimeInSeconds = metaBody.metaData.duration
-  var videoDuration = calculateVideoDuration(videoTimeInSeconds)
-  var viewCountFormatted = formatCount(metaBody.metaData.view_count)
-  var likeCountFormatted = formatCount(metaBody.metaData.like_count)
+  });
+  var uploadAgoObject = calculateUploadAgo(daysAgo);
+  var videoTimeInSeconds = metaBody.metaData.duration;
+  var videoDuration = calculateVideoDuration(videoTimeInSeconds);
+  var viewCountFormatted = formatCount(metaBody.metaData.view_count);
+  var likeCountFormatted = formatCount(metaBody.metaData.like_count);
   function calculateUploadAgo(days: number) {
-    var years = Math.floor(days / 365)
-    var months = Math.floor((days % 365) / 30)
-    var remainingDays = days % 30
+    var years = Math.floor(days / 365);
+    var months = Math.floor((days % 365) / 30);
+    var remainingDays = days % 30;
     var formattedString = `${years > 0 ? years + " years, " : ""}${
       months > 0 ? months + " months, " : ""
-    }${remainingDays} days`
-    return { years, months, days: remainingDays, formatted: formattedString }
+    }${remainingDays} days`;
+    return { years, months, days: remainingDays, formatted: formattedString };
   }
   function calculateVideoDuration(seconds: number) {
-    var hours = Math.floor(seconds / 3600)
-    var minutes = Math.floor((seconds % 3600) / 60)
-    var remainingSeconds = seconds % 60
+    var hours = Math.floor(seconds / 3600);
+    var minutes = Math.floor((seconds % 3600) / 60);
+    var remainingSeconds = seconds % 60;
     var formattedString = `${hours > 0 ? hours + " hours, " : ""}${
       minutes > 0 ? minutes + " minutes, " : ""
-    }${remainingSeconds} seconds`
+    }${remainingSeconds} seconds`;
     return {
       hours,
       minutes,
       seconds: remainingSeconds,
       formatted: formattedString,
-    }
+    };
   }
   function formatCount(count: number) {
-    var abbreviations = ["K", "M", "B", "T"]
+    var abbreviations = ["K", "M", "B", "T"];
     for (var i = abbreviations.length - 1; i >= 0; i--) {
-      var size = Math.pow(10, (i + 1) * 3)
+      var size = Math.pow(10, (i + 1) * 3);
       if (size <= count) {
-        var formattedCount = Math.round((count / size) * 10) / 10
-        return `${formattedCount}${abbreviations[i]}`
+        var formattedCount = Math.round((count / size) * 10) / 10;
+        return `${formattedCount}${abbreviations[i]}`;
       }
     }
-    return `${count}`
+    return `${count}`;
   }
   var payload = {
     AudioLowF: metaBody.AudioLowF,
@@ -123,7 +123,7 @@ export default async function extract({
         metaBody.metaData.channel_follower_count,
       ),
     },
-  }
+  };
   console.log(
     colors.green("@info:"),
     "❣️ Thank you for using",
@@ -132,6 +132,6 @@ export default async function extract({
     colors.green("🌟starring"),
     "the github repo",
     colors.green("https://github.com/yt-dlx\n"),
-  )
-  return payload
+  );
+  return payload;
 }

@@ -1,29 +1,29 @@
-"use client"
-import react from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { SiBun } from "react-icons/si"
-import { FaYarn } from "react-icons/fa"
-import { SiPnpm } from "react-icons/si"
-import { HiFire } from "react-icons/hi"
-import { GoNumber } from "react-icons/go"
-import { TbBrandNpm } from "react-icons/tb"
-import { FaLightbulb } from "react-icons/fa"
-import { MdAudioFile } from "react-icons/md"
-import { FaFileVideo } from "react-icons/fa6"
-import { TbWorldSearch } from "react-icons/tb"
-import { TbDiamondFilled } from "react-icons/tb"
-import NavPackage from "@/pages/components/nav"
-import FootPackage from "@/pages/components/foot"
-import { SiFirefoxbrowser } from "react-icons/si"
-import VerPackage from "@/pages/components/version"
-import { SiGradleplaypublisher } from "react-icons/si"
-import { AiFillCodeSandboxCircle } from "react-icons/ai"
-import { useQueryClient, useMutation } from "@tanstack/react-query"
+"use client";
+import react from "react";
+import Link from "next/link";
+import Image from "next/image";
+import { SiBun } from "react-icons/si";
+import { FaYarn } from "react-icons/fa";
+import { SiPnpm } from "react-icons/si";
+import { HiFire } from "react-icons/hi";
+import { GoNumber } from "react-icons/go";
+import { TbBrandNpm } from "react-icons/tb";
+import { FaLightbulb } from "react-icons/fa";
+import { MdAudioFile } from "react-icons/md";
+import { FaFileVideo } from "react-icons/fa6";
+import { TbWorldSearch } from "react-icons/tb";
+import { TbDiamondFilled } from "react-icons/tb";
+import NavPackage from "@/pages/components/nav";
+import FootPackage from "@/pages/components/foot";
+import { SiFirefoxbrowser } from "react-icons/si";
+import VerPackage from "@/pages/components/version";
+import { SiGradleplaypublisher } from "react-icons/si";
+import { AiFillCodeSandboxCircle } from "react-icons/ai";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 export default function home() {
-  var [Query, setQuery] = react.useState<string>("")
-  var [TubeSearch, setTubeSearch] = react.useState<any>(null)
+  var [Query, setQuery] = react.useState<string>("");
+  var [TubeSearch, setTubeSearch] = react.useState<any>(null);
   var ApiSearch = useMutation({
     mutationFn: async () => {
       var resp = await fetch("/api/search", {
@@ -34,12 +34,12 @@ export default function home() {
         body: JSON.stringify({
           query: Query,
         }),
-      })
-      if (resp.status === 200) setTubeSearch(await resp.json())
-      else setTubeSearch(null)
+      });
+      if (resp.status === 200) setTubeSearch(await resp.json());
+      else setTubeSearch(null);
     },
     onMutate: () => console.log("ApiSearch started!"),
-  })
+  });
 
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#111111] scrollbar-track-[#111111] scrollbar-thumb-red-600">
@@ -122,9 +122,9 @@ export default function home() {
           className="flex flex-col items-center justify-center">
           <form
             onSubmit={event => {
-              event.preventDefault()
-              setTubeSearch(null)
-              ApiSearch.mutate()
+              event.preventDefault();
+              setTubeSearch(null);
+              ApiSearch.mutate();
             }}
             className="bg-stone-950 max-w-screen-2xl p-10 text-red-600 mx-auto my-8 rounded-2xl border-4 border-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)] shadow-red-600">
             <h1 className="text-6xl mb-4 font-bold">Yt-Dlx PlayGround</h1>
@@ -690,5 +690,5 @@ className="text-sm overflow-x-auto overflow-y-auto"
       </react.Fragment>
       <FootPackage />
     </main>
-  )
+  );
 }

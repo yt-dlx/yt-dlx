@@ -1,13 +1,13 @@
-"use client"
-import { SiBun } from "react-icons/si"
-import { FaYarn } from "react-icons/fa"
-import { SiPnpm } from "react-icons/si"
-import React, { useState } from "react"
-import { TbBrandNpm } from "react-icons/tb"
-import NavPackage from "@/pages/components/nav"
-import { motion, AnimatePresence } from "framer-motion"
-import SyntaxHighlighter from "react-syntax-highlighter"
-import { gruvboxDark } from "react-syntax-highlighter/dist/esm/styles/hljs"
+"use client";
+import { SiBun } from "react-icons/si";
+import { FaYarn } from "react-icons/fa";
+import { SiPnpm } from "react-icons/si";
+import React, { useState } from "react";
+import { TbBrandNpm } from "react-icons/tb";
+import NavPackage from "@/pages/components/nav";
+import { motion, AnimatePresence } from "framer-motion";
+import SyntaxHighlighter from "react-syntax-highlighter";
+import { gruvboxDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
 
 const dbAcc = [
   {
@@ -424,13 +424,13 @@ const express = require("express");
       </SyntaxHighlighter>
     ),
   },
-]
+];
 
 export default function AwesomePackage({ param }: any) {
-  const [set, isSet] = useState<number | null>(null)
+  const [set, isSet] = useState<number | null>(null);
   const handleSet = (index: number) => {
-    isSet(prev => (prev === index ? null : index))
-  }
+    isSet(prev => (prev === index ? null : index));
+  };
 
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-[#1A1A1C] scrollbar-track-[#1A1A1C] scrollbar-thumb-red-600">
@@ -592,5 +592,5 @@ export default function AwesomePackage({ param }: any) {
         </span>
       </footer>
     </main>
-  )
+  );
 }

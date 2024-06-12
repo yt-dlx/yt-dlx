@@ -1,9 +1,9 @@
-import react from "react"
-import { motion } from "framer-motion"
+import react from "react";
+import { motion } from "framer-motion";
 
 const PnpmModel: React.FC<{
-  isOpen: boolean
-  onClose: () => void
+  isOpen: boolean;
+  onClose: () => void;
 }> = ({ isOpen, onClose }) => {
   return (
     <react.Fragment>
@@ -33,7 +33,7 @@ const PnpmModel: React.FC<{
         </motion.div>
       )}
     </react.Fragment>
-  )
-}
+  );
+};
 
-export default PnpmModel
+export default PnpmModel;

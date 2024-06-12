@@ -15,4 +15,3 @@ const handler = {
 };
 contextBridge.exposeInMainWorld("ipc", handler);
 export type IpcHandler = typeof handler;
-

@@ -1,19 +1,19 @@
-import react from "react"
-import Link from "next/link"
-import { motion } from "framer-motion"
-import { FaClipboardCheck } from "react-icons/fa"
-import { HiFolderDownload } from "react-icons/hi"
+import react from "react";
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { FaClipboardCheck } from "react-icons/fa";
+import { HiFolderDownload } from "react-icons/hi";
 
 const FromLeftToRight = {
   initial: { opacity: 0, x: -100 },
   exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
   whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } },
-}
+};
 const FromRightToLeft = {
   initial: { opacity: 0, x: 100 },
   exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
   whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } },
-}
+};
 const AndBounce = {
   initial: { opacity: 0, y: -50 },
   whileInView: {
@@ -22,7 +22,7 @@ const AndBounce = {
     transition: { duration: 0.8, bounce: 0.3 },
   },
   exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
-}
+};
 
 export default function Playground(): JSX.Element {
   return (
@@ -84,5 +84,5 @@ export default function Playground(): JSX.Element {
         </div>
       </motion.section>
     </react.Fragment>
-  )
+  );
 }

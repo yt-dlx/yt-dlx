@@ -1,38 +1,38 @@
-import "./globals.css"
-import type { Metadata } from "next"
-import localFont from "next/font/local"
-import GlobalProviders from "./providers"
+import "./globals.css";
+import type { Metadata } from "next";
+import localFont from "next/font/local";
+import GlobalProviders from "./providers";
 
 const JosefinSansBold = localFont({
   src: "../pages/fonts/JosefinSansBold.ttf",
   variable: "--font-JosefinSansBold",
-})
+});
 const JosefinSansLight = localFont({
   src: "../pages/fonts/JosefinSansLight.ttf",
   variable: "--font-JosefinSansLight",
-})
+});
 const JosefinSansRegular = localFont({
   src: "../pages/fonts/JosefinSansRegular.ttf",
   variable: "--font-JosefinSansRegular",
-})
+});
 const JosefinSansSemibold = localFont({
   src: "../pages/fonts/JosefinSansSemibold.ttf",
   variable: "--font-JosefinSansSemibold",
-})
+});
 const AspireDemibold = localFont({
   src: "../pages/fonts/AspireDemibold.ttf",
   variable: "--font-AspireDemibold",
-})
+});
 
 export const metadata: Metadata = {
   title: "yt-dlx",
   description: "Effortless Audio-Video Downloader And Streamer!",
-}
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -41,5 +41,5 @@ export default function RootLayout({
         <GlobalProviders>{children}</GlobalProviders>
       </body>
     </html>
-  )
+  );
 }

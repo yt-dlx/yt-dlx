@@ -5,5 +5,5 @@ export default function VerPackage() {
         YT-DLX@12.6.0
       </h1>
     </div>
-  )
+  );
 }

@@ -8,7 +8,7 @@ import Store from "electron-store";
 
 export const createWindow = (
   windowName: string,
-  options: BrowserWindowConstructorOptions
+  options: BrowserWindowConstructorOptions,
 ): BrowserWindow => {
   const key = "window-state";
   const name = `window-state-${windowName}`;
@@ -44,8 +44,8 @@ export const createWindow = (
       y: (bounds.height - defaultSize.height) / 2,
     });
   };
-  const ensureVisibleOnSomeDisplay = (windowState) => {
-    const visible = screen.getAllDisplays().some((display) => {
+  const ensureVisibleOnSomeDisplay = windowState => {
+    const visible = screen.getAllDisplays().some(display => {
       return windowWithinBounds(windowState, display.bounds);
     });
     if (!visible) return resetToDefaults();

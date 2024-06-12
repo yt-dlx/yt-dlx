@@ -1,7 +1,7 @@
-import Link from "next/link"
-import { RiHome5Fill } from "react-icons/ri"
-import { IoCaretBackOutline } from "react-icons/io5"
-import { IoCaretForwardOutline } from "react-icons/io5"
+import Link from "next/link";
+import { RiHome5Fill } from "react-icons/ri";
+import { IoCaretBackOutline } from "react-icons/io5";
+import { IoCaretForwardOutline } from "react-icons/io5";
 
 export default function NavPackage() {
   return (
@@ -25,5 +25,5 @@ export default function NavPackage() {
         </button>
       </div>
     </nav>
-  )
+  );
 }

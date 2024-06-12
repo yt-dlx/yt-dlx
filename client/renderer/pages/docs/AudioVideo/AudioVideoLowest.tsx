@@ -1,23 +1,23 @@
-import React from "react"
-import { motion } from "framer-motion"
-import NavPackage from "../../components/nav"
-import { MdDescription } from "react-icons/md"
-import FootPackage from "../../components/foot"
-import { FaClipboardCheck } from "react-icons/fa"
-import { BiLogoTypescript } from "react-icons/bi"
-import { RiJavascriptFill } from "react-icons/ri"
-import Introduction from "../../home/Introduction"
+import React from "react";
+import { motion } from "framer-motion";
+import NavPackage from "../../components/nav";
+import { MdDescription } from "react-icons/md";
+import FootPackage from "../../components/foot";
+import { FaClipboardCheck } from "react-icons/fa";
+import { BiLogoTypescript } from "react-icons/bi";
+import { RiJavascriptFill } from "react-icons/ri";
+import Introduction from "../../home/Introduction";
 
 const FromLeftToRight = {
   initial: { opacity: 0, x: -100 },
   exit: { opacity: 0, x: -50, transition: { duration: 0.3 } },
   whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } },
-}
+};
 const FromRightToLeft = {
   initial: { opacity: 0, x: 100 },
   exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
   whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } },
-}
+};
 const AndBounce = {
   initial: { opacity: 0, y: -50 },
   whileInView: {
@@ -26,7 +26,7 @@ const AndBounce = {
     transition: { duration: 0.8, bounce: 0.3 },
   },
   exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
-}
+};
 
 export default function AudioVideoHighest(): JSX.Element {
   return (
@@ -95,7 +95,7 @@ export default function AudioVideoHighest(): JSX.Element {
                     window.open(
                       "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/AudioVideo/single.lowest.test.ts",
                       "_blank",
-                    )
+                    );
                   }}>
                   <BiLogoTypescript className="mr-2 h-5 w-5" />
                   Typescript Example
@@ -106,7 +106,7 @@ export default function AudioVideoHighest(): JSX.Element {
                     window.open(
                       "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/AudioVideo/single.lowest.test.js",
                       "_blank",
-                    )
+                    );
                   }}>
                   <RiJavascriptFill className="mr-2 h-5 w-5" />
                   Javascript Example
@@ -117,7 +117,7 @@ export default function AudioVideoHighest(): JSX.Element {
                     window.open(
                       "https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/AudioVideo/single.lowest.test.mjs",
                       "_blank",
-                    )
+                    );
                   }}>
                   <MdDescription className="mr-2 h-5 w-5" />
                   EcmaScript Example
@@ -137,5 +137,5 @@ export default function AudioVideoHighest(): JSX.Element {
       </motion.section>
       <FootPackage />
     </main>
-  )
+  );
 }

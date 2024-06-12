@@ -1,28 +1,28 @@
-import react from "react"
-import { motion } from "framer-motion"
-import { FaYarn } from "react-icons/fa"
-import { TbBrandNpm } from "react-icons/tb"
-import { SiBun, SiPnpm } from "react-icons/si"
-import NpmModel from "../home/models/NpmModel"
-import BunModel from "../home/models/BunModel"
-import YarnModel from "../home/models/YarnModel"
-import PnpmModel from "../home/models/PnpmModel"
+import react from "react";
+import { motion } from "framer-motion";
+import { FaYarn } from "react-icons/fa";
+import { TbBrandNpm } from "react-icons/tb";
+import { SiBun, SiPnpm } from "react-icons/si";
+import NpmModel from "../home/models/NpmModel";
+import BunModel from "../home/models/BunModel";
+import YarnModel from "../home/models/YarnModel";
+import PnpmModel from "../home/models/PnpmModel";
 
 const FromTopToBottom = {
   initial: { opacity: 0, y: -100 },
   exit: { opacity: 0, y: -50, transition: { duration: 0.3 } },
   whileInView: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-}
+};
 
 export default function Introduction(): JSX.Element {
-  const [ShowYarn, setShowYarn] = react.useState(false)
-  const [ShowPnpm, setShowPnpm] = react.useState(false)
-  const [ShowNpm, setShowNpm] = react.useState(false)
-  const [ShowBun, setShowBun] = react.useState(false)
-  const ToggleYarn = () => setShowYarn(!ShowYarn)
-  const TogglePnpm = () => setShowPnpm(!ShowPnpm)
-  const ToggleNpm = () => setShowNpm(!ShowNpm)
-  const ToggleBun = () => setShowBun(!ShowBun)
+  const [ShowYarn, setShowYarn] = react.useState(false);
+  const [ShowPnpm, setShowPnpm] = react.useState(false);
+  const [ShowNpm, setShowNpm] = react.useState(false);
+  const [ShowBun, setShowBun] = react.useState(false);
+  const ToggleYarn = () => setShowYarn(!ShowYarn);
+  const TogglePnpm = () => setShowPnpm(!ShowPnpm);
+  const ToggleNpm = () => setShowNpm(!ShowNpm);
+  const ToggleBun = () => setShowBun(!ShowBun);
 
   return (
     <react.Fragment>
@@ -85,5 +85,5 @@ export default function Introduction(): JSX.Element {
       <NpmModel isOpen={ShowNpm} onClose={ToggleNpm} />
       <BunModel isOpen={ShowBun} onClose={ToggleBun} />
     </react.Fragment>
-  )
+  );
 }

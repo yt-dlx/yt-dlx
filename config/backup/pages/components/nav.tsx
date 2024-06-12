@@ -1,6 +1,6 @@
-"use client"
-import Link from "next/link"
-import { RiHome5Fill } from "react-icons/ri"
+"use client";
+import Link from "next/link";
+import { RiHome5Fill } from "react-icons/ri";
 
 export default function NavPackage() {
   return (
@@ -17,5 +17,5 @@ export default function NavPackage() {
         </Link>
       </div>
     </nav>
-  )
+  );
 }

@@ -6,5 +6,5 @@ export default function FootPackage() {
       <span className="text-4xl font-black mr-2">Yt-Dlx</span>
       <span className="mt-2 text-sm font-bold">Copyright © 2024</span>
     </footer>
-  )
+  );
 }
