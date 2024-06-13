@@ -31,6 +31,8 @@
     "next:build": "cd next && yarn build",
     "next:start": "cd next && yarn start",
     "next:clean": "cd next && yarn clean",
+    "client:dev": "cd client && yarn run dev",
+    "client:build": "cd client && yarn run build",
     "clean": "yarn clean:base && yarn clean:next && yarn clean:client",
     "clean:base": "node ./util/clean/base.mjs",
     "clean:client": "node ./util/clean/client.mjs",
