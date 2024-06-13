@@ -2,10 +2,7 @@ import chalk from "chalk";
 import ytdlx from "yt-dlx";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const videoId: any = req.query.videoId;
     console.log(chalk.green("❓ videoId:"), videoId);

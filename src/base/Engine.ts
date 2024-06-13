@@ -7,9 +7,7 @@ import type AudioFormat from "../interfaces/AudioFormat";
 import type VideoFormat from "../interfaces/VideoFormat";
 import type EngineOutput from "../interfaces/EngineOutput";
 
-export var sizeFormat: sizeFormat = (
-  filesize: number,
-): string | number => {
+export var sizeFormat: sizeFormat = (filesize: number): string | number => {
   if (isNaN(filesize) || filesize < 0) return filesize;
   var bytesPerMegabyte = 1024 * 1024;
   var bytesPerGigabyte = bytesPerMegabyte * 1024;
@@ -19,8 +17,7 @@ export var sizeFormat: sizeFormat = (
     return (filesize / bytesPerMegabyte).toFixed(2) + " MB";
   } else if (filesize < bytesPerTerabyte) {
     return (filesize / bytesPerGigabyte).toFixed(2) + " GB";
-  } else
-    return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
+  } else return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
 };
 
 function nAudio(i: any) {
@@ -154,8 +151,7 @@ export default async function Engine({
     maxTimeout: 3000,
   };
   var metaCore = await retry(async () => {
-    if (useTor)
-      pLoc += ` --proxy "socks5://127.0.0.1:9050"`;
+    if (useTor) pLoc += ` --proxy "socks5://127.0.0.1:9050"`;
     pLoc += ` --dump-single-json "${query}"`;
     pLoc += ` --no-check-certificate --prefer-insecure --no-call-home --skip-download --no-warnings --geo-bypass`;
     pLoc += ` --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"`;
@@ -164,56 +160,28 @@ export default async function Engine({
   var i = JSON.parse(metaCore.stdout.toString());
   i.formats.forEach((tube: any) => {
     var rm = new Set(["storyboard", "Default"]);
-    if (
-      !rm.has(tube.format_note) &&
-      tube.protocol === "m3u8_native" &&
-      tube.vbr
-    ) {
-      if (
-        !ManifestLow[tube.resolution] ||
-        tube.vbr < ManifestLow[tube.resolution].vbr
-      )
+    if (!rm.has(tube.format_note) && tube.protocol === "m3u8_native" && tube.vbr) {
+      if (!ManifestLow[tube.resolution] || tube.vbr < ManifestLow[tube.resolution].vbr)
         ManifestLow[tube.resolution] = tube;
-      if (
-        !ManifestHigh[tube.resolution] ||
-        tube.vbr > ManifestHigh[tube.resolution].vbr
-      )
+      if (!ManifestHigh[tube.resolution] || tube.vbr > ManifestHigh[tube.resolution].vbr)
         ManifestHigh[tube.resolution] = tube;
     }
-    if (
-      rm.has(tube.format_note) ||
-      tube.filesize === undefined ||
-      null
-    )
-      return;
+    if (rm.has(tube.format_note) || tube.filesize === undefined || null) return;
     if (tube.format_note.includes("DRC")) {
-      if (
-        AudioLow[tube.resolution] &&
-        !AudioLowDRC[tube.resolution]
-      ) {
-        AudioLowDRC[tube.resolution] =
-          AudioLow[tube.resolution];
+      if (AudioLow[tube.resolution] && !AudioLowDRC[tube.resolution]) {
+        AudioLowDRC[tube.resolution] = AudioLow[tube.resolution];
       }
-      if (
-        AudioHigh[tube.resolution] &&
-        !AudioHighDRC[tube.resolution]
-      ) {
-        AudioHighDRC[tube.resolution] =
-          AudioHigh[tube.resolution];
+      if (AudioHigh[tube.resolution] && !AudioHighDRC[tube.resolution]) {
+        AudioHighDRC[tube.resolution] = AudioHigh[tube.resolution];
       }
       AudioLowDRC[tube.format_note] = tube;
       AudioHighDRC[tube.format_note] = tube;
     } else if (tube.format_note.includes("HDR")) {
-      if (
-        !VideoLowHDR[tube.format_note] ||
-        tube.filesize <
-          VideoLowHDR[tube.format_note].filesize
-      )
+      if (!VideoLowHDR[tube.format_note] || tube.filesize < VideoLowHDR[tube.format_note].filesize)
         VideoLowHDR[tube.format_note] = tube;
       if (
         !VideoHighHDR[tube.format_note] ||
-        tube.filesize >
-          VideoHighHDR[tube.format_note].filesize
+        tube.filesize > VideoHighHDR[tube.format_note].filesize
       )
         VideoHighHDR[tube.format_note] = tube;
     }
@@ -223,73 +191,50 @@ export default async function Engine({
     var prevHighAudio = AudioHigh[tube.format_note];
     switch (true) {
       case tube.format_note.includes("p"):
-        if (
-          !prevLowVideo ||
-          tube.filesize < prevLowVideo.filesize
-        )
+        if (!prevLowVideo || tube.filesize < prevLowVideo.filesize)
           VideoLow[tube.format_note] = tube;
-        if (
-          !prevHighVideo ||
-          tube.filesize > prevHighVideo.filesize
-        )
+        if (!prevHighVideo || tube.filesize > prevHighVideo.filesize)
           VideoHigh[tube.format_note] = tube;
         break;
       default:
-        if (
-          !prevLowAudio ||
-          tube.filesize < prevLowAudio.filesize
-        )
+        if (!prevLowAudio || tube.filesize < prevLowAudio.filesize)
           AudioLow[tube.format_note] = tube;
-        if (
-          !prevHighAudio ||
-          tube.filesize > prevHighAudio.filesize
-        )
+        if (!prevHighAudio || tube.filesize > prevHighAudio.filesize)
           AudioHigh[tube.format_note] = tube;
         break;
     }
   });
-  (Object.values(AudioLow) as AudioFormat[]).forEach(
-    (audio: AudioFormat) => {
-      if (audio.filesize !== null) {
-        switch (true) {
-          case !AudioLowF ||
-            audio.filesize < AudioLowF.filesize:
-            AudioLowF = audio;
-            break;
-          case !AudioHighF ||
-            audio.filesize > AudioHighF.filesize:
-            AudioHighF = audio;
-            break;
-          default:
-            break;
-        }
+  (Object.values(AudioLow) as AudioFormat[]).forEach((audio: AudioFormat) => {
+    if (audio.filesize !== null) {
+      switch (true) {
+        case !AudioLowF || audio.filesize < AudioLowF.filesize:
+          AudioLowF = audio;
+          break;
+        case !AudioHighF || audio.filesize > AudioHighF.filesize:
+          AudioHighF = audio;
+          break;
+        default:
+          break;
       }
-    },
-  );
-  (Object.values(VideoLow) as VideoFormat[]).forEach(
-    (video: VideoFormat) => {
-      if (video.filesize !== null) {
-        switch (true) {
-          case !VideoLowF ||
-            video.filesize < VideoLowF.filesize:
-            VideoLowF = video;
-            break;
-          case !VideoHighF ||
-            video.filesize > VideoHighF.filesize:
-            VideoHighF = video;
-            break;
-          default:
-            break;
-        }
+    }
+  });
+  (Object.values(VideoLow) as VideoFormat[]).forEach((video: VideoFormat) => {
+    if (video.filesize !== null) {
+      switch (true) {
+        case !VideoLowF || video.filesize < VideoLowF.filesize:
+          VideoLowF = video;
+          break;
+        case !VideoHighF || video.filesize > VideoHighF.filesize:
+          VideoHighF = video;
+          break;
+        default:
+          break;
       }
-    },
-  );
+    }
+  });
   function propfilter(formats: any[]) {
     return formats.filter(i => {
-      return (
-        !i.format_note.includes("DRC") &&
-        !i.format_note.includes("HDR")
-      );
+      return !i.format_note.includes("DRC") && !i.format_note.includes("HDR");
     });
   }
   var payLoad: EngineOutput = {
@@ -310,36 +255,16 @@ export default async function Engine({
       var i = VideoHighF || ({} as VideoFormat);
       return nVideo(i);
     })(),
-    AudioLowDRC: Object.values(AudioLowDRC).map((i: any) =>
-      pAudio(i),
-    ),
-    AudioHighDRC: Object.values(AudioHighDRC).map(
-      (i: any) => pAudio(i),
-    ),
-    AudioLow: propfilter(Object.values(AudioLow)).map(
-      (i: any) => pAudio(i),
-    ),
-    AudioHigh: propfilter(Object.values(AudioHigh)).map(
-      (i: any) => pAudio(i),
-    ),
-    VideoLowHDR: Object.values(VideoLowHDR).map((i: any) =>
-      pVideo(i),
-    ),
-    VideoHighHDR: Object.values(VideoHighHDR).map(
-      (i: any) => pVideo(i),
-    ),
-    VideoLow: propfilter(Object.values(VideoLow)).map(
-      (i: any) => pVideo(i),
-    ),
-    VideoHigh: propfilter(Object.values(VideoHigh)).map(
-      (i: any) => pVideo(i),
-    ),
-    ManifestLow: Object.values(ManifestLow).map((i: any) =>
-      pManifest(i),
-    ),
-    ManifestHigh: Object.values(ManifestHigh).map(
-      (i: any) => pManifest(i),
-    ),
+    AudioLowDRC: Object.values(AudioLowDRC).map((i: any) => pAudio(i)),
+    AudioHighDRC: Object.values(AudioHighDRC).map((i: any) => pAudio(i)),
+    AudioLow: propfilter(Object.values(AudioLow)).map((i: any) => pAudio(i)),
+    AudioHigh: propfilter(Object.values(AudioHigh)).map((i: any) => pAudio(i)),
+    VideoLowHDR: Object.values(VideoLowHDR).map((i: any) => pVideo(i)),
+    VideoHighHDR: Object.values(VideoHighHDR).map((i: any) => pVideo(i)),
+    VideoLow: propfilter(Object.values(VideoLow)).map((i: any) => pVideo(i)),
+    VideoHigh: propfilter(Object.values(VideoHigh)).map((i: any) => pVideo(i)),
+    ManifestLow: Object.values(ManifestLow).map((i: any) => pManifest(i)),
+    ManifestHigh: Object.values(ManifestHigh).map((i: any) => pManifest(i)),
     metaData: {
       ipAddress,
       id: i.id as string,
@@ -355,8 +280,7 @@ export default async function Engine({
       view_count: i.view_count as number,
       like_count: i.like_count as number,
       comment_count: i.comment_count as number,
-      channel_follower_count:
-        i.channel_follower_count as number,
+      channel_follower_count: i.channel_follower_count as number,
       description: i.description as string,
       channel_url: i.channel_url as string,
       webpage_url: i.webpage_url as string,

@@ -13,24 +13,17 @@ export interface playlistVideosType {
     thumbnails: string[];
   };
 }
-export default async function playlistVideos({
-  playlistId,
-}: {
-  playlistId: string;
-}) {
+export default async function playlistVideos({ playlistId }: { playlistId: string }) {
   try {
     const youtube = new Client();
-    const playlistVideos: any =
-      await youtube.getPlaylist(playlistId);
-    const result = playlistVideos.videos.items.map(
-      (item: any) => ({
-        id: item.id,
-        title: item.title,
-        isLive: item.isLive,
-        duration: item.duration,
-        thumbnails: item.thumbnails,
-      }),
-    );
+    const playlistVideos: any = await youtube.getPlaylist(playlistId);
+    const result = playlistVideos.videos.items.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      isLive: item.isLive,
+      duration: item.duration,
+      thumbnails: item.thumbnails,
+    }));
     return {
       id: playlistVideos.id,
       title: playlistVideos.title,

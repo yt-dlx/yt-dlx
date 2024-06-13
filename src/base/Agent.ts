@@ -15,12 +15,9 @@ var reOpts = {
 
 async function sip(): Promise<string> {
   return await retry(async () => {
-    var op = execSync(
-      "curl https://checkip.amazonaws.com --insecure",
-      {
-        stdio: "pipe",
-      },
-    );
+    var op = execSync("curl https://checkip.amazonaws.com --insecure", {
+      stdio: "pipe",
+    });
     return op.toString().trim();
   }, reOpts);
 }
@@ -113,80 +110,40 @@ export default async function Agent({
   if (verbose) {
     switch (useTor) {
       case true:
-        console.log(
-          colors.green("@info:"),
-          "system ipAddress",
-          ipsys,
-        );
+        console.log(colors.green("@info:"), "system ipAddress", ipsys);
         if (process.platform === "win32") {
-          console.log(
-            colors.red("@error:"),
-            "TOR can't be used on your system!",
-          );
-        } else
-          console.log(
-            colors.green("@info:"),
-            "socks5 ipAddress",
-            iptor,
-          );
+          console.log(colors.red("@error:"), "TOR can't be used on your system!");
+        } else console.log(colors.green("@info:"), "socks5 ipAddress", iptor);
         break;
       default:
-        console.log(
-          colors.green("@info:"),
-          "system ipAddress",
-          ipsys,
-        );
+        console.log(colors.green("@info:"), "system ipAddress", ipsys);
         break;
     }
-    console.log(
-      colors.green("@info:"),
-      "is sudo available",
-      await sudo(),
-    );
-    console.log(
-      colors.green("@info:"),
-      "is service available",
-      isservice,
-    );
-    console.log(
-      colors.green("@info:"),
-      "is systemctl available",
-      issystemctl,
-    );
+    console.log(colors.green("@info:"), "is sudo available", await sudo());
+    console.log(colors.green("@info:"), "is service available", isservice);
+    console.log(colors.green("@info:"), "is systemctl available", issystemctl);
   }
   var TubeBody: any;
   var respEngine: EngineOutput | undefined = undefined;
   var videoId: string | undefined = await YouTubeID(query);
   if (!videoId) {
     TubeBody = await web.searchVideos({ query });
-    if (!TubeBody[0])
-      throw new Error("Unable to get response!");
-    console.log(
-      colors.green("@info:"),
-      "preparing payload for",
-      TubeBody[0].title,
-    );
+    if (!TubeBody[0]) throw new Error("Unable to get response!");
+    console.log(colors.green("@info:"), "preparing payload for", TubeBody[0].title);
     respEngine = await Engine({
       sudo: await sudo(),
       ipAddress: iptor || ipsys,
-      query:
-        "https://www.youtube.com/watch?v=" + TubeBody[0].id,
+      query: "https://www.youtube.com/watch?v=" + TubeBody[0].id,
     });
     return respEngine;
   } else {
     TubeBody = await web.singleVideo({ videoId });
-    if (!TubeBody)
-      throw new Error("Unable to get response!");
-    console.log(
-      colors.green("@info:"),
-      "preparing payload for",
-      TubeBody.title,
-    );
+    if (!TubeBody) throw new Error("Unable to get response!");
+    console.log(colors.green("@info:"), "preparing payload for", TubeBody.title);
     respEngine = await Engine({
       sudo: await sudo(),
       ipAddress: iptor || ipsys,
-      query:
-        "https://www.youtube.com/watch?v=" + TubeBody.id,
+      query: "https://www.youtube.com/watch?v=" + TubeBody.id,
     });
     return respEngine;
   }

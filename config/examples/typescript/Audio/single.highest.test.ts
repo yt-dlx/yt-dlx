@@ -28,22 +28,12 @@ import * as fs from "fs";
       output: "public/audio",
       query: "video-NAME/ID/URL",
     });
-    if (
-      result &&
-      "ffmpeg" in result &&
-      "filename" in result
-    ) {
-      result.ffmpeg.pipe(
-        fs.createWriteStream(result.filename),
-        {
-          end: true,
-        },
-      );
+    if (result && "ffmpeg" in result && "filename" in result) {
+      result.ffmpeg.pipe(fs.createWriteStream(result.filename), {
+        end: true,
+      });
     } else {
-      console.error(
-        colors.red("@error:"),
-        "ffmpeg or filename not found!",
-      );
+      console.error(colors.red("@error:"), "ffmpeg or filename not found!");
     }
   } catch (error: any) {
     console.error(colors.red(error.message));
@@ -59,32 +49,21 @@ import express from "express";
     server.get("/audio/:query", async (req, res) => {
       try {
         const queryParam = req.params.query;
-        const result =
-          await YouTube.AudioOnly.Single.Highest({
-            stream: true,
-            verbose: true,
-            useTor: false,
-            query: queryParam,
-          });
-        if (
-          result &&
-          "ffmpeg" in result &&
-          "filename" in result
-        ) {
+        const result = await YouTube.AudioOnly.Single.Highest({
+          stream: true,
+          verbose: true,
+          useTor: false,
+          query: queryParam,
+        });
+        if (result && "ffmpeg" in result && "filename" in result) {
           result.ffmpeg.pipe(res, { end: true });
-        } else
-          res
-            .status(404)
-            .send("ffmpeg or filename not found!");
+        } else res.status(404).send("ffmpeg or filename not found!");
       } catch (error: any) {
         res.status(500).send(error.message);
       }
     });
     server.listen(3000, () => {
-      console.log(
-        colors.blue("@server:"),
-        "running on port 3000",
-      );
+      console.log(colors.blue("@server:"), "running on port 3000");
     });
   } catch (error: any) {
     console.error(colors.red(error.message));

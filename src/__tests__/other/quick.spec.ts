@@ -23,12 +23,8 @@ var proc = AudioLowest({
   .on("end", filename => console.log("@end:", filename))
   .on("error", error => console.error("@error:", error))
   .on("start", command => console.log("@start:", command))
-  .on("metadata", metadata =>
-    console.log("@metadata:", metadata),
-  )
-  .on("ready", ({ ffmpeg, filename }) =>
-    console.log(ffmpeg, filename),
-  );
+  .on("metadata", metadata => console.log("@metadata:", metadata))
+  .on("ready", ({ ffmpeg, filename }) => console.log(ffmpeg, filename));
 // =================================[  ]=================================
 var proc = AudioHighest({
   output: path.join(__dirname, "downloads"),
@@ -44,12 +40,8 @@ var proc = AudioHighest({
   .on("end", filename => console.log("@end:", filename))
   .on("error", error => console.error("@error:", error))
   .on("start", command => console.log("@start:", command))
-  .on("metadata", metadata =>
-    console.log("@metadata:", metadata),
-  )
-  .on("ready", ({ ffmpeg, filename }) =>
-    console.log(ffmpeg, filename),
-  );
+  .on("metadata", metadata => console.log("@metadata:", metadata))
+  .on("ready", ({ ffmpeg, filename }) => console.log(ffmpeg, filename));
 // =================================[  ]=================================
 var proc = VideoLowest({
   output: path.join(__dirname, "downloads"),
@@ -65,12 +57,8 @@ var proc = VideoLowest({
   .on("end", filename => console.log("@end:", filename))
   .on("error", error => console.error("@error:", error))
   .on("start", command => console.log("@start:", command))
-  .on("metadata", metadata =>
-    console.log("@metadata:", metadata),
-  )
-  .on("ready", ({ ffmpeg, filename }) =>
-    console.log(ffmpeg, filename),
-  );
+  .on("metadata", metadata => console.log("@metadata:", metadata))
+  .on("ready", ({ ffmpeg, filename }) => console.log(ffmpeg, filename));
 // =================================[  ]=================================
 var proc = VideoHighest({
   output: path.join(__dirname, "downloads"),
@@ -86,12 +74,8 @@ var proc = VideoHighest({
   .on("end", filename => console.log("@end:", filename))
   .on("error", error => console.error("@error:", error))
   .on("start", command => console.log("@start:", command))
-  .on("metadata", metadata =>
-    console.log("@metadata:", metadata),
-  )
-  .on("ready", ({ ffmpeg, filename }) =>
-    console.log(ffmpeg, filename),
-  );
+  .on("metadata", metadata => console.log("@metadata:", metadata))
+  .on("ready", ({ ffmpeg, filename }) => console.log(ffmpeg, filename));
 // =================================[  ]=================================
 var proc = AudioVideoLowest({
   output: path.join(__dirname, "downloads"),
@@ -107,12 +91,8 @@ var proc = AudioVideoLowest({
   .on("end", filename => console.log("@end:", filename))
   .on("error", error => console.error("@error:", error))
   .on("start", command => console.log("@start:", command))
-  .on("metadata", metadata =>
-    console.log("@metadata:", metadata),
-  )
-  .on("ready", ({ ffmpeg, filename }) =>
-    console.log(ffmpeg, filename),
-  );
+  .on("metadata", metadata => console.log("@metadata:", metadata))
+  .on("ready", ({ ffmpeg, filename }) => console.log(ffmpeg, filename));
 // =================================[  ]=================================
 var proc = AudioVideoHighest({
   output: path.join(__dirname, "downloads"),
@@ -128,9 +108,5 @@ var proc = AudioVideoHighest({
   .on("end", filename => console.log("@end:", filename))
   .on("error", error => console.error("@error:", error))
   .on("start", command => console.log("@start:", command))
-  .on("metadata", metadata =>
-    console.log("@metadata:", metadata),
-  )
-  .on("ready", ({ ffmpeg, filename }) =>
-    console.log(ffmpeg, filename),
-  );
+  .on("metadata", metadata => console.log("@metadata:", metadata))
+  .on("ready", ({ ffmpeg, filename }) => console.log(ffmpeg, filename));

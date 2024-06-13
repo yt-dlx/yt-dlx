@@ -13,29 +13,24 @@ export interface searchVideosType {
   description: string;
   thumbnails: string[];
 }
-export default async function searchVideos({
-  query,
-}: {
-  query: string;
-}) {
+export default async function searchVideos({ query }: { query: string }) {
   try {
     const youtube = new Client();
     const searchVideos = await youtube.search(query, {
       type: "video",
     });
-    const result: searchVideosType[] =
-      searchVideos.items.map((item: any) => ({
-        id: item.id,
-        title: item.title,
-        isLive: item.isLive,
-        duration: item.duration,
-        viewCount: item.viewCount,
-        uploadDate: item.uploadDate,
-        channelid: item.channel.id,
-        channelname: item.channel.name,
-        description: item.description,
-        thumbnails: item.thumbnails,
-      }));
+    const result: searchVideosType[] = searchVideos.items.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      isLive: item.isLive,
+      duration: item.duration,
+      viewCount: item.viewCount,
+      uploadDate: item.uploadDate,
+      channelid: item.channel.id,
+      channelname: item.channel.name,
+      description: item.description,
+      thumbnails: item.thumbnails,
+    }));
     return result;
   } catch (error: any) {
     throw new Error(colors.red("@error: ") + error.message);

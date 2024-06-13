@@ -42,12 +42,9 @@ execSync("nginx -c $(pwd)/nginx.conf", {
   stdio: "inherit",
 });
 for (let i = 0; i < nports; i++) {
-  execSync(
-    `pm2 start yarn --name="next-${port + i}" -- start -p ${port + i}`,
-    {
-      stdio: "inherit",
-    },
-  );
+  execSync(`pm2 start yarn --name="next-${port + i}" -- start -p ${port + i}`, {
+    stdio: "inherit",
+  });
 }
 execSync("pm2 monit", { stdio: "inherit" });
 process.on("exit", () => {

@@ -79,44 +79,24 @@ export default function AudioCustom({
         useTor,
       });
       if (!engineData) {
-        throw new Error(
-          `${colors.red("@error:")} unable to get response!`,
-        );
+        throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
-      var title = engineData.metaData.title.replace(
-        /[^a-zA-Z0-9_]+/g,
-        "_",
-      );
+      var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
       var folder = output ? output : __dirname;
-      if (!fs.existsSync(folder))
-        fs.mkdirSync(folder, { recursive: true });
+      if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
       var resolutionFilter = resolution.replace("p", "");
-      var adata = engineData.AudioHigh.find(i =>
-        i.format.includes(resolutionFilter),
-      );
+      var adata = engineData.AudioHigh.find(i => i.format.includes(resolutionFilter));
       if (!adata) {
-        throw new Error(
-          `${colors.red(
-            "@error:",
-          )} no audio data found. use list_formats() maybe?`,
-        );
+        throw new Error(`${colors.red("@error:")} no audio data found. use list_formats() maybe?`);
       }
       var ff = ffmpeg()
-        .setFfmpegPath(
-          (await encore().then(fp => fp.ffmpeg)).toString(),
-        )
-        .setFfprobePath(
-          (
-            await encore().then(fp => fp.ffprobe)
-          ).toString(),
-        )
+        .setFfmpegPath((await encore().then(fp => fp.ffmpeg)).toString())
+        .setFfprobePath((await encore().then(fp => fp.ffprobe)).toString())
         .addInput(adata.url)
         .addInput(engineData.metaData.thumbnail)
         .withOutputFormat("avi");
       var filenameBase = `yt-dlx_(AudioCustom_${resolution}_`;
-      let filename = `${filenameBase}${
-        filter ? filter + ")_" : ")_"
-      }${title}.avi`;
+      let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.avi`;
       var filterMap = {
         bassboost: ["bass=g=10,dynaudnorm=f=150"],
         echo: ["aecho=0.8:0.9:1000:0.3"],
@@ -134,23 +114,14 @@ export default function AudioCustom({
         vaporwave: ["aresample=48000,asetrate=48000*0.8"],
         vibrato: ["vibrato=f=6.5"],
       };
-      if (filter && filterMap[filter])
-        ff.withAudioFilter(filterMap[filter]);
-      ff.addOption(
-        "-headers",
-        `X-Forwarded-For: ${engineData.ipAddress}`,
-      );
+      if (filter && filterMap[filter]) ff.withAudioFilter(filterMap[filter]);
+      ff.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
       ff.on("start", comd => {
-        if (verbose)
-          emitter.emit("log", colors.green("@comd:"), comd);
+        if (verbose) emitter.emit("log", colors.green("@comd:"), comd);
         emitter.emit("start", comd);
       })
-        .on("progress", progress =>
-          emitter.emit("progress", progress),
-        )
-        .on("error", error =>
-          emitter.emit("error", error.message),
-        )
+        .on("progress", progress => emitter.emit("progress", progress))
+        .on("error", error => emitter.emit("error", error.message))
         .on("end", () => emitter.emit("end", filename));
       switch (true) {
         case stream:
@@ -173,27 +144,17 @@ export default function AudioCustom({
         default:
           ff.output(path.join(folder, filename))
             .on("end", () => emitter.emit("end", filename))
-            .on("error", error =>
-              emitter.emit("error", error.message),
-            )
+            .on("error", error => emitter.emit("error", error.message))
             .run();
           break;
       }
     } catch (error: any) {
       switch (true) {
         case error instanceof ZodError:
-          emitter.emit(
-            "error",
-            colors.red("@zod-error:"),
-            error.errors,
-          );
+          emitter.emit("error", colors.red("@zod-error:"), error.errors);
           break;
         default:
-          emitter.emit(
-            "error",
-            colors.red("@error:"),
-            error.message,
-          );
+          emitter.emit("error", colors.red("@error:"), error.message);
           break;
       }
     } finally {

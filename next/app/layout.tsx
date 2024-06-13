@@ -26,15 +26,10 @@ const AspireDemibold = localFont({
 
 export const metadata: Metadata = {
   title: "yt-dlx",
-  description:
-    "Effortless Audio-Video Downloader And Streamer!",
+  description: "Effortless Audio-Video Downloader And Streamer!",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body

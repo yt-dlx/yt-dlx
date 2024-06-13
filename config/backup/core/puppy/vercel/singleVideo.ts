@@ -15,15 +15,10 @@ export interface singleVideoType {
   tags: string;
   likeCount: number;
 }
-export default async function singleVideo({
-  videoId,
-}: {
-  videoId: string;
-}) {
+export default async function singleVideo({ videoId }: { videoId: string }) {
   try {
     const youtube = new Client();
-    const singleVideo: any =
-      await youtube.getVideo(videoId);
+    const singleVideo: any = await youtube.getVideo(videoId);
     return {
       id: singleVideo.id,
       title: singleVideo.title,

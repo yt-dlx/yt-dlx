@@ -3,10 +3,7 @@ import puppeteer, { Browser, Page } from "puppeteer";
 export let browser: Browser;
 export let page: Page;
 
-export default async function crawler(
-  verbose?: boolean,
-  onionTor?: boolean,
-) {
+export default async function crawler(verbose?: boolean, onionTor?: boolean) {
   browser = await puppeteer.launch({
     headless: verbose ? false : true,
     ignoreHTTPSErrors: true,

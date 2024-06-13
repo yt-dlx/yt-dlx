@@ -2,16 +2,10 @@ import chalk from "chalk";
 import ytdlx from "yt-dlx";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse,
-) {
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   try {
     const videoId: any = req.query.videoId;
-    console.log(
-      chalk.green("❓ videoId:"),
-      chalk.italic(videoId),
-    );
+    console.log(chalk.green("❓ videoId:"), chalk.italic(videoId));
     const result = await ytdlx.VideoOnly.Single.Highest({
       useTor: true,
       stream: true,
@@ -19,20 +13,11 @@ export default async function handler(
       query: videoId,
       metadata: false,
     });
-    if (
-      result &&
-      "ffmpeg" in result &&
-      "filename" in result
-    ) {
-      res.setHeader(
-        "Content-Disposition",
-        `attachment; filename="${result.filename}"`,
-      );
-      if (!res.writableEnded)
-        result.ffmpeg.pipe(res, { end: true });
+    if (result && "ffmpeg" in result && "filename" in result) {
+      res.setHeader("Content-Disposition", `attachment; filename="${result.filename}"`);
+      if (!res.writableEnded) result.ffmpeg.pipe(res, { end: true });
       else console.error("@error: no res so cannot pipe.");
-    } else
-      return res.status(400).send("@error: try again!");
+    } else return res.status(400).send("@error: try again!");
   } catch (error: any) {
     return res.status(500).send("@error: " + error.message);
   }

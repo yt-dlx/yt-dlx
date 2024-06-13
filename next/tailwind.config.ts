@@ -3,10 +3,7 @@ import plugin from "tailwindcss/plugin";
 
 const config: Config = {
   darkMode: "class",
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./app/**/*.{js,ts,jsx,tsx}", "./pages/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       textShadow: {
@@ -18,12 +15,8 @@ const config: Config = {
         AspireDemibold: ["var(--font-AspireDemibold)"],
         JosefinSansBold: ["var(--font-JosefinSansBold)"],
         JosefinSansLight: ["var(--font-JosefinSansLight)"],
-        JosefinSansRegular: [
-          "var(--font-JosefinSansRegular)",
-        ],
-        JosefinSansSemibold: [
-          "var(--font-JosefinSansSemibold)",
-        ],
+        JosefinSansRegular: ["var(--font-JosefinSansRegular)"],
+        JosefinSansSemibold: ["var(--font-JosefinSansSemibold)"],
       },
     },
   },

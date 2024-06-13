@@ -8,8 +8,7 @@ export default function NavPackage() {
         href="/"
         className="text-red-600 cursor-pointer text-4xl font-bold flex items-center gap-2 hover:scale-105 duration-500 hover:animate-pulse">
         <RiHome5Fill size={30} />
-        yt-dlx{" "}
-        <span className="text-sm">Copyright © 2024</span>
+        yt-dlx <span className="text-sm">Copyright © 2024</span>
       </Link>
     </nav>
   );

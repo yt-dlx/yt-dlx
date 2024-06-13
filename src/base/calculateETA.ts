@@ -5,14 +5,9 @@
  * @param percent - The completion percentage of the operation.
  * @returns The estimated time remaining in seconds as a string with two decimal places.
  */
-export default function calculateETA(
-  startTime: Date,
-  percent: number,
-): string {
+export default function calculateETA(startTime: Date, percent: number): string {
   var currentTime = new Date();
-  var elapsedTime =
-    (currentTime.getTime() - startTime.getTime()) / 1000;
-  var remainingTime =
-    (elapsedTime / percent) * (100 - percent);
+  var elapsedTime = (currentTime.getTime() - startTime.getTime()) / 1000;
+  var remainingTime = (elapsedTime / percent) * (100 - percent);
   return remainingTime.toFixed(2);
 }

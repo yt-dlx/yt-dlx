@@ -9,24 +9,18 @@ export interface relatedVideosType {
   uploadDate: string;
   thumbnails: string[];
 }
-export default async function relatedVideos({
-  videoId,
-}: {
-  videoId: string;
-}) {
+export default async function relatedVideos({ videoId }: { videoId: string }) {
   try {
     const youtube = new Client();
-    const relatedVideos: any =
-      await youtube.getVideo(videoId);
-    const result: relatedVideosType[] =
-      relatedVideos.related.items.map((item: any) => ({
-        id: item.id,
-        title: item.title,
-        isLive: item.isLive,
-        duration: item.duration,
-        uploadDate: item.uploadDate,
-        thumbnails: item.thumbnails,
-      }));
+    const relatedVideos: any = await youtube.getVideo(videoId);
+    const result: relatedVideosType[] = relatedVideos.related.items.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      isLive: item.isLive,
+      duration: item.duration,
+      uploadDate: item.uploadDate,
+      thumbnails: item.thumbnails,
+    }));
     return result;
   } catch (error: any) {
     throw new Error(colors.red("@error: ") + error.message);

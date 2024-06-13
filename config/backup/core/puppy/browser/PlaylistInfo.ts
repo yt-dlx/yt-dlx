@@ -49,9 +49,7 @@ export default async function PlaylistInfo(
               }
               break;
             default:
-              const resultId = await YouTubeId(
-                `https://www.youtube.com/playlist?list=${input}`,
-              );
+              const resultId = await YouTubeId(`https://www.youtube.com/playlist?list=${input}`);
               if (resultId !== undefined) {
                 query = `https://www.youtube.com/playlist?list=${input}`;
                 return true;
@@ -61,88 +59,54 @@ export default async function PlaylistInfo(
           return false;
         },
         {
-          message:
-            "Query must be a valid YouTube Playlist Link or ID.",
+          message: "Query must be a valid YouTube Playlist Link or ID.",
         },
       ),
     verbose: z.boolean().optional(),
     onionTor: z.boolean().optional(),
     screenshot: z.boolean().optional(),
   });
-  const { screenshot, verbose, onionTor } =
-    await QuerySchema.parseAsync(input);
+  const { screenshot, verbose, onionTor } = await QuerySchema.parseAsync(input);
   let metaTube: any[] = [];
   await crawler(verbose, onionTor);
   await page.goto(query);
   for (let i = 0; i < 40; i++) {
-    await page.evaluate(() =>
-      window.scrollBy(0, window.innerHeight),
-    );
+    await page.evaluate(() => window.scrollBy(0, window.innerHeight));
   }
   if (screenshot) {
     await page.screenshot({
       path: "FilterVideo.png",
     });
-    console.log(
-      colors.yellow("@scrape:"),
-      "took snapshot...",
-    );
+    console.log(colors.yellow("@scrape:"), "took snapshot...");
   }
   const content = await page.content();
   const $ = load(content);
-  const playlistTitle = $(
-    "yt-formatted-string.style-scope.yt-dynamic-sizing-formatted-string",
-  )
+  const playlistTitle = $("yt-formatted-string.style-scope.yt-dynamic-sizing-formatted-string")
     .text()
     .trim();
-  const viewsText: any = $(
-    "yt-formatted-string.byline-item",
-  )
-    .eq(1)
-    .text();
-  const playlistViews = parseInt(
-    viewsText.replace(/,/g, "").match(/\d+/)[0],
-  );
-  let playlistDescription = $(
-    "span#plain-snippet-text",
-  ).text();
+  const viewsText: any = $("yt-formatted-string.byline-item").eq(1).text();
+  const playlistViews = parseInt(viewsText.replace(/,/g, "").match(/\d+/)[0]);
+  let playlistDescription = $("span#plain-snippet-text").text();
 
   // Iterate over each playlist video element
   const videoElements = $("ytd-playlist-video-renderer");
   const videoIdPromises: Promise<string | undefined>[] = [];
   videoElements.each((_index, element) => {
     const title = $(element).find("h3").text().trim();
-    const videoLink =
-      "https://www.youtube.com" +
-      $(element).find("a").attr("href");
+    const videoLink = "https://www.youtube.com" + $(element).find("a").attr("href");
     const videoIdPromise = YouTubeId(videoLink);
     videoIdPromises.push(videoIdPromise);
     videoIdPromise
       .then(videoId => {
-        const newLink =
-          "https://www.youtube.com/watch?v=" + videoId;
+        const newLink = "https://www.youtube.com/watch?v=" + videoId;
         const author = $(element)
-          .find(
-            ".yt-simple-endpoint.style-scope.yt-formatted-string",
-          )
+          .find(".yt-simple-endpoint.style-scope.yt-formatted-string")
           .text();
         const authorUrl =
           "https://www.youtube.com" +
-          $(element)
-            .find(
-              ".yt-simple-endpoint.style-scope.yt-formatted-string",
-            )
-            .attr("href");
-        const views = $(element)
-          .find(
-            ".style-scope.ytd-video-meta-block span:first-child",
-          )
-          .text();
-        const ago = $(element)
-          .find(
-            ".style-scope.ytd-video-meta-block span:last-child",
-          )
-          .text();
+          $(element).find(".yt-simple-endpoint.style-scope.yt-formatted-string").attr("href");
+        const views = $(element).find(".style-scope.ytd-video-meta-block span:first-child").text();
+        const ago = $(element).find(".style-scope.ytd-video-meta-block span:last-child").text();
         const thumbnailUrls = [
           `https://img.youtube.com/vi/${videoId}/sddefault.jpg`,
           `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
@@ -168,11 +132,7 @@ export default async function PlaylistInfo(
   // Wait for all videoIdPromises to resolve
   await Promise.all(videoIdPromises);
 
-  console.log(
-    colors.green("@info:"),
-    colors.white("scrapping done for"),
-    colors.green(query),
-  );
+  console.log(colors.green("@info:"), colors.white("scrapping done for"), colors.green(query));
   await closers(browser);
   return {
     playlistVideos: metaTube,
@@ -185,11 +145,5 @@ export default async function PlaylistInfo(
 
 process.on("SIGINT", async () => await closers(browser));
 process.on("SIGTERM", async () => await closers(browser));
-process.on(
-  "uncaughtException",
-  async () => await closers(browser),
-);
-process.on(
-  "unhandledRejection",
-  async () => await closers(browser),
-);
+process.on("uncaughtException", async () => await closers(browser));
+process.on("unhandledRejection", async () => await closers(browser));

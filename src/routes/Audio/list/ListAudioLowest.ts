@@ -76,26 +76,17 @@ export default async function ListAudioLowest({
       try {
         var playlistId = await YouTubeID(purl);
         if (!playlistId) {
-          console.log(
-            colors.red("@error: "),
-            "@error: invalid playlist",
-            purl,
-          );
+          console.log(colors.red("@error: "), "@error: invalid playlist", purl);
           continue;
         } else {
           var punique = await web.playlistVideos({
             playlistId,
           });
           if (punique === undefined) {
-            console.log(
-              colors.red("@error:"),
-              "unable to get response for",
-              purl,
-            );
+            console.log(colors.red("@error:"), "unable to get response for", purl);
             continue;
           }
-          for (var video of punique.result)
-            unique.add(video);
+          for (var video of punique.result) unique.add(video);
         }
       } catch (error: any) {
         console.log(colors.red("@error:"), error.message);
@@ -115,47 +106,23 @@ export default async function ListAudioLowest({
           useTor,
         });
         if (engineData === undefined) {
-          console.log(
-            colors.red("@error:"),
-            "unable to get response for",
-            video.videoLink,
-          );
+          console.log(colors.red("@error:"), "unable to get response for", video.videoLink);
           continue;
         }
-        var title: string =
-          engineData.metaData.title.replace(
-            /[^a-zA-Z0-9_]+/g,
-            "_",
-          );
-        var folder = output
-          ? path.join(__dirname, output)
-          : __dirname;
-        if (!fs.existsSync(folder))
-          fs.mkdirSync(folder, { recursive: true });
+        var title: string = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
+        var folder = output ? path.join(__dirname, output) : __dirname;
+        if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
         var filename: string = "yt-dlx_(AudioLowest_";
         var ff: FfmpegCommand = ffmpeg()
-          .setFfmpegPath(
-            (
-              await encore().then(fp => fp.ffmpeg)
-            ).toString(),
-          )
-          .setFfprobePath(
-            (
-              await encore().then(fp => fp.ffprobe)
-            ).toString(),
-          );
+          .setFfmpegPath((await encore().then(fp => fp.ffmpeg)).toString())
+          .setFfprobePath((await encore().then(fp => fp.ffprobe)).toString());
         ff.addInput(engineData.AudioLowF.url);
         ff.addInput(engineData.metaData.thumbnail);
         ff.withOutputFormat("avi");
-        ff.addOption(
-          "-headers",
-          "X-Forwarded-For: " + engineData.ipAddress,
-        );
+        ff.addOption("-headers", "X-Forwarded-For: " + engineData.ipAddress);
         switch (filter) {
           case "bassboost":
-            ff.withAudioFilter([
-              "bass=g=10,dynaudnorm=f=150",
-            ]);
+            ff.withAudioFilter(["bass=g=10,dynaudnorm=f=150"]);
             filename += `bassboost)_${title}.avi`;
             break;
           case "echo":
@@ -167,9 +134,7 @@ export default async function ListAudioLowest({
             filename += `flanger)_${title}.avi`;
             break;
           case "nightcore":
-            ff.withAudioFilter([
-              "aresample=48000,asetrate=48000*1.25",
-            ]);
+            ff.withAudioFilter(["aresample=48000,asetrate=48000*1.25"]);
             filename += `nightcore)_${title}.avi`;
             break;
           case "panning":
@@ -209,9 +174,7 @@ export default async function ListAudioLowest({
             filename += `surround)_${title}.avi`;
             break;
           case "vaporwave":
-            ff.withAudioFilter([
-              "aresample=48000,asetrate=48000*0.8",
-            ]);
+            ff.withAudioFilter(["aresample=48000,asetrate=48000*0.8"]);
             filename += `vaporwave)_${title}.avi`;
             break;
           case "vibrato":
@@ -227,8 +190,7 @@ export default async function ListAudioLowest({
         });
         ff.on("start", comd => {
           startTime = new Date();
-          if (verbose)
-            console.info(colors.green("@comd:"), comd);
+          if (verbose) console.info(colors.green("@comd:"), comd);
         });
         ff.on("end", () => process.stdout.write("\n"));
         ff.on("progress", ({ percent, timemark }) => {
@@ -237,34 +199,21 @@ export default async function ListAudioLowest({
           if (percent > 98) percent = 100;
           if (percent < 25) color = colors.red;
           else if (percent < 50) color = colors.yellow;
-          var width = Math.floor(
-            process.stdout.columns / 4,
-          );
+          var width = Math.floor(process.stdout.columns / 4);
           var scomp = Math.round((width * percent) / 100);
-          var progb =
-            color("━").repeat(scomp) +
-            color(" ").repeat(width - scomp);
+          var progb = color("━").repeat(scomp) + color(" ").repeat(width - scomp);
           process.stdout.write(
             `\r${color("@prog:")} ${progb}` +
               ` ${color("| @percent:")} ${percent.toFixed(2)}%` +
               ` ${color("| @timemark:")} ${timemark}` +
-              ` ${color("| @eta:")} ${formatTime(
-                calculateETA(startTime, percent),
-              )}`,
+              ` ${color("| @eta:")} ${formatTime(calculateETA(startTime, percent))}`,
           );
         });
         await new Promise<void>((resolve, _reject) => {
-          ff.output(
-            path.join(
-              folder,
-              filename.replace("_)_", ")_"),
-            ),
-          );
+          ff.output(path.join(folder, filename.replace("_)_", ")_")));
           ff.on("end", () => resolve());
           ff.on("error", error => {
-            throw new Error(
-              colors.red("@error: ") + error.message,
-            );
+            throw new Error(colors.red("@error: ") + error.message);
           });
           ff.run();
         });
@@ -276,13 +225,9 @@ export default async function ListAudioLowest({
   } catch (error: any) {
     switch (true) {
       case error instanceof ZodError:
-        throw new Error(
-          colors.red("@zod-error:") + error.errors,
-        );
+        throw new Error(colors.red("@zod-error:") + error.errors);
       default:
-        throw new Error(
-          colors.red("@error:") + error.message,
-        );
+        throw new Error(colors.red("@error:") + error.message);
     }
   } finally {
     console.log(

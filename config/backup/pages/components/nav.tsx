@@ -9,10 +9,7 @@ export default function NavPackage() {
         <Link
           href="/"
           className="text-red-600 cursor-pointer text-4xl font-bold flex items-center gap-2">
-          <RiHome5Fill
-            size={30}
-            className="hover:scale-125 duration-300 hover:animate-pulse"
-          />{" "}
+          <RiHome5Fill size={30} className="hover:scale-125 duration-300 hover:animate-pulse" />{" "}
           yt-dlx
         </Link>
       </div>
