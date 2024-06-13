@@ -34,10 +34,7 @@
     {
       "name": "Nextron: All",
       "preLaunchTask": "dev",
-      "configurations": [
-        "Nextron: Main",
-        "Nextron: Renderer"
-      ]
+      "configurations": ["Nextron: Main", "Nextron: Renderer"]
     }
   ]
 }

@@ -1,9 +1,4 @@
-import {
-  screen,
-  Rectangle,
-  BrowserWindow,
-  BrowserWindowConstructorOptions,
-} from "electron";
+import { screen, Rectangle, BrowserWindow, BrowserWindowConstructorOptions } from "electron";
 import Store from "electron-store";
 
 export const createWindow = (
@@ -33,10 +28,8 @@ export const createWindow = (
     return (
       windowState.x >= bounds.x &&
       windowState.y >= bounds.y &&
-      windowState.x + windowState.width <=
-        bounds.x + bounds.width &&
-      windowState.y + windowState.height <=
-        bounds.y + bounds.height
+      windowState.x + windowState.width <= bounds.x + bounds.width &&
+      windowState.y + windowState.height <= bounds.y + bounds.height
     );
   };
   const resetToDefaults = () => {
@@ -47,14 +40,9 @@ export const createWindow = (
     });
   };
   const ensureVisibleOnSomeDisplay = windowState => {
-    const visible = screen
-      .getAllDisplays()
-      .some(display => {
-        return windowWithinBounds(
-          windowState,
-          display.bounds,
-        );
-      });
+    const visible = screen.getAllDisplays().some(display => {
+      return windowWithinBounds(windowState, display.bounds);
+    });
     if (!visible) return resetToDefaults();
     return windowState;
   };

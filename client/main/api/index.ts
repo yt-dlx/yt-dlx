@@ -9,20 +9,14 @@ api.on("search", async (event, response) => {
   try {
     var TubeBody: any;
     if (response.videoId) {
-      console.log(
-        colors.green("❓ videoId:"),
-        colors.italic(response.videoId),
-      );
+      console.log(colors.green("❓ videoId:"), colors.italic(response.videoId));
       TubeBody = await ytdlx.ytSearch.Video.Single({
         query: "https://youtu.be/" + response.videoId,
       });
       if (TubeBody) event.reply("search", TubeBody);
       else event.sender.send("search", null);
     } else {
-      console.log(
-        colors.green("❓ query:"),
-        colors.italic(response.query),
-      );
+      console.log(colors.green("❓ query:"), colors.italic(response.query));
       TubeBody = await ytdlx.ytSearch.Video.Multiple({
         query: response.query,
       });
@@ -35,10 +29,7 @@ api.on("search", async (event, response) => {
 });
 api.on("formats", async (event, response) => {
   try {
-    console.log(
-      colors.green("❓ query:"),
-      colors.italic(response.query),
-    );
+    console.log(colors.green("❓ query:"), colors.italic(response.query));
     var io = await ytdlx.info.list_formats({
       query: response.query,
       verbose: response.verbose || false,

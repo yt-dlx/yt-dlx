@@ -16,8 +16,7 @@ function runTestFiles(folderPath: string) {
       const result = spawnSync("node", [filePath], {
         stdio: "inherit",
       });
-      if (result.error)
-        console.error(colors.red("@error:"), result.error);
+      if (result.error) console.error(colors.red("@error:"), result.error);
     }
   });
 }

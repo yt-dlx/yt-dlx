@@ -4,12 +4,7 @@ import colors from "colors";
 import YouTube from "../../";
 (async () => {
   try {
-    const resolutions = [
-      "high",
-      "medium",
-      "low",
-      "ultralow",
-    ] as const;
+    const resolutions = ["high", "medium", "low", "ultralow"] as const;
     for (const resolution of resolutions) {
       await YouTube.AudioOnly.Single.Custom({
         resolution,
