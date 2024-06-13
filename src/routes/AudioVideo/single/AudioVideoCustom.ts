@@ -89,7 +89,7 @@ export default function AudioVideoCustom({
                 /[^a-zA-Z0-9_]+/g,
                 "_",
             );
-            var folder = output ? output : __dirname;
+            var folder = output ? path.join(__dirname, output) : __dirname;
             if (!fs.existsSync(folder))
                 fs.mkdirSync(folder, { recursive: true });
             var ff = ffmpeg()
@@ -146,7 +146,9 @@ export default function AudioVideoCustom({
                 case stream:
                     emitter.emit("ready", {
                         ffmpeg: ff,
-                        filename: path.join(folder, filename),
+                        filename: output
+                            ? path.join(folder, filename)
+                            : filename.replace("_)_", ")_"),
                     });
                     break;
                 case metadata:
@@ -167,7 +169,7 @@ export default function AudioVideoCustom({
                     });
                     break;
                 default:
-                    ff.output(path.join(folder, filename))
+                    ff.output(path.join(folder, filename.replace("_)_", ")_")))
                         .on("end", () => emitter.emit("end", filename))
                         .on("error", error =>
                             emitter.emit("error", error.message),
