@@ -1,0 +1,12 @@
+appId: com.shovitdutta.ytdlx
+productName: yt-dlx
+copyright: Copyright © 2024 Shovit Dutta
+directories:
+    output: dist
+    buildResources: resources
+files:
+    - from: .
+      filter:
+          - package.json
+          - app
+publish: null
