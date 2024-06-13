@@ -1,4 +1,5 @@
 console.clear();
+var baseTime = new Date();
 import * as path from "path";
 import progbar from "../../base/progbar";
 import AudioLowest from "../../routes/Audio/single/AudioLowest";
@@ -8,8 +9,7 @@ import VideoHighest from "../../routes/Video/single/VideoHighest";
 import AudioVideoLowest from "../../routes/AudioVideo/single/AudioVideoLowest";
 import AudioVideoHighest from "../../routes/AudioVideo/single/AudioVideoHighest";
 
-var baseTime = new Date();
-AudioLowest({
+var proc = AudioLowest({
     output: path.join(__dirname, "downloads"),
     query: "21 savage - redrum",
     metadata: false,
@@ -25,8 +25,8 @@ AudioLowest({
     .on("start", command => console.log("@start:", command))
     .on("metadata", metadata => console.log("@metadata:", metadata))
     .on("ready", ({ ffmpeg, filename }) => console.log(ffmpeg, filename));
-
-AudioHighest({
+// =================================[  ]=================================
+var proc = AudioHighest({
     output: path.join(__dirname, "downloads"),
     query: "21 savage - redrum",
     metadata: false,
@@ -42,8 +42,8 @@ AudioHighest({
     .on("start", command => console.log("@start:", command))
     .on("metadata", metadata => console.log("@metadata:", metadata))
     .on("ready", ({ ffmpeg, filename }) => console.log(ffmpeg, filename));
-
-VideoLowest({
+// =================================[  ]=================================
+var proc = VideoLowest({
     output: path.join(__dirname, "downloads"),
     query: "21 savage - redrum",
     metadata: false,
@@ -59,8 +59,8 @@ VideoLowest({
     .on("start", command => console.log("@start:", command))
     .on("metadata", metadata => console.log("@metadata:", metadata))
     .on("ready", ({ ffmpeg, filename }) => console.log(ffmpeg, filename));
-
-VideoHighest({
+// =================================[  ]=================================
+var proc = VideoHighest({
     output: path.join(__dirname, "downloads"),
     query: "21 savage - redrum",
     metadata: false,
@@ -76,8 +76,8 @@ VideoHighest({
     .on("start", command => console.log("@start:", command))
     .on("metadata", metadata => console.log("@metadata:", metadata))
     .on("ready", ({ ffmpeg, filename }) => console.log(ffmpeg, filename));
-
-AudioVideoLowest({
+// =================================[  ]=================================
+var proc = AudioVideoLowest({
     output: path.join(__dirname, "downloads"),
     query: "21 savage - redrum",
     metadata: false,
@@ -93,8 +93,8 @@ AudioVideoLowest({
     .on("start", command => console.log("@start:", command))
     .on("metadata", metadata => console.log("@metadata:", metadata))
     .on("ready", ({ ffmpeg, filename }) => console.log(ffmpeg, filename));
-
-AudioVideoHighest({
+// =================================[  ]=================================
+var proc = AudioVideoHighest({
     output: path.join(__dirname, "downloads"),
     query: "21 savage - redrum",
     metadata: false,
