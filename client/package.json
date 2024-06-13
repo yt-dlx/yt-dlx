@@ -1,6 +1,6 @@
 {
     "name": "yt-dlx",
-    "version": "12.6.0",
+    "version": "12.7.0",
     "license": "Apache-2.0",
     "main": "app/background.js",
     "author": "yt-dlx <yt-dlx@proton.me>",
@@ -28,7 +28,7 @@
         "react-icons": "^5.2.1",
         "tailwind-scrollbar": "^3.0.5",
         "tailwind-scrollbar-hide": "^1.1.7",
-        "yt-dlx": "^12.6.0"
+        "yt-dlx": "^12.7.0"
     },
     "devDependencies": {
         "@types/node": "^20.11.16",
