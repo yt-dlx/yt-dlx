@@ -65,28 +65,22 @@ export default function AudioVideoHighest(): JSX.Element {
                 {...FromLeftToRight}>
                 YtDlx.info.extract()
               </motion.h2>
-              <motion.ul
-                className="grid gap-2 py-4"
-                {...AndBounce}>
+              <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  Extracts metadata information from a
-                  YouTube video.
+                  Extracts metadata information from a YouTube video.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param query - The YouTube video URL or ID
-                  or name.
+                  @param query - The YouTube video URL or ID or name.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param verbose - (optional) Whether to log
-                  verbose output or not.
+                  @param verbose - (optional) Whether to log verbose output or not.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @returns A Promise that resolves with an
-                  object containing metadata information
+                  @returns A Promise that resolves with an object containing metadata information
                   about the video.
                 </li>
               </motion.ul>

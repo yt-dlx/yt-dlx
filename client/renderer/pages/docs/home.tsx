@@ -63,18 +63,12 @@ export default function HomePage(): JSX.Element {
                 {...FromLeftToRight}>
                 Various API Functions
               </motion.h2>
-              <motion.div
-                className="overflow-x-auto"
-                {...AndBounce}>
+              <motion.div className="overflow-x-auto" {...AndBounce}>
                 <table className="table">
                   <thead>
                     <tr>
-                      <th className="text-red-600 font-black uppercase">
-                        Function Name
-                      </th>
-                      <th className="text-red-600 font-black uppercase">
-                        Description
-                      </th>
+                      <th className="text-red-600 font-black uppercase">Function Name</th>
+                      <th className="text-red-600 font-black uppercase">Description</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -88,9 +82,8 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Downloads and processes a single
-                        YouTube video with audio
-                        customization options.
+                        Downloads and processes a single YouTube video with audio customization
+                        options.
                       </td>
                     </tr>
                     <tr>
@@ -103,8 +96,7 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Downloads and processes the highest
-                        quality audio from a single YouTube
+                        Downloads and processes the highest quality audio from a single YouTube
                         video.
                       </td>
                     </tr>
@@ -118,8 +110,7 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Downloads and processes the lowest
-                        quality audio from a single YouTube
+                        Downloads and processes the lowest quality audio from a single YouTube
                         video.
                       </td>
                     </tr>
@@ -133,9 +124,7 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Downloads a YouTube video with
-                        custom resolution and optional video
-                        filter.
+                        Downloads a YouTube video with custom resolution and optional video filter.
                       </td>
                     </tr>
                     <tr>
@@ -148,9 +137,8 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Downloads the highest quality
-                        version of a YouTube video with
-                        optional video filter.
+                        Downloads the highest quality version of a YouTube video with optional video
+                        filter.
                       </td>
                     </tr>
                     <tr>
@@ -163,9 +151,8 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Downloads the lowest quality version
-                        of a YouTube video with optional
-                        video filter.
+                        Downloads the lowest quality version of a YouTube video with optional video
+                        filter.
                       </td>
                     </tr>
                     <tr>
@@ -178,10 +165,8 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Downloads audio and video from a
-                        YouTube video URL with customizable
-                        options such as resolution and
-                        filters.
+                        Downloads audio and video from a YouTube video URL with customizable options
+                        such as resolution and filters.
                       </td>
                     </tr>
                     <tr>
@@ -194,8 +179,7 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Downloads audio and video from a
-                        YouTube video URL with the highest
+                        Downloads audio and video from a YouTube video URL with the highest
                         available resolution.
                       </td>
                     </tr>
@@ -209,9 +193,8 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Downloads audio and video from a
-                        YouTube video URL with the lowest
-                        available resolution.
+                        Downloads audio and video from a YouTube video URL with the lowest available
+                        resolution.
                       </td>
                     </tr>
                     <tr>
@@ -224,8 +207,7 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Extracts metadata information from a
-                        YouTube video.
+                        Extracts metadata information from a YouTube video.
                       </td>
                     </tr>
                     <tr>
@@ -238,9 +220,7 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Lists the available formats and
-                        manifest information for a YouTube
-                        video.
+                        Lists the available formats and manifest information for a YouTube video.
                       </td>
                     </tr>
                     <tr>
@@ -253,8 +233,7 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Extracts metadata for videos in a
-                        YouTube playlist.
+                        Extracts metadata for videos in a YouTube playlist.
                       </td>
                     </tr>
                     <tr>
@@ -266,10 +245,7 @@ export default function HomePage(): JSX.Element {
                           ytSearch.Playlist.Multiple()
                         </Link>
                       </td>
-                      <td className="italic">
-                        Searches for YouTube playlists based
-                        on the query.
-                      </td>
+                      <td className="italic">Searches for YouTube playlists based on the query.</td>
                     </tr>
                     <tr>
                       <td>
@@ -280,10 +256,7 @@ export default function HomePage(): JSX.Element {
                           ytSearch.Video.Multiple()
                         </Link>
                       </td>
-                      <td className="italic">
-                        Searches for YouTube videos based on
-                        the query.
-                      </td>
+                      <td className="italic">Searches for YouTube videos based on the query.</td>
                     </tr>
                     <tr>
                       <td>
@@ -295,8 +268,7 @@ export default function HomePage(): JSX.Element {
                         </Link>
                       </td>
                       <td className="italic">
-                        Fetches data for a single YouTube
-                        video based on the video ID or link.
+                        Fetches data for a single YouTube video based on the video ID or link.
                       </td>
                     </tr>
                   </tbody>

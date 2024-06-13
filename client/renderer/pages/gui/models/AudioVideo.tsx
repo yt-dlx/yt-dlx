@@ -8,9 +8,7 @@ const AudioVideo: React.FC<{
 }> = ({ isOpen, onClose, videoId }) => {
   var [progress, setProgress] = react.useState<any>(null);
   react.useEffect(() => {
-    window.ipc.on("audiovideo", (response: string) =>
-      setProgress(response),
-    );
+    window.ipc.on("audiovideo", (response: string) => setProgress(response));
   }, []);
 
   return (
@@ -24,9 +22,7 @@ const AudioVideo: React.FC<{
           <div className="bg-neutral-900/90 backdrop-blur-lg border-4 border-double border-red-600 p-4 rounded-3xl max-w-lg w-full shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#707070]">
             <h2 className="text-4xl text-red-600 font-black mb-4">
               Choose Your Poison For <br></br>
-              <span className="text-6xl block">
-                Audio + Video
-              </span>
+              <span className="text-6xl block">Audio + Video</span>
             </h2>
             <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start pl-6">
               <li
@@ -49,11 +45,7 @@ const AudioVideo: React.FC<{
               </li>
             </ul>
             {progress && (
-              <progress
-                className="progress h-4 w-80 m-4"
-                value={progress.percent || 0}
-                max="100"
-              />
+              <progress className="progress h-4 w-80 m-4" value={progress.percent || 0} max="100" />
             )}
             <button
               onClick={onClose}

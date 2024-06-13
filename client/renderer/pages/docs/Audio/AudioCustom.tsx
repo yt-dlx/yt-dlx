@@ -65,60 +65,46 @@ export default function AudioCustom(): JSX.Element {
                 {...FromLeftToRight}>
                 YtDlx.AudioOnly.Single.Custom()
               </motion.h2>
-              <motion.ul
-                className="grid gap-2 py-4"
-                {...AndBounce}>
+              <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  Downloads and processes a single YouTube
-                  video with audio customization options.
+                  Downloads and processes a single YouTube video with audio customization options.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param query - The YouTube video URL or ID
-                  or name.
+                  @param query - The YouTube video URL or ID or name.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param output - (optional) The output
-                  directory for the processed file.
+                  @param output - (optional) The output directory for the processed file.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param stream - (optional) Whether to
-                  stream the processed video or not.
+                  @param stream - (optional) Whether to stream the processed video or not.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param filter - (optional) The audio
-                  filter to apply. Available options: echo,
-                  slow, speed, phaser, flanger, panning,
-                  reverse, vibrato, subboost, surround,
-                  bassboost, nightcore, superslow,
-                  vaporwave, superspeed.
+                  @param filter - (optional) The audio filter to apply. Available options: echo,
+                  slow, speed, phaser, flanger, panning, reverse, vibrato, subboost, surround,
+                  bassboost, nightcore, superslow, vaporwave, superspeed.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param verbose - (optional) Whether to log
-                  verbose output or not.
+                  @param verbose - (optional) Whether to log verbose output or not.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param onionTor - (optional) Whether to
-                  use Tor for the download or not.
+                  @param onionTor - (optional) Whether to use Tor for the download or not.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param resolution - The desired audio
-                  resolution. Available options: high,
-                  medium, low, ultralow.
+                  @param resolution - The desired audio resolution. Available options: high, medium,
+                  low, ultralow.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @returns A Promise that resolves with
-                  either `void` (if `stream` is false) or an
-                  object containing the `ffmpeg` instance
-                  and the output filename (if `stream` is
+                  @returns A Promise that resolves with either `void` (if `stream` is false) or an
+                  object containing the `ffmpeg` instance and the output filename (if `stream` is
                   true).
                 </li>
               </motion.ul>

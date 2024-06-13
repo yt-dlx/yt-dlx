@@ -69,12 +69,9 @@ export default function Documentation(): JSX.Element {
                   Comprehensive Guides
                 </motion.h2>
                 <motion.p className="max-w-[600px] text-white md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Our extensive documentation provides
-                  detailed guides and tutorials to help you
-                  get the most out of Yt-Dlx. Whether you're
-                  a beginner or an advanced user, you'll
-                  find everything you need to know about
-                  installation, usage, and more.
+                  Our extensive documentation provides detailed guides and tutorials to help you get
+                  the most out of Yt-Dlx. Whether you're a beginner or an advanced user, you'll find
+                  everything you need to know about installation, usage, and more.
                 </motion.p>
               </div>
               <motion.ul className="grid gap-2 py-4">

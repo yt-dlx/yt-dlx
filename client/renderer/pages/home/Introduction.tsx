@@ -46,10 +46,8 @@ export default function Introduction(): JSX.Element {
               <motion.p
                 className="mx-auto max-w-[700px] text-white font-semibold md:text-xl"
                 {...FromTopToBottom}>
-                Yt-Dlx is a powerful and versatile tool that
-                allows you to download audio and video
-                content from a wide range of sources,
-                including YouTube, Vimeo, and many more.
+                Yt-Dlx is a powerful and versatile tool that allows you to download audio and video
+                content from a wide range of sources, including YouTube, Vimeo, and many more.
               </motion.p>
             </div>
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">

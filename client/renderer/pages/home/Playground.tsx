@@ -61,24 +61,19 @@ export default function Playground(): JSX.Element {
                   Powerful Multimedia Downloading Playground
                 </motion.h2>
                 <motion.p className="max-w-[600px] text-white md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Yt-Dlx allows you to download audio and
-                  video content from a wide range of
-                  sources, including YouTube, Vimeo, and
-                  many more. With its advanced capabilities,
-                  you can customize the download format,
-                  resolution, and more.
+                  Yt-Dlx allows you to download audio and video content from a wide range of
+                  sources, including YouTube, Vimeo, and many more. With its advanced capabilities,
+                  you can customize the download format, resolution, and more.
                 </motion.p>
               </div>
               <motion.ul className="grid gap-2 py-4">
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  Download audio and video from diverse
-                  sources
+                  Download audio and video from diverse sources
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  Customize download format, resolution, and
-                  more
+                  Customize download format, resolution, and more
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
@@ -86,8 +81,7 @@ export default function Playground(): JSX.Element {
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  Seamless integration with Node.js and
-                  other environments
+                  Seamless integration with Node.js and other environments
                 </li>
               </motion.ul>
               <Link

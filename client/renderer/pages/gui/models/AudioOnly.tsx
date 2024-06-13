@@ -8,9 +8,7 @@ const AudioOnly: React.FC<{
 }> = ({ isOpen, onClose, videoId }) => {
   var [progress, setProgress] = react.useState<any>(null);
   react.useEffect(() => {
-    window.ipc.on("audio", (response: string) =>
-      setProgress(response),
-    );
+    window.ipc.on("audio", (response: string) => setProgress(response));
   }, []);
 
   return (
@@ -43,11 +41,7 @@ const AudioOnly: React.FC<{
               </li>
             </ul>
             {progress && (
-              <progress
-                className="progress h-4 w-80 m-4"
-                value={progress.percent || 0}
-                max="100"
-              />
+              <progress className="progress h-4 w-80 m-4" value={progress.percent || 0} max="100" />
             )}
             <button
               onClick={onClose}

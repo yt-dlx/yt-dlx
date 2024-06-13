@@ -59,11 +59,8 @@ export default function Support(): JSX.Element {
                   We're Here to Help
                 </motion.h2>
                 <motion.p className="max-w-[600px] text-white md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  If you have any questions or need
-                  assistance, our support team is here to
-                  help. We provide comprehensive support to
-                  ensure you have the best experience with
-                  Yt-Dlx.
+                  If you have any questions or need assistance, our support team is here to help. We
+                  provide comprehensive support to ensure you have the best experience with Yt-Dlx.
                 </motion.p>
               </div>
               <motion.ul className="grid gap-2 py-4">

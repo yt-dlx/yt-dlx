@@ -29,11 +29,7 @@ export const metadata: Metadata = {
   description: "Ultimate Music Streamer and Downloader",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body

@@ -65,54 +65,43 @@ export default function AudioVideoHighest(): JSX.Element {
                 {...FromLeftToRight}>
                 YtDlx.VideoOnly.Single.Lowest()
               </motion.h2>
-              <motion.ul
-                className="grid gap-2 py-4"
-                {...AndBounce}>
+              <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  Downloads the lowest quality version of a
-                  YouTube video with optional video filter.
+                  Downloads the lowest quality version of a YouTube video with optional video
+                  filter.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param query - The YouTube video URL or ID
-                  or name.
+                  @param query - The YouTube video URL or ID or name.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param stream - (optional) Whether to
-                  return the FfmpegCommand instead of
+                  @param stream - (optional) Whether to return the FfmpegCommand instead of
                   downloading the video.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param verbose - (optional) Whether to log
-                  verbose output or not.
+                  @param verbose - (optional) Whether to log verbose output or not.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param output - (optional) The output
-                  directory for the processed files.
+                  @param output - (optional) The output directory for the processed files.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param filter - (optional) The video
-                  filter to apply. Available options:
-                  invert, rotate90, rotate270, grayscale,
-                  rotate180, flipVertical, flipHorizontal.
+                  @param filter - (optional) The video filter to apply. Available options: invert,
+                  rotate90, rotate270, grayscale, rotate180, flipVertical, flipHorizontal.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param onionTor - (optional) Whether to
-                  use Tor for the download or not.
+                  @param onionTor - (optional) Whether to use Tor for the download or not.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @returns A Promise that resolves when the
-                  video has been processed, unless `stream`
-                  is `true`, in which case it resolves with
-                  an object containing the `ffmpeg` command
-                  and the `filename`.
+                  @returns A Promise that resolves when the video has been processed, unless
+                  `stream` is `true`, in which case it resolves with an object containing the
+                  `ffmpeg` command and the `filename`.
                 </li>
               </motion.ul>
               <motion.div className="flex flex-wrap gap-2">

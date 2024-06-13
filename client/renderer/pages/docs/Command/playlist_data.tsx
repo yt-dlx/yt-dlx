@@ -65,23 +65,18 @@ export default function AudioVideoHighest(): JSX.Element {
                 {...FromLeftToRight}>
                 YtDlx.ytSearch.Playlist.Single()
               </motion.h2>
-              <motion.ul
-                className="grid gap-2 py-4"
-                {...AndBounce}>
+              <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  Extracts metadata for videos in a YouTube
-                  playlist.
+                  Extracts metadata for videos in a YouTube playlist.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param query - The YouTube playlist URL or
-                  ID for which to extract metadata.
+                  @param query - The YouTube playlist URL or ID for which to extract metadata.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @throws An error if the playlist link is
-                  incorrect or if unable to get a response.
+                  @throws An error if the playlist link is incorrect or if unable to get a response.
                 </li>
               </motion.ul>
               <motion.div className="flex flex-wrap gap-2">

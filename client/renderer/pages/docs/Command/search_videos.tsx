@@ -65,29 +65,23 @@ export default function AudioVideoHighest(): JSX.Element {
                 {...FromLeftToRight}>
                 YtDlx.ytSearch.Video.Multiple()
               </motion.h2>
-              <motion.ul
-                className="grid gap-2 py-4"
-                {...AndBounce}>
+              <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  Searches for YouTube videos based on the
-                  query.
+                  Searches for YouTube videos based on the query.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param query - The search query for
-                  videos.
+                  @param query - The search query for videos.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @returns A Promise that resolves with the
-                  search results for videos.
+                  @returns A Promise that resolves with the search results for videos.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @throws An error if the input is a video
-                  link (use video_data instead) or if unable
-                  to get a response.
+                  @throws An error if the input is a video link (use video_data instead) or if
+                  unable to get a response.
                 </li>
               </motion.ul>
               <motion.div className="flex flex-wrap gap-2">

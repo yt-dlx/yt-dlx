@@ -10,8 +10,7 @@ export default function NavPackage() {
         href="/home"
         className="text-red-600 cursor-pointer text-4xl font-black flex items-center gap-2 hover:scale-105 duration-500 hover:animate-pulse">
         <RiHome5Fill size={30} />
-        Yt-Dlx{" "}
-        <span className="text-sm">Copyright © 2024</span>
+        Yt-Dlx <span className="text-sm">Copyright © 2024</span>
       </Link>
       <div className="flex items-center gap-4">
         <button

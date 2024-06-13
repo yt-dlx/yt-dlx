@@ -65,39 +65,31 @@ export default function AudioVideoHighest(): JSX.Element {
                 {...FromLeftToRight}>
                 YtDlx.info.list_formats()
               </motion.h2>
-              <motion.ul
-                className="grid gap-2 py-4"
-                {...AndBounce}>
+              <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  Lists the available formats and manifest
-                  information for a YouTube video.
+                  Lists the available formats and manifest information for a YouTube video.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param query - The YouTube video URL or ID
-                  or name.
+                  @param query - The YouTube video URL or ID or name.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param verbose - (optional) Whether to log
-                  verbose output or not.
+                  @param verbose - (optional) Whether to log verbose output or not.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param onionTor - (optional) Whether to
-                  use Tor for the extraction or not.
+                  @param onionTor - (optional) Whether to use Tor for the extraction or not.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @returns A Promise that resolves after
-                  listing the formats and manifest
+                  @returns A Promise that resolves after listing the formats and manifest
                   information.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @throws An error if unable to get a
-                  response from YouTube.
+                  @throws An error if unable to get a response from YouTube.
                 </li>
               </motion.ul>
               <motion.div className="flex flex-wrap gap-2">

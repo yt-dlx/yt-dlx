@@ -65,28 +65,22 @@ export default function AudioVideoHighest(): JSX.Element {
                 {...FromLeftToRight}>
                 YtDlx.ytSearch.Video.Single()
               </motion.h2>
-              <motion.ul
-                className="grid gap-2 py-4"
-                {...AndBounce}>
+              <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  Fetches data for a single YouTube video
-                  based on the video ID or link.
+                  Fetches data for a single YouTube video based on the video ID or link.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @param query - The YouTube video URL or ID
-                  or name.
+                  @param query - The YouTube video URL or ID or name.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @returns A Promise that resolves with the
-                  metadata for the single video.
+                  @returns A Promise that resolves with the metadata for the single video.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-600" />
-                  @throws An error if the input is an
-                  incorrect video link or if unable to get a
+                  @throws An error if the input is an incorrect video link or if unable to get a
                   response.
                 </li>
               </motion.ul>
