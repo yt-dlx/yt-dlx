@@ -22,10 +22,8 @@ else app.setPath("userData", `${app.getPath("userData")} (development)`);
       await mainWindow.loadURL("http://localhost:" + process.argv[2] + "/home");
       mainWindow.webContents.openDevTools();
       break;
-    case true:
     default:
       await mainWindow.loadURL("app://./home");
-      mainWindow.webContents.openDevTools();
       break;
   }
 })();
