@@ -13,7 +13,10 @@ api.on("AudioVideo", async (event, response) => {
       stream: true,
     })
       .on("end", end => event.reply("end", end))
-      .on("error", error => event.reply("error", error))
+      .on("error", error => {
+        event.reply("error", error);
+        console.error(error);
+      })
       .on("start", start => event.reply("start", start))
       .on("progress", progress => event.reply("progress", progress))
       .on("metadata", metadata => event.reply("metadata", metadata))

@@ -20,12 +20,12 @@ else app.setPath("userData", `${app.getPath("userData")} (development)`);
   switch (onprod) {
     case false:
       await mainWindow.loadURL("http://localhost:" + process.argv[2] + "/home");
-      mainWindow.webContents.openDevTools();
       break;
     default:
       await mainWindow.loadURL("app://./home");
       break;
   }
+      mainWindow.webContents.openDevTools();
 })();
 
 app.on("window-all-closed", () => app.quit());
