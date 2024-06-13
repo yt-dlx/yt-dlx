@@ -11,6 +11,13 @@ const handler = {
       ipcRenderer.removeListener(channel, subscription);
     };
   },
+  off(channel: string, callback: (...args: unknown[]) => void) {
+    ipcRenderer.removeListener(channel, callback);
+  },
+  invoke(channel: string, args?: unknown) {
+    return ipcRenderer.invoke(channel, args);
+  },
 };
+
 contextBridge.exposeInMainWorld("ipc", handler);
 export type IpcHandler = typeof handler;
