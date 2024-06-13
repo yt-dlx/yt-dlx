@@ -18,15 +18,17 @@ else app.setPath("userData", `${app.getPath("userData")} (development)`);
       preload: path.join(__dirname, "preload.js"),
     },
   });
-  switch (onprod) {
-    case false:
-      await mainWindow.loadURL("http://localhost:" + process.argv[2] + "/home");
-      mainWindow.webContents.openDevTools();
-      break;
-    default:
-      await mainWindow.loadURL("app://./home");
-      break;
-  }
+  // switch (onprod) {
+  // case false:
+  // await mainWindow.loadURL("http://localhost:" + process.argv[2] + "/home");
+  // mainWindow.webContents.openDevTools();
+  // break;
+  // default:
+  // await mainWindow.loadURL("app://./home");
+  // break;
+  // }
+  await mainWindow.loadURL("http://localhost:" + process.argv[2] + "/home");
+  mainWindow.webContents.openDevTools();
 })();
 // ================================================================================
 api.on("search", async (event, response) => {
