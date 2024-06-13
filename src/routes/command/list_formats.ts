@@ -23,9 +23,7 @@ export default async function list_formats({
     verbose,
   });
   if (!metaBody) {
-    throw new Error(
-      "@error: Unable to get response from YouTube.",
-    );
+    throw new Error("@error: Unable to get response from YouTube.");
   } else {
     // pTable("@AudioLow:", metaBody.AudioLow);
     // pTable("@AudioLowDRC:", metaBody.AudioLowDRC);
@@ -95,24 +93,14 @@ export default async function list_formats({
 function pTable(title: string, data: any[]) {
   console.log(colors.green(title));
   data.forEach(item => {
-    console.log(
-      " ".repeat(4),
-      item.filesizeP.padEnd(10),
-      "|",
-      item.format_note,
-    );
+    console.log(" ".repeat(4), item.filesizeP.padEnd(10), "|", item.format_note);
   });
   console.log("");
 }
 function pManifestTable(title: string, data: any[]) {
   console.log(colors.green(title));
   data.forEach(item => {
-    console.log(
-      " ".repeat(4),
-      item.format.padEnd(10),
-      "|",
-      item.tbr,
-    );
+    console.log(" ".repeat(4), item.format.padEnd(10), "|", item.tbr);
   });
   console.log("");
 }

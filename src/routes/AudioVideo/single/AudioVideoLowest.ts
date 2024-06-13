@@ -67,42 +67,23 @@ export default function AudioVideoLowest({
         useTor,
       });
       if (!engineData) {
-        throw new Error(
-          `${colors.red("@error:")} unable to get response!`,
-        );
+        throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
-      var title = engineData.metaData.title.replace(
-        /[^a-zA-Z0-9_]+/g,
-        "_",
-      );
+      var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
       var folder = output ? output : __dirname;
-      if (!fs.existsSync(folder))
-        fs.mkdirSync(folder, { recursive: true });
+      if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
       var ff = ffmpeg()
-        .setFfmpegPath(
-          (await encore().then(fp => fp.ffmpeg)).toString(),
-        )
-        .setFfprobePath(
-          (
-            await encore().then(fp => fp.ffprobe)
-          ).toString(),
-        )
+        .setFfmpegPath((await encore().then(fp => fp.ffmpeg)).toString())
+        .setFfprobePath((await encore().then(fp => fp.ffprobe)).toString())
         .addInput(engineData.AudioLowF.url)
         .addInput(engineData.ManifestLow[0]?.url)
         .withOutputFormat("matroska")
         .outputOptions("-c copy")
-        .addOption(
-          "-headers",
-          `X-Forwarded-For: ${engineData.ipAddress}`,
-        );
+        .addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
       var filenameBase = `yt-dlx_(AudioVideoLowest_`;
-      let filename = `${filenameBase}${
-        filter ? filter + ")_" : ")_"
-      }${title}.mkv`;
+      let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
       var filterMap: Record<string, string[]> = {
-        grayscale: [
-          "colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3",
-        ],
+        grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
         invert: ["negate"],
         rotate90: ["rotate=PI/2"],
         rotate180: ["rotate=PI"],
@@ -110,23 +91,14 @@ export default function AudioVideoLowest({
         flipHorizontal: ["hflip"],
         flipVertical: ["vflip"],
       };
-      if (filter && filterMap[filter])
-        ff.withVideoFilter(filterMap[filter]);
-      ff.addOption(
-        "-headers",
-        `X-Forwarded-For: ${engineData.ipAddress}`,
-      );
+      if (filter && filterMap[filter]) ff.withVideoFilter(filterMap[filter]);
+      ff.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
       ff.on("start", comd => {
-        if (verbose)
-          emitter.emit("log", colors.green("@comd:"), comd);
+        if (verbose) emitter.emit("log", colors.green("@comd:"), comd);
         emitter.emit("start", comd);
       })
-        .on("progress", progress =>
-          emitter.emit("progress", progress),
-        )
-        .on("error", error =>
-          emitter.emit("error", error.message),
-        )
+        .on("progress", progress => emitter.emit("progress", progress))
+        .on("error", error => emitter.emit("error", error.message))
         .on("end", () => emitter.emit("end", filename));
       switch (true) {
         case stream:
@@ -155,27 +127,17 @@ export default function AudioVideoLowest({
         default:
           ff.output(path.join(folder, filename))
             .on("end", () => emitter.emit("end", filename))
-            .on("error", error =>
-              emitter.emit("error", error.message),
-            )
+            .on("error", error => emitter.emit("error", error.message))
             .run();
           break;
       }
     } catch (error: any) {
       switch (true) {
         case error instanceof ZodError:
-          emitter.emit(
-            "error",
-            colors.red("@zod-error:"),
-            error.errors,
-          );
+          emitter.emit("error", colors.red("@zod-error:"), error.errors);
           break;
         default:
-          emitter.emit(
-            "error",
-            colors.red("@error:"),
-            error.message,
-          );
+          emitter.emit("error", colors.red("@error:"), error.message);
           break;
       }
     } finally {

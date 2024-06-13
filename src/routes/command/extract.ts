@@ -10,13 +10,7 @@ import type EngineOutput from "../../interfaces/EngineOutput";
  * @param useTor - (optional) Whether to use Tor for the download or not.
  * @returns A Promise that resolves with an object containing metadata information about the video.
  */
-export default async function extract({
-  query,
-  verbose,
-}: {
-  query: string;
-  verbose?: boolean;
-}) {
+export default async function extract({ query, verbose }: { query: string; verbose?: boolean }) {
   var metaBody: EngineOutput = await ytdlx({
     query,
     verbose,
@@ -28,16 +22,10 @@ export default async function extract({
     };
   }
   var uploadDate = new Date(
-    metaBody.metaData.upload_date.replace(
-      /(\d{4})(\d{2})(\d{2})/,
-      "$1-$2-$3",
-    ),
+    metaBody.metaData.upload_date.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
   );
   var currentDate = new Date();
-  var daysAgo = Math.floor(
-    (currentDate.getTime() - uploadDate.getTime()) /
-      (1000 * 60 * 60 * 24),
-  );
+  var daysAgo = Math.floor((currentDate.getTime() - uploadDate.getTime()) / (1000 * 60 * 60 * 24));
   var prettyDate = uploadDate.toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -45,15 +33,9 @@ export default async function extract({
   });
   var uploadAgoObject = calculateUploadAgo(daysAgo);
   var videoTimeInSeconds = metaBody.metaData.duration;
-  var videoDuration = calculateVideoDuration(
-    videoTimeInSeconds,
-  );
-  var viewCountFormatted = formatCount(
-    metaBody.metaData.view_count,
-  );
-  var likeCountFormatted = formatCount(
-    metaBody.metaData.like_count,
-  );
+  var videoDuration = calculateVideoDuration(videoTimeInSeconds);
+  var viewCountFormatted = formatCount(metaBody.metaData.view_count);
+  var likeCountFormatted = formatCount(metaBody.metaData.like_count);
   function calculateUploadAgo(days: number) {
     var years = Math.floor(days / 365);
     var months = Math.floor((days % 365) / 30);
@@ -87,8 +69,7 @@ export default async function extract({
     for (var i = abbreviations.length - 1; i >= 0; i--) {
       var size = Math.pow(10, (i + 1) * 3);
       if (size <= count) {
-        var formattedCount =
-          Math.round((count / size) * 10) / 10;
+        var formattedCount = Math.round((count / size) * 10) / 10;
         return `${formattedCount}${abbreviations[i]}`;
       }
     }
@@ -133,17 +114,12 @@ export default async function extract({
       upload_ago: daysAgo,
       upload_ago_formatted: uploadAgoObject,
       comment_count: metaBody.metaData.comment_count,
-      comment_count_formatted: formatCount(
-        metaBody.metaData.comment_count,
-      ),
+      comment_count_formatted: formatCount(metaBody.metaData.comment_count),
       channel_id: metaBody.metaData.channel_id,
       channel_name: metaBody.metaData.channel,
       channel_url: metaBody.metaData.channel_url,
-      channel_follower_count:
-        metaBody.metaData.channel_follower_count,
-      channel_follower_count_formatted: formatCount(
-        metaBody.metaData.channel_follower_count,
-      ),
+      channel_follower_count: metaBody.metaData.channel_follower_count,
+      channel_follower_count_formatted: formatCount(metaBody.metaData.channel_follower_count),
     },
   };
   console.log(

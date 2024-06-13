@@ -15,9 +15,4 @@ async function rmdir(folderPath, folders) {
   }
 }
 
-rmdir(resolve(), [
-  "./node_modules",
-  "./out",
-  "./others",
-  "./temp",
-]);
+rmdir(resolve(), ["./node_modules", "./out", "./others", "./temp"]);

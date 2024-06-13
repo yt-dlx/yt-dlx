@@ -15,8 +15,4 @@ async function rmdir(folderPath, folders) {
   }
 }
 
-rmdir(resolve(), [
-  "./util/cprobe_linux",
-  "./util/cprobe_mac",
-  "./util/cprobe.exe",
-]);
+rmdir(resolve(), ["./util/cprobe_linux", "./util/cprobe_mac", "./util/cprobe.exe"]);

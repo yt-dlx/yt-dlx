@@ -15,8 +15,4 @@ async function rmdir(folderPath, folders) {
   }
 }
 
-rmdir(resolve(), [
-  "./client/node_modules",
-  "./client/dist",
-  "./client/app",
-]);
+rmdir(resolve(), ["./client/node_modules", "./client/dist", "./client/app"]);

@@ -1,11 +1,4 @@
-import {
-  type,
-  arch,
-  totalmem,
-  homedir,
-  hostname,
-  release,
-} from "os";
+import { type, arch, totalmem, homedir, hostname, release } from "os";
 import { createInterface } from "readline";
 import { spawn } from "child_process";
 import path, { dirname } from "path";
@@ -22,22 +15,12 @@ const colors = {
 function formatBytes(bytes) {
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
   if (bytes === 0) return "0 Byte";
-  const i = parseInt(
-    Math.floor(Math.log(bytes) / Math.log(1024)),
-  );
-  return (
-    Math.round(bytes / Math.pow(1024, i), 2) +
-    " " +
-    sizes[i]
-  );
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+  return Math.round(bytes / Math.pow(1024, i), 2) + " " + sizes[i];
 }
 
 function runScript() {
-  console.log(
-    colors.red +
-      "=================================" +
-      colors.reset,
-  );
+  console.log(colors.red + "=================================" + colors.reset);
   console.log(
     colors.green +
       "@system:" +
@@ -49,13 +32,7 @@ function runScript() {
       " dev-test-kit",
   );
   console.log(
-    colors.green +
-      "@system:" +
-      colors.reset +
-      " os type: " +
-      colors.red +
-      type() +
-      colors.reset,
+    colors.green + "@system:" + colors.reset + " os type: " + colors.red + type() + colors.reset,
   );
   console.log(
     colors.green +
@@ -94,19 +71,9 @@ function runScript() {
       colors.reset,
   );
   console.log(
-    colors.green +
-      "@system:" +
-      colors.reset +
-      " release: " +
-      colors.red +
-      release() +
-      colors.reset,
+    colors.green + "@system:" + colors.reset + " release: " + colors.red + release() + colors.reset,
   );
-  console.log(
-    colors.red +
-      "=================================" +
-      colors.reset,
-  );
+  console.log(colors.red + "=================================" + colors.reset);
   const rl = createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -115,40 +82,21 @@ function runScript() {
   try {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
-    const packageJsonPath = path.resolve(
-      __dirname,
-      "..",
-      "package.json",
-    );
-    packageJson = JSON.parse(
-      readFileSync(packageJsonPath, "utf8"),
-    );
+    const packageJsonPath = path.resolve(__dirname, "..", "package.json");
+    packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8"));
   } catch (error) {
-    console.error(
-      colors.red + "@error:" + colors.reset,
-      "Error reading package.json:",
-      error,
-    );
+    console.error(colors.red + "@error:" + colors.reset, "Error reading package.json:", error);
     rl.close();
     return;
   }
   const { scripts } = packageJson;
   if (!scripts || Object.keys(scripts).length === 0) {
-    console.error(
-      colors.red + "@error:" + colors.reset,
-      "No scripts found in package.json",
-    );
+    console.error(colors.red + "@error:" + colors.reset, "No scripts found in package.json");
     rl.close();
     return;
   }
-  console.log(
-    colors.red +
-      "=================================" +
-      colors.reset,
-  );
-  const scriptKeys = Object.keys(scripts).filter(
-    key => key !== "start",
-  );
+  console.log(colors.red + "=================================" + colors.reset);
+  const scriptKeys = Object.keys(scripts).filter(key => key !== "start");
   scriptKeys.forEach((script, index) => {
     const displayIndex = index + 1;
     console.log(
@@ -163,11 +111,7 @@ function runScript() {
         script,
     );
   });
-  console.log(
-    colors.red +
-      "=================================" +
-      colors.reset,
-  );
+  console.log(colors.red + "=================================" + colors.reset);
   rl.question(
     colors.green +
       "@info:" +
@@ -185,40 +129,25 @@ function runScript() {
     answer => {
       console.log(colors.reset);
       const scriptIndex = parseInt(answer) - 1;
-      if (
-        scriptIndex >= 0 &&
-        scriptIndex < scriptKeys.length
-      ) {
+      if (scriptIndex >= 0 && scriptIndex < scriptKeys.length) {
         const scriptName = scriptKeys[scriptIndex];
         const command = scripts[scriptName];
-        console.log(
-          colors.green + "@choice:" + colors.reset,
-          scriptName,
-        );
+        console.log(colors.green + "@choice:" + colors.reset, scriptName);
         const childProcess = spawn(command, {
           shell: true,
           stdio: "inherit",
         });
         childProcess.on("error", error => {
-          console.error(
-            colors.red + "@error:" + colors.reset,
-            error,
-          );
+          console.error(colors.red + "@error:" + colors.reset, error);
         });
         childProcess.on("exit", code => {
           if (code !== 0) {
-            console.error(
-              colors.red + "@error:" + colors.reset,
-              "Exited with code " + code,
-            );
+            console.error(colors.red + "@error:" + colors.reset, "Exited with code " + code);
           }
           runScript();
         });
       } else {
-        console.log(
-          colors.red + "@error:" + colors.reset,
-          "invalid choice.",
-        );
+        console.log(colors.red + "@error:" + colors.reset, "invalid choice.");
         runScript();
       }
       rl.close();
