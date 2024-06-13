@@ -4658,6 +4658,11 @@ preline@^2.3.0:
   dependencies:
     "@popperjs/core" "^2.11.2"
 
+prettier@^3.3.2:
+  version "3.3.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.3.2.tgz#03ff86dc7c835f2d2559ee76876a3914cec4a90a"
+  integrity sha512-rAVeHYMcv8ATV5d508CFdn+8/pHPpXeIid1DdrPwXnaAdH7cqjVbpJaT5eq4yRAFU/lsbwYwSF/n5iNrdJHPQA==
+
 progress@^2.0.3:
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/progress/-/progress-2.0.3.tgz#7e8cf8d8f5b8f239c1bc68beb4eb78567d572ef8"
@@ -5993,6 +5998,23 @@ yt-dlx@^12.5.0, yt-dlx@^12.6.0:
     yt-dlx "^12.5.0"
     yt-dlx-encore "^0.0.7"
     zod "^3.23.8"
+
+yt-dlx@^12.7.0:
+  version "12.7.0"
+  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-12.7.0.tgz#2eb8b202be3b26642d005aad335742210ae00884"
+  integrity sha512-xh3xor3NAsf3Efx4xPAYogxM37bj4luyUyBgN7BLH8hRpRSitbGVGD4nsf6eq1VTxBSMCKUcWQ5K43jH3hsKJg==
+  dependencies:
+    async-retry "^1.3.3"
+    axios "^1.7.2"
+    colors "^1.4.0"
+    fluent-ffmpeg "^2.1.3"
+    minimist "^1.2.8"
+    npm-run-all "^4.1.5"
+    prettier "^3.3.2"
+    readline-sync "^1.4.10"
+    youtubei "^1.4.2"
+    yt-dlx "^12.6.0"
+    yt-dlx-encore "^0.0.7"
 
 zod@^3.23.8:
   version "3.23.8"
