@@ -3,7 +3,7 @@ import "./Video";
 import "./AudioVideo";
 import ytdlx from "yt-dlx";
 import colors from "colors";
-import { ipcMain as api } from "electron";
+import { ipcMain as api, dialog } from "electron";
 
 api.on("search", async (event, response) => {
   try {
@@ -39,4 +39,11 @@ api.on("formats", async (event, response) => {
   } catch (error: any) {
     event.reply("formats", error.message);
   }
+});
+api.handle("select-output-folder", async event => {
+  const result = await dialog.showOpenDialog({
+    properties: ["openDirectory"],
+  });
+  if (result.canceled) return null;
+  else return result.filePaths[0];
 });

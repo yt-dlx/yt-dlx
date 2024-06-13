@@ -1,14 +1,6 @@
 import * as fs from "fs";
 import ytdlx from "yt-dlx";
-import { ipcMain as api, dialog } from "electron";
-
-api.handle("select-output-folder", async event => {
-  const result = await dialog.showOpenDialog({
-    properties: ["openDirectory"],
-  });
-  if (result.canceled) return null;
-  else return result.filePaths[0];
-});
+import { ipcMain as api } from "electron";
 
 api.on("Audio", async (event, response) => {
   try {

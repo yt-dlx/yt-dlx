@@ -68,7 +68,7 @@ export default function VideoId(): JSX.Element {
   }, [id]);
 
   return (
-    <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600">
+    <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600 font-serif">
       <NavPackage />
       <Introduction />
       <react.Fragment>
