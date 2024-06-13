@@ -8,7 +8,7 @@ const VideoOnly: React.FC<{
 }> = ({ isOpen, onClose, videoId }) => {
   var [progress, setProgress] = react.useState<any>(null);
   react.useEffect(() => {
-    window.ipc.on("video", (response: string) => setProgress(response));
+    window.ipc.on("Video", (response: string) => setProgress(response));
   }, []);
 
   return (
@@ -27,14 +27,14 @@ const VideoOnly: React.FC<{
             <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start pl-6">
               <li
                 onClick={() => {
-                  window.ipc.send("video", { videoId });
+                  window.ipc.send("Video", { videoId });
                 }}
                 className="hover:text-red-600 hover:font-black cursor-pointer">
                 Highest Possible Download
               </li>
               <li
                 onClick={() => {
-                  window.ipc.send("video", { videoId });
+                  window.ipc.send("Video", { videoId });
                 }}
                 className="hover:text-red-600 hover:font-black cursor-pointer">
                 Lowest Posible Download

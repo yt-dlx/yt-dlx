@@ -8,7 +8,7 @@ const AudioOnly: React.FC<{
 }> = ({ isOpen, onClose, videoId }) => {
   var [progress, setProgress] = react.useState<any>(null);
   react.useEffect(() => {
-    window.ipc.on("audio", (response: string) => setProgress(response));
+    window.ipc.on("Audio", (response: string) => setProgress(response));
   }, []);
 
   return (
@@ -27,14 +27,14 @@ const AudioOnly: React.FC<{
             <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start m-6">
               <li
                 onClick={() => {
-                  window.ipc.send("audio", { videoId });
+                  window.ipc.send("Audio", { videoId });
                 }}
                 className="hover:text-red-600 hover:font-black cursor-pointer">
                 Highest Possible Download
               </li>
               <li
                 onClick={() => {
-                  window.ipc.send("audio", { videoId });
+                  window.ipc.send("Audio", { videoId });
                 }}
                 className="hover:text-red-600 hover:font-black cursor-pointer">
                 Lowest Posible Download

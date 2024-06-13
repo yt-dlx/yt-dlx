@@ -8,7 +8,7 @@ const AudioVideo: React.FC<{
 }> = ({ isOpen, onClose, videoId }) => {
   var [progress, setProgress] = react.useState<any>(null);
   react.useEffect(() => {
-    window.ipc.on("audiovideo", (response: string) => setProgress(response));
+    window.ipc.on("AudioVideo", (response: string) => setProgress(response));
   }, []);
 
   return (
@@ -27,7 +27,7 @@ const AudioVideo: React.FC<{
             <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start pl-6">
               <li
                 onClick={() => {
-                  window.ipc.send("audiovideo", {
+                  window.ipc.send("AudioVideo", {
                     videoId,
                   });
                 }}
@@ -36,7 +36,7 @@ const AudioVideo: React.FC<{
               </li>
               <li
                 onClick={() => {
-                  window.ipc.send("audiovideo", {
+                  window.ipc.send("AudioVideo", {
                     videoId,
                   });
                 }}
