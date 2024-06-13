@@ -83,7 +83,7 @@ export default function AudioCustom({
                 /[^a-zA-Z0-9_]+/g,
                 "_",
             );
-            var folder = output ? path.join(__dirname, output) : __dirname;
+            var folder = output ? output : __dirname;
             if (!fs.existsSync(folder))
                 fs.mkdirSync(folder, { recursive: true });
             var resolutionFilter = resolution.replace("p", "");
@@ -145,9 +145,7 @@ export default function AudioCustom({
                 case stream:
                     emitter.emit("ready", {
                         ffmpeg: ff,
-                        filename: output
-                            ? path.join(folder, filename)
-                            : filename.replace("_)_", ")_"),
+                        filename: path.join(folder, filename),
                     });
                     break;
                 case metadata:
@@ -162,7 +160,7 @@ export default function AudioCustom({
                     });
                     break;
                 default:
-                    ff.output(path.join(folder, filename.replace("_)_", ")_")))
+                    ff.output(path.join(folder, filename))
                         .on("end", () => emitter.emit("end", filename))
                         .on("error", error =>
                             emitter.emit("error", error.message),
