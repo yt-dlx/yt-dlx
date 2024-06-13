@@ -10,19 +10,22 @@ import web, { searchVideosType } from "../../web";
  * @throws An error if the input is a video link (use video_data instead) or if unable to get a response.
  */
 export default async function search_videos({
-    query,
+  query,
 }: {
-    query: string;
+  query: string;
 }): Promise<searchVideosType[]> {
-    var isID = await YouTubeID(query);
-    if (isID) {
-        throw new Error(
-            colors.red("@error: ") + "use video_data() for video link!",
-        );
-    } else {
-        var metaData = await web.searchVideos({ query });
-        if (!metaData) {
-            throw new Error(colors.red("@error: ") + "Unable to get response!");
-        } else return metaData;
-    }
+  var isID = await YouTubeID(query);
+  if (isID) {
+    throw new Error(
+      colors.red("@error: ") +
+        "use video_data() for video link!",
+    );
+  } else {
+    var metaData = await web.searchVideos({ query });
+    if (!metaData) {
+      throw new Error(
+        colors.red("@error: ") + "Unable to get response!",
+      );
+    } else return metaData;
+  }
 }

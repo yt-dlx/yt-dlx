@@ -1,7 +1,10 @@
 import PlaylistInfo from "./browser/PlaylistInfo";
 import type { PlaylistInfoType } from "./browser/PlaylistInfo";
 import SearchVideos from "./browser/SearchVideos";
-import type { TypePlaylist, TypeVideo } from "./browser/SearchVideos";
+import type {
+  TypePlaylist,
+  TypeVideo,
+} from "./browser/SearchVideos";
 import VideoInfo from "./browser/VideoInfo";
 import type { VideoInfoType } from "./browser/VideoInfo";
 import playlistVideos from "./vercel/playlistVideos";
@@ -15,28 +18,33 @@ import type { searchVideosType } from "./vercel/searchVideos";
 import singleVideo from "./vercel/singleVideo";
 import type { singleVideoType } from "./vercel/singleVideo";
 
-export type { TypeVideo, TypePlaylist, VideoInfoType, PlaylistInfoType };
+export type {
+  TypeVideo,
+  TypePlaylist,
+  VideoInfoType,
+  PlaylistInfoType,
+};
 
 export type {
-    singleVideoType,
-    searchVideosType,
-    relatedVideosType,
-    playlistVideosType,
-    searchPlaylistsType,
+  singleVideoType,
+  searchVideosType,
+  relatedVideosType,
+  playlistVideosType,
+  searchPlaylistsType,
 };
 
 const web = {
-    browser: {
-        VideoInfo,
-        SearchVideos,
-        PlaylistInfo,
-    },
-    browserLess: {
-        singleVideo,
-        searchVideos,
-        relatedVideos,
-        playlistVideos,
-        searchPlaylists,
-    },
+  browser: {
+    VideoInfo,
+    SearchVideos,
+    PlaylistInfo,
+  },
+  browserLess: {
+    singleVideo,
+    searchVideos,
+    relatedVideos,
+    playlistVideos,
+    searchPlaylists,
+  },
 };
 export default web;

@@ -10,19 +10,22 @@ import web, { searchPlaylistsType } from "../../web";
  * @throws An error if the input is a playlist link (use playlist_data instead) or if unable to get a response.
  */
 export default async function search_playlists({
-    query,
+  query,
 }: {
-    query: string;
+  query: string;
 }): Promise<searchPlaylistsType[]> {
-    var isID = await YouTubeID(query);
-    if (isID) {
-        throw new Error(
-            colors.red("@error: ") + "use playlist_data() for playlist link!",
-        );
-    } else {
-        var metaData = await web.searchPlaylists({ query });
-        if (!metaData) {
-            throw new Error(colors.red("@error: ") + "Unable to get response!");
-        } else return metaData;
-    }
+  var isID = await YouTubeID(query);
+  if (isID) {
+    throw new Error(
+      colors.red("@error: ") +
+        "use playlist_data() for playlist link!",
+    );
+  } else {
+    var metaData = await web.searchPlaylists({ query });
+    if (!metaData) {
+      throw new Error(
+        colors.red("@error: ") + "Unable to get response!",
+      );
+    } else return metaData;
+  }
 }
