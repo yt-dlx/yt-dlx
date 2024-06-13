@@ -13,8 +13,7 @@
     "scripts": {
         "dev": "nextron",
         "build": "nextron build",
-        "pinstall": "electron-builder install-app-deps",
-        "postinstall": "yarn add electron@29.3.0 next@13.5.6"
+        "pinstall": "electron-builder install-app-deps"
     },
     "dependencies": {
         "@tailwindcss/forms": "^0.5.7",
