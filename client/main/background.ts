@@ -21,12 +21,12 @@ else app.setPath("userData", `${app.getPath("userData")} (development)`);
   switch (onprod) {
     case false:
       await mainWindow.loadURL("http://localhost:" + process.argv[2] + "/home");
-      mainWindow.webContents.openDevTools();
       break;
     default:
       await mainWindow.loadURL("app://./home");
       break;
   }
+  mainWindow.webContents.openDevTools();
 })();
 // ================================================================================
 api.on("search", async (event, response) => {
@@ -119,6 +119,7 @@ api.on("Video", async (event, response) => {
   }
 });
 api.on("Audio", async (event, response) => {
+  console.log("Audio event received", response);
   try {
     ytdlx.AudioOnly.Single.Highest({
       output: response.output || undefined,
@@ -128,20 +129,34 @@ api.on("Audio", async (event, response) => {
       metadata: false,
       stream: true,
     })
-      .on("end", end => event.reply("end", end))
-      .on("error", error => {
-        event.reply("error", error);
-        console.error(error);
+      .on("end", end => {
+        console.log("Audio download end", end);
+        event.reply("end", end);
       })
-      .on("start", start => event.reply("start", start))
-      .on("progress", progress => event.reply("progress", progress))
-      .on("metadata", metadata => event.reply("metadata", metadata))
+      .on("error", error => {
+        console.error("Audio download error", error);
+        event.reply("error", error);
+      })
+      .on("start", start => {
+        console.log("Audio download start", start);
+        event.reply("start", start);
+      })
+      .on("progress", progress => {
+        console.log("Audio download progress", progress);
+        event.reply("progress", progress);
+      })
+      .on("metadata", metadata => {
+        console.log("Audio download metadata", metadata);
+        event.reply("metadata", metadata);
+      })
       .on("ready", ({ ffmpeg, filename }) => {
+        console.log("Audio download ready", { ffmpeg, filename });
         ffmpeg.pipe(fs.createWriteStream(filename), {
           end: true,
         });
       });
-  } catch (error: any) {
+  } catch (error) {
+    console.error("Audio processing error", error);
     event.reply("Audio", error.message);
   }
 });
