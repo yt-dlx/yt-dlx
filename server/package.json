@@ -9,7 +9,8 @@
     "url": "git+https://github.com/yt-dlx/yt-dlx.git"
   },
   "scripts": {
-    "start": "tsc && node build/index.js",
+    "build": "tsc -p tsconfig.json",
+    "start": "tsc -p tsconfig.json && node build/index.js",
     "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\"",
     "postinstall": "node public/cprobe-win.js && node public/cprobe-mac.js && node public/cprobe-linux.js && shx chmod +x ."
   },
