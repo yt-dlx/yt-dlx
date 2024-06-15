@@ -37,6 +37,7 @@
     "@tailwindcss/typography": "^0.5.13",
     "@types/fluent-ffmpeg": "^2.1.24",
     "@types/node": "^20.11.16",
+    "prettier": "^3.3.2",
     "@types/node-fetch": "^2.6.11",
     "@types/react": "^18.2.52",
     "@types/ws": "^8.5.10",
