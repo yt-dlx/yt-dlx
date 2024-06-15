@@ -474,14 +474,16 @@
     "@types/send" "*"
 
 acorn-walk@^8.1.1:
-  version "8.3.2"
-  resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-8.3.2.tgz#7703af9415f1b6db9315d6895503862e231d34aa"
-  integrity sha512-cjkyv4OtNCIeqhHrfS81QWXoCBPExR/J62oyEqepVw8WaQeSqpW2uhuLPh1m9eWhDuOo/jUXVTlifvesOWp/4A==
+  version "8.3.3"
+  resolved "https://registry.yarnpkg.com/acorn-walk/-/acorn-walk-8.3.3.tgz#9caeac29eefaa0c41e3d4c65137de4d6f34df43e"
+  integrity sha512-MxXdReSRhGO7VlFe1bRG/oI7/mdLV9B9JJT0N8vZOhF7gFRR5l3M8W9G8JxmKV+JC5mGqJ0QvqfSOLsCPa4nUw==
+  dependencies:
+    acorn "^8.11.0"
 
-acorn@^8.4.1:
-  version "8.11.3"
-  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.11.3.tgz#71e0b14e13a4ec160724b38fb7b0f233b1b81d7a"
-  integrity sha512-Y9rRfJG5jcKOE0CLisYbojUjIrIEE7AGMzA/Sm4BslANhbS+cDMpgBdcPT91oJ7OuJ9hYJBx59RjbhxVnrF8Xg==
+acorn@^8.11.0, acorn@^8.4.1:
+  version "8.12.0"
+  resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.12.0.tgz#1627bfa2e058148036133b8d9b51a700663c294c"
+  integrity sha512-RTvkC4w+KNXrM39/lWCUaG0IbRkWdCv7W/IOW9oU6SawyxulvkQy5HQPVTKxEjczcUvapcrw3cFx/60VN/NRNw==
 
 ansi-regex@^5.0.1:
   version "5.0.1"
@@ -1015,9 +1017,9 @@ for-each@^0.3.3:
     is-callable "^1.1.3"
 
 foreground-child@^3.1.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/foreground-child/-/foreground-child-3.2.0.tgz#5eb496c4ebf3bcc4572e8908a45a72f5a1d2d658"
-  integrity sha512-CrWQNaEl1/6WeZoarcM9LHupTo3RpZO2Pdk1vktwzPiQTsJnAKJmm3TACKeG5UZbWDfaH2AbvYxzP96y0MT7fA==
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/foreground-child/-/foreground-child-3.2.1.tgz#767004ccf3a5b30df39bed90718bab43fe0a59f7"
+  integrity sha512-PXUUyLqrR2XCWICfv6ukppP96sdFwWbNEnfEMt7jNsISjMsvaLNinAHNDYyvkyU+SZG2BTSbT5NjG+vZslfGTA==
   dependencies:
     cross-spawn "^7.0.0"
     signal-exit "^4.0.1"
@@ -1995,7 +1997,16 @@ spdx-license-ids@^3.0.0:
   resolved "https://registry.yarnpkg.com/spdx-license-ids/-/spdx-license-ids-3.0.18.tgz#22aa922dcf2f2885a6494a261f2d8b75345d0326"
   integrity sha512-xxRs31BqRYHwiMzudOrpSiHtZ8i/GeionCBDSilhYRj+9gIcI8wCZTlXZKu9vZIVqViP3dcp9qE5G6AlIaD+TQ==
 
-"string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0:
+"string-width-cjs@npm:string-width@^4.2.0":
+  version "4.2.3"
+  resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
+  integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
+  dependencies:
+    emoji-regex "^8.0.0"
+    is-fullwidth-code-point "^3.0.0"
+    strip-ansi "^6.0.1"
+
+string-width@^4.1.0:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==
@@ -2051,7 +2062,14 @@ string.prototype.trimstart@^1.0.8:
     define-properties "^1.2.1"
     es-object-atoms "^1.0.0"
 
-"strip-ansi-cjs@npm:strip-ansi@^6.0.1", strip-ansi@^6.0.0, strip-ansi@^6.0.1:
+"strip-ansi-cjs@npm:strip-ansi@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
+  integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
+  dependencies:
+    ansi-regex "^5.0.1"
+
+strip-ansi@^6.0.0, strip-ansi@^6.0.1:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-6.0.1.tgz#9e26c63d30f53443e9489495b2105d37b67a85d9"
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
@@ -2365,10 +2383,10 @@ yn@3.1.1:
   resolved "https://registry.yarnpkg.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
   integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
 
-youtubei@^1.4.2:
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/youtubei/-/youtubei-1.4.2.tgz#d8100ec52f4b10e868184d72a1e5ce1f7c8bd8bd"
-  integrity sha512-VBq/iLZ5nRrZABe/IIzUTPmlPjtuyl2DFQsD26GCH950E+BDpdlQlRkxtKtBtEiHANTo3Hx+rKUIj8knZ1JyQg==
+youtubei@^1.4.2, youtubei@^1.4.4:
+  version "1.4.4"
+  resolved "https://registry.yarnpkg.com/youtubei/-/youtubei-1.4.4.tgz#d35a72fa717f5bb4a564fa08e59e1276f3d16485"
+  integrity sha512-U/Zp1ZLoV5boR/MxXsotYjZli8AGiwDLSXx6Itkd8wpWnR3JmkPq1KyWyQj58FsHE7o+DLhb+Uyy1N7zmV4FeA==
   dependencies:
     node-fetch "2.6.7"
     protobufjs "7.2.6"
@@ -2383,10 +2401,10 @@ yt-dlx-encore@^0.0.7:
     tsc "^2.0.4"
     typescript "^5.4.5"
 
-yt-dlx@^12.6.0, yt-dlx@^12.7.0:
-  version "12.7.0"
-  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-12.7.0.tgz#2eb8b202be3b26642d005aad335742210ae00884"
-  integrity sha512-xh3xor3NAsf3Efx4xPAYogxM37bj4luyUyBgN7BLH8hRpRSitbGVGD4nsf6eq1VTxBSMCKUcWQ5K43jH3hsKJg==
+yt-dlx@^12.7.0, yt-dlx@^12.8.0:
+  version "12.8.0"
+  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-12.8.0.tgz#211c185bfa70b063892fb894bac8d7c1438cc94e"
+  integrity sha512-41H5Ih1vXf2YLzb2HktxBD4Hr2SBb+poSN1GmBID6siyutdgKJRDLc0HE9mGTzGSEqto8ig256ruU1OBZ4gZ4w==
   dependencies:
     async-retry "^1.3.3"
     axios "^1.7.2"
@@ -2397,7 +2415,7 @@ yt-dlx@^12.6.0, yt-dlx@^12.7.0:
     prettier "^3.3.2"
     readline-sync "^1.4.10"
     youtubei "^1.4.2"
-    yt-dlx "^12.6.0"
+    yt-dlx "^12.7.0"
     yt-dlx-encore "^0.0.7"
 
 zod@^3.23.8:
