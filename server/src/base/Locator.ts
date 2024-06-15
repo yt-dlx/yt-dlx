@@ -38,7 +38,7 @@ async function scanner(directory: string, execName: string): Promise<string | nu
   }
 }
 
-export async function encore() {
+export async function locator() {
   try {
     const rootDirectory = await findRootDirectory(__dirname);
     if (!rootDirectory) return {};
