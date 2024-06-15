@@ -494,7 +494,6 @@ export default async function Engine({
       throw new Error("@error: Unsupported platform");
   }
   const cpath = await fcprobe(process.cwd(), "cprobe" + fileExtension);
-  console.clear();
   console.log("@info", cpath);
   if (!cpath) process.exit(1);
   const refig = {
