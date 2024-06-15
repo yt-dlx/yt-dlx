@@ -1,6 +1,6 @@
 {
   "name": "yt-dlx",
-  "version": "13.1.0",
+  "version": "13.2.0",
   "license": "Apache-2.0",
   "main": "out/cjs/src/index.js",
   "types": "out/types/index.d.ts",
@@ -69,6 +69,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^3.3.2",
     "readline-sync": "^1.4.10",
+    "shx": "^0.3.4",
     "youtubei": "^1.4.4"
   },
   "devDependencies": {
@@ -80,7 +81,6 @@
     "@types/minimist": "^1.2.5",
     "@types/node": "^20.14.1",
     "@types/readline-sync": "^1.4.8",
-    "shx": "^0.3.4",
     "ts-node": "^10.9.2",
     "tsc": "^2.0.4",
     "tsup": "^8.1.0",
