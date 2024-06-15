@@ -1,6 +1,6 @@
 {
   "name": "server",
-  "version": "12.8.0",
+  "version": "13.0.0",
   "license": "Apache-2.0",
   "author": "yt-dlx <yt-dlx@proton.me>",
   "description": "Effortless Audio-Video Downloader And Streamer!",
