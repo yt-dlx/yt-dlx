@@ -22,6 +22,7 @@
     "start": "node ./util/index.mjs",
     "prepublishOnly": "yarn build && yarn format",
     "remake": "yarn clean && yarn make && yarn build && yarn format",
+    "postinstall": "node util/ffdl.js && node util/cprobe.js && shx chmod -R +x ./*",
     "format:base": "prettier --write .",
     "format:next": "cd next && prettier --write .",
     "format:client": "cd client && prettier --write .",

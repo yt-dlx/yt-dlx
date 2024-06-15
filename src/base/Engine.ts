@@ -1,7 +1,7 @@
 import retry from "async-retry";
 import { promisify } from "util";
+import { locator } from "./locator";
 import { exec } from "child_process";
-import { encore } from "yt-dlx-encore";
 import type sizeFormat from "../interfaces/sizeFormat";
 import type AudioFormat from "../interfaces/AudioFormat";
 import type VideoFormat from "../interfaces/VideoFormat";
@@ -142,7 +142,7 @@ export default async function Engine({
   var AudioHighF: AudioFormat | any = null;
   var VideoLowF: VideoFormat | any = null;
   var VideoHighF: VideoFormat | any = null;
-  var cprobe = await encore().then(fp => fp.cprobe);
+  var cprobe = await locator().then(fp => fp.cprobe);
   var pLoc = `${cprobe}`;
   var config = {
     factor: 2,
