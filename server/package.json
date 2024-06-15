@@ -12,9 +12,6 @@
     "start": "tsc && node build/index.js",
     "build": "tsc && pkg . --out-path package",
     "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\"",
-    "build:win": "tsc && pkg . --out-path package --targets node18-win-x64",
-    "build:mac": "tsc && pkg . --out-path package --targets node18-macos-x64",
-    "build:linux": "tsc && pkg . --out-path package --targets node18-linux-x64",
     "postinstall": "node public/cprobe-win.js && node public/cprobe-mac.js && node public/cprobe-linux.js && shx chmod +x ."
   },
   "dependencies": {
