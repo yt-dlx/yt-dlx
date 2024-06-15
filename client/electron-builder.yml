@@ -8,5 +8,6 @@ files:
   - from: .
     filter:
       - package.json
+      - resources
       - app
 publish: null

@@ -9,27 +9,23 @@ var AudioOnly: React.FC<{
   var [outputFolder, setOutputFolder] = useState<string | null>(null);
   var [quality, setQuality] = useState<string | null>(null);
   var [progress, setProgress] = useState<any>(null);
-  var [metadata, setMetadata] = useState<any>(null);
   var [start, setStart] = useState<any>(null);
   var [error, setError] = useState<any>(null);
   var [end, setEnd] = useState<any>(null);
   useEffect(() => {
     var handleProgress = (progress: any) => setProgress(progress);
-    var handleMetadata = (metadata: any) => setMetadata(metadata);
     var handleStart = (start: string) => setStart(start);
     var handleError = (error: string) => setError(error);
     var handleEnd = (end: string) => setEnd(end);
-    window.ipc.on("progress", handleProgress);
-    window.ipc.on("metadata", handleMetadata);
-    window.ipc.on("start", handleStart);
-    window.ipc.on("error", handleError);
-    window.ipc.on("end", handleEnd);
+    window.ipc.on("AudioProgress", handleProgress);
+    window.ipc.on("AudioStart", handleStart);
+    window.ipc.on("AudioError", handleError);
+    window.ipc.on("AudioEnd", handleEnd);
     return () => {
-      window.ipc.off("progress", handleProgress);
-      window.ipc.off("metadata", handleMetadata);
-      window.ipc.off("start", handleStart);
-      window.ipc.off("error", handleError);
-      window.ipc.off("end", handleEnd);
+      window.ipc.off("AudioProgress", handleProgress);
+      window.ipc.off("AudioStart", handleStart);
+      window.ipc.off("AudioError", handleError);
+      window.ipc.off("AudioEnd", handleEnd);
     };
   }, []);
 
@@ -39,7 +35,7 @@ var AudioOnly: React.FC<{
   };
   var handleDownload = () => {
     if (outputFolder && quality) {
-      window.ipc.send("Audio", { videoId, output: outputFolder, quality });
+      window.ipc.send("Audio", { query: videoId, output: outputFolder, quality });
     }
   };
 
@@ -58,18 +54,21 @@ var AudioOnly: React.FC<{
             </h2>
             <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start m-6">
               <li
-                onClick={() => setQuality("highest")}
+                onClick={() => setQuality("Highest")}
                 className={`hover:text-red-600 hover:font-black cursor-pointer ${quality === "highest" ? "text-red-600 font-black" : "text-gray-600"}`}>
                 Highest Possible Download
               </li>
               <li
-                onClick={() => setQuality("lowest")}
+                onClick={() => setQuality("Lowest")}
                 className={`hover:text-red-600 hover:font-black cursor-pointer ${quality === "lowest" ? "text-red-600 font-black" : "text-gray-600"}`}>
                 Lowest Possible Download
               </li>
             </ul>
             {quality && (
               <>
+                <div className="text-red-600 text-lg font-black uppercase">
+                  You have selected {quality}{" "}
+                </div>
                 <button
                   onClick={selectOutputFolder}
                   className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110">
@@ -87,20 +86,18 @@ var AudioOnly: React.FC<{
                 )}
               </>
             )}
-            {start && <p className="text-white mt-2">Start: {start}</p>}
-            {metadata && <p className="text-white mt-2">Metadata: {JSON.stringify(metadata)}</p>}
+            {start && <p className="text-white mt-2">Start: {JSON.stringify(start)}</p>}
             {progress && (
               <progress className="progress h-4 w-80 m-4" value={progress.percent || 0} max="100" />
             )}
-            {end && <p className="text-white mt-2">End: {end}</p>}
-            {error && <p className="text-red-600 mt-2">Error: {error}</p>}
+            {end && <p className="text-white mt-2">End: {JSON.stringify(end)}</p>}
+            {error && <p className="text-red-600 mt-2">Error: {JSON.stringify(error)}</p>}
             <button
               onClick={() => {
                 onClose();
                 setEnd(null);
                 setError(null);
                 setStart(null);
-                setMetadata(null);
                 setProgress(null);
               }}
               className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4">
