@@ -5,11 +5,9 @@
 // import { createWindow } from "./helpers";
 // import { ipcMain as api, dialog, app } from "electron";
 // import { singleVideoType, searchVideosType } from "yt-dlx/out/types/web";
-
 // const onprod = process.env.NODE_ENV === "production";
 // if (onprod) serve({ directory: "app" });
 // else app.setPath("userData", `${app.getPath("userData")} (development)`);
-
 // (async () => {
 // await app.whenReady();
 // const mainWindow = createWindow("main", {
@@ -29,7 +27,6 @@
 // break;
 // }
 // })();
-
 // api.on("search", async (event, response) => {
 // try {
 // let TubeBody: singleVideoType | searchVideosType[];
@@ -60,32 +57,25 @@
 // else return result.filePaths[0];
 // });
 // app.on("window-all-closed", () => app.quit());
-
 // main.js
 
 import path from "path";
-import WebSocket from "ws";
 import ytdlx from "yt-dlx";
+import WebSocket from "ws";
 import colors from "colors";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import { ipcMain as api, dialog, app } from "electron";
 import { singleVideoType, searchVideosType } from "yt-dlx/out/types/web";
 
-const onprod = process.env.NODE_ENV === "production";
-if (onprod) serve({ directory: "app" });
-else app.setPath("userData", `${app.getPath("userData")} (development)`);
-
 const ws = new WebSocket("ws://localhost:8642");
-ws.on("open", () => {
-  console.log("Connected to WebSocket server");
-});
-ws.on("message", message => {
-  console.log("Received from server:", message);
-});
-ws.on("close", () => {
-  console.log("Disconnected from WebSocket server");
-});
+const onprod = process.env.NODE_ENV === "production";
+
+if (onprod) {
+  serve({ directory: "app" });
+} else {
+  app.setPath("userData", `${app.getPath("userData")} (development)`);
+}
 
 (async () => {
   await app.whenReady();
@@ -96,6 +86,7 @@ ws.on("close", () => {
       preload: path.join(__dirname, "preload.js"),
     },
   });
+
   switch (onprod) {
     case false:
       await mainWindow.loadURL(`http://localhost:${process.argv[2]}/home`);
@@ -115,27 +106,67 @@ api.on("search", async (event, response) => {
       TubeBody = await ytdlx.ytSearch.Video.Single({
         query: `https://youtu.be/${response.videoId}`,
       });
-      if (TubeBody) event.reply("search", TubeBody);
-      else event.sender.send("search", null);
     } else {
       console.log(colors.green("❓ query:"), colors.italic(response.query));
       TubeBody = await ytdlx.ytSearch.Video.Multiple({
         query: response.query,
       });
-      if (TubeBody) event.reply("search", TubeBody);
-      else event.sender.send("search", null);
+    }
+
+    if (TubeBody) {
+      event.reply("search", TubeBody);
+    } else {
+      event.sender.send("search", null);
     }
   } catch (error) {
     event.reply("search", error.message);
   }
 });
 
+api.on("meta", async (event, response) => {
+  ws.send(
+    JSON.stringify({
+      action: "meta",
+      payload: {
+        query: response.query,
+        verbose: true,
+        useTor: true,
+      },
+    }),
+  );
+
+  ws.once("message", (message: string) => {
+    console.log("Received message from server:", message);
+    try {
+      const response = JSON.parse(message);
+      if (response.success) {
+        event.sender.send("meta", response.data);
+      } else {
+        event.sender.send("error-meta", response.error);
+      }
+    } catch (error) {
+      console.error("@error: parsing JSON:", error);
+    }
+  });
+});
+
 api.handle("select-output-folder", async event => {
   const result = await dialog.showOpenDialog({
     properties: ["openDirectory"],
   });
-  if (result.canceled) return null;
-  else return result.filePaths[0];
+
+  if (result.canceled) {
+    return null;
+  } else {
+    return result.filePaths[0];
+  }
 });
 
 app.on("window-all-closed", () => app.quit());
+
+ws.on("close", () => console.log("Disconnected from WebSocket server"));
+
+// Handle WebSocket errors
+ws.on("error", error => {
+  console.error("WebSocket error:", error);
+});
