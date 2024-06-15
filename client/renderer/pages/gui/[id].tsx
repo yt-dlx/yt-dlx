@@ -41,6 +41,7 @@ const FromRightToLeft = {
 export default function VideoId(): JSX.Element {
   const router = useRouter();
   const { id } = router.query;
+  let ws: WebSocket | null = null;
   const [ShowAudio, setShowAudio] = react.useState(false);
   const [ShowVideo, setShowVideo] = react.useState(false);
   const [TubeSearch, setTubeSearch] = react.useState<any>(null);
@@ -152,7 +153,7 @@ export default function VideoId(): JSX.Element {
               </section>
             </div>
             {/* [ Modals ] */}
-            <AudioOnly isOpen={ShowAudio} onClose={ToggleAudio} videoId={TubeSearch.id} />
+            <AudioOnly isOpen={ShowAudio} onClose={ToggleAudio} videoId={TubeSearch.id} ws={ws} />
             <VideoOnly isOpen={ShowVideo} onClose={ToggleVideo} videoId={TubeSearch.id} />
             <AudioVideo
               isOpen={ShowAudioVideo}

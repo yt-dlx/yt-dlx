@@ -1,42 +1,68 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-var AudioOnly: React.FC<{
+const AudioOnly: React.FC<{
+  ws: WebSocket;
   videoId: string;
   isOpen: boolean;
   onClose: () => void;
-}> = ({ isOpen, onClose, videoId }) => {
-  var [outputFolder, setOutputFolder] = useState<string | null>(null);
-  var [quality, setQuality] = useState<string | null>(null);
-  var [progress, setProgress] = useState<any>(null);
-  var [start, setStart] = useState<any>(null);
-  var [error, setError] = useState<any>(null);
-  var [end, setEnd] = useState<any>(null);
+}> = ({ isOpen, onClose, videoId, ws }) => {
+  const [outputFolder, setOutputFolder] = useState<string | null>(null);
+  const [quality, setQuality] = useState<string | null>(null);
+  const [progress, setProgress] = useState<any>(null);
+  const [metadata, setMetadata] = useState<any>(null);
+  const [start, setStart] = useState<any>(null);
+  const [error, setError] = useState<any>(null);
+  const [end, setEnd] = useState<any>(null);
+
   useEffect(() => {
-    var handleProgress = (progress: any) => setProgress(progress);
-    var handleStart = (start: string) => setStart(start);
-    var handleError = (error: string) => setError(error);
-    var handleEnd = (end: string) => setEnd(end);
-    window.ipc.on("AudioProgress", handleProgress);
-    window.ipc.on("AudioStart", handleStart);
-    window.ipc.on("AudioError", handleError);
-    window.ipc.on("AudioEnd", handleEnd);
+    ws = new WebSocket("ws://localhost:8642");
+    ws.onopen = () => setStart("@info: WebSocket connected");
+    ws.onmessage = event => {
+      const message = JSON.parse(event.data);
+      switch (message.event) {
+        case "start":
+          setStart(message.data);
+          break;
+        case "progress":
+          setProgress(message.data);
+          break;
+        case "end":
+          setEnd(message.data);
+          break;
+        case "error":
+          setError(message.data);
+          break;
+        case "metadata":
+          setMetadata(message.data);
+          break;
+        default:
+          console.warn("Unknown event type:", message.event);
+      }
+    };
+    ws.onerror = event => setError(JSON.stringify(event));
     return () => {
-      window.ipc.off("AudioProgress", handleProgress);
-      window.ipc.off("AudioStart", handleStart);
-      window.ipc.off("AudioError", handleError);
-      window.ipc.off("AudioEnd", handleEnd);
+      if (ws) ws.close();
     };
   }, []);
 
-  var selectOutputFolder = async () => {
-    var folder = await window.ipc.invoke("select-output-folder");
+  const selectOutputFolder = async () => {
+    const folder = await window.ipc.invoke("select-output-folder");
     if (folder) setOutputFolder(folder);
   };
-  var handleDownload = () => {
-    if (outputFolder && quality) {
-      window.ipc.send("Audio", { query: videoId, output: outputFolder, quality });
-    }
+  const handleDownload = () => {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      const message = {
+        action: "meta",
+        payload: {
+          useTor: true,
+          verbose: true,
+          query: videoId,
+          output: outputFolder,
+        },
+      };
+      ws.send(JSON.stringify(message));
+    } else setError("WebSocket connection not established");
   };
 
   return (
@@ -55,12 +81,12 @@ var AudioOnly: React.FC<{
             <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start m-6">
               <li
                 onClick={() => setQuality("Highest")}
-                className={`hover:text-red-600 hover:font-black cursor-pointer ${quality === "highest" ? "text-red-600 font-black" : "text-gray-600"}`}>
+                className={`hover:text-red-600 hover:font-black cursor-pointer ${quality === "Highest" ? "text-red-600 font-black" : "text-gray-600"}`}>
                 Highest Possible Download
               </li>
               <li
                 onClick={() => setQuality("Lowest")}
-                className={`hover:text-red-600 hover:font-black cursor-pointer ${quality === "lowest" ? "text-red-600 font-black" : "text-gray-600"}`}>
+                className={`hover:text-red-600 hover:font-black cursor-pointer ${quality === "Lowest" ? "text-red-600 font-black" : "text-gray-600"}`}>
                 Lowest Possible Download
               </li>
             </ul>
@@ -91,6 +117,7 @@ var AudioOnly: React.FC<{
               <progress className="progress h-4 w-80 m-4" value={progress.percent || 0} max="100" />
             )}
             {end && <p className="text-white mt-2">End: {JSON.stringify(end)}</p>}
+            {metadata && <p className="text-white mt-2">Metadata: {JSON.stringify(metadata)}</p>}
             {error && <p className="text-red-600 mt-2">Error: {JSON.stringify(error)}</p>}
             <button
               onClick={() => {
@@ -99,6 +126,7 @@ var AudioOnly: React.FC<{
                 setError(null);
                 setStart(null);
                 setProgress(null);
+                setMetadata(null);
               }}
               className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4">
               Close Modal Box

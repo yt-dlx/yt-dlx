@@ -142,8 +142,8 @@ export default async function Engine({
   var AudioHighF: AudioFormat | any = null;
   var VideoLowF: VideoFormat | any = null;
   var VideoHighF: VideoFormat | any = null;
-  var cprobe = encore().then(fp => fp.cprobe);
-  var pLoc = (await cprobe).toString();
+  var cprobe = await encore().then(fp => fp.cprobe);
+  var pLoc = `${cprobe}`;
   var config = {
     factor: 2,
     retries: 3,
