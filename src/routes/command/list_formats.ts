@@ -18,7 +18,10 @@ export default async function list_formats({
   query: string;
   verbose?: boolean;
 }): Promise<any> {
-  var metaBody: EngineOutput = await ytdlx({ query, verbose });
+  var metaBody: EngineOutput = await ytdlx({
+    query,
+    verbose,
+  });
   if (!metaBody) {
     throw new Error("@error: Unable to get response from YouTube.");
   } else {

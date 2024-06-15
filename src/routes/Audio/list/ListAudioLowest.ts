@@ -54,7 +54,13 @@ export default async function ListAudioLowest({
   filter,
 }: z.infer<typeof ZodSchema>): Promise<void> {
   try {
-    ZodSchema.parse({ query, output, useTor, verbose, filter });
+    ZodSchema.parse({
+      query,
+      output,
+      useTor,
+      verbose,
+      filter,
+    });
     var startTime: Date;
     var unique = new Set<{
       ago: string;

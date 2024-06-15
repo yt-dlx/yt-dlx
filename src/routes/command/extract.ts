@@ -11,7 +11,10 @@ import type EngineOutput from "../../interfaces/EngineOutput";
  * @returns A Promise that resolves with an object containing metadata information about the video.
  */
 export default async function extract({ query, verbose }: { query: string; verbose?: boolean }) {
-  var metaBody: EngineOutput = await ytdlx({ query, verbose });
+  var metaBody: EngineOutput = await ytdlx({
+    query,
+    verbose,
+  });
   if (!metaBody) {
     return {
       message: "Unable to get response!",
@@ -40,7 +43,12 @@ export default async function extract({ query, verbose }: { query: string; verbo
     var formattedString = `${years > 0 ? years + " years, " : ""}${
       months > 0 ? months + " months, " : ""
     }${remainingDays} days`;
-    return { years, months, days: remainingDays, formatted: formattedString };
+    return {
+      years,
+      months,
+      days: remainingDays,
+      formatted: formattedString,
+    };
   }
   function calculateVideoDuration(seconds: number) {
     var hours = Math.floor(seconds / 3600);
