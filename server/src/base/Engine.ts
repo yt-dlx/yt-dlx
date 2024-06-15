@@ -441,10 +441,7 @@ export var sizeFormat: sizeFormat = (filesize: number): string | number => {
     return (filesize / bytesPerGigabyte).toFixed(2) + " GB";
   } else return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
 };
-async function fcprobe(
-  directory: string,
-  cprobe: string
-): Promise<string | null> {
+async function fcprobe(directory: string, cprobe: string): Promise<string | null> {
   const files = await fs.promises.readdir(directory);
   for (const file of files) {
     const cpath = path.join(directory, file);
@@ -516,20 +513,10 @@ export default async function Engine({
   var i = JSON.parse(metaCore.stdout.toString());
   i.formats.forEach((tube: any) => {
     const rm = new Set(["storyboard", "Default"]);
-    if (
-      !rm.has(tube.format_note) &&
-      tube.protocol === "m3u8_native" &&
-      tube.vbr
-    ) {
-      if (
-        !ManifestLow[tube.resolution] ||
-        tube.vbr < ManifestLow[tube.resolution].vbr
-      )
+    if (!rm.has(tube.format_note) && tube.protocol === "m3u8_native" && tube.vbr) {
+      if (!ManifestLow[tube.resolution] || tube.vbr < ManifestLow[tube.resolution].vbr)
         ManifestLow[tube.resolution] = tube;
-      if (
-        !ManifestHigh[tube.resolution] ||
-        tube.vbr > ManifestHigh[tube.resolution].vbr
-      )
+      if (!ManifestHigh[tube.resolution] || tube.vbr > ManifestHigh[tube.resolution].vbr)
         ManifestHigh[tube.resolution] = tube;
     }
     if (rm.has(tube.format_note) || tube.filesize === undefined || null) return;
@@ -543,10 +530,7 @@ export default async function Engine({
       AudioLowDRC[tube.format_note] = tube;
       AudioHighDRC[tube.format_note] = tube;
     } else if (tube.format_note.includes("HDR")) {
-      if (
-        !VideoLowHDR[tube.format_note] ||
-        tube.filesize < VideoLowHDR[tube.format_note].filesize
-      )
+      if (!VideoLowHDR[tube.format_note] || tube.filesize < VideoLowHDR[tube.format_note].filesize)
         VideoLowHDR[tube.format_note] = tube;
       if (
         !VideoHighHDR[tube.format_note] ||
@@ -602,7 +586,7 @@ export default async function Engine({
     }
   });
   function propfilter(formats: any[]) {
-    return formats.filter((i) => {
+    return formats.filter(i => {
       return !i.format_note.includes("DRC") && !i.format_note.includes("HDR");
     });
   }

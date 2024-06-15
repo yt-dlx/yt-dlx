@@ -14,7 +14,7 @@ const axios = require("axios");
       }
       const totalSize = parseInt(response.headers["content-length"], 10);
       const writer = fs.createWriteStream(filepath);
-      response.data.on("data", (chunk) => {
+      response.data.on("data", chunk => {
         downloadedSize += chunk.length;
         const progress = Math.round((downloadedSize / totalSize) * 100);
         process.stdout.write(`@cprobe: ${progress}%\r`);
