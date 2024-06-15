@@ -3,9 +3,9 @@ import colors from "colors";
 import * as path from "path";
 import { z, ZodError } from "zod";
 import ffmpeg from "fluent-ffmpeg";
+import ytdlx from "../../base/Agent";
 import { EventEmitter } from "events";
-import { encore } from "yt-dlx-encore";
-import ytdlx from "../../../base/Agent";
+import { locator } from "../../base/locator";
 
 var ZodSchema = z.object({
   query: z.string().min(2),
@@ -28,19 +28,19 @@ var ZodSchema = z.object({
 });
 
 /**
- * Downloads the highest quality version of a YouTube video with optional video filter.
+ * Downloads audio and video from a YouTube video URL with the lowest available resolution.
  *
  * @param query - The YouTube video URL or ID or name.
- * @param stream - (optional) Whether to return the FfmpegCommand instead of downloading the video.
+ * @param stream - (optional) Whether to stream the output or not.
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
- * @param output - (optional) The output directory for the processed files.
+ * @param output - (optional) The output directory for the processed file.
  * @param metadata - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
  * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
  *
  * @returns An EventEmitter instance to handle events.
  */
-export default function VideoHighest({
+export default function AudioVideoLowest({
   query,
   stream,
   verbose,
@@ -73,13 +73,14 @@ export default function VideoHighest({
       var folder = output ? output : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
       var ff = ffmpeg()
-        .setFfmpegPath((await encore().then(fp => fp.ffmpeg)).toString())
-        .setFfprobePath((await encore().then(fp => fp.ffprobe)).toString())
-        .addInput(engineData.ManifestHigh[engineData.ManifestHigh.length - 1].url)
+        .setFfmpegPath((await locator().then(fp => fp.ffmpeg)).toString())
+        .setFfprobePath((await locator().then(fp => fp.ffprobe)).toString())
+        .addInput(engineData.AudioLowF.url)
+        .addInput(engineData.ManifestLow[0]?.url)
         .withOutputFormat("matroska")
-        .videoCodec("copy")
+        .outputOptions("-c copy")
         .addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      var filenameBase = `yt-dlx_(VideoHighest_`;
+      var filenameBase = `yt-dlx_(AudioVideoLowest_`;
       let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
       var filterMap: Record<string, string[]> = {
         grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
@@ -111,6 +112,10 @@ export default function VideoHighest({
             filename,
             metaData: engineData.metaData,
             ipAddress: engineData.ipAddress,
+            AudioLowF: engineData.AudioLowF,
+            AudioHighF: engineData.AudioHighF,
+            AudioLowDRC: engineData.AudioLowDRC,
+            AudioHighDRC: engineData.AudioHighDRC,
             VideoLowF: engineData.VideoLowF,
             VideoHighF: engineData.VideoHighF,
             VideoLowHDR: engineData.VideoLowHDR,

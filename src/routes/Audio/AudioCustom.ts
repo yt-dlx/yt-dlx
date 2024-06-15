@@ -3,9 +3,9 @@ import colors from "colors";
 import * as path from "path";
 import { z, ZodError } from "zod";
 import ffmpeg from "fluent-ffmpeg";
+import ytdlx from "../../base/Agent";
 import { EventEmitter } from "events";
-import { encore } from "yt-dlx-encore";
-import ytdlx from "../../../base/Agent";
+import { locator } from "../../base/locator";
 
 var ZodSchema = z.object({
   query: z.string().min(2),
@@ -90,8 +90,8 @@ export default function AudioCustom({
         throw new Error(`${colors.red("@error:")} no audio data found. use list_formats() maybe?`);
       }
       var ff = ffmpeg()
-        .setFfmpegPath((await encore().then(fp => fp.ffmpeg)).toString())
-        .setFfprobePath((await encore().then(fp => fp.ffprobe)).toString())
+        .setFfmpegPath((await locator().then(fp => fp.ffmpeg)).toString())
+        .setFfprobePath((await locator().then(fp => fp.ffprobe)).toString())
         .addInput(adata.url)
         .addInput(engineData.metaData.thumbnail)
         .withOutputFormat("avi");

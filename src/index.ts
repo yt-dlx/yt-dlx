@@ -10,28 +10,19 @@ import playlist_data from "./routes/command/playlist_data";
 import search_playlists from "./routes/command/search_playlists";
 //
 // ============================[ AUDIO-ONLY ]============================
-import AudioLowest from "./routes/Audio/single/AudioLowest";
-import AudioHighest from "./routes/Audio/single/AudioHighest";
-import AudioCustom from "./routes/Audio/single/AudioCustom";
-import ListAudioLowest from "./routes/Audio/list/ListAudioLowest";
-import ListAudioHighest from "./routes/Audio/list/ListAudioHighest";
-import ListAudioCustom from "./routes/Audio/list/ListAudioCustom";
+import AudioLowest from "./routes/Audio/AudioLowest";
+import AudioHighest from "./routes/Audio/AudioHighest";
+import AudioCustom from "./routes/Audio/AudioCustom";
 //
 // ============================[ VIDEO-ONLY ]============================
-import VideoLowest from "./routes/Video/single/VideoLowest";
-import VideoHighest from "./routes/Video/single/VideoHighest";
-import VideoCustom from "./routes/Video/single/VideoCustom";
-import ListVideoLowest from "./routes/Video/list/ListVideoLowest";
-import ListVideoHighest from "./routes/Video/list/ListVideoHighest";
-import ListVideoCustom from "./routes/Video/list/ListVideoCustom";
+import VideoLowest from "./routes/Video/VideoLowest";
+import VideoHighest from "./routes/Video/VideoHighest";
+import VideoCustom from "./routes/Video/VideoCustom";
 //
 // ============================[ AUDIO-VIDEO ]============================
-import AudioVideoHighest from "./routes/AudioVideo/single/AudioVideoHighest";
-import AudioVideoLowest from "./routes/AudioVideo/single/AudioVideoLowest";
-import AudioVideoCustom from "./routes/AudioVideo/single/AudioVideoCustom";
-import ListAudioVideoHighest from "./routes/AudioVideo/list/ListAudioVideoHighest";
-import ListAudioVideoLowest from "./routes/AudioVideo/list/ListAudioVideoLowest";
-import ListAudioVideoCustom from "./routes/AudioVideo/list/ListAudioVideoCustom";
+import AudioVideoHighest from "./routes/AudioVideo/AudioVideoHighest";
+import AudioVideoLowest from "./routes/AudioVideo/AudioVideoLowest";
+import AudioVideoCustom from "./routes/AudioVideo/AudioVideoCustom";
 //
 var ytdlx = {
   ytSearch: {
@@ -50,40 +41,19 @@ var ytdlx = {
     list_formats,
   },
   AudioOnly: {
-    Single: {
-      Lowest: AudioLowest,
-      Highest: AudioHighest,
-      Custom: AudioCustom,
-    },
-    List: {
-      Lowest: ListAudioLowest,
-      Highest: ListAudioHighest,
-      Custom: ListAudioCustom,
-    },
+    Lowest: AudioLowest,
+    Highest: AudioHighest,
+    Custom: AudioCustom,
   },
   VideoOnly: {
-    Single: {
-      Lowest: VideoLowest,
-      Highest: VideoHighest,
-      Custom: VideoCustom,
-    },
-    List: {
-      Lowest: ListVideoLowest,
-      Highest: ListVideoHighest,
-      Custom: ListVideoCustom,
-    },
+    Lowest: VideoLowest,
+    Highest: VideoHighest,
+    Custom: VideoCustom,
   },
   AudioVideo: {
-    Single: {
-      Lowest: AudioVideoLowest,
-      Highest: AudioVideoHighest,
-      Custom: AudioVideoCustom,
-    },
-    List: {
-      Lowest: ListAudioVideoLowest,
-      Highest: ListAudioVideoHighest,
-      Custom: ListAudioVideoCustom,
-    },
+    Lowest: AudioVideoLowest,
+    Highest: AudioVideoHighest,
+    Custom: AudioVideoCustom,
   },
 };
 export default ytdlx;

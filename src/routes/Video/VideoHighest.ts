@@ -3,9 +3,9 @@ import colors from "colors";
 import * as path from "path";
 import { z, ZodError } from "zod";
 import ffmpeg from "fluent-ffmpeg";
+import ytdlx from "../../base/Agent";
 import { EventEmitter } from "events";
-import { encore } from "yt-dlx-encore";
-import ytdlx from "../../../base/Agent";
+import { locator } from "../../base/locator";
 
 var ZodSchema = z.object({
   query: z.string().min(2),
@@ -16,58 +16,50 @@ var ZodSchema = z.object({
   metadata: z.boolean().optional(),
   filter: z
     .enum([
-      "echo",
-      "slow",
-      "speed",
-      "phaser",
-      "flanger",
-      "panning",
-      "reverse",
-      "vibrato",
-      "subboost",
-      "surround",
-      "bassboost",
-      "nightcore",
-      "superslow",
-      "vaporwave",
-      "superspeed",
+      "invert",
+      "rotate90",
+      "rotate270",
+      "grayscale",
+      "rotate180",
+      "flipVertical",
+      "flipHorizontal",
     ])
     .optional(),
 });
 
 /**
- * Downloads and processes the lowest quality audio from a single YouTube video.
+ * Downloads the highest quality version of a YouTube video with optional video filter.
  *
  * @param query - The YouTube video URL or ID or name.
- * @param output - (optional) The output directory for the processed file.
- * @param stream - (optional) Whether to stream the processed video or not.
+ * @param stream - (optional) Whether to return the FfmpegCommand instead of downloading the video.
  * @param verbose - (optional) Whether to log verbose output or not.
  * @param useTor - (optional) Whether to use Tor for the download or not.
- * @param filter - (optional) The audio filter to apply.
- * @param metadata - (optional) If true, the function returns the extracted metadata and filename without processing the audio.
+ * @param output - (optional) The output directory for the processed files.
+ * @param metadata - (optional) If true, the function returns the extracted metadata and filename without processing the audio. This can be useful for debugging or obtaining metadata without downloading the audio.
+ * @param filter - (optional) The video filter to apply. Available options: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal".
  *
  * @returns An EventEmitter instance to handle events.
  */
-export default function AudioLowest({
+export default function VideoHighest({
   query,
-  output,
-  useTor,
   stream,
-  filter,
-  metadata,
   verbose,
+  output,
+  metadata,
+  useTor,
+  filter,
 }: z.infer<typeof ZodSchema>): EventEmitter {
   var emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse({
         query,
-        output,
-        useTor,
         stream,
-        filter,
-        metadata,
         verbose,
+        output,
+        metadata,
+        useTor,
+        filter,
       });
       var engineData = await ytdlx({
         query,
@@ -81,32 +73,24 @@ export default function AudioLowest({
       var folder = output ? output : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
       var ff = ffmpeg()
-        .setFfmpegPath((await encore().then(fp => fp.ffmpeg)).toString())
-        .setFfprobePath((await encore().then(fp => fp.ffprobe)).toString())
-        .addInput(engineData.AudioLowF.url)
-        .addInput(engineData.metaData.thumbnail)
-        .withOutputFormat("avi")
+        .setFfmpegPath((await locator().then(fp => fp.ffmpeg)).toString())
+        .setFfprobePath((await locator().then(fp => fp.ffprobe)).toString())
+        .addInput(engineData.ManifestHigh[engineData.ManifestHigh.length - 1].url)
+        .withOutputFormat("matroska")
+        .videoCodec("copy")
         .addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      var filenameBase = `yt-dlx_(AudioLowest_`;
-      let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.avi`;
+      var filenameBase = `yt-dlx_(VideoHighest_`;
+      let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
       var filterMap: Record<string, string[]> = {
-        bassboost: ["bass=g=10,dynaudnorm=f=150"],
-        echo: ["aecho=0.8:0.9:1000:0.3"],
-        flanger: ["flanger"],
-        nightcore: ["aresample=48000,asetrate=48000*1.25"],
-        panning: ["apulsator=hz=0.08"],
-        phaser: ["aphaser=in_gain=0.4"],
-        reverse: ["areverse"],
-        slow: ["atempo=0.8"],
-        speed: ["atempo=2"],
-        subboost: ["asubboost"],
-        superslow: ["atempo=0.5"],
-        superspeed: ["atempo=3"],
-        surround: ["surround"],
-        vaporwave: ["aresample=48000,asetrate=48000*0.8"],
-        vibrato: ["vibrato=f=6.5"],
+        grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
+        invert: ["negate"],
+        rotate90: ["rotate=PI/2"],
+        rotate180: ["rotate=PI"],
+        rotate270: ["rotate=3*PI/2"],
+        flipHorizontal: ["hflip"],
+        flipVertical: ["vflip"],
       };
-      if (filter && filterMap[filter]) ff.withAudioFilter(filterMap[filter]);
+      if (filter && filterMap[filter]) ff.withVideoFilter(filterMap[filter]);
       ff.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
       ff.on("start", comd => {
         if (verbose) emitter.emit("log", colors.green("@comd:"), comd);
@@ -127,10 +111,12 @@ export default function AudioLowest({
             filename,
             metaData: engineData.metaData,
             ipAddress: engineData.ipAddress,
-            AudioLowF: engineData.AudioLowF,
-            AudioHighF: engineData.AudioHighF,
-            AudioLowDRC: engineData.AudioLowDRC,
-            AudioHighDRC: engineData.AudioHighDRC,
+            VideoLowF: engineData.VideoLowF,
+            VideoHighF: engineData.VideoHighF,
+            VideoLowHDR: engineData.VideoLowHDR,
+            VideoHighHDR: engineData.VideoHighHDR,
+            ManifestLow: engineData.ManifestLow,
+            ManifestHigh: engineData.ManifestHigh,
           });
           break;
         default:
@@ -157,6 +143,5 @@ export default function AudioLowest({
       );
     }
   })();
-
   return emitter;
 }

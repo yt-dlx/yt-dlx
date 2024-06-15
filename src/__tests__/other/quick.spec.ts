@@ -2,12 +2,12 @@ console.clear();
 var baseTime = new Date();
 import * as path from "path";
 import progbar from "../../base/progbar";
-import AudioLowest from "../../routes/Audio/single/AudioLowest";
-import AudioHighest from "../../routes/Audio/single/AudioHighest";
-import VideoLowest from "../../routes/Video/single/VideoLowest";
-import VideoHighest from "../../routes/Video/single/VideoHighest";
-import AudioVideoLowest from "../../routes/AudioVideo/single/AudioVideoLowest";
-import AudioVideoHighest from "../../routes/AudioVideo/single/AudioVideoHighest";
+import AudioLowest from "../../routes/Audio/AudioLowest";
+import AudioHighest from "../../routes/Audio/AudioHighest";
+import VideoLowest from "../../routes/Video/VideoLowest";
+import VideoHighest from "../../routes/Video/VideoHighest";
+import AudioVideoLowest from "../../routes/AudioVideo/AudioVideoLowest";
+import AudioVideoHighest from "../../routes/AudioVideo/AudioVideoHighest";
 
 var proc = AudioLowest({
   output: path.join(__dirname, "downloads"),

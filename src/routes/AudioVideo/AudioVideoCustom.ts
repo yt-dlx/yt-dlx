@@ -3,9 +3,9 @@ import colors from "colors";
 import * as path from "path";
 import { z, ZodError } from "zod";
 import ffmpeg from "fluent-ffmpeg";
+import ytdlx from "../../base/Agent";
 import { EventEmitter } from "events";
-import { encore } from "yt-dlx-encore";
-import ytdlx from "../../../base/Agent";
+import { locator } from "../../base/locator";
 
 var ZodSchema = z.object({
   query: z.string().min(2),
@@ -91,8 +91,8 @@ export default function AudioVideoCustom({
       var folder = output ? output : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
       var ff = ffmpeg()
-        .setFfmpegPath((await encore().then(fp => fp.ffmpeg)).toString())
-        .setFfprobePath((await encore().then(fp => fp.ffprobe)).toString())
+        .setFfmpegPath((await locator().then(fp => fp.ffmpeg)).toString())
+        .setFfprobePath((await locator().then(fp => fp.ffprobe)).toString())
         .addInput(engineData.AudioHighF.url)
         .withOutputFormat("matroska")
         .addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
