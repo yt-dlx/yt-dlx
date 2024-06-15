@@ -9,7 +9,7 @@ const wss = new WebSocket.Server({ server });
 wss.on("connection", (ws: WebSocket, req) => {
   const ip = req.socket.remoteAddress;
   console.log(`WebSocket client connected from ip: ${ip}`);
-  ws.on("message", async (message: string) => metaHandler(ws, message));
+  ws.on("message", async (message: string) => await metaHandler(ws, message));
   ws.on("error", error => console.error(`WebSocket error: ${error.message}`));
   ws.on("close", () => console.log(`WebSocket client disconnected from ${ip}`));
 });

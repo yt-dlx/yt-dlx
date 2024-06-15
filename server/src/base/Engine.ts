@@ -143,6 +143,7 @@ export default async function Engine({
   var VideoLowF: VideoFormat | any = null;
   var VideoHighF: VideoFormat | any = null;
   var cprobe = await encore().then(fp => fp.cprobe);
+  console.log(cprobe);
   var pLoc = `${cprobe}`;
   var config = {
     factor: 2,
@@ -151,7 +152,6 @@ export default async function Engine({
     maxTimeout: 3000,
   };
   var metaCore = await retry(async () => {
-    if (useTor) pLoc += ` --proxy "socks5://127.0.0.1:9050"`;
     pLoc += ` --dump-single-json "${query}"`;
     pLoc += ` --no-check-certificate --prefer-insecure --no-call-home --skip-download --no-warnings --geo-bypass`;
     pLoc += ` --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"`;

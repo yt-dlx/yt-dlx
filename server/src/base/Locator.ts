@@ -1,25 +1,20 @@
-import * as fsx from "fs-extra";
 import * as path from "path";
+import * as fsx from "fs-extra";
 
 async function findRootDirectory(currentPath: string): Promise<string | null> {
   const markerFile = "package.json";
   try {
     const files = await fsx.readdir(currentPath);
     if (files.includes(markerFile)) return currentPath;
-    else {
-      const parentDir = path.resolve(currentPath, "..");
-      if (parentDir === currentPath) return null;
-      else return findRootDirectory(parentDir);
-    }
-  } catch (error) {
+    const parentDir = path.resolve(currentPath, "..");
+    if (parentDir === currentPath) return null;
+    else return findRootDirectory(parentDir);
+  } catch {
     return null;
   }
 }
 
-async function scanner(
-  directory: string,
-  execName: string,
-): Promise<string | null> {
+async function scanner(directory: string, execName: string): Promise<string | null> {
   try {
     const files = await fsx.readdir(directory);
     for (const file of files) {
@@ -38,7 +33,7 @@ async function scanner(
       }
     }
     return null;
-  } catch (error) {
+  } catch {
     return null;
   }
 }
