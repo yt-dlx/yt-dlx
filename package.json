@@ -36,7 +36,7 @@
     "make:base": "yarn install",
     "make:next": "cd next && yarn install",
     "make:server": "cd server && yarn install",
-    "make:client": "cd client && yarn install && yarn run add next@^13.5.6",
+    "make:client": "cd client && yarn install && yarn add next@^13.5.6",
     "build": "yarn run build:base && yarn run build:next",
     "build:base": "tsc -p ./config/cjs.json && tsc -p ./config/esm.json && tsc -p ./config/types.json",
     "build:next": "cd next && yarn run build",
