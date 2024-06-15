@@ -44,8 +44,7 @@
       "build/**/*.js"
     ],
     "assets": [
-      "public/**/*",
-      "public/icon.ico"
+      "assets/**/*"
     ],
     "targets": [
       "node18-win-x64",
