@@ -34,45 +34,41 @@
 
 import * as path from "path";
 import * as fsx from "fs-extra";
-
 interface SearchResult {
   fileName: string;
   filePath: string | null;
 }
-
-async function findFilesRecursively(dir: string, fileNames: string[]): Promise<SearchResult[]> {
+async function Locator(dir: string, fileNames: string[]): Promise<SearchResult[]> {
   const results: SearchResult[] = fileNames.map(fileName => ({ fileName, filePath: null }));
-
   const files = await fsx.readdir(dir);
   for (const file of files) {
     const fullPath = path.join(dir, file);
     const stat = await fsx.lstat(fullPath);
     if (stat.isDirectory()) {
-      const subDirResults = await findFilesRecursively(fullPath, fileNames);
-      for (const result of subDirResults) {
-        if (result.filePath) {
-          const existingResult = results.find(r => r.fileName === result.fileName);
-          if (existingResult) existingResult.filePath = result.filePath;
-        }
-      }
+      (await Locator(fullPath, fileNames)).forEach(result => {
+        const existingResult = results.find(r => r.fileName === result.fileName);
+        if (existingResult && result.filePath !== null) existingResult.filePath = result.filePath;
+      });
     } else {
-      for (const result of results) {
+      results.forEach(result => {
         if (file === result.fileName && !result.filePath) result.filePath = fullPath;
-      }
+      });
     }
   }
   return results;
 }
+
 (async () => {
-  const projectDirectory = process.cwd();
-  const fileNames = ["ffmpeg.exe", "ffprobe.exe", "cprobe.exe"];
-  try {
-    const results = await findFilesRecursively(projectDirectory, fileNames);
-    results.forEach(result => {
-      if (result.filePath) console.log(`Found ${result.fileName} at: ${result.filePath}`);
-      else console.log(`${result.fileName} not found in the project directory.`);
-    });
-  } catch (error) {
-    console.error("Error searching for files:", error);
-  }
+  const results = await Locator(process.cwd(), ["ffmpeg.exe", "ffprobe.exe", "cprobe.exe"]);
+  results.forEach(result => {
+    switch (result.filePath !== null) {
+      case true:
+        if (result.fileName.startsWith("cprobe")) console.log("@cprobe:", result.filePath);
+        if (result.fileName.startsWith("ffmpeg")) console.log("@ffmpeg:", result.filePath);
+        if (result.fileName.startsWith("ffprobe")) console.log("@ffprobe:", result.filePath);
+        break;
+      default:
+        break;
+    }
+  });
 })();
