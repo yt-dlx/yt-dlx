@@ -5433,7 +5433,7 @@ yocto-queue@^1.0.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-1.0.0.tgz#7f816433fb2cbc511ec8bf7d263c3b58a1a3c251"
   integrity sha512-9bnSc/HEW2uRy67wc+T8UwauLuPJVn28jb+GtJY16iiKWyvmYJRXVT4UamsAEGQfPohgr2q4Tq0sQbQlxTfi1g==
 
-youtubei@^1.4.2:
+youtubei@^1.4.2, youtubei@^1.4.4:
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/youtubei/-/youtubei-1.4.4.tgz#d35a72fa717f5bb4a564fa08e59e1276f3d16485"
   integrity sha512-U/Zp1ZLoV5boR/MxXsotYjZli8AGiwDLSXx6Itkd8wpWnR3JmkPq1KyWyQj58FsHE7o+DLhb+Uyy1N7zmV4FeA==
@@ -5466,6 +5466,23 @@ yt-dlx@^12.7.0, yt-dlx@^12.8.0:
     readline-sync "^1.4.10"
     youtubei "^1.4.2"
     yt-dlx "^12.7.0"
+    yt-dlx-encore "^0.0.7"
+
+yt-dlx@^13.0.0:
+  version "13.0.0"
+  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-13.0.0.tgz#fe28b44ca0a8edd6f8802b0651d052144c8cb1f3"
+  integrity sha512-17FaxidQjrNUlV/wo1h8ZQJrxHwjiJU1m2CcxtDn9eJ4B2Elk58jDrpU4TL0fk8eGssJwbzhldsy2xRxVTdSIA==
+  dependencies:
+    async-retry "^1.3.3"
+    axios "^1.7.2"
+    colors "^1.4.0"
+    fluent-ffmpeg "^2.1.3"
+    minimist "^1.2.8"
+    npm-run-all "^4.1.5"
+    prettier "^3.3.2"
+    readline-sync "^1.4.10"
+    youtubei "^1.4.4"
+    yt-dlx "^12.8.0"
     yt-dlx-encore "^0.0.7"
 
 zod@^3.23.8:
