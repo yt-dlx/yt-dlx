@@ -39,11 +39,10 @@
   "bin": "build/index.js",
   "pkg": {
     "scripts": [
-      "build/index.js",
       "build/**/*.js"
     ],
     "assets": [
-      "assets/**/*"
+      "public/**/*"
     ],
     "targets": [
       "node18-win-x64",
