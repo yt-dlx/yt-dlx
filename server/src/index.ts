@@ -32,6 +32,47 @@
 // process.on("SIGTERM", powerdown);
 // process.on("SIGINT", powerdown);
 
-import { encore } from "yt-dlx-encore";
+import * as path from "path";
+import * as fsx from "fs-extra";
 
-encore().then(names => console.log(names));
+interface SearchResult {
+  fileName: string;
+  filePath: string | null;
+}
+
+async function findFilesRecursively(dir: string, fileNames: string[]): Promise<SearchResult[]> {
+  const results: SearchResult[] = fileNames.map(fileName => ({ fileName, filePath: null }));
+
+  const files = await fsx.readdir(dir);
+  for (const file of files) {
+    const fullPath = path.join(dir, file);
+    const stat = await fsx.lstat(fullPath);
+    if (stat.isDirectory()) {
+      const subDirResults = await findFilesRecursively(fullPath, fileNames);
+      for (const result of subDirResults) {
+        if (result.filePath) {
+          const existingResult = results.find(r => r.fileName === result.fileName);
+          if (existingResult) existingResult.filePath = result.filePath;
+        }
+      }
+    } else {
+      for (const result of results) {
+        if (file === result.fileName && !result.filePath) result.filePath = fullPath;
+      }
+    }
+  }
+  return results;
+}
+(async () => {
+  const projectDirectory = process.cwd();
+  const fileNames = ["ffmpeg.exe", "ffprobe.exe", "cprobe.exe"];
+  try {
+    const results = await findFilesRecursively(projectDirectory, fileNames);
+    results.forEach(result => {
+      if (result.filePath) console.log(`Found ${result.fileName} at: ${result.filePath}`);
+      else console.log(`${result.fileName} not found in the project directory.`);
+    });
+  } catch (error) {
+    console.error("Error searching for files:", error);
+  }
+})();
