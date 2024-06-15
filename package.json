@@ -67,9 +67,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^3.3.2",
     "readline-sync": "^1.4.10",
-    "youtubei": "^1.4.4",
-    "yt-dlx": "^13.0.0",
-    "yt-dlx-encore": "^0.0.7"
+    "youtubei": "^1.4.4"
   },
   "keywords": [
     "yt-dlx",
