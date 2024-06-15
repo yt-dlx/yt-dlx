@@ -20,6 +20,7 @@
     "dotenv": "^16.4.5",
     "fs-extra": "^11.2.0",
     "shx": "^0.3.4",
+    "prettier": "^3.3.2",
     "ws": "^8.17.0",
     "yt-dlx": "^13.2.0",
     "zod": "^3.23.8"
@@ -29,7 +30,6 @@
     "@types/fluent-ffmpeg": "^2.1.24",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^20.14.2",
-    "prettier": "^3.3.2",
     "@types/ws": "^8.5.10",
     "concurrently": "^8.2.2",
     "nodemon": "^3.1.3",

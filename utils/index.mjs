@@ -29,10 +29,16 @@ function runScript() {
       colors.red +
       "yt-dlp" +
       colors.reset +
-      " dev-test-kit",
+      " dev-test-kit"
   );
   console.log(
-    colors.green + "@system:" + colors.reset + " os type: " + colors.red + type() + colors.reset,
+    colors.green +
+      "@system:" +
+      colors.reset +
+      " os type: " +
+      colors.red +
+      type() +
+      colors.reset
   );
   console.log(
     colors.green +
@@ -41,7 +47,7 @@ function runScript() {
       " cpu architecture: " +
       colors.red +
       arch() +
-      colors.reset,
+      colors.reset
   );
   console.log(
     colors.green +
@@ -50,7 +56,7 @@ function runScript() {
       " total memory: " +
       colors.red +
       formatBytes(totalmem()) +
-      colors.reset,
+      colors.reset
   );
   console.log(
     colors.green +
@@ -59,7 +65,7 @@ function runScript() {
       " home directory: " +
       colors.red +
       homedir() +
-      colors.reset,
+      colors.reset
   );
   console.log(
     colors.green +
@@ -68,10 +74,16 @@ function runScript() {
       " hostname: " +
       colors.red +
       hostname() +
-      colors.reset,
+      colors.reset
   );
   console.log(
-    colors.green + "@system:" + colors.reset + " release: " + colors.red + release() + colors.reset,
+    colors.green +
+      "@system:" +
+      colors.reset +
+      " release: " +
+      colors.red +
+      release() +
+      colors.reset
   );
   console.log(colors.red + "=================================" + colors.reset);
   const rl = createInterface({
@@ -85,18 +97,25 @@ function runScript() {
     const packageJsonPath = path.resolve(__dirname, "..", "package.json");
     packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8"));
   } catch (error) {
-    console.error(colors.red + "@error:" + colors.reset, "Error reading package.json:", error);
+    console.error(
+      colors.red + "@error:" + colors.reset,
+      "Error reading package.json:",
+      error
+    );
     rl.close();
     return;
   }
   const { scripts } = packageJson;
   if (!scripts || Object.keys(scripts).length === 0) {
-    console.error(colors.red + "@error:" + colors.reset, "No scripts found in package.json");
+    console.error(
+      colors.red + "@error:" + colors.reset,
+      "No scripts found in package.json"
+    );
     rl.close();
     return;
   }
   console.log(colors.red + "=================================" + colors.reset);
-  const scriptKeys = Object.keys(scripts).filter(key => key !== "start");
+  const scriptKeys = Object.keys(scripts).filter((key) => key !== "start");
   scriptKeys.forEach((script, index) => {
     const displayIndex = index + 1;
     console.log(
@@ -108,7 +127,7 @@ function runScript() {
         displayIndex +
         colors.reset +
         ": " +
-        script,
+        script
     );
   });
   console.log(colors.red + "=================================" + colors.reset);
@@ -126,7 +145,7 @@ function runScript() {
       colors.reset +
       " you want to run: " +
       colors.red,
-    answer => {
+    (answer) => {
       console.log(colors.reset);
       const scriptIndex = parseInt(answer) - 1;
       if (scriptIndex >= 0 && scriptIndex < scriptKeys.length) {
@@ -137,12 +156,15 @@ function runScript() {
           shell: true,
           stdio: "inherit",
         });
-        childProcess.on("error", error => {
+        childProcess.on("error", (error) => {
           console.error(colors.red + "@error:" + colors.reset, error);
         });
-        childProcess.on("exit", code => {
+        childProcess.on("exit", (code) => {
           if (code !== 0) {
-            console.error(colors.red + "@error:" + colors.reset, "Exited with code " + code);
+            console.error(
+              colors.red + "@error:" + colors.reset,
+              "Exited with code " + code
+            );
           }
           runScript();
         });
@@ -151,7 +173,7 @@ function runScript() {
         runScript();
       }
       rl.close();
-    },
+    }
   );
 }
 

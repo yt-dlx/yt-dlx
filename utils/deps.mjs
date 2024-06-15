@@ -15,4 +15,8 @@ async function rmdir(folderPath, folders) {
   }
 }
 
-rmdir(resolve(), ["./node_modules", "./out", "./others", "./temp"]);
+rmdir(resolve(), [
+  "./base/util/cprobe_linux",
+  "./base/util/cprobe_mac",
+  "./base/util/cprobe.exe",
+]);

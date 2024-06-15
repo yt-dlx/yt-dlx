@@ -15,4 +15,14 @@ async function rmdir(folderPath, folders) {
   }
 }
 
-rmdir(resolve(), ["./server/node_modules", "./server/build", "./server/package"]);
+rmdir(resolve(), [
+  "./base/util/ffprobe.exe",
+  "./base/util/ffprobe_mac",
+  "./base/util/ffprobe_linux",
+  "./base/util/ffmpeg.exe",
+  "./base/util/ffmpeg_mac",
+  "./base/util/ffmpeg_linux",
+  "./base/util/ffplay.exe",
+  "./base/util/ffplay_mac",
+  "./base/util/ffplay_linux",
+]);
