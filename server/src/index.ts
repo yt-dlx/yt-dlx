@@ -1,29 +1,28 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 import http from "http";
 import WebSocket from "ws";
-const server = http.createServer();
-const wss = new WebSocket.Server({ server });
-
+import dotenv from "dotenv";
 import routeAudioLowest from "./routes/Audio/AudioLowest";
 import routeAudioHighest from "./routes/Audio/AudioHighest";
+import routeVideoLowest from "./routes/Video/VideoLowest";
+import routeVideoHighest from "./routes/Video/VideoHighest";
+import routeAudioVideoLowest from "./routes/AudioVideo/AudioVideoLowest";
+import routeAudioVideoHighest from "./routes/AudioVideo/AudioVideoHighest";
 
-wss.on("connection", (ws: WebSocket, req) => {
+dotenv.config();
+const server = http.createServer();
+const wserver = new WebSocket.Server({ server });
+wserver.on("connection", (ws: WebSocket, req) => {
   const ip = req.socket.remoteAddress;
-  console.log(`WebSocket client connected from ip: ${ip}`);
-  ws.on("error", error => console.error(`WebSocket error: ${error.message}`));
-  ws.on("close", () => console.log(`WebSocket client disconnected from ${ip}`));
+  console.log(`@webSocket-connected: ${ip}`);
+  ws.on("close", () => console.log(`@webSocket-disconnected: ${ip}`));
+  ws.on("error", error => console.error(`@webSocket-error: ${error.message}`));
   ws.on("message", (message: string) => {
-    // [ Audio ]
     routeAudioLowest(ws, message);
     routeAudioHighest(ws, message);
-    // // [ Video ]
-    // routeAudioHighest(ws, message);
-    // routeAudioHighest(ws, message);
-    // // [ AudioVideo ]
-    // routeAudioHighest(ws, message);
-    // routeAudioHighest(ws, message);
+    routeVideoLowest(ws, message);
+    routeVideoHighest(ws, message);
+    routeAudioVideoLowest(ws, message);
+    routeAudioVideoHighest(ws, message);
   });
 });
 
@@ -33,7 +32,7 @@ server.on("error", error => console.error("Server error:", error));
 
 const powerdown = () => {
   console.log("Shutting down gracefully...");
-  wss.clients.forEach(client => client.close());
+  wserver.clients.forEach(client => client.close());
   server.close(() => {
     console.log("Closed out remaining connections.");
     process.exit(0);
