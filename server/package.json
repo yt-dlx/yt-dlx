@@ -13,7 +13,6 @@
     "postinstall": "node public/cprobe.js",
     "test": "shx chmod +x . && ./server.exe",
     "start": "tsc -p tsconfig.json && node build/index.js",
-    "preinstall": "yarn global add ts-node rimraf tsc caxa yt-dlx",
     "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\"",
     "build": "tsc -p tsconfig.json && caxa --input . --output \"out/server.exe\" -- \"{{caxa}}/node_modules/.bin/node\" \"{{caxa}}/build/index.js\""
   },
