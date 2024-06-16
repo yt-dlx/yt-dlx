@@ -1,58 +1,10 @@
-// import WebSocket from "ws";
-// import ytdlx from "yt-dlx";
-
-// const metaHandler = (ws: WebSocket, message: string) => {
-// const req = JSON.parse(message);
-// ytdlx.AudioOnly.Highest({
-// stream: false,
-// metadata: true,
-// query: req.payload.query,
-// useTor: req.payload.useTor,
-// verbose: req.payload.verbose,
-// })
-// .on("error", error => {
-// console.log("@error:", error);
-// ws.send(JSON.stringify({ event: "error", data: error }));
-// })
-// .on("end", filename => {
-// console.log("@end:", filename);
-// ws.send(JSON.stringify({ event: "end", data: filename }));
-// })
-// .on("start", command => {
-// console.log("@start:", command);
-// ws.send(JSON.stringify({ event: "start", data: command }));
-// })
-// .on("progress", progress => {
-// console.log("@progress:", progress);
-// ws.send(JSON.stringify({ event: "progress", data: progress }));
-// })
-// .on("metadata", metadata => {
-// console.log("@metadata:", metadata);
-// ws.send(JSON.stringify({ event: "metadata", data: metadata }));
-// });
-// };
-// export default metaHandler;
-
-// import Agent from "../base/Agent";
-
-// const metaHandler = async (ws: WebSocket, message: string) => {
-// const req = JSON.parse(message);
-// const metadata = await Agent({
-// query: req.payload.query,
-// useTor: req.payload.useTor,
-// verbose: req.payload.verbose,
-// });
-// ws.send(JSON.stringify({ event: "metadata", data: metadata }));
-// };
-// export default metaHandler;
-
 import * as fs from "fs";
 import WebSocket from "ws";
 import colors from "colors";
 import * as path from "path";
-import ytdlx from "../base/Agent";
 import { z, ZodError } from "zod";
 import ffmpeg from "fluent-ffmpeg";
+import ytdlx from "../../base/Agent";
 import { EventEmitter } from "events";
 
 var ZodSchema = z.object({
@@ -162,9 +114,7 @@ function AudioHighest({
             filename,
             metaData: engineData.metaData,
             ipAddress: engineData.ipAddress,
-            AudioLowF: engineData.AudioLowF,
             AudioHighF: engineData.AudioHighF,
-            AudioLowDRC: engineData.AudioLowDRC,
             AudioHighDRC: engineData.AudioHighDRC,
           });
           break;
@@ -195,30 +145,19 @@ function AudioHighest({
   return emitter;
 }
 
-const metaHandler = async (ws: WebSocket, message: string) => {
+const routeAudioHighest = (ws: WebSocket, message: string) => {
   const req = JSON.parse(message);
-  AudioHighest({
-    stream: false,
-    metadata: true,
+  const res = AudioHighest({
     query: req.payload.query,
     useTor: req.payload.useTor,
+    stream: req.payload.stream,
     verbose: req.payload.verbose,
-  })
-    .on("error", error => {
-      ws.send(JSON.stringify({ event: "error", data: error }));
-    })
-    .on("end", filename => {
-      ws.send(JSON.stringify({ event: "end", data: filename }));
-    })
-    .on("start", command => {
-      ws.send(JSON.stringify({ event: "start", data: command }));
-    })
-    .on("progress", progress => {
-      ws.send(JSON.stringify({ event: "progress", data: progress }));
-    })
-    .on("metadata", metadata => {
-      ws.send(JSON.stringify({ event: "metadata", data: metadata }));
-    });
+    metadata: req.payload.metadata,
+  });
+  res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
+  res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
+  res.on("start", data => ws.send(JSON.stringify({ event: "start", data })));
+  res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));
+  res.on("metadata", data => ws.send(JSON.stringify({ event: "metadata", data })));
 };
-
-export default metaHandler;
+export default routeAudioHighest;

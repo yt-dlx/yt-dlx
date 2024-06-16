@@ -1,20 +1,36 @@
+import dotenv from "dotenv";
+dotenv.config();
+
 import http from "http";
 import WebSocket from "ws";
-import dotenv from "dotenv";
-import metaHandler from "./routes/metaHandler";
-dotenv.config();
 const server = http.createServer();
 const wss = new WebSocket.Server({ server });
+
+import routeAudioLowest from "./routes/Audio/AudioLowest";
+import routeAudioHighest from "./routes/Audio/AudioHighest";
+
 wss.on("connection", (ws: WebSocket, req) => {
   const ip = req.socket.remoteAddress;
   console.log(`WebSocket client connected from ip: ${ip}`);
-  ws.on("message", async (message: string) => await metaHandler(ws, message));
   ws.on("error", error => console.error(`WebSocket error: ${error.message}`));
   ws.on("close", () => console.log(`WebSocket client disconnected from ${ip}`));
+  ws.on("message", (message: string) => {
+    // [ Audio ]
+    routeAudioLowest(ws, message);
+    routeAudioHighest(ws, message);
+    // // [ Video ]
+    // routeAudioHighest(ws, message);
+    // routeAudioHighest(ws, message);
+    // // [ AudioVideo ]
+    // routeAudioHighest(ws, message);
+    // routeAudioHighest(ws, message);
+  });
 });
+
 const port = process.env.PORT || 8642;
 server.listen(port, () => console.log(`@web-socket: listening on port ${port}`));
 server.on("error", error => console.error("Server error:", error));
+
 const powerdown = () => {
   console.log("Shutting down gracefully...");
   wss.clients.forEach(client => client.close());
@@ -27,45 +43,6 @@ const powerdown = () => {
     process.exit(1);
   }, 10000);
 };
+
 process.on("SIGTERM", powerdown);
 process.on("SIGINT", powerdown);
-
-// import * as fs from "fs";
-// import colors from "colors";
-// import * as path from "path";
-// import { spawn } from "child_process";
-
-// const directoryPath = path.join(__dirname, "..", "public");
-
-// fs.readdir(directoryPath, (error, files) => {
-// if (error) {
-// console.error(colors.red("@error:"), error);
-// return;
-// }
-// console.clear();
-// let fileName: string;
-// switch (process.platform) {
-// case "win32":
-// fileName = "cprobe.exe";
-// console.log(colors.green("@found:"), fileName);
-// break;
-// case "darwin":
-// fileName = "cprobe_macos";
-// console.log(colors.green("@found:"), fileName);
-// break;
-// case "linux":
-// fileName = "cprobe_linux";
-// console.log(colors.green("@found:"), fileName);
-// break;
-// default:
-// console.error(colors.red("@error:"), "Unsupported platform");
-// return;
-// }
-// if (files.includes(fileName)) {
-// const filePath = path.join(directoryPath, fileName);
-// const child = spawn(filePath, ["--version"]);
-// child.stdout.on("data", data => console.log(colors.blue("@version:"), data.toString()));
-// child.stderr.on("data", data => console.error(colors.red("@error:"), data.toString()));
-// child.on("error", err => console.error(colors.red("@error:"), err));
-// } else console.error(colors.red("@error:"), `${fileName} not found`);
-// });
