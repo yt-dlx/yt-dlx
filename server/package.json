@@ -11,7 +11,7 @@
   "scripts": {
     "prebuild": "rimraf build out",
     "postinstall": "node public/cprobe.js",
-    "test": "shx chmod +x . && ./server.exe",
+    "test": "shx chmod +x . && out/server.exe",
     "start": "tsc -p tsconfig.json && node build/index.js",
     "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\"",
     "build": "tsc -p tsconfig.json && caxa --input . --output \"out/server.exe\" -- \"{{caxa}}/node_modules/.bin/node\" \"{{caxa}}/build/index.js\""
