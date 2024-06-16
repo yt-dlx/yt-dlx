@@ -1,6 +1,6 @@
+import * as path from "path";
 import retry from "async-retry";
 import { promisify } from "util";
-import { locator } from "./locator";
 import { exec } from "child_process";
 import type sizeFormat from "../interfaces/sizeFormat";
 import type AudioFormat from "../interfaces/AudioFormat";
@@ -142,7 +142,20 @@ export default async function Engine({
   var AudioHighF: AudioFormat | any = null;
   var VideoLowF: VideoFormat | any = null;
   var VideoHighF: VideoFormat | any = null;
-  var cprobe = await locator().then(fp => fp.cprobe);
+  var cprobe = "";
+  switch (process.platform) {
+    case "win32":
+      cprobe = path.join(__dirname, "../../", "public", "cprobe.exe");
+      break;
+    case "darwin":
+      cprobe = path.join(__dirname, "../../", "public", "cprobe_macos");
+      break;
+    case "linux":
+      cprobe = path.join(__dirname, "../../", "public", "cprobe_linux");
+      break;
+    default:
+      throw new Error("Unsupported platform");
+  }
   var pLoc = `${cprobe}`;
   var config = {
     factor: 2,
