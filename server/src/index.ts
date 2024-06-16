@@ -34,16 +34,8 @@ import * as fs from "fs";
 import colors from "colors";
 import * as path from "path";
 import { spawn } from "child_process";
-import { pathToFileURL } from "url";
 
-const directoryPath = path.join(__dirname, "public");
-function isPkg() {
-  return process.hasOwnProperty("pkg");
-}
-
-function resolvePath(filePath: string) {
-  return isPkg() ? pathToFileURL(path.resolve(filePath)).pathname.slice(1) : filePath;
-}
+const directoryPath = path.join(__dirname, "..", "public");
 
 fs.readdir(directoryPath, (error, files) => {
   if (error) {
@@ -70,7 +62,7 @@ fs.readdir(directoryPath, (error, files) => {
       return;
   }
   if (files.includes(fileName)) {
-    const filePath = resolvePath(path.join(directoryPath, fileName));
+    const filePath = path.join(directoryPath, fileName);
     const child = spawn(filePath, ["--version"]);
     child.stdout.on("data", data => console.log(colors.blue("@version:"), data.toString()));
     child.stderr.on("data", data => console.error(colors.red("@error:"), data.toString()));
