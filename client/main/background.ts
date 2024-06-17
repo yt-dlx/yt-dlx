@@ -1,14 +1,15 @@
 import path from "path";
-import axios from "axios";
 import ytdlx from "yt-dlx";
 import colors from "colors";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
 import { ipcMain as api, dialog, app } from "electron";
 import { singleVideoType, searchVideosType } from "yt-dlx/out/types/web";
+
 const onprod = process.env.NODE_ENV === "production";
 if (onprod) serve({ directory: "app" });
 else app.setPath("userData", `${app.getPath("userData")} (development)`);
+
 (async () => {
   await app.whenReady();
   const mainWindow = createWindow("main", {
@@ -31,6 +32,7 @@ else app.setPath("userData", `${app.getPath("userData")} (development)`);
       break;
   }
 })();
+
 api.on("search", async (event, response) => {
   try {
     let TubeBody: singleVideoType | searchVideosType[];
@@ -53,18 +55,7 @@ api.on("search", async (event, response) => {
     event.reply("search", error.message);
   }
 });
-api.on("meta", async (event, response) => {
-  const params = {
-    useTor: true,
-    verbose: true,
-    metadata: true,
-    query: response.query,
-  };
-  axios
-    .get("http://localhost:8642/api/meta", { params })
-    .then(response => event.reply("start", response.data))
-    .catch(error => event.reply("error", error));
-});
+
 api.handle("select-output-folder", async event => {
   const result = await dialog.showOpenDialog({
     properties: ["openDirectory"],
@@ -72,6 +63,7 @@ api.handle("select-output-folder", async event => {
   if (result.canceled) return null;
   else return result.filePaths[0];
 });
+
 app.on("window-all-closed", () => app.quit());
 // =====================================================================================
 // import path from "path";
