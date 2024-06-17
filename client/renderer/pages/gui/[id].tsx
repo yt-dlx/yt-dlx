@@ -68,7 +68,7 @@ export default function VideoId(): JSX.Element {
   }, [id]);
 
   return (
-    <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600 font-serif">
+    <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600">
       <NavPackage />
       <Introduction />
       <react.Fragment>
@@ -161,7 +161,7 @@ export default function VideoId(): JSX.Element {
             />
           </section>
         ) : (
-          <section className="flex flex-col items-center justify-center w-full">
+          <section className="flex flex-col items-center justify-center w-full mt-10">
             <div className="flex flex-col items-center justify-center gap-4 w-96">
               <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-40 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
               <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-28 shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>

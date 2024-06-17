@@ -1,24 +1,41 @@
-import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import React, { useEffect, useRef, useState } from "react";
 
 const AudioVideo: React.FC<{
   videoId: string;
   isOpen: boolean;
   onClose: () => void;
 }> = ({ isOpen, onClose, videoId }) => {
-  const [outputFolder, setOutputFolder] = useState<string | null>(null);
-  const [quality, setQuality] = useState<string | null>(null);
-  const [progress, setProgress] = useState<any>(null);
-  const [metadata, setMetadata] = useState<any>(null);
-  const [start, setStart] = useState<any>(null);
-  const [error, setError] = useState<any>(null);
-  const [end, setEnd] = useState<any>(null);
-  const [formData, setFormData] = useState({
+  const [outputFolder, _outputFolder] = useState<string | null>(null);
+  const [quality, _quality] = useState<string | null>(null);
+  const [progress, _progress] = useState<any>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const [error, _error] = useState<any>(null);
+  const [end, _end] = useState<any>(null);
+  const [formData, _formData] = useState({
     metadata: false,
-    verbose: false,
-    useTor: false,
+    verbose: true,
+    useTor: true,
     stream: true,
   });
+
+  useEffect(() => {
+    const ClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+        _end(null);
+        _quality(null);
+        _progress(null);
+        _outputFolder(null);
+      }
+    };
+    if (isOpen) document.addEventListener("mousedown", ClickOutside);
+    else document.removeEventListener("mousedown", ClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", ClickOutside);
+    };
+  }, [isOpen, onClose]);
+
   const ws = React.useRef<WebSocket | null>(null);
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:8642");
@@ -26,57 +43,24 @@ const AudioVideo: React.FC<{
     ws.current.onmessage = event => {
       const message = JSON.parse(event.data);
       switch (message.event) {
-        case "start":
-          setStart(message.data);
-          break;
         case "progress":
-          setProgress(message.data);
-          break;
-        case "metadata":
-          setMetadata(message.data);
+          _progress(message.data);
           break;
         case "error":
-          setError(message.data);
+          _error(message.data);
           break;
         case "end":
-          setEnd(message.data);
+          _end(message.data);
           break;
         default:
           console.warn(`Unhandled event received: ${message.event}`);
       }
     };
-    ws.current.onerror = event => setError("WebSocket error occurred");
+    ws.current.onerror = event => _error("WebSocket error occurred");
     return () => {
       if (ws.current) ws.current.close();
     };
   }, []);
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = event.target;
-    const val = type === "checkbox" ? checked : value;
-    setFormData({ ...formData, [name]: val });
-  };
-  const handleSelectOutputFolder = async () => {
-    const folder = await window.ipc.invoke("select-output-folder");
-    if (folder) setOutputFolder(folder);
-  };
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      const message = {
-        event: quality,
-        payload: {
-          metadata: formData.metadata,
-          verbose: formData.verbose,
-          stream: formData.stream,
-          useTor: formData.useTor,
-          output: outputFolder,
-          query: videoId,
-        },
-      };
-      ws.current.send(JSON.stringify(message));
-    } else setError("WebSocket connection not established");
-  };
 
   return (
     <React.Fragment>
@@ -85,105 +69,114 @@ const AudioVideo: React.FC<{
           exit={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           initial={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center h-full w-full">
-          <div className="bg-neutral-900/90 backdrop-blur-lg border-4 border-double border-red-600 w-full h-full max-w-full max-h-full flex flex-col items-center justify-center text-center">
-            <h2 className="text-4xl text-red-600 font-black mb-4">
+          className="fixed inset-0 z-50 flex items-center justify-center h-full w-full backdrop-blur-lg bg-neutral-900/60">
+          <div
+            ref={modalRef}
+            className="bg-neutral-900 rounded-3xl p-8 backdrop-blur-lg border-4 border-double border-red-600 shadow-red-600 shadow-[0_0_800px_rgba(255,0,0,0.5)] w-auto max-w-[90vw] max-h-[90vh] overflow-y-auto flex flex-col items-center justify-start text-center">
+            <h2 className="text-7xl text-red-600 font-black mb-10">
               Choose Your Poison For <br />
-              <span className="text-6xl block">Audio</span>
+              <span className="text-9xl block italic">AudioVideo</span>
             </h2>
-            <ul className="font-semibold text-white list-disc m-6">
+            <ul className="font-semibold list-disc mb-10 text-white text-xl">
               <li
-                onClick={() => setQuality("AudioHighest")}
-                className={`hover:text-red-600 hover:font-black cursor-pointer ${quality === "AudioHighest" ? "text-red-600 font-black" : "text-gray-600"}`}>
+                onClick={() => _quality("AudioVideoHighest")}
+                className={`hover:text-red-600 text-2xl cursor-pointer italic font-bold ${quality === "AudioVideoHighest" ? "text-red-600" : "text-white/40"}`}>
                 Highest Possible Download
               </li>
               <li
-                onClick={() => setQuality("AudioLowest")}
-                className={`hover:text-red-600 hover:font-black cursor-pointer ${quality === "AudioLowest" ? "text-red-600 font-black" : "text-gray-600"}`}>
+                onClick={() => _quality("AudioVideoLowest")}
+                className={`hover:text-red-600 text-2xl cursor-pointer italic font-bold ${quality === "AudioVideoLowest" ? "text-red-600" : "text-white/40"}`}>
                 Lowest Possible Download
               </li>
             </ul>
             {quality && (
               <React.Fragment>
-                <form onSubmit={handleSubmit} className="flex flex-col items-center">
-                  <div className="flex flex-row space-x-4">
-                    <label>
-                      <input
-                        name="stream"
-                        type="checkbox"
-                        checked={formData.stream}
-                        onChange={handleInputChange}
-                        className="checkbox checkbox-xs checkbox-error mr-2 bg-neutral-800"
-                      />
-                      Stream
-                    </label>
-                    <label>
-                      <input
-                        name="useTor"
-                        type="checkbox"
-                        checked={formData.useTor}
-                        onChange={handleInputChange}
-                        className="checkbox checkbox-xs checkbox-error mr-2 bg-neutral-800"
-                      />
-                      Use Tor
-                    </label>
-                    <label>
-                      <input
-                        name="verbose"
-                        type="checkbox"
-                        checked={formData.verbose}
-                        onChange={handleInputChange}
-                        className="checkbox checkbox-xs checkbox-error mr-2 bg-neutral-800"
-                      />
-                      Verbose
-                    </label>
-                    <label>
-                      <input
-                        name="metadata"
-                        type="checkbox"
-                        checked={formData.metadata}
-                        onChange={handleInputChange}
-                        className="checkbox checkbox-xs checkbox-error mr-2 bg-neutral-800"
-                      />
-                      Metadata
-                    </label>
-                  </div>
-                  <div className="flex items-center mt-4">
-                    <button
-                      type="button"
-                      onClick={handleSelectOutputFolder}
-                      className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110">
-                      Browse for Output Folder
-                    </button>
+                <form
+                  onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+                    event.preventDefault();
+                    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+                      const payLoad = {
+                        event: quality,
+                        payload: {
+                          metadata: formData.metadata,
+                          verbose: formData.verbose,
+                          stream: formData.stream,
+                          useTor: formData.useTor,
+                          output: outputFolder,
+                          query: videoId,
+                        },
+                      };
+                      ws.current.send(JSON.stringify(payLoad));
+                    } else _error("WebSocket connection not established!");
+                  }}
+                  className="flex flex-col items-center">
+                  <div className="flex flex-col items-center">
+                    {outputFolder ? (
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const folder = await window.ipc.invoke("select-output-folder");
+                          if (folder) _outputFolder(folder);
+                        }}
+                        className="rounded-3xl border p-2 btn-wide italic text-neutral-900 font-black border-neutral-900 bg-red-600 px-8 text-sm scale-110 mb-4">
+                        Location: {outputFolder}
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const folder = await window.ipc.invoke("select-output-folder");
+                          if (folder) _outputFolder(folder);
+                        }}
+                        className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mb-4">
+                        Browse Output Location
+                      </button>
+                    )}
                     {outputFolder && (
-                      <span className="ml-4 text-white">Selected Folder: {outputFolder}</span>
+                      <React.Fragment>
+                        <button
+                          type="submit"
+                          className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110">
+                          Connect and Download
+                        </button>
+                      </React.Fragment>
                     )}
                   </div>
-                  {outputFolder && (
-                    <React.Fragment>
-                      <button
-                        type="submit"
-                        className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4">
-                        Start Search
-                      </button>
-                    </React.Fragment>
-                  )}
                 </form>
               </React.Fragment>
             )}
-            {end && <p className="text-red-600 mt-2">End: {end}</p>}
-            {error && <p className="text-red-600 mt-2">Error: {error}</p>}
-            {start && <p className="text-white mt-2">Start: {JSON.stringify(start)}</p>}
-            {progress && <p className="text-white mt-2">Progress: {JSON.stringify(progress)}</p>}
-            {metadata && <p className="text-white mt-2">Metadata: {JSON.stringify(metadata)}</p>}
-            {progress && (
-              <progress className="progress h-4 w-80 m-4" value={progress.percent || 0} max="100" />
+            {end && (
+              <ul className="text-white/60 items-start justify-start flex flex-col list-disc mt-6">
+                <li>
+                  <span className="text-red-600 font-black mr-2">Location:</span>
+                  {outputFolder || "-"}
+                </li>
+                <li>
+                  <span className="text-red-600 font-black mr-2">Filename:</span>
+                  {end || "-"}
+                </li>
+                <li>
+                  <span className="text-red-600 font-black mr-2">frames:</span>
+                  {progress.frames || "-"}
+                </li>
+                <li>
+                  <span className="text-red-600 font-black mr-2">currentFps:</span>
+                  {progress.currentFps || "-"}
+                </li>
+                <li>
+                  <span className="text-red-600 font-black mr-2">targetSize:</span>
+                  {progress.targetSize || "-"}
+                </li>
+                <li>
+                  <span className="text-red-600 font-black mr-2">timemark:</span>
+                  {progress.timemark || "-"}
+                </li>
+                <li>
+                  <span className="text-red-600 font-black mr-2">Error:</span>
+                  {error || "-"}
+                </li>
+              </ul>
             )}
-            <button
-              onClick={() => onClose()}
-              className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4">
-              Close Modal Box
-            </button>
           </div>
         </motion.div>
       )}
