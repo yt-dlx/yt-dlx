@@ -68,8 +68,8 @@ function AudioLowest({
       const folder = output ? output : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
       const proc: ffmpeg.FfmpegCommand = ffmpeg();
-      proc.setFfmpegPath(path.join(__dirname, "../", "../", "public", "ffmpeg.exe"));
-      proc.setFfprobePath(path.join(__dirname, "../", "../", "public", "ffprobe.exe"));
+      // proc.setFfmpegPath(path.join(__dirname, "../", "../", "public", "ffmpeg.exe"));
+      // proc.setFfprobePath(path.join(__dirname, "../", "../", "public", "ffprobe.exe"));
       proc.addInput(engineData.AudioLowF.url);
       proc.addInput(engineData.metaData.thumbnail);
       proc.withOutputFormat("avi");
@@ -95,35 +95,26 @@ function AudioLowest({
       };
       if (filter && filterMap[filter]) proc.withAudioFilter(filterMap[filter]);
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      proc.on("start", comd => {
-        if (verbose) emitter.emit("log", colors.green("@comd:"), comd);
-        emitter.emit("start", comd);
-      });
       proc.on("progress", progress => emitter.emit("progress", progress));
       proc.on("error", error => emitter.emit("error", error.message));
+      proc.on("start", start => emitter.emit("start", start));
       proc.on("end", () => emitter.emit("end", filename));
-      switch (true) {
-        case stream:
-          emitter.emit("ready", {
-            ffmpeg: proc,
-            filename: path.join(folder, filename),
-          });
-          break;
-        case metadata:
-          emitter.emit("metadata", {
-            filename,
-            metaData: engineData.metaData,
-            ipAddress: engineData.ipAddress,
-            AudioLowF: engineData.AudioLowF,
-            AudioLowDRC: engineData.AudioLowDRC,
-          });
-          break;
-        default:
-          proc.output(path.join(folder, filename));
-          proc.on("end", () => emitter.emit("end", filename));
-          proc.on("error", error => emitter.emit("error", error.message));
-          proc.run();
-          break;
+      if (stream && !metadata) {
+        emitter.emit("ready", {
+          filename: path.join(folder, filename),
+          ffmpeg: proc,
+        });
+      } else if (!stream && metadata) {
+        emitter.emit("metadata", {
+          AudioLowDRC: engineData.AudioLowDRC,
+          AudioLowF: engineData.AudioLowF,
+          ipAddress: engineData.ipAddress,
+          metaData: engineData.metaData,
+          filename,
+        });
+      } else {
+        proc.output(path.join(folder, filename));
+        proc.run();
       }
     } catch (error: any) {
       switch (true) {

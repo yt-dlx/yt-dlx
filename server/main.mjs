@@ -8,10 +8,10 @@ ws.on("open", () => {
     JSON.stringify({
       event: "AudioLowest",
       payload: {
-        useTor: true,
-        stream: true,
+        useTor: false,
+        stream: false,
         verbose: true,
-        metadata: false,
+        metadata: true,
         query: "careless whisper",
       },
     }),
