@@ -1,3 +1,4 @@
+console.clear();
 import http from "http";
 import WebSocket from "ws";
 import dotenv from "dotenv";
