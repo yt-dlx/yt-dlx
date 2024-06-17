@@ -12,8 +12,8 @@
     "postinstall": "node public/cprobe.js",
     "start": "tsc -p tsconfig.json && node build/index.js",
     "dev": "tsc -p tsconfig.json --watch & nodemon build/index.js",
-    "build": "rimraf build out && node build.mjs && shx chmod +x out/**",
-    "test": "tsc -p tsconfig.json && node build/__tests__/socker.test.js"
+    "test": "tsc -p tsconfig.json && node build/__tests__/socker.test.js",
+    "build": "rimraf build out && node public/.mjs && shx chmod +x out/**"
   },
   "dependencies": {
     "async-retry": "^1.3.3",
