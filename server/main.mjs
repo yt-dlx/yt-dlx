@@ -1,4 +1,7 @@
+import path from "path";
 import WebSocket from "ws";
+import ffmpeg from "fluent-ffmpeg";
+
 const ws = new WebSocket("ws://localhost:8642")
   .on("close", () => console.log("Disconnected from WebSocket server"))
   .on("error", error => console.error("WebSocket error:", error));
@@ -8,10 +11,10 @@ ws.on("open", () => {
     JSON.stringify({
       event: "AudioLowest",
       payload: {
-        useTor: false,
-        stream: false,
         verbose: true,
-        metadata: true,
+        stream: true,
+        useTor: false,
+        metadata: false,
         query: "careless whisper",
       },
     }),
@@ -34,6 +37,19 @@ ws.on("message", data => {
       break;
     case "metadata":
       console.log("Metadata:", response.data);
+      const proc = ffmpeg();
+      proc.setFfmpegPath(path.join(process.cwd(), "./public", "ffmpeg.exe"));
+      proc.setFfprobePath(path.join(process.cwd(), "./public", "ffprobe.exe"));
+      proc.addInput(response.data.AudioLowF.url);
+      proc.addInput(response.data.metaData.thumbnail);
+      proc.addOption("-headers", `X-Forwarded-For: ${response.data.ipAddress}`);
+      proc.on("progress", progress => console.log(progress));
+      proc.on("error", error => console.log(error));
+      proc.on("start", start => console.log(start));
+      proc.on("end", end => console.log(end));
+      proc.withOutputFormat("avi");
+      proc.output("music.avi");
+      proc.run();
       break;
     default:
       console.log("Unknown event:", response);

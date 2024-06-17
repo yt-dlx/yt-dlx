@@ -76,11 +76,12 @@ function AudioCustom({
         throw new Error(`${colors.red("@error:")} no audio data found. use list_formats() maybe?`);
       }
       const proc: ffmpeg.FfmpegCommand = ffmpeg();
-      proc.setFfmpegPath(path.join(__dirname, "../", "../", "public", "ffmpeg.exe"));
-      proc.setFfprobePath(path.join(__dirname, "../", "../", "public", "ffprobe.exe"));
-      proc.addInput(adata.url);
+      proc.setFfmpegPath(path.join(process.cwd(), "public", "ffmpeg.exe"));
+      proc.setFfprobePath(path.join(process.cwd(), "public", "ffprobe.exe"));
+      proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
       proc.addInput(engineData.metaData.thumbnail);
       proc.withOutputFormat("avi");
+      proc.addInput(adata.url);
       const filenameBase = `yt-dlx_(AudioCustom_${resolution}_`;
       let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.avi`;
       const filterMap = {
@@ -111,7 +112,10 @@ function AudioCustom({
           filename: path.join(folder, filename),
           ffmpeg: proc,
         });
-      } else if (!stream && metadata) {
+        proc.output(path.join(folder, filename));
+        proc.run();
+      }
+      if (!stream && metadata) {
         emitter.emit("metadata", {
           AudioLowDRC: engineData.AudioLowDRC,
           AudioLowF: engineData.AudioLowF,
@@ -119,9 +123,6 @@ function AudioCustom({
           metaData: engineData.metaData,
           filename,
         });
-      } else {
-        proc.output(path.join(folder, filename));
-        proc.run();
       }
     } catch (error: any) {
       switch (true) {

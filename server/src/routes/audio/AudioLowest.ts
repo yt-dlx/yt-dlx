@@ -65,15 +65,15 @@ function AudioLowest({
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
       const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
-      const folder = output ? output : __dirname;
+      const folder = output ? output : process.cwd();
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
       const proc: ffmpeg.FfmpegCommand = ffmpeg();
-      // proc.setFfmpegPath(path.join(__dirname, "../", "../", "public", "ffmpeg.exe"));
-      // proc.setFfprobePath(path.join(__dirname, "../", "../", "public", "ffprobe.exe"));
-      proc.addInput(engineData.AudioLowF.url);
-      proc.addInput(engineData.metaData.thumbnail);
-      proc.withOutputFormat("avi");
+      proc.setFfmpegPath(path.join(process.cwd(), "public", "ffmpeg.exe"));
+      proc.setFfprobePath(path.join(process.cwd(), "public", "ffprobe.exe"));
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+      proc.addInput(engineData.metaData.thumbnail);
+      proc.addInput(engineData.AudioLowF.url);
+      proc.withOutputFormat("avi");
       const filenameBase = `yt-dlx_(AudioLowest_`;
       let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.avi`;
       const filterMap: Record<string, string[]> = {
@@ -104,7 +104,10 @@ function AudioLowest({
           filename: path.join(folder, filename),
           ffmpeg: proc,
         });
-      } else if (!stream && metadata) {
+        proc.output(path.join(folder, filename));
+        proc.run();
+      }
+      if (!stream && metadata) {
         emitter.emit("metadata", {
           AudioLowDRC: engineData.AudioLowDRC,
           AudioLowF: engineData.AudioLowF,
@@ -112,9 +115,6 @@ function AudioLowest({
           metaData: engineData.metaData,
           filename,
         });
-      } else {
-        proc.output(path.join(folder, filename));
-        proc.run();
       }
     } catch (error: any) {
       switch (true) {
