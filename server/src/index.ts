@@ -26,24 +26,22 @@ wss.on("connection", (ws: WebSocket, req) => {
   ws.on("message", (message: string) => {
     const data = JSON.parse(message);
     const { event, payload } = data;
-    if (event === "AudioLowest") routeAudioLowest(ws, JSON.stringify(payload));
-    if (event === "AudioCustom") routeAudioCustom(ws, JSON.stringify(payload));
-    if (event === "AudioHighest") routeAudioHighest(ws, JSON.stringify(payload));
-    // ============================================================
-    if (event === "VideoLowest") routeVideoLowest(ws, JSON.stringify(payload));
-    if (event === "VideoCustom") routeVideoCustom(ws, JSON.stringify(payload));
-    if (event === "VideoHighest") routeVideoHighest(ws, JSON.stringify(payload));
-    // ============================================================
-    if (event === "AudioVideoLowest") routeAudioVideoLowest(ws, JSON.stringify(payload));
-    if (event === "AudioVideoCustom") routeAudioVideoCustom(ws, JSON.stringify(payload));
-    if (event === "AudioVideoHighest") routeAudioVideoHighest(ws, JSON.stringify(payload));
-    // ============================================================
-    if (event === "Extract") routeExtract(ws, JSON.stringify(payload));
-    if (event === "VideoData") routeVideoData(ws, JSON.stringify(payload));
-    if (event === "ListFormats") routeListFormats(ws, JSON.stringify(payload));
-    if (event === "PlaylistData") routePlaylistData(ws, JSON.stringify(payload));
-    if (event === "SearchVideos") routeSearchVideos(ws, JSON.stringify(payload));
-    if (event === "SearchPlaylists") routeSearchPlaylists(ws, JSON.stringify(payload));
+    if (event === "AudioLowest") routeAudioLowest(ws, payload);
+    else if (event === "AudioCustom") routeAudioCustom(ws, payload);
+    else if (event === "AudioHighest") routeAudioHighest(ws, payload);
+    else if (event === "VideoLowest") routeVideoLowest(ws, payload);
+    else if (event === "VideoCustom") routeVideoCustom(ws, payload);
+    else if (event === "VideoHighest") routeVideoHighest(ws, payload);
+    else if (event === "AudioVideoLowest") routeAudioVideoLowest(ws, payload);
+    else if (event === "AudioVideoCustom") routeAudioVideoCustom(ws, payload);
+    else if (event === "AudioVideoHighest") routeAudioVideoHighest(ws, payload);
+    else if (event === "Extract") routeExtract(ws, payload);
+    else if (event === "VideoData") routeVideoData(ws, payload);
+    else if (event === "ListFormats") routeListFormats(ws, payload);
+    else if (event === "PlaylistData") routePlaylistData(ws, payload);
+    else if (event === "SearchVideos") routeSearchVideos(ws, payload);
+    else if (event === "SearchPlaylists") routeSearchPlaylists(ws, payload);
+    else console.log(event, JSON.stringify(payload));
   });
   ws.on("error", error => console.error(`WebSocket error: ${error.message}`));
   ws.on("close", () => console.log(`WebSocket client disconnected from ${ip}`));

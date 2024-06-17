@@ -131,14 +131,22 @@ function AudioVideoLowest({
   })().catch(error => emitter.emit("error", error.message));
   return emitter;
 }
-const routeAudioVideoLowest = (ws: WebSocket, message: string) => {
-  const req = JSON.parse(message);
+const routeAudioVideoLowest = (
+  ws: WebSocket,
+  message: {
+    query: string;
+    useTor: boolean;
+    stream: boolean;
+    verbose: boolean;
+    metadata: boolean;
+  },
+) => {
   const res = AudioVideoLowest({
-    query: req.payload.query,
-    useTor: req.payload.useTor,
-    stream: req.payload.stream,
-    verbose: req.payload.verbose,
-    metadata: req.payload.metadata,
+    query: message.query,
+    useTor: message.useTor,
+    stream: message.stream,
+    verbose: message.verbose,
+    metadata: message.metadata,
   });
   res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
   res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));

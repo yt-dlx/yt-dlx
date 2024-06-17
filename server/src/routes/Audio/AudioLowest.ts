@@ -145,14 +145,22 @@ function AudioLowest({
   return emitter;
 }
 
-const routeAudioLowest = (ws: WebSocket, message: string) => {
-  const req = JSON.parse(message);
+const routeAudioLowest = (
+  ws: WebSocket,
+  message: {
+    query: string;
+    useTor: boolean;
+    stream: boolean;
+    verbose: boolean;
+    metadata: boolean;
+  },
+) => {
   const res = AudioLowest({
-    query: req.payload.query,
-    useTor: req.payload.useTor,
-    stream: req.payload.stream,
-    verbose: req.payload.verbose,
-    metadata: req.payload.metadata,
+    query: message.query,
+    useTor: message.useTor,
+    stream: message.stream,
+    verbose: message.verbose,
+    metadata: message.metadata,
   });
   res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
   res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
