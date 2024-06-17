@@ -41,6 +41,7 @@ const ZodSchema = z.object({
     ])
     .optional(),
 });
+
 function AudioVideoCustom({
   query,
   stream,
@@ -64,6 +65,7 @@ function AudioVideoCustom({
         verbose,
         resolution,
       });
+
       const engineData = await ytdlx({
         query,
         verbose,
@@ -72,17 +74,21 @@ function AudioVideoCustom({
       if (!engineData) {
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
+
       const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
       const folder = output ? output : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+
       const proc: ffmpeg.FfmpegCommand = ffmpeg();
       proc.setFfmpegPath(path.join(process.cwd(), "public", "ffmpeg.exe"));
       proc.setFfprobePath(path.join(process.cwd(), "public", "ffprobe.exe"));
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
       proc.addInput(engineData.AudioHighF.url);
       proc.withOutputFormat("matroska");
+
       const filenameBase = `yt-dlx_(AudioVideoCustom_${resolution}_`;
       let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
+
       const vdata = engineData.ManifestHigh.find(i =>
         i.format.includes(resolution.replace("p", "").toString()),
       );
@@ -90,6 +96,7 @@ function AudioVideoCustom({
       else {
         throw new Error(`${colors.red("@error:")} no video data found. use list_formats() maybe?`);
       }
+
       const filterMap: Record<string, string[]> = {
         grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
         invert: ["negate"],
@@ -99,12 +106,14 @@ function AudioVideoCustom({
         flipHorizontal: ["hflip"],
         flipVertical: ["vflip"],
       };
+
       if (filter && filterMap[filter]) proc.withVideoFilter(filterMap[filter]);
-      proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+
       proc.on("progress", progress => emitter.emit("progress", progress));
       proc.on("error", error => emitter.emit("error", error.message));
       proc.on("start", start => emitter.emit("start", start));
       proc.on("end", () => emitter.emit("end", filename));
+
       if (stream && !metadata) {
         emitter.emit("ready", {
           filename: path.join(folder, filename),
@@ -113,6 +122,7 @@ function AudioVideoCustom({
         proc.output(path.join(folder, filename));
         proc.run();
       }
+
       if (!stream && metadata) {
         emitter.emit("metadata", {
           filename,
@@ -131,13 +141,10 @@ function AudioVideoCustom({
         });
       }
     } catch (error: any) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", error.message);
-          break;
+      if (error instanceof ZodError) {
+        emitter.emit("error", error.errors);
+      } else {
+        emitter.emit("error", error.message);
       }
     } finally {
       emitter.emit(
@@ -147,6 +154,7 @@ function AudioVideoCustom({
       );
     }
   })().catch(error => emitter.emit("error", error.message));
+
   return emitter;
 }
 
@@ -165,6 +173,7 @@ const resEnum = [
   "8640p",
   "12000p",
 ] as const;
+
 const routeAudioVideoCustom = (
   ws: WebSocket,
   message: {
@@ -184,10 +193,29 @@ const routeAudioVideoCustom = (
     metadata: message.metadata,
     resolution: message.resolution,
   });
-  res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
-  res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
-  res.on("start", data => ws.send(JSON.stringify({ event: "start", data })));
-  res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));
-  res.on("metadata", data => ws.send(JSON.stringify({ event: "metadata", data })));
+
+  res.on("end", data => {
+    ws.send(JSON.stringify({ event: "end", data }));
+    ws.close();
+  });
+
+  res.on("error", data => {
+    ws.send(JSON.stringify({ event: "error", data }));
+  });
+
+  res.on("start", data => {
+    ws.send(JSON.stringify({ event: "start", data }));
+  });
+
+  res.on("progress", data => {
+    ws.send(JSON.stringify({ event: "progress", data }));
+  });
+
+  res.on("metadata", data => {
+    ws.send(JSON.stringify({ event: "metadata", data }));
+  });
+
+  // Removed the call to `ws.close()` here to prevent premature closing
 };
+
 export default routeAudioVideoCustom;

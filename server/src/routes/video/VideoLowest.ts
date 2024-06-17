@@ -26,6 +26,7 @@ const ZodSchema = z.object({
     ])
     .optional(),
 });
+
 function VideoLowest({
   query,
   stream,
@@ -36,6 +37,7 @@ function VideoLowest({
   filter,
 }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
+
   (async () => {
     try {
       ZodSchema.parse({
@@ -47,26 +49,41 @@ function VideoLowest({
         useTor,
         filter,
       });
+
       const engineData = await ytdlx({
         query,
         verbose,
         useTor,
       });
+
       if (!engineData) {
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
+
       const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
       const folder = output ? output : __dirname;
-      if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+
+      if (!fs.existsSync(folder)) {
+        fs.mkdirSync(folder, { recursive: true });
+      }
+
       const proc: ffmpeg.FfmpegCommand = ffmpeg();
       proc.setFfmpegPath(path.join(process.cwd(), "public", "ffmpeg.exe"));
       proc.setFfprobePath(path.join(process.cwd(), "public", "ffprobe.exe"));
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      proc.addInput(engineData.ManifestLow[0].url);
+
+      const firstLowManifest = engineData.ManifestLow[0];
+      if (!firstLowManifest) {
+        throw new Error(`${colors.red("@error:")} no lowest quality video found.`);
+      }
+
+      proc.addInput(firstLowManifest.url);
       proc.withOutputFormat("matroska");
       proc.videoCodec("copy");
+
       const filenameBase = `yt-dlx_(VideoLowest_`;
       let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
+
       const filterMap: Record<string, string[]> = {
         grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
         invert: ["negate"],
@@ -76,12 +93,18 @@ function VideoLowest({
         flipHorizontal: ["hflip"],
         flipVertical: ["vflip"],
       };
-      if (filter && filterMap[filter]) proc.withVideoFilter(filterMap[filter]);
+
+      if (filter && filterMap[filter]) {
+        proc.withVideoFilter(filterMap[filter]);
+      }
+
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+
       proc.on("progress", progress => emitter.emit("progress", progress));
       proc.on("error", error => emitter.emit("error", error.message));
       proc.on("start", start => emitter.emit("start", start));
       proc.on("end", () => emitter.emit("end", filename));
+
       if (stream && !metadata) {
         emitter.emit("ready", {
           filename: path.join(folder, filename),
@@ -90,6 +113,7 @@ function VideoLowest({
         proc.output(path.join(folder, filename));
         proc.run();
       }
+
       if (!stream && metadata) {
         emitter.emit("metadata", {
           filename,
@@ -117,6 +141,7 @@ function VideoLowest({
       );
     }
   })().catch(error => emitter.emit("error", error.message));
+
   return emitter;
 }
 
@@ -137,10 +162,18 @@ const routeVideoLowest = (
     verbose: message.verbose,
     metadata: message.metadata,
   });
-  res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
+
+  res.on("end", data => {
+    ws.send(JSON.stringify({ event: "end", data }));
+    ws.close();
+  });
+
   res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
   res.on("start", data => ws.send(JSON.stringify({ event: "start", data })));
   res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));
   res.on("metadata", data => ws.send(JSON.stringify({ event: "metadata", data })));
+
+  // Removed the call to `ws.close()` here to prevent premature closing
 };
+
 export default routeVideoLowest;

@@ -12,11 +12,16 @@ const ZodSchema = z.object({
 
 function extract({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
+
   (async () => {
     try {
       ZodSchema.parse({ query, verbose });
       const metaBody: EngineOutput = await ytdlx({ query, verbose });
-      if (!metaBody) throw new Error("Unable to get response!");
+
+      if (!metaBody) {
+        throw new Error("Unable to get response!");
+      }
+
       const uploadDate = new Date(
         metaBody.metaData.upload_date.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"),
       );
@@ -34,6 +39,7 @@ function extract({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
       const videoDuration = calculateVideoDuration(videoTimeInSeconds);
       const viewCountFormatted = formatCount(metaBody.metaData.view_count);
       const likeCountFormatted = formatCount(metaBody.metaData.like_count);
+
       const payload = {
         AudioLowF: metaBody.AudioLowF,
         AudioHighF: metaBody.AudioHighF,
@@ -81,6 +87,7 @@ function extract({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
           channel_follower_count_formatted: formatCount(metaBody.metaData.channel_follower_count),
         },
       };
+
       emitter.emit("data", payload);
     } catch (error: any) {
       switch (true) {
@@ -99,6 +106,7 @@ function extract({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
       );
     }
   })().catch(error => emitter.emit("error", error.message));
+
   return emitter;
 }
 
@@ -141,6 +149,7 @@ const routeExtract = (
     query: message.query,
     verbose: message.verbose,
   });
+
   res.on("data", data => ws.send(JSON.stringify({ event: "data", data })));
   res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
   res.on("info", data => ws.send(JSON.stringify({ event: "info", data })));

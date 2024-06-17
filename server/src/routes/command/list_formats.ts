@@ -12,11 +12,16 @@ const ZodSchema = z.object({
 
 function list_formats({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
+
   (async () => {
     try {
       ZodSchema.parse({ query, verbose });
       const metaBody: EngineOutput = await ytdlx({ query, verbose });
-      if (!metaBody) throw new Error("@error: Unable to get response from YouTube.");
+
+      if (!metaBody) {
+        throw new Error("@error: Unable to get response from YouTube.");
+      }
+
       const formatData = {
         AudioLow: metaBody.AudioLow.map(item => ({
           filesizeP: item.filesizeP,
@@ -53,6 +58,7 @@ function list_formats({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitt
         ManifestLow: metaBody.ManifestLow.map(item => ({ format: item.format, tbr: item.tbr })),
         ManifestHigh: metaBody.ManifestHigh.map(item => ({ format: item.format, tbr: item.tbr })),
       };
+
       emitter.emit("data", formatData);
     } catch (error: any) {
       switch (true) {
@@ -71,6 +77,7 @@ function list_formats({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitt
       );
     }
   })().catch(error => emitter.emit("error", error.message));
+
   return emitter;
 }
 
@@ -85,6 +92,7 @@ const routeListFormats = (
     query: message.query,
     verbose: message.verbose,
   });
+
   res.on("data", data => ws.send(JSON.stringify({ event: "data", data })));
   res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
   res.on("info", data => ws.send(JSON.stringify({ event: "info", data })));

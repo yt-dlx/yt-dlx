@@ -1,6 +1,4 @@
-import path from "path";
 import WebSocket from "ws";
-import ffmpeg from "fluent-ffmpeg";
 
 const ws = new WebSocket("ws://localhost:8642")
   .on("close", () => console.log("Disconnected from WebSocket server"))
@@ -9,7 +7,7 @@ const ws = new WebSocket("ws://localhost:8642")
 ws.on("open", () => {
   ws.send(
     JSON.stringify({
-      event: "AudioLowest",
+      event: "VideoLowest",
       payload: {
         verbose: true,
         stream: true,
@@ -20,41 +18,14 @@ ws.on("open", () => {
     }),
   );
 });
+
 ws.on("message", data => {
   const response = JSON.parse(data);
-  switch (response.event) {
-    case "end":
-      console.log("End:", response.data);
-      break;
-    case "error":
-      console.error("Error:", response.data);
-      break;
-    case "start":
-      console.log("Start:", response.data);
-      break;
-    case "progress":
-      console.log("Progress:", response.data);
-      break;
-    case "metadata":
-      console.log("Metadata:", response.data);
-      const proc = ffmpeg();
-      proc.setFfmpegPath(path.join(process.cwd(), "./public", "ffmpeg.exe"));
-      proc.setFfprobePath(path.join(process.cwd(), "./public", "ffprobe.exe"));
-      proc.addInput(response.data.AudioLowF.url);
-      proc.addInput(response.data.metaData.thumbnail);
-      proc.addOption("-headers", `X-Forwarded-For: ${response.data.ipAddress}`);
-      proc.on("progress", progress => console.log(progress));
-      proc.on("error", error => console.log(error));
-      proc.on("start", start => console.log(start));
-      proc.on("end", end => console.log(end));
-      proc.withOutputFormat("avi");
-      proc.output("music.avi");
-      proc.run();
-      break;
-    default:
-      console.log("Unknown event:", response);
-  }
-  ws.close();
+  if (response.event === "end") console.log(response.data);
+  if (response.event === "error") console.log(response.data);
+  if (response.event === "start") console.log(response.data);
+  if (response.event === "progress") console.log(response.data);
+  if (response.event === "metadata") console.log(response.data);
 });
 
 // import WebSocket from "ws";

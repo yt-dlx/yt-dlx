@@ -26,13 +26,16 @@ const server = http
     console.log(`@web-socket: listening on port ${port}`);
   })
   .on("error", error => console.error("Server error:", error));
+
 const wss = new WebSocket.Server({ server });
 
 wss.on("connection", (ws: WebSocket, req) => {
   console.log(`WebSocket client connected from ip: ${req.socket.remoteAddress}`);
+
   ws.on("message", (message: string) => {
     const data = JSON.parse(message);
     const { event, payload } = data;
+
     if (event === "AudioLowest") routeAudioLowest(ws, payload);
     else if (event === "AudioCustom") routeAudioCustom(ws, payload);
     else if (event === "AudioHighest") routeAudioHighest(ws, payload);
@@ -49,11 +52,14 @@ wss.on("connection", (ws: WebSocket, req) => {
     else if (event === "SearchVideos") routeSearchVideos(ws, payload);
     else if (event === "SearchPlaylists") routeSearchPlaylists(ws, payload);
   });
+
   ws.on("error", error => console.error(`WebSocket error: ${error.message}`));
+
   ws.on("close", () => {
     console.log(`WebSocket client disconnected from ip: ${req.socket.remoteAddress}`);
   });
 });
+
 const powerdown = () => {
   console.log("Shutting down gracefully...");
   wss.clients.forEach(client => client.close());
@@ -66,5 +72,6 @@ const powerdown = () => {
     process.exit(1);
   }, 10000);
 };
+
 process.on("SIGTERM", powerdown);
 process.on("SIGINT", powerdown);

@@ -4,7 +4,7 @@ import colors from "colors";
 import * as path from "path";
 import { z, ZodError } from "zod";
 import ffmpeg from "fluent-ffmpeg";
-import ytdlx from "../../base/Agent";
+import Agent from "../../base/Agent";
 import { EventEmitter } from "events";
 
 const ZodSchema = z.object({
@@ -56,7 +56,7 @@ function AudioLowest({
         metadata,
         verbose,
       });
-      const engineData = await ytdlx({
+      const engineData = await Agent({
         query,
         verbose,
         useTor,
@@ -94,7 +94,6 @@ function AudioLowest({
         vibrato: ["vibrato=f=6.5"],
       };
       if (filter && filterMap[filter]) proc.withAudioFilter(filterMap[filter]);
-      proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
       proc.on("progress", progress => emitter.emit("progress", progress));
       proc.on("error", error => emitter.emit("error", error.message));
       proc.on("start", start => emitter.emit("start", start));
@@ -117,22 +116,19 @@ function AudioLowest({
         });
       }
     } catch (error: any) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", error.message);
-          break;
-      }
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else emitter.emit("error", error.message);
     } finally {
+      console.log("Final info event");
       emitter.emit(
         "info",
         colors.green("@info:"),
         "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.",
       );
     }
-  })().catch(error => emitter.emit("error", error.message));
+  })().catch(error => {
+    emitter.emit("error", error.message);
+  });
   return emitter;
 }
 
@@ -153,10 +149,22 @@ const routeAudioLowest = (
     verbose: message.verbose,
     metadata: message.metadata,
   });
-  res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
-  res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
-  res.on("start", data => ws.send(JSON.stringify({ event: "start", data })));
-  res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));
-  res.on("metadata", data => ws.send(JSON.stringify({ event: "metadata", data })));
+  res.on("end", data => {
+    ws.send(JSON.stringify({ event: "end", data }));
+    ws.close();
+  });
+  res.on("error", data => {
+    ws.send(JSON.stringify({ event: "error", data }));
+  });
+  res.on("start", data => {
+    ws.send(JSON.stringify({ event: "start", data }));
+  });
+  res.on("progress", data => {
+    ws.send(JSON.stringify({ event: "progress", data }));
+  });
+  res.on("metadata", data => {
+    ws.send(JSON.stringify({ event: "metadata", data }));
+  });
 };
+
 export default routeAudioLowest;

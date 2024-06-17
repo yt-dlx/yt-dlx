@@ -26,6 +26,7 @@ const ZodSchema = z.object({
     ])
     .optional(),
 });
+
 function AudioVideoHighest({
   query,
   stream,
@@ -47,6 +48,7 @@ function AudioVideoHighest({
         useTor,
         filter,
       });
+
       const engineData = await ytdlx({
         query,
         verbose,
@@ -55,9 +57,11 @@ function AudioVideoHighest({
       if (!engineData) {
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
+
       const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
       const folder = output ? output : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+
       const proc: ffmpeg.FfmpegCommand = ffmpeg();
       proc.setFfmpegPath(path.join(process.cwd(), "public", "ffmpeg.exe"));
       proc.setFfprobePath(path.join(process.cwd(), "public", "ffprobe.exe"));
@@ -66,8 +70,10 @@ function AudioVideoHighest({
       proc.addInput(engineData.AudioHighF.url);
       proc.withOutputFormat("matroska");
       proc.outputOptions("-c copy");
+
       const filenameBase = `yt-dlx_(AudioVideoHighest_`;
       let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
+
       const filterMap: Record<string, string[]> = {
         grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
         invert: ["negate"],
@@ -77,12 +83,14 @@ function AudioVideoHighest({
         flipHorizontal: ["hflip"],
         flipVertical: ["vflip"],
       };
+
       if (filter && filterMap[filter]) proc.withVideoFilter(filterMap[filter]);
-      proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+
       proc.on("progress", progress => emitter.emit("progress", progress));
       proc.on("error", error => emitter.emit("error", error.message));
       proc.on("start", start => emitter.emit("start", start));
       proc.on("end", () => emitter.emit("end", filename));
+
       if (stream && !metadata) {
         emitter.emit("ready", {
           filename: path.join(folder, filename),
@@ -91,6 +99,7 @@ function AudioVideoHighest({
         proc.output(path.join(folder, filename));
         proc.run();
       }
+
       if (!stream && metadata) {
         emitter.emit("metadata", {
           filename,
@@ -104,13 +113,10 @@ function AudioVideoHighest({
         });
       }
     } catch (error: any) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", error.message);
-          break;
+      if (error instanceof ZodError) {
+        emitter.emit("error", error.errors);
+      } else {
+        emitter.emit("error", error.message);
       }
     } finally {
       emitter.emit(
@@ -120,8 +126,10 @@ function AudioVideoHighest({
       );
     }
   })().catch(error => emitter.emit("error", error.message));
+
   return emitter;
 }
+
 const routeAudioVideoHighest = (
   ws: WebSocket,
   message: {
@@ -139,10 +147,18 @@ const routeAudioVideoHighest = (
     verbose: message.verbose,
     metadata: message.metadata,
   });
-  res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
+
+  res.on("end", data => {
+    ws.send(JSON.stringify({ event: "end", data }));
+    ws.close();
+  });
+
   res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
   res.on("start", data => ws.send(JSON.stringify({ event: "start", data })));
   res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));
   res.on("metadata", data => ws.send(JSON.stringify({ event: "metadata", data })));
+
+  // Removed the call to `ws.close()` here to prevent premature closing
 };
+
 export default routeAudioVideoHighest;

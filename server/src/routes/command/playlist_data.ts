@@ -11,13 +11,22 @@ const ZodSchema = z.object({
 
 function playlist_data({ query }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
+
   (async () => {
     try {
       ZodSchema.parse({ query });
       const playlistId = await YouTubeID(query);
-      if (!playlistId) throw new Error(colors.red("@error: ") + "incorrect playlist link");
+
+      if (!playlistId) {
+        throw new Error(colors.red("@error: ") + "incorrect playlist link");
+      }
+
       const metaData: playlistVideosType = await web.playlistVideos({ playlistId });
-      if (!metaData) throw new Error(colors.red("@error: ") + "Unable to get response!");
+
+      if (!metaData) {
+        throw new Error(colors.red("@error: ") + "Unable to get response!");
+      }
+
       emitter.emit("data", metaData);
     } catch (error: any) {
       switch (true) {
@@ -36,6 +45,7 @@ function playlist_data({ query }: z.infer<typeof ZodSchema>): EventEmitter {
       );
     }
   })().catch(error => emitter.emit("error", error.message));
+
   return emitter;
 }
 
@@ -48,6 +58,7 @@ const routePlaylistData = (
   const res = playlist_data({
     query: message.query,
   });
+
   res.on("data", data => ws.send(JSON.stringify({ event: "data", data })));
   res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
   res.on("info", data => ws.send(JSON.stringify({ event: "info", data })));

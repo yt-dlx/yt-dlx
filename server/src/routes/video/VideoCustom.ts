@@ -41,6 +41,7 @@ const ZodSchema = z.object({
     ])
     .optional(),
 });
+
 function VideoCustom({
   query,
   stream,
@@ -52,6 +53,7 @@ function VideoCustom({
   resolution,
 }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
+
   (async () => {
     try {
       ZodSchema.parse({
@@ -64,34 +66,45 @@ function VideoCustom({
         metadata,
         resolution,
       });
+
       const engineData = await ytdlx({
         query,
         verbose,
         useTor,
       });
+
       if (!engineData) {
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
+
       const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
       const folder = output ? output : __dirname;
-      if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+
+      if (!fs.existsSync(folder)) {
+        fs.mkdirSync(folder, { recursive: true });
+      }
+
       const proc: ffmpeg.FfmpegCommand = ffmpeg();
       proc.setFfmpegPath(path.join(process.cwd(), "public", "ffmpeg.exe"));
       proc.setFfprobePath(path.join(process.cwd(), "public", "ffprobe.exe"));
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      proc.addInput(engineData.AudioHighF.url);
-      proc.withOutputFormat("matroska");
-      proc.videoCodec("copy");
-      const filenameBase = `yt-dlx_(VideoCustom_${resolution}_`;
-      let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
+
       const vdata = engineData.ManifestHigh.find(i =>
         i.format.includes(resolution.replace("p", "").toString()),
       );
 
-      if (vdata) proc.addInput(vdata.url.toString());
-      else {
+      if (!vdata) {
         throw new Error(`${colors.red("@error:")} no video data found. Use list_formats() maybe?`);
       }
+
+      proc.addInput(engineData.AudioHighF.url);
+      proc.addInput(vdata.url.toString());
+      proc.withOutputFormat("matroska");
+      proc.videoCodec("copy");
+
+      const filenameBase = `yt-dlx_(VideoCustom_${resolution}_`;
+      let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
+
       const filterMap: Record<string, string[]> = {
         grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
         invert: ["negate"],
@@ -101,12 +114,18 @@ function VideoCustom({
         flipHorizontal: ["hflip"],
         flipVertical: ["vflip"],
       };
-      if (filter && filterMap[filter]) proc.withVideoFilter(filterMap[filter]);
+
+      if (filter && filterMap[filter]) {
+        proc.withVideoFilter(filterMap[filter]);
+      }
+
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+
       proc.on("progress", progress => emitter.emit("progress", progress));
       proc.on("error", error => emitter.emit("error", error.message));
       proc.on("start", start => emitter.emit("start", start));
       proc.on("end", () => emitter.emit("end", filename));
+
       if (stream && !metadata) {
         emitter.emit("ready", {
           filename: path.join(folder, filename),
@@ -115,6 +134,7 @@ function VideoCustom({
         proc.output(path.join(folder, filename));
         proc.run();
       }
+
       if (!stream && metadata) {
         emitter.emit("metadata", {
           filename,
@@ -145,6 +165,7 @@ function VideoCustom({
       );
     }
   })().catch(error => emitter.emit("error", error.message));
+
   return emitter;
 }
 
@@ -163,6 +184,7 @@ const resEnum = [
   "8640p",
   "12000p",
 ] as const;
+
 const routeVideoCustom = (
   ws: WebSocket,
   message: {
@@ -182,10 +204,18 @@ const routeVideoCustom = (
     metadata: message.metadata,
     resolution: message.resolution,
   });
-  res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
+
+  res.on("end", data => {
+    ws.send(JSON.stringify({ event: "end", data }));
+    ws.close();
+  });
+
   res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
   res.on("start", data => ws.send(JSON.stringify({ event: "start", data })));
   res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));
   res.on("metadata", data => ws.send(JSON.stringify({ event: "metadata", data })));
+
+  // Removed the call to `ws.close()` here to prevent premature closing
 };
+
 export default routeVideoCustom;
