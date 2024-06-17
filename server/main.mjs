@@ -1,9 +1,12 @@
 import WebSocket from "ws";
-const ws = new WebSocket("ws://localhost:8642");
+const ws = new WebSocket("ws://localhost:8642")
+  .on("close", () => console.log("Disconnected from WebSocket server"))
+  .on("error", error => console.error("WebSocket error:", error));
 
 ws.on("open", () => {
   console.log("Connected to WebSocket server");
   const message = JSON.stringify({
+    event: "AudioLowest",
     payload: {
       useTor: false,
       verbose: false,
@@ -12,7 +15,6 @@ ws.on("open", () => {
   });
   ws.send(message);
 });
-
 ws.on("message", data => {
   const response = JSON.parse(data);
   switch (response.event) {
@@ -42,9 +44,6 @@ ws.on("message", data => {
   }
   ws.close();
 });
-
-ws.on("close", () => console.log("Disconnected from WebSocket server"));
-ws.on("error", error => console.error("WebSocket error:", error));
 
 // import WebSocket from "ws";
 // const ws = new WebSocket("ws://localhost:8642");
