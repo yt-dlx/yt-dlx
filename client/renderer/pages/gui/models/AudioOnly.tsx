@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const AudioOnly: React.FC<{
-  ws: WebSocket;
   videoId: string;
   isOpen: boolean;
   onClose: () => void;
-}> = ({ isOpen, onClose, videoId, ws }) => {
+}> = ({ isOpen, onClose, videoId }) => {
   const [outputFolder, setOutputFolder] = useState<string | null>(null);
   const [quality, setQuality] = useState<string | null>(null);
   const [progress, setProgress] = useState<any>(null);
@@ -15,10 +14,18 @@ const AudioOnly: React.FC<{
   const [error, setError] = useState<any>(null);
   const [end, setEnd] = useState<any>(null);
 
+  const [formData, setFormData] = useState({
+    metadata: false,
+    verbose: true,
+    useTor: false,
+    stream: true,
+    query: "",
+  });
+  const ws = React.useRef<WebSocket | null>(null);
   useEffect(() => {
-    ws = new WebSocket("ws://localhost:8642");
-    ws.onopen = () => setStart("@info: WebSocket connected");
-    ws.onmessage = event => {
+    ws.current = new WebSocket("ws://localhost:8642");
+    ws.current.onopen = () => console.log("WebSocket connected");
+    ws.current.onmessage = event => {
       const message = JSON.parse(event.data);
       switch (message.event) {
         case "start":
@@ -27,41 +34,49 @@ const AudioOnly: React.FC<{
         case "progress":
           setProgress(message.data);
           break;
-        case "end":
-          setEnd(message.data);
+        case "metadata":
+          setMetadata(message.data);
           break;
         case "error":
           setError(message.data);
           break;
-        case "metadata":
-          setMetadata(message.data);
+        case "end":
+          setEnd(message.data);
           break;
         default:
-          console.warn("Unknown event type:", message.event);
+          console.warn(`Unhandled event received: ${message.event}`);
       }
     };
-    ws.onerror = event => setError(JSON.stringify(event));
+    ws.current.onerror = event => setError("WebSocket error occurred");
     return () => {
-      if (ws) ws.close();
+      if (ws.current) ws.current.close();
     };
   }, []);
 
-  const selectOutputFolder = async () => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = event.target;
+    const val = type === "checkbox" ? checked : value;
+    setFormData({ ...formData, [name]: val });
+  };
+  const handleSelectOutputFolder = async () => {
     const folder = await window.ipc.invoke("select-output-folder");
     if (folder) setOutputFolder(folder);
   };
-  const handleDownload = () => {
-    if (ws && ws.readyState === WebSocket.OPEN) {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       const message = {
-        action: "meta",
+        event: "AudioLowest",
         payload: {
-          useTor: true,
-          verbose: true,
-          query: videoId,
+          metadata: formData.metadata,
+          verbose: formData.verbose,
+          stream: formData.stream,
+          useTor: formData.useTor,
+          query: formData.query,
           output: outputFolder,
         },
       };
-      ws.send(JSON.stringify(message));
+      ws.current.send(JSON.stringify(message));
     } else setError("WebSocket connection not established");
   };
 
@@ -90,44 +105,78 @@ const AudioOnly: React.FC<{
                 Lowest Possible Download
               </li>
             </ul>
-            {quality && (
-              <>
-                <div className="text-red-600 text-lg font-black uppercase">
-                  You have selected {quality}{" "}
-                </div>
+            <form onSubmit={handleSubmit} className="flex flex-col items-center">
+              <label className="text-white">
+                <input
+                  type="checkbox"
+                  name="stream"
+                  checked={formData.stream}
+                  onChange={handleInputChange}
+                />
+                Stream
+              </label>
+              <label className="text-white">
+                <input
+                  type="checkbox"
+                  name="useTor"
+                  checked={formData.useTor}
+                  onChange={handleInputChange}
+                />
+                Use Tor
+              </label>
+              <label className="text-white">
+                <input
+                  type="checkbox"
+                  name="verbose"
+                  checked={formData.verbose}
+                  onChange={handleInputChange}
+                />
+                Verbose
+              </label>
+              <label className="text-white">
+                <input
+                  type="checkbox"
+                  name="metadata"
+                  checked={formData.metadata}
+                  onChange={handleInputChange}
+                />
+                Metadata
+              </label>
+              <div className="flex items-center">
                 <button
-                  onClick={selectOutputFolder}
-                  className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110">
-                  Select Output Folder
+                  type="button"
+                  onClick={handleSelectOutputFolder}
+                  className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4">
+                  Browse for Output Folder
                 </button>
                 {outputFolder && (
-                  <>
-                    <p className="text-white mt-2">Output Folder: {outputFolder}</p>
-                    <button
-                      onClick={handleDownload}
-                      className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4">
-                      Start Download
-                    </button>
-                  </>
+                  <span className="ml-4 text-white">Selected Folder: {outputFolder}</span>
                 )}
-              </>
-            )}
+              </div>
+              <input
+                type="text"
+                name="query"
+                value={formData.query}
+                onChange={handleInputChange}
+                placeholder="Enter search query"
+                className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4"
+              />
+              <button
+                type="submit"
+                className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4">
+                Start Search
+              </button>
+            </form>
+            {end && <p className="text-red-600 mt-2">End: {end}</p>}
+            {error && <p className="text-red-600 mt-2">Error: {error}</p>}
             {start && <p className="text-white mt-2">Start: {JSON.stringify(start)}</p>}
+            {progress && <p className="text-white mt-2">Progress: {JSON.stringify(progress)}</p>}
+            {metadata && <p className="text-white mt-2">Metadata: {JSON.stringify(metadata)}</p>}
             {progress && (
               <progress className="progress h-4 w-80 m-4" value={progress.percent || 0} max="100" />
             )}
-            {end && <p className="text-white mt-2">End: {JSON.stringify(end)}</p>}
-            {metadata && <p className="text-white mt-2">Metadata: {JSON.stringify(metadata)}</p>}
-            {error && <p className="text-red-600 mt-2">Error: {JSON.stringify(error)}</p>}
             <button
-              onClick={() => {
-                onClose();
-                setEnd(null);
-                setError(null);
-                setStart(null);
-                setProgress(null);
-                setMetadata(null);
-              }}
+              onClick={() => onClose()}
               className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4">
               Close Modal Box
             </button>

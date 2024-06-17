@@ -133,10 +133,10 @@ export default function HomePage(): JSX.Element {
             Start Search
           </button>
         </form>
+        {error && <p className="text-red-600 mt-2">Error: {error}</p>}
         {start && <p className="text-white mt-2">Start: {JSON.stringify(start)}</p>}
         {progress && <p className="text-white mt-2">Progress: {JSON.stringify(progress)}</p>}
         {metadata && <p className="text-white mt-2">Metadata: {JSON.stringify(metadata)}</p>}
-        {error && <p className="text-red-600 mt-2">Error: {error}</p>}
       </section>
     </main>
   );
