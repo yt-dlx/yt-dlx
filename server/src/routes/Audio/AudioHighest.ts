@@ -147,7 +147,6 @@ function AudioHighest({
   })().catch(error => emitter.emit("error", error.message));
   return emitter;
 }
-
 const routeAudioHighest = (
   ws: WebSocket,
   message: {
@@ -171,5 +170,4 @@ const routeAudioHighest = (
   res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));
   res.on("metadata", data => ws.send(JSON.stringify({ event: "metadata", data })));
 };
-
 export default routeAudioHighest;

@@ -154,15 +154,25 @@ function AudioCustom({
   return emitter;
 }
 
-const routeAudioCustom = (ws: WebSocket, message: string) => {
-  const req = JSON.parse(message);
+const resEnum = ["high", "medium", "low", "ultralow"] as const;
+const routeAudioCustom = (
+  ws: WebSocket,
+  message: {
+    query: string;
+    useTor: boolean;
+    stream: boolean;
+    verbose: boolean;
+    metadata: boolean;
+    resolution: (typeof resEnum)[number];
+  },
+) => {
   const res = AudioCustom({
-    query: req.payload.query,
-    useTor: req.payload.useTor,
-    stream: req.payload.stream,
-    verbose: req.payload.verbose,
-    metadata: req.payload.metadata,
-    resolution: req.payload.resolution,
+    query: message.query,
+    useTor: message.useTor,
+    stream: message.stream,
+    verbose: message.verbose,
+    metadata: message.metadata,
+    resolution: message.resolution,
   });
   res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
   res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));

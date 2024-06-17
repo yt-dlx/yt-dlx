@@ -20,8 +20,11 @@ ws.on("open", () => {
 ws.on("message", data => {
   const response = JSON.parse(data);
   switch (response.event) {
-    case "metadata":
-      console.log("Metadata:", response.data);
+    case "end":
+      console.log("End:", response.data);
+      break;
+    case "error":
+      console.error("Error:", response.data);
       break;
     case "start":
       console.log("Start:", response.data);
@@ -29,17 +32,8 @@ ws.on("message", data => {
     case "progress":
       console.log("Progress:", response.data);
       break;
-    case "end":
-      console.log("End:", response.data);
-      break;
-    case "error":
-      console.error("Error:", response.data);
-      break;
-    case "info":
-      console.log("Info:", response.data);
-      break;
-    case "warning":
-      console.warn("Warning:", response.data);
+    case "metadata":
+      console.log("Metadata:", response.data);
       break;
     default:
       console.log("Unknown event:", response);
