@@ -4,16 +4,18 @@ const ws = new WebSocket("ws://localhost:8642")
   .on("error", error => console.error("WebSocket error:", error));
 
 ws.on("open", () => {
-  console.log("Connected to WebSocket server");
-  const message = JSON.stringify({
-    event: "AudioLowest",
-    payload: {
-      useTor: false,
-      verbose: false,
-      query: "careless whisper",
-    },
-  });
-  ws.send(message);
+  ws.send(
+    JSON.stringify({
+      event: "AudioLowest",
+      payload: {
+        useTor: true,
+        stream: true,
+        verbose: true,
+        metadata: false,
+        query: "careless whisper",
+      },
+    }),
+  );
 });
 ws.on("message", data => {
   const response = JSON.parse(data);
