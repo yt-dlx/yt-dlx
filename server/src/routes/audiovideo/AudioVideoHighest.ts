@@ -104,11 +104,8 @@ function AudioVideoHighest({
         });
       }
     } catch (error: any) {
-      if (error instanceof ZodError) {
-        emitter.emit("error", error.errors);
-      } else {
-        emitter.emit("error", error.message);
-      }
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else emitter.emit("error", error.message);
     } finally {
       emitter.emit(
         "info",

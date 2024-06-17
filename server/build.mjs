@@ -9,9 +9,7 @@ const commands = {
   linux:
     'tsc -p tsconfig.json && caxa --input . --output "out/server.sh" -- "{{caxa}}/node_modules/.bin/node" "{{caxa}}/build/index.js"',
 };
-
 const command = commands[platform()];
-
 if (command) {
   exec(command, (error, stdout, stderr) => {
     if (error) {

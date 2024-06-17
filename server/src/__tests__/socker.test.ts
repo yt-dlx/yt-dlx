@@ -1,3 +1,4 @@
+import path from "path";
 import WebSocket from "ws";
 
 const ws = new WebSocket("ws://localhost:8642")
@@ -13,14 +14,16 @@ const ws = new WebSocket("ws://localhost:8642")
       "AudioVideoHighest",
     ];
     for (const name of events) {
+      console.clear();
       const payLoad = JSON.stringify({
         event: name,
         payload: {
-          verbose: true,
           stream: true,
           useTor: false,
+          verbose: true,
           metadata: false,
           query: "careless whisper",
+          output: path.join(process.cwd(), "downloads"),
         },
       });
       ws.send(payLoad);

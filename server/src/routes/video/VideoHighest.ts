@@ -58,9 +58,7 @@ function VideoHighest({
       }
       const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
       const folder = output ? output : __dirname;
-      if (!fs.existsSync(folder)) {
-        fs.mkdirSync(folder, { recursive: true });
-      }
+      if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
       const proc: ffmpeg.FfmpegCommand = ffmpeg();
       proc.setFfmpegPath(path.join(process.cwd(), "public", "ffmpeg.exe"));
       proc.setFfprobePath(path.join(process.cwd(), "public", "ffprobe.exe"));
@@ -83,9 +81,7 @@ function VideoHighest({
         flipHorizontal: ["hflip"],
         flipVertical: ["vflip"],
       };
-      if (filter && filterMap[filter]) {
-        proc.withVideoFilter(filterMap[filter]);
-      }
+      if (filter && filterMap[filter]) proc.withVideoFilter(filterMap[filter]);
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
       proc.on("progress", progress => emitter.emit("progress", progress));
       proc.on("error", error => emitter.emit("error", error.message));
@@ -110,14 +106,8 @@ function VideoHighest({
         });
       }
     } catch (error: any) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", error.message);
-          break;
-      }
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else emitter.emit("error", error.message);
     } finally {
       emitter.emit(
         "info",

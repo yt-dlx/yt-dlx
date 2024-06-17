@@ -131,11 +131,8 @@ function AudioVideoCustom({
         });
       }
     } catch (error: any) {
-      if (error instanceof ZodError) {
-        emitter.emit("error", error.errors);
-      } else {
-        emitter.emit("error", error.message);
-      }
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else emitter.emit("error", error.message);
     } finally {
       emitter.emit(
         "info",
@@ -188,18 +185,10 @@ const routeAudioVideoCustom = (
     ws.send(JSON.stringify({ event: "end", data }));
     ws.close();
   });
-  res.on("error", data => {
-    ws.send(JSON.stringify({ event: "error", data }));
-  });
-  res.on("start", data => {
-    ws.send(JSON.stringify({ event: "start", data }));
-  });
-  res.on("progress", data => {
-    ws.send(JSON.stringify({ event: "progress", data }));
-  });
-  res.on("metadata", data => {
-    ws.send(JSON.stringify({ event: "metadata", data }));
-  });
+  res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
+  res.on("start", data => ws.send(JSON.stringify({ event: "start", data })));
+  res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));
+  res.on("metadata", data => ws.send(JSON.stringify({ event: "metadata", data })));
 };
 
 export default routeAudioVideoCustom;
