@@ -12,7 +12,7 @@ const yarnModel: React.FC<{
           exit={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           initial={{ opacity: 0 }}
-          className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 font-serif">
+          className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50">
           <div className="bg-neutral-900/90 backdrop-blur-lg border-4 border-double border-red-600 p-4 rounded-3xl max-w-lg w-full shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#707070]">
             <h2 className="text-4xl text-red-600 font-black mb-4">
               Steps To Install Using <br></br>

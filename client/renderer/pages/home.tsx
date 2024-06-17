@@ -89,7 +89,7 @@ export default function HomePage(): JSX.Element {
 // };
 
 // return (
-// <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600 font-semibold font-serif">
+// <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600 font-semibold">
 // <section className="h-screen flex items-center justify-center">
 // <form onSubmit={handleSubmit} className="flex flex-col items-center">
 // <label className="text-white">

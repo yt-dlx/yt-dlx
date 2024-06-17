@@ -13,13 +13,11 @@ const AudioOnly: React.FC<{
   const [start, setStart] = useState<any>(null);
   const [error, setError] = useState<any>(null);
   const [end, setEnd] = useState<any>(null);
-
   const [formData, setFormData] = useState({
     metadata: false,
-    verbose: true,
+    verbose: false,
     useTor: false,
     stream: true,
-    query: "",
   });
   const ws = React.useRef<WebSocket | null>(null);
   useEffect(() => {
@@ -66,14 +64,14 @@ const AudioOnly: React.FC<{
     event.preventDefault();
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       const message = {
-        event: "AudioLowest",
+        event: quality,
         payload: {
           metadata: formData.metadata,
           verbose: formData.verbose,
           stream: formData.stream,
           useTor: formData.useTor,
-          query: formData.query,
           output: outputFolder,
+          query: videoId,
         },
       };
       ws.current.send(JSON.stringify(message));
@@ -87,86 +85,92 @@ const AudioOnly: React.FC<{
           exit={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           initial={{ opacity: 0 }}
-          className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center z-50 font-serif">
-          <div className="bg-neutral-900/90 backdrop-blur-lg border-4 border-double border-red-600 p-4 rounded-3xl max-w-lg w-full shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-[#707070]">
+          className="fixed inset-0 z-50 flex items-center justify-center h-full w-full">
+          <div className="bg-neutral-900/90 backdrop-blur-lg border-4 border-double border-red-600 w-full h-full max-w-full max-h-full flex flex-col items-center justify-center text-center">
             <h2 className="text-4xl text-red-600 font-black mb-4">
               Choose Your Poison For <br />
               <span className="text-6xl block">Audio</span>
             </h2>
-            <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start m-6">
+            <ul className="font-semibold text-white list-disc m-6">
               <li
-                onClick={() => setQuality("Highest")}
-                className={`hover:text-red-600 hover:font-black cursor-pointer ${quality === "Highest" ? "text-red-600 font-black" : "text-gray-600"}`}>
+                onClick={() => setQuality("AudioHighest")}
+                className={`hover:text-red-600 hover:font-black cursor-pointer ${quality === "AudioHighest" ? "text-red-600 font-black" : "text-gray-600"}`}>
                 Highest Possible Download
               </li>
               <li
-                onClick={() => setQuality("Lowest")}
-                className={`hover:text-red-600 hover:font-black cursor-pointer ${quality === "Lowest" ? "text-red-600 font-black" : "text-gray-600"}`}>
+                onClick={() => setQuality("AudioLowest")}
+                className={`hover:text-red-600 hover:font-black cursor-pointer ${quality === "AudioLowest" ? "text-red-600 font-black" : "text-gray-600"}`}>
                 Lowest Possible Download
               </li>
             </ul>
-            <form onSubmit={handleSubmit} className="flex flex-col items-center">
-              <label className="text-white">
-                <input
-                  type="checkbox"
-                  name="stream"
-                  checked={formData.stream}
-                  onChange={handleInputChange}
-                />
-                Stream
-              </label>
-              <label className="text-white">
-                <input
-                  type="checkbox"
-                  name="useTor"
-                  checked={formData.useTor}
-                  onChange={handleInputChange}
-                />
-                Use Tor
-              </label>
-              <label className="text-white">
-                <input
-                  type="checkbox"
-                  name="verbose"
-                  checked={formData.verbose}
-                  onChange={handleInputChange}
-                />
-                Verbose
-              </label>
-              <label className="text-white">
-                <input
-                  type="checkbox"
-                  name="metadata"
-                  checked={formData.metadata}
-                  onChange={handleInputChange}
-                />
-                Metadata
-              </label>
-              <div className="flex items-center">
-                <button
-                  type="button"
-                  onClick={handleSelectOutputFolder}
-                  className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4">
-                  Browse for Output Folder
-                </button>
-                {outputFolder && (
-                  <span className="ml-4 text-white">Selected Folder: {outputFolder}</span>
-                )}
-              </div>
-              <input
-                type="text"
-                name="query"
-                value={formData.query}
-                onChange={handleInputChange}
-                placeholder="Enter search query"
-                className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4"
-              />
-              <button
-                type="submit"
-                className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4">
-                Start Search
-              </button>
-            </form>
+            {quality && (
+              <React.Fragment>
+                <form onSubmit={handleSubmit} className="flex flex-col items-center">
+                  <div className="flex flex-row space-x-4">
+                    <label>
+                      <input
+                        name="stream"
+                        type="checkbox"
+                        checked={formData.stream}
+                        onChange={handleInputChange}
+                        className="checkbox checkbox-xs checkbox-error mr-2 bg-neutral-800"
+                      />
+                      Stream
+                    </label>
+                    <label>
+                      <input
+                        name="useTor"
+                        type="checkbox"
+                        checked={formData.useTor}
+                        onChange={handleInputChange}
+                        className="checkbox checkbox-xs checkbox-error mr-2 bg-neutral-800"
+                      />
+                      Use Tor
+                    </label>
+                    <label>
+                      <input
+                        name="verbose"
+                        type="checkbox"
+                        checked={formData.verbose}
+                        onChange={handleInputChange}
+                        className="checkbox checkbox-xs checkbox-error mr-2 bg-neutral-800"
+                      />
+                      Verbose
+                    </label>
+                    <label>
+                      <input
+                        name="metadata"
+                        type="checkbox"
+                        checked={formData.metadata}
+                        onChange={handleInputChange}
+                        className="checkbox checkbox-xs checkbox-error mr-2 bg-neutral-800"
+                      />
+                      Metadata
+                    </label>
+                  </div>
+                  <div className="flex items-center mt-4">
+                    <button
+                      type="button"
+                      onClick={handleSelectOutputFolder}
+                      className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110">
+                      Browse for Output Folder
+                    </button>
+                    {outputFolder && (
+                      <span className="ml-4 text-white">Selected Folder: {outputFolder}</span>
+                    )}
+                  </div>
+                  {outputFolder && (
+                    <React.Fragment>
+                      <button
+                        type="submit"
+                        className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mt-4">
+                        Start Search
+                      </button>
+                    </React.Fragment>
+                  )}
+                </form>
+              </React.Fragment>
+            )}
             {end && <p className="text-red-600 mt-2">End: {end}</p>}
             {error && <p className="text-red-600 mt-2">Error: {error}</p>}
             {start && <p className="text-white mt-2">Start: {JSON.stringify(start)}</p>}
