@@ -1,24 +1,28 @@
 import http from "http";
 import WebSocket from "ws";
 import dotenv from "dotenv";
-import routeAudioLowest from "./routes/Audio/AudioLowest";
-import routeAudioHighest from "./routes/Audio/AudioHighest";
-import routeAudioCustom from "./routes/Audio/AudioCustom";
-import routeVideoLowest from "./routes/Video/VideoLowest";
-import routeVideoHighest from "./routes/Video/VideoHighest";
-import routeVideoCustom from "./routes/Video/VideoCustom";
-import routeAudioVideoLowest from "./routes/AudioVideo/AudioVideoLowest";
-import routeAudioVideoHighest from "./routes/AudioVideo/AudioVideoHighest";
-import routeAudioVideoCustom from "./routes/AudioVideo/AudioVideoCustom";
+
+import routeAudioLowest from "./routes/audio/AudioLowest";
+import routeAudioHighest from "./routes/audio/AudioHighest";
+import routeAudioCustom from "./routes/audio/AudioCustom";
+
+import routeVideoLowest from "./routes/video/VideoLowest";
+import routeVideoHighest from "./routes/video/VideoHighest";
+import routeVideoCustom from "./routes/video/VideoCustom";
+
+import routeAudioVideoLowest from "./routes/audiovideo/AudioVideoLowest";
+import routeAudioVideoHighest from "./routes/audiovideo/AudioVideoHighest";
+import routeAudioVideoCustom from "./routes/audiovideo/AudioVideoCustom";
 
 dotenv.config();
-const server = http.createServer();
+const port = process.env.PORT || 8642;
+const server = http
+  .createServer()
+  .listen(port, () => console.log(`@web-socket: listening on port ${port}`))
+  .on("error", error => console.error("@server-error:", error));
 const wserver = new WebSocket.Server({ server });
+
 wserver.on("connection", (ws: WebSocket, req) => {
-  const ip = req.socket.remoteAddress;
-  console.log(`@webSocket-connected: ${ip}`);
-  ws.on("close", () => console.log(`@webSocket-disconnected: ${ip}`));
-  ws.on("error", error => console.error(`@webSocket-error: ${error.message}`));
   ws.on("message", (message: string) => {
     routeAudioLowest(ws, message);
     routeAudioHighest(ws, message);
@@ -30,21 +34,14 @@ wserver.on("connection", (ws: WebSocket, req) => {
     routeAudioVideoHighest(ws, message);
     routeAudioVideoCustom(ws, message);
   });
+  ws.on("close", () => console.log("@webSocket-disconnected:", req.socket.remoteAddress));
+  ws.on("error", error => console.error("@webSocket-error:", error.message));
 });
 
-const port = process.env.PORT || 8642;
-server.listen(port, () => console.log(`@web-socket: listening on port ${port}`));
-server.on("error", error => console.error("Server error:", error));
-
 const powerdown = () => {
-  console.log("Shutting down gracefully...");
   wserver.clients.forEach(client => client.close());
-  server.close(() => {
-    console.log("Closed out remaining connections.");
-    process.exit(0);
-  });
+  server.close(() => process.exit(0));
   setTimeout(() => {
-    console.error("Forcing shutdown...");
     process.exit(1);
   }, 10000);
 };
