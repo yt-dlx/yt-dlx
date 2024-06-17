@@ -136,6 +136,7 @@ const routeAudioLowest = (
   ws: WebSocket,
   message: {
     query: string;
+    output: string;
     useTor: boolean;
     stream: boolean;
     verbose: boolean;
@@ -144,6 +145,7 @@ const routeAudioLowest = (
 ) => {
   const res = AudioLowest({
     query: message.query,
+    output: message.output,
     useTor: message.useTor,
     stream: message.stream,
     verbose: message.verbose,
