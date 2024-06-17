@@ -57,7 +57,7 @@ function AudioVideoLowest({
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
       const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
-      const folder = output ? output : __dirname;
+      const folder = output ? output : process.cwd();
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
       const proc: ffmpeg.FfmpegCommand = ffmpeg();
       proc.setFfmpegPath(path.join(process.cwd(), "public", "ffmpeg.exe"));

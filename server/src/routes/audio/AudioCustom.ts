@@ -68,7 +68,7 @@ function AudioCustom({
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
       const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
-      const folder = output ? output : __dirname;
+      const folder = output ? output : process.cwd();
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
       const resolutionFilter = resolution.replace("p", "");
       const adata = engineData.AudioHigh.find(i => i.format.includes(resolutionFilter));

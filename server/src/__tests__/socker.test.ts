@@ -6,10 +6,10 @@ const ws = new WebSocket("ws://localhost:8642")
   .on("error", error => console.error("WebSocket error:", error))
   .on("open", async () => {
     const events = [
-      "VideoLowest",
-      "VideoHighest",
       "AudioLowest",
       "AudioHighest",
+      "VideoLowest",
+      "VideoHighest",
       "AudioVideoLowest",
       "AudioVideoHighest",
     ];
