@@ -18,91 +18,50 @@ import routeSearchVideos from "./routes/command/search_videos";
 import routeVideoData from "./routes/command/video_data";
 
 dotenv.config();
-const port = process.env.PORT || 8642;
-const server = http
-  .createServer()
-  .listen(port, () => {
-    console.clear();
-    console.log(`@web-socket: listening on port ${port}`);
-  })
-  .on("error", error => console.error("@server-error:", error));
-
-const wserver = new WebSocket.Server({ server });
-
-wserver.on("connection", (ws, req) => {
-  ws.on("message", (message: WebSocket.Data) => {
-    let parsedMessage: any;
-    try {
-      const messageString = message.toString();
-      parsedMessage = JSON.parse(messageString);
-    } catch (error) {
-      console.error("@message-error: Invalid JSON", error);
-      return;
-    }
-    const { event } = parsedMessage;
-    switch (event) {
-      case "AudioLowest":
-        routeAudioLowest(ws, parsedMessage);
-        break;
-      case "AudioHighest":
-        routeAudioHighest(ws, parsedMessage);
-        break;
-      case "AudioCustom":
-        routeAudioCustom(ws, parsedMessage);
-        break;
-      case "VideoLowest":
-        routeVideoLowest(ws, parsedMessage);
-        break;
-      case "VideoHighest":
-        routeVideoHighest(ws, parsedMessage);
-        break;
-      case "VideoCustom":
-        routeVideoCustom(ws, parsedMessage);
-        break;
-      case "AudioVideoLowest":
-        routeAudioVideoLowest(ws, parsedMessage);
-        break;
-      case "AudioVideoHighest":
-        routeAudioVideoHighest(ws, parsedMessage);
-        break;
-      case "AudioVideoCustom":
-        routeAudioVideoCustom(ws, parsedMessage);
-        break;
-      case "Extract":
-        routeExtract(ws, parsedMessage);
-        break;
-      case "ListFormats":
-        routeListFormats(ws, parsedMessage);
-        break;
-      case "PlaylistData":
-        routePlaylistData(ws, parsedMessage);
-        break;
-      case "SearchPlaylists":
-        routeSearchPlaylists(ws, parsedMessage);
-        break;
-      case "SearchVideos":
-        routeSearchVideos(ws, parsedMessage);
-        break;
-      case "VideoData":
-        routeVideoData(ws, parsedMessage);
-        break;
-      default:
-        console.warn("@message-warning: Unhandled event type", event);
-        break;
-    }
+const server = http.createServer();
+const wss = new WebSocket.Server({ server });
+wss.on("connection", (ws: WebSocket, req) => {
+  const ip = req.socket.remoteAddress;
+  console.log(`WebSocket client connected from ip: ${ip}`);
+  ws.on("message", (message: string) => {
+    const data = JSON.parse(message);
+    const { event, payload } = data;
+    if (event === "AudioLowest") routeAudioLowest(ws, JSON.stringify(payload));
+    if (event === "AudioCustom") routeAudioCustom(ws, JSON.stringify(payload));
+    if (event === "AudioHighest") routeAudioHighest(ws, JSON.stringify(payload));
+    // ============================================================
+    if (event === "VideoLowest") routeVideoLowest(ws, JSON.stringify(payload));
+    if (event === "VideoCustom") routeVideoCustom(ws, JSON.stringify(payload));
+    if (event === "VideoHighest") routeVideoHighest(ws, JSON.stringify(payload));
+    // ============================================================
+    if (event === "AudioVideoLowest") routeAudioVideoLowest(ws, JSON.stringify(payload));
+    if (event === "AudioVideoCustom") routeAudioVideoCustom(ws, JSON.stringify(payload));
+    if (event === "AudioVideoHighest") routeAudioVideoHighest(ws, JSON.stringify(payload));
+    // ============================================================
+    if (event === "Extract") routeExtract(ws, JSON.stringify(payload));
+    if (event === "VideoData") routeVideoData(ws, JSON.stringify(payload));
+    if (event === "ListFormats") routeListFormats(ws, JSON.stringify(payload));
+    if (event === "PlaylistData") routePlaylistData(ws, JSON.stringify(payload));
+    if (event === "SearchVideos") routeSearchVideos(ws, JSON.stringify(payload));
+    if (event === "SearchPlaylists") routeSearchPlaylists(ws, JSON.stringify(payload));
   });
-
-  ws.on("close", () => console.log("@webSocket-disconnected:", req.socket.remoteAddress));
-  ws.on("error", error => console.error("@webSocket-error:", error.message));
+  ws.on("error", error => console.error(`WebSocket error: ${error.message}`));
+  ws.on("close", () => console.log(`WebSocket client disconnected from ${ip}`));
 });
-
+const port = process.env.PORT || 8642;
+server.listen(port, () => console.log(`@web-socket: listening on port ${port}`));
+server.on("error", error => console.error("Server error:", error));
 const powerdown = () => {
-  wserver.clients.forEach(client => client.close());
-  server.close(() => process.exit(0));
+  console.log("Shutting down gracefully...");
+  wss.clients.forEach(client => client.close());
+  server.close(() => {
+    console.log("Closed out remaining connections.");
+    process.exit(0);
+  });
   setTimeout(() => {
+    console.error("Forcing shutdown...");
     process.exit(1);
   }, 10000);
 };
-
 process.on("SIGTERM", powerdown);
 process.on("SIGINT", powerdown);
