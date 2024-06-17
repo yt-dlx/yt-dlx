@@ -39,9 +39,15 @@ function search_playlists({ query }: z.infer<typeof ZodSchema>): EventEmitter {
   return emitter;
 }
 
-const routeSearchPlaylists = (ws: WebSocket, message: string) => {
-  const req = JSON.parse(message);
-  const res = search_playlists({ query: req.payload.query });
+const routeSearchPlaylists = (
+  ws: WebSocket,
+  message: {
+    query: string;
+  },
+) => {
+  const res = search_playlists({
+    query: message.query,
+  });
   res.on("data", data => ws.send(JSON.stringify({ event: "data", data })));
   res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
   res.on("info", data => ws.send(JSON.stringify({ event: "info", data })));

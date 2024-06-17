@@ -130,11 +130,16 @@ function formatCount(count: number) {
   return `${count}`;
 }
 
-const routeExtract = (ws: WebSocket, message: string) => {
-  const req = JSON.parse(message);
+const routeExtract = (
+  ws: WebSocket,
+  message: {
+    query: string;
+    verbose: boolean;
+  },
+) => {
   const res = extract({
-    query: req.payload.query,
-    verbose: req.payload.verbose,
+    query: message.query,
+    verbose: message.verbose,
   });
   res.on("data", data => ws.send(JSON.stringify({ event: "data", data })));
   res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));

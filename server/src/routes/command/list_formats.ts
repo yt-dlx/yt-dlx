@@ -74,11 +74,16 @@ function list_formats({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitt
   return emitter;
 }
 
-const routeListFormats = (ws: WebSocket, message: string) => {
-  const req = JSON.parse(message);
+const routeListFormats = (
+  ws: WebSocket,
+  message: {
+    query: string;
+    verbose: boolean;
+  },
+) => {
   const res = list_formats({
-    query: req.payload.query,
-    verbose: req.payload.verbose,
+    query: message.query,
+    verbose: message.verbose,
   });
   res.on("data", data => ws.send(JSON.stringify({ event: "data", data })));
   res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
