@@ -9,12 +9,11 @@
     "url": "git+https://github.com/yt-dlx/yt-dlx.git"
   },
   "scripts": {
-    "build": "node build.mjs",
-    "prebuild": "rimraf build out",
     "postinstall": "node public/cprobe.js",
-    "test": "shx chmod +x . && out/server.exe",
+    "build": "rimraf build out && node build.mjs",
     "start": "tsc -p tsconfig.json && node build/index.js",
-    "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\""
+    "dev": "concurrently \"tsc -p tsconfig.json --watch\" \"nodemon build/index.js\"",
+    "test": "tsc -p tsconfig.json && concurrently \"node build/index.js\" \"node main.mjs\""
   },
   "dependencies": {
     "async-retry": "^1.3.3",
