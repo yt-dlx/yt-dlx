@@ -9,14 +9,12 @@
     "url": "git+https://github.com/yt-dlx/yt-dlx.git"
   },
   "scripts": {
+    "build":"node build.mjs",
     "prebuild": "rimraf build out",
     "postinstall": "node public/cprobe.js",
     "test": "shx chmod +x . && out/server.exe",
     "start": "tsc -p tsconfig.json && node build/index.js",
-    "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\"",
-    "build:win": "tsc -p tsconfig.json && caxa --input . --output \"out/server.exe\" -- \"{{caxa}}/node_modules/.bin/node\" \"{{caxa}}/build/index.js\"",
-    "build:mac": "tsc -p tsconfig.json && caxa --input . --output \"out/server.app\" -- \"{{caxa}}/node_modules/.bin/node\" \"{{caxa}}/build/index.js\"",
-    "build:linux": "tsc -p tsconfig.json && caxa --input . --output \"out/server.sh\" -- \"{{caxa}}/node_modules/.bin/node\" \"{{caxa}}/build/index.js\""
+    "dev": "concurrently \"tsc --watch\" \"nodemon build/index.js\""
   },
   "dependencies": {
     "async-retry": "^1.3.3",

@@ -19,4 +19,5 @@ rmdir(resolve(), [
   "./server/node_modules",
   "./server/package",
   "./server/build",
+  "./server/out",
 ]);
