@@ -13,7 +13,6 @@ export default function HomePage(): JSX.Element {
     stream: true,
     query: "",
   });
-
   const ws = React.useRef<WebSocket | null>(null);
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:8642");
