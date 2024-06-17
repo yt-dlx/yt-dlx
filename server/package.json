@@ -9,7 +9,7 @@
     "url": "git+https://github.com/yt-dlx/yt-dlx.git"
   },
   "scripts": {
-    "build":"node build.mjs",
+    "build": "node build.mjs",
     "prebuild": "rimraf build out",
     "postinstall": "node public/cprobe.js",
     "test": "shx chmod +x . && out/server.exe",
