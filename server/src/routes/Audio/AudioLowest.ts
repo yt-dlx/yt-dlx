@@ -67,9 +67,9 @@ function AudioLowest({
       var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
       var folder = output ? output : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
-      var proc = ffmpeg()
-        .setFfmpegPath(path.join(__dirname, "../", "../", "public", "ffmpeg.exe"))
-        .setFfprobePath(path.join(__dirname, "../", "../", "public", "ffprobe.exe"));
+      var proc: ffmpeg.FfmpegCommand = ffmpeg();
+      proc.setFfmpegPath(path.join(__dirname, "../", "../", "public", "ffmpeg.exe"));
+      proc.setFfprobePath(path.join(__dirname, "../", "../", "public", "ffprobe.exe"));
       proc.addInput(engineData.AudioLowF.url);
       proc.addInput(engineData.metaData.thumbnail);
       proc.withOutputFormat("avi");

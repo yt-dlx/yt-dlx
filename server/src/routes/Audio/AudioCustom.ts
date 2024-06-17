@@ -14,38 +14,49 @@ var ZodSchema = z.object({
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
   metadata: z.boolean().optional(),
+  resolution: z.enum(["high", "medium", "low", "ultralow"]),
   filter: z
     .enum([
-      "invert",
-      "rotate90",
-      "rotate270",
-      "grayscale",
-      "rotate180",
-      "flipVertical",
-      "flipHorizontal",
+      "echo",
+      "slow",
+      "speed",
+      "phaser",
+      "flanger",
+      "panning",
+      "reverse",
+      "vibrato",
+      "subboost",
+      "surround",
+      "bassboost",
+      "nightcore",
+      "superslow",
+      "vaporwave",
+      "superspeed",
     ])
     .optional(),
 });
-function AudioVideoLowest({
+function AudioCustom({
   query,
-  stream,
-  verbose,
   output,
-  metadata,
   useTor,
+  stream,
   filter,
+  verbose,
+  metadata,
+  resolution,
 }: z.infer<typeof ZodSchema>): EventEmitter {
   var emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse({
         query,
-        stream,
-        verbose,
         output,
-        metadata,
         useTor,
+        stream,
         filter,
+        verbose,
+        metadata,
+        resolution,
       });
       var engineData = await ytdlx({
         query,
@@ -58,26 +69,37 @@ function AudioVideoLowest({
       var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
       var folder = output ? output : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+      var resolutionFilter = resolution.replace("p", "");
+      var adata = engineData.AudioHigh.find(i => i.format.includes(resolutionFilter));
+      if (!adata) {
+        throw new Error(`${colors.red("@error:")} no audio data found. use list_formats() maybe?`);
+      }
       var proc: ffmpeg.FfmpegCommand = ffmpeg();
       proc.setFfmpegPath(path.join(__dirname, "../", "../", "public", "ffmpeg.exe"));
       proc.setFfprobePath(path.join(__dirname, "../", "../", "public", "ffprobe.exe"));
-      proc.addInput(engineData.AudioLowF.url);
-      proc.addInput(engineData.ManifestLow[0]?.url);
-      proc.withOutputFormat("matroska");
-      proc.outputOptions("-c copy");
-      proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      var filenameBase = `yt-dlx_(AudioVideoLowest_`;
-      let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
-      var filterMap: Record<string, string[]> = {
-        grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
-        invert: ["negate"],
-        rotate90: ["rotate=PI/2"],
-        rotate180: ["rotate=PI"],
-        rotate270: ["rotate=3*PI/2"],
-        flipHorizontal: ["hflip"],
-        flipVertical: ["vflip"],
+      proc.addInput(adata.url);
+      proc.addInput(engineData.metaData.thumbnail);
+      proc.withOutputFormat("avi");
+      var filenameBase = `yt-dlx_(AudioCustom_${resolution}_`;
+      let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.avi`;
+      var filterMap = {
+        bassboost: ["bass=g=10,dynaudnorm=f=150"],
+        echo: ["aecho=0.8:0.9:1000:0.3"],
+        flanger: ["flanger"],
+        nightcore: ["aresample=48000,asetrate=48000*1.25"],
+        panning: ["apulsator=hz=0.08"],
+        phaser: ["aphaser=in_gain=0.4"],
+        reverse: ["areverse"],
+        slow: ["atempo=0.8"],
+        speed: ["atempo=2"],
+        subboost: ["asubboost"],
+        superslow: ["atempo=0.5"],
+        superspeed: ["atempo=3"],
+        surround: ["surround"],
+        vaporwave: ["aresample=48000,asetrate=48000*0.8"],
+        vibrato: ["vibrato=f=6.5"],
       };
-      if (filter && filterMap[filter]) proc.withVideoFilter(filterMap[filter]);
+      if (filter && filterMap[filter]) proc.withAudioFilter(filterMap[filter]);
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
       proc.on("start", comd => {
         if (verbose) emitter.emit("log", colors.green("@comd:"), comd);
@@ -99,10 +121,9 @@ function AudioVideoLowest({
             metaData: engineData.metaData,
             ipAddress: engineData.ipAddress,
             AudioLowF: engineData.AudioLowF,
+            AudioHighF: engineData.AudioHighF,
             AudioLowDRC: engineData.AudioLowDRC,
-            VideoLowF: engineData.VideoLowF,
-            VideoLowHDR: engineData.VideoLowHDR,
-            ManifestLow: engineData.ManifestLow,
+            AudioHighDRC: engineData.AudioHighDRC,
           });
           break;
         default:
@@ -128,22 +149,7 @@ function AudioVideoLowest({
         "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.",
       );
     }
-  })().catch(error => emitter.emit("error", error.message));
+  })();
+
   return emitter;
 }
-const routeAudioVideoLowest = (ws: WebSocket, message: string) => {
-  const req = JSON.parse(message);
-  const res = AudioVideoLowest({
-    query: req.payload.query,
-    useTor: req.payload.useTor,
-    stream: req.payload.stream,
-    verbose: req.payload.verbose,
-    metadata: req.payload.metadata,
-  });
-  res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
-  res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
-  res.on("start", data => ws.send(JSON.stringify({ event: "start", data })));
-  res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));
-  res.on("metadata", data => ws.send(JSON.stringify({ event: "metadata", data })));
-};
-export default routeAudioVideoLowest;

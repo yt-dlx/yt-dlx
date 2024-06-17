@@ -14,6 +14,21 @@ var ZodSchema = z.object({
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
   metadata: z.boolean().optional(),
+  resolution: z.enum([
+    "144p",
+    "240p",
+    "360p",
+    "480p",
+    "720p",
+    "1080p",
+    "1440p",
+    "2160p",
+    "3072p",
+    "4320p",
+    "6480p",
+    "8640p",
+    "12000p",
+  ]),
   filter: z
     .enum([
       "invert",
@@ -26,14 +41,15 @@ var ZodSchema = z.object({
     ])
     .optional(),
 });
-function AudioVideoLowest({
+function AudioVideoCustom({
   query,
   stream,
-  verbose,
   output,
-  metadata,
   useTor,
   filter,
+  metadata,
+  verbose,
+  resolution,
 }: z.infer<typeof ZodSchema>): EventEmitter {
   var emitter = new EventEmitter();
   (async () => {
@@ -41,11 +57,12 @@ function AudioVideoLowest({
       ZodSchema.parse({
         query,
         stream,
-        verbose,
         output,
-        metadata,
         useTor,
         filter,
+        metadata,
+        verbose,
+        resolution,
       });
       var engineData = await ytdlx({
         query,
@@ -61,13 +78,18 @@ function AudioVideoLowest({
       var proc: ffmpeg.FfmpegCommand = ffmpeg();
       proc.setFfmpegPath(path.join(__dirname, "../", "../", "public", "ffmpeg.exe"));
       proc.setFfprobePath(path.join(__dirname, "../", "../", "public", "ffprobe.exe"));
-      proc.addInput(engineData.AudioLowF.url);
-      proc.addInput(engineData.ManifestLow[0]?.url);
+      proc.addInput(engineData.AudioHighF.url);
       proc.withOutputFormat("matroska");
-      proc.outputOptions("-c copy");
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      var filenameBase = `yt-dlx_(AudioVideoLowest_`;
+      var filenameBase = `yt-dlx_(AudioVideoCustom_${resolution}_`;
       let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
+      var vdata = engineData.ManifestHigh.find(i =>
+        i.format.includes(resolution.replace("p", "").toString()),
+      );
+      if (vdata) proc.addInput(vdata.url.toString());
+      else {
+        throw new Error(`${colors.red("@error:")} no video data found. use list_formats() maybe?`);
+      }
       var filterMap: Record<string, string[]> = {
         grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
         invert: ["negate"],
@@ -99,10 +121,15 @@ function AudioVideoLowest({
             metaData: engineData.metaData,
             ipAddress: engineData.ipAddress,
             AudioLowF: engineData.AudioLowF,
+            AudioHighF: engineData.AudioHighF,
             AudioLowDRC: engineData.AudioLowDRC,
+            AudioHighDRC: engineData.AudioHighDRC,
             VideoLowF: engineData.VideoLowF,
+            VideoHighF: engineData.VideoHighF,
             VideoLowHDR: engineData.VideoLowHDR,
+            VideoHighHDR: engineData.VideoHighHDR,
             ManifestLow: engineData.ManifestLow,
+            ManifestHigh: engineData.ManifestHigh,
           });
           break;
         default:
@@ -128,22 +155,6 @@ function AudioVideoLowest({
         "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.",
       );
     }
-  })().catch(error => emitter.emit("error", error.message));
+  })();
   return emitter;
 }
-const routeAudioVideoLowest = (ws: WebSocket, message: string) => {
-  const req = JSON.parse(message);
-  const res = AudioVideoLowest({
-    query: req.payload.query,
-    useTor: req.payload.useTor,
-    stream: req.payload.stream,
-    verbose: req.payload.verbose,
-    metadata: req.payload.metadata,
-  });
-  res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
-  res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
-  res.on("start", data => ws.send(JSON.stringify({ event: "start", data })));
-  res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));
-  res.on("metadata", data => ws.send(JSON.stringify({ event: "metadata", data })));
-};
-export default routeAudioVideoLowest;
