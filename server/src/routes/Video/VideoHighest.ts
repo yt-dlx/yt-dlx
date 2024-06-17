@@ -7,7 +7,7 @@ import ffmpeg from "fluent-ffmpeg";
 import ytdlx from "../../base/Agent";
 import { EventEmitter } from "events";
 
-var ZodSchema = z.object({
+const ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
   useTor: z.boolean().optional(),
@@ -35,7 +35,7 @@ function VideoHighest({
   useTor,
   filter,
 }: z.infer<typeof ZodSchema>): EventEmitter {
-  var emitter = new EventEmitter();
+  const emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse({
@@ -47,7 +47,7 @@ function VideoHighest({
         useTor,
         filter,
       });
-      var engineData = await ytdlx({
+      const engineData = await ytdlx({
         query,
         verbose,
         useTor,
@@ -55,19 +55,19 @@ function VideoHighest({
       if (!engineData) {
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
-      var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
-      var folder = output ? output : __dirname;
+      const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
+      const folder = output ? output : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
-      var proc: ffmpeg.FfmpegCommand = ffmpeg();
+      const proc: ffmpeg.FfmpegCommand = ffmpeg();
       proc.setFfmpegPath(path.join(__dirname, "../", "../", "public", "ffmpeg.exe"));
       proc.setFfprobePath(path.join(__dirname, "../", "../", "public", "ffprobe.exe"));
       proc.addInput(engineData.ManifestHigh[engineData.ManifestHigh.length - 1].url);
       proc.withOutputFormat("matroska");
       proc.videoCodec("copy");
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      var filenameBase = `yt-dlx_(VideoHighest_`;
+      const filenameBase = `yt-dlx_(VideoHighest_`;
       let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
-      var filterMap: Record<string, string[]> = {
+      const filterMap: Record<string, string[]> = {
         grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
         invert: ["negate"],
         rotate90: ["rotate=PI/2"],

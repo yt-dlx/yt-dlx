@@ -7,7 +7,7 @@ import ffmpeg from "fluent-ffmpeg";
 import ytdlx from "../../base/Agent";
 import { EventEmitter } from "events";
 
-var ZodSchema = z.object({
+const ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
   useTor: z.boolean().optional(),
@@ -51,7 +51,7 @@ function AudioVideoCustom({
   verbose,
   resolution,
 }: z.infer<typeof ZodSchema>): EventEmitter {
-  var emitter = new EventEmitter();
+  const emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse({
@@ -64,7 +64,7 @@ function AudioVideoCustom({
         verbose,
         resolution,
       });
-      var engineData = await ytdlx({
+      const engineData = await ytdlx({
         query,
         verbose,
         useTor,
@@ -72,25 +72,25 @@ function AudioVideoCustom({
       if (!engineData) {
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
-      var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
-      var folder = output ? output : __dirname;
+      const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
+      const folder = output ? output : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
-      var proc: ffmpeg.FfmpegCommand = ffmpeg();
+      const proc: ffmpeg.FfmpegCommand = ffmpeg();
       proc.setFfmpegPath(path.join(__dirname, "../", "../", "public", "ffmpeg.exe"));
       proc.setFfprobePath(path.join(__dirname, "../", "../", "public", "ffprobe.exe"));
       proc.addInput(engineData.AudioHighF.url);
       proc.withOutputFormat("matroska");
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      var filenameBase = `yt-dlx_(AudioVideoCustom_${resolution}_`;
+      const filenameBase = `yt-dlx_(AudioVideoCustom_${resolution}_`;
       let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
-      var vdata = engineData.ManifestHigh.find(i =>
+      const vdata = engineData.ManifestHigh.find(i =>
         i.format.includes(resolution.replace("p", "").toString()),
       );
       if (vdata) proc.addInput(vdata.url.toString());
       else {
         throw new Error(`${colors.red("@error:")} no video data found. use list_formats() maybe?`);
       }
-      var filterMap: Record<string, string[]> = {
+      const filterMap: Record<string, string[]> = {
         grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
         invert: ["negate"],
         rotate90: ["rotate=PI/2"],
@@ -158,3 +158,20 @@ function AudioVideoCustom({
   })();
   return emitter;
 }
+const routeAudioVideoCustom = (ws: WebSocket, message: string) => {
+  const req = JSON.parse(message);
+  const res = AudioVideoCustom({
+    query: req.payload.query,
+    useTor: req.payload.useTor,
+    stream: req.payload.stream,
+    verbose: req.payload.verbose,
+    metadata: req.payload.metadata,
+    resolution: req.payload.resolution,
+  });
+  res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
+  res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
+  res.on("start", data => ws.send(JSON.stringify({ event: "start", data })));
+  res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));
+  res.on("metadata", data => ws.send(JSON.stringify({ event: "metadata", data })));
+};
+export default routeAudioVideoCustom;

@@ -3,10 +3,13 @@ import WebSocket from "ws";
 import dotenv from "dotenv";
 import routeAudioLowest from "./routes/Audio/AudioLowest";
 import routeAudioHighest from "./routes/Audio/AudioHighest";
+import routeAudioCustom from "./routes/Audio/AudioCustom";
 import routeVideoLowest from "./routes/Video/VideoLowest";
 import routeVideoHighest from "./routes/Video/VideoHighest";
+import routeVideoCustom from "./routes/Video/VideoCustom";
 import routeAudioVideoLowest from "./routes/AudioVideo/AudioVideoLowest";
 import routeAudioVideoHighest from "./routes/AudioVideo/AudioVideoHighest";
+import routeAudioVideoCustom from "./routes/AudioVideo/AudioVideoCustom";
 
 dotenv.config();
 const server = http.createServer();
@@ -19,10 +22,13 @@ wserver.on("connection", (ws: WebSocket, req) => {
   ws.on("message", (message: string) => {
     routeAudioLowest(ws, message);
     routeAudioHighest(ws, message);
+    routeAudioCustom(ws, message);
     routeVideoLowest(ws, message);
     routeVideoHighest(ws, message);
+    routeVideoCustom(ws, message);
     routeAudioVideoLowest(ws, message);
     routeAudioVideoHighest(ws, message);
+    routeAudioVideoCustom(ws, message);
   });
 });
 

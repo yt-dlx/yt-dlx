@@ -7,7 +7,7 @@ import ffmpeg from "fluent-ffmpeg";
 import ytdlx from "../../base/Agent";
 import { EventEmitter } from "events";
 
-var ZodSchema = z.object({
+const ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
   useTor: z.boolean().optional(),
@@ -44,7 +44,7 @@ function AudioHighest({
   metadata,
   verbose,
 }: z.infer<typeof ZodSchema>): EventEmitter {
-  var emitter = new EventEmitter();
+  const emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse({
@@ -56,7 +56,7 @@ function AudioHighest({
         metadata,
         verbose,
       });
-      var engineData = await ytdlx({
+      const engineData = await ytdlx({
         query,
         verbose,
         useTor,
@@ -67,19 +67,19 @@ function AudioHighest({
       if (!engineData) {
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
-      var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
-      var folder = output ? output : __dirname;
+      const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
+      const folder = output ? output : __dirname;
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
-      var proc: ffmpeg.FfmpegCommand = ffmpeg();
+      const proc: ffmpeg.FfmpegCommand = ffmpeg();
       proc.setFfmpegPath(path.join(__dirname, "../", "../", "public", "ffmpeg.exe"));
       proc.setFfprobePath(path.join(__dirname, "../", "../", "public", "ffprobe.exe"));
       proc.addInput(engineData.AudioHighF.url);
       proc.addInput(engineData.metaData.thumbnail);
       proc.withOutputFormat("avi");
       proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      var filenameBase = `yt-dlx_(AudioHighest_`;
+      const filenameBase = `yt-dlx_(AudioHighest_`;
       let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.avi`;
-      var filterMap: Record<string, string[]> = {
+      const filterMap: Record<string, string[]> = {
         bassboost: ["bass=g=10,dynaudnorm=f=150"],
         echo: ["aecho=0.8:0.9:1000:0.3"],
         flanger: ["flanger"],
