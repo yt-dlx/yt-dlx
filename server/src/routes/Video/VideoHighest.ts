@@ -125,7 +125,7 @@ function VideoHighest({
         "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.",
       );
     }
-  })();
+  })().catch(error => emitter.emit("error", error.message));
   return emitter;
 }
 

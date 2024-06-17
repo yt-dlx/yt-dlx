@@ -60,7 +60,10 @@ function AudioHighest({
         query,
         verbose,
         useTor,
+      }).catch(error => {
+        throw new Error(`Engine error: ${error.message}`);
       });
+
       if (!engineData) {
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
@@ -141,7 +144,7 @@ function AudioHighest({
         "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.",
       );
     }
-  })();
+  })().catch(error => emitter.emit("error", error.message));
   return emitter;
 }
 
@@ -160,4 +163,5 @@ const routeAudioHighest = (ws: WebSocket, message: string) => {
   res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));
   res.on("metadata", data => ws.send(JSON.stringify({ event: "metadata", data })));
 };
+
 export default routeAudioHighest;
