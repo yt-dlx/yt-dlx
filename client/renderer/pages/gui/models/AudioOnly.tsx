@@ -8,10 +8,10 @@ const AudioOnly: React.FC<{
 }> = ({ isOpen, onClose, videoId }) => {
   const [outputFolder, _outputFolder] = useState<string | null>(null);
   const [quality, _quality] = useState<string | null>(null);
+  const [filename, _filename] = useState<any>(null);
   const [progress, _progress] = useState<any>(null);
   const modalRef = useRef<HTMLDivElement>(null);
   const [error, _error] = useState<any>(null);
-  const [end, _end] = useState<any>(null);
   const [formData, _formData] = useState({
     metadata: false,
     verbose: true,
@@ -23,9 +23,9 @@ const AudioOnly: React.FC<{
     const ClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         onClose();
-        _end(null);
         _quality(null);
         _progress(null);
+        _filename(null);
         _outputFolder(null);
       }
     };
@@ -42,19 +42,10 @@ const AudioOnly: React.FC<{
     ws.current.onopen = () => console.log("WebSocket connected");
     ws.current.onmessage = event => {
       const message = JSON.parse(event.data);
-      switch (message.event) {
-        case "progress":
-          _progress(message.data);
-          break;
-        case "error":
-          _error(message.data);
-          break;
-        case "end":
-          _end(message.data);
-          break;
-        default:
-          console.warn(`Unhandled event received: ${message.event}`);
-      }
+      console.log("Received message:", message); // Add this line
+      if (message.event === "progress") _progress(message.data);
+      if (message.event === "end") _filename(message.data);
+      if (message.event === "error") _error(message.data);
     };
     ws.current.onerror = event => _error("WebSocket error occurred");
     return () => {
@@ -79,12 +70,22 @@ const AudioOnly: React.FC<{
             </h2>
             <ul className="font-semibold list-disc mb-10 text-white text-xl">
               <li
-                onClick={() => _quality("AudioHighest")}
+                onClick={() => {
+                  _quality(null);
+                  _progress(null);
+                  _filename(null);
+                  _quality("AudioHighest");
+                }}
                 className={`hover:text-red-600 text-2xl cursor-pointer italic font-bold ${quality === "AudioHighest" ? "text-red-600" : "text-white/40"}`}>
                 Highest Possible Download
               </li>
               <li
-                onClick={() => _quality("AudioLowest")}
+                onClick={() => {
+                  _quality(null);
+                  _progress(null);
+                  _filename(null);
+                  _quality("AudioLowest");
+                }}
                 className={`hover:text-red-600 text-2xl cursor-pointer italic font-bold ${quality === "AudioLowest" ? "text-red-600" : "text-white/40"}`}>
                 Lowest Possible Download
               </li>
@@ -132,7 +133,7 @@ const AudioOnly: React.FC<{
                         Browse Output Location
                       </button>
                     )}
-                    {outputFolder && (
+                    {outputFolder && !filename && (
                       <React.Fragment>
                         <button
                           type="submit"
@@ -145,7 +146,7 @@ const AudioOnly: React.FC<{
                 </form>
               </React.Fragment>
             )}
-            {end && (
+            {filename && (
               <ul className="text-white/60 items-start justify-start flex flex-col list-disc mt-6">
                 <li>
                   <span className="text-red-600 font-black mr-2">Location:</span>
@@ -153,7 +154,7 @@ const AudioOnly: React.FC<{
                 </li>
                 <li>
                   <span className="text-red-600 font-black mr-2">Filename:</span>
-                  {end || "-"}
+                  {filename || "-"}
                 </li>
                 <li>
                   <span className="text-red-600 font-black mr-2">frames:</span>
