@@ -13,7 +13,7 @@
     "start": "tsc -p tsconfig.json && node build/index.js",
     "dev": "tsc -p tsconfig.json --watch & nodemon build/index.js",
     "test": "tsc -p tsconfig.json && node build/__tests__/socker.test.js",
-    "build": "rimraf build out && node public/.mjs && shx chmod +x out/**"
+    "build": "rimraf build out && node public/build.mjs && shx chmod +x out/**"
   },
   "dependencies": {
     "async-retry": "^1.3.3",
