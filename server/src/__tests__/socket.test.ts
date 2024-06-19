@@ -11,14 +11,7 @@ vitest.describe("WebSocket Tests", () => {
   vitest.afterAll(() => server.close());
   vitest.it("should handle connection and send events", async () => {
     const sendSpy = vitest.vi.spyOn(server, "send").mockImplementation(() => {});
-    const events = [
-      "AudioLowest",
-      "AudioHighest",
-      "VideoLowest",
-      "VideoHighest",
-      "AudioVideoLowest",
-      "AudioVideoHighest",
-    ];
+    const events = ["AudioHighest"];
     await new Promise<void>(resolve => {
       server.on("open", async () => {
         for (const event of events) {

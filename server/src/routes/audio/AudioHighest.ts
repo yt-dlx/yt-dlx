@@ -66,12 +66,7 @@ const routeAudioHighest = (
           metadata,
           verbose,
         });
-
-        const engineData = await ytdlx({
-          query,
-          verbose,
-          useTor,
-        }).catch(error => {
+        const engineData = await ytdlx({ query, verbose, useTor }).catch(error => {
           throw new Error(`Engine error: ${error.message}`);
         });
         if (!engineData) {
@@ -107,18 +102,10 @@ const routeAudioHighest = (
           vibrato: ["vibrato=f=6.5"],
         };
         if (filter && filterMap[filter]) proc.withAudioFilter(filterMap[filter]);
-        proc.on("progress", progress => {
-          emitter.emit("progress", progress);
-        });
-        proc.on("error", error => {
-          emitter.emit("error", error.message);
-        });
-        proc.on("start", start => {
-          emitter.emit("start", start);
-        });
-        proc.on("end", () => {
-          emitter.emit("end", filename);
-        });
+        proc.on("progress", progress => emitter.emit("progress", progress));
+        proc.on("error", error => emitter.emit("error", error.message));
+        proc.on("start", start => emitter.emit("start", start));
+        proc.on("end", () => emitter.emit("end", filename));
         if (stream && !metadata) {
           emitter.emit("ready", {
             filename: path.join(folder, filename),
