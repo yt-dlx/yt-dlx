@@ -1,4 +1,3 @@
-console.clear();
 import web from "../web";
 import colors from "colors";
 import Engine from "./Engine";
@@ -68,6 +67,7 @@ async function sudo(): Promise<boolean> {
 }
 
 export default async function Agent({ query, useTor, verbose }: { query: string; useTor?: boolean; verbose?: boolean }): Promise<any> {
+    console.clear();
     var iptor: string = "";
     var ipsys: string = "";
     var isservice: boolean = false;
