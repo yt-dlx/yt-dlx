@@ -1,39 +1,40 @@
 import path from "path";
-import socket from "ws";
+import WebSocket from "ws";
 import async from "async";
 
-const sendEvents = (events: string[], outputDir: string, callback: (err?: Error | null) => void) => {
-    async.eachSeries(
-        events,
-        async (event, cb) => {
-            const payLoad = JSON.stringify({
-                event,
-                payload: {
-                    stream: true,
-                    useTor: true,
-                    verbose: true,
-                    metadata: false,
-                    query: "careless-whisper",
-                    output: path.join(process.cwd(), "downloads", outputDir),
-                },
-            });
-            server.send(payLoad);
-            await new Promise(resolve => setTimeout(resolve, 10000));
-            cb();
-        },
-        callback,
-    );
+const sendEvents = (events: string[], callback: (err?: Error | null) => void) => {
+    const fn = async (event: string, cb: () => void) => {
+        const payload = JSON.stringify({
+            event,
+            payload: {
+                stream: true,
+                useTor: true,
+                verbose: true,
+                metadata: false,
+                query: "careless-whisper",
+                output: path.join(process.cwd(), "downloads"),
+            },
+        });
+        server.send(payload);
+        await new Promise(resolve => setTimeout(resolve, 20000));
+        cb();
+    };
+    async.eachSeries(events, fn, callback);
 };
 
-const server = new socket("ws://localhost:8642")
+const server = new WebSocket("ws://localhost:8642")
     .on("close", ip => console.log("@disconnected:", ip))
     .on("error", error => console.error("@error:", error))
     .on("open", async () => {
-        await async.series([
-            callback => sendEvents(["AudioLowest", "AudioHighest"], "Audio", callback),
-            callback => sendEvents(["VideoLowest", "VideoHighest"], "Video", callback),
-            callback => sendEvents(["AudioVideoLowest", "AudioVideoHighest"], "AudioVideo", callback),
-        ]);
+        try {
+            await async.series([
+                callback => sendEvents(["AudioLowest", "AudioHighest"], callback),
+                callback => sendEvents(["VideoLowest", "VideoHighest"], callback),
+                callback => sendEvents(["AudioVideoLowest", "AudioVideoHighest"], callback),
+            ]);
+        } catch (error) {
+            console.error("Error occurred in sending events:", error);
+        }
     })
     .on("message", response => {
         const input = JSON.parse(response.toString());
