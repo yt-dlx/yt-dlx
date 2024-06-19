@@ -1,46 +1,45 @@
-import vitest from "vitest";
-import websocket from "ws";
 import path from "path";
+import socket from "ws";
+import async from "async";
 
-let server: websocket;
+const sendEvents = (events: string[], outputDir: string, callback: (err?: Error | null) => void) => {
+    async.eachSeries(
+        events,
+        async (event, cb) => {
+            const payLoad = JSON.stringify({
+                event,
+                payload: {
+                    stream: true,
+                    useTor: true,
+                    verbose: true,
+                    metadata: false,
+                    query: "careless-whisper",
+                    output: path.join(process.cwd(), "downloads", outputDir),
+                },
+            });
+            server.send(payLoad);
+            await new Promise(resolve => setTimeout(resolve, 10000));
+            cb();
+        },
+        callback,
+    );
+};
 
-vitest.describe("WebSocket Tests", () => {
-  vitest.beforeAll(() => {
-    server = new websocket("ws://localhost:8642");
-  });
-  vitest.afterAll(() => server.close());
-  vitest.it("should handle connection and send events", async () => {
-    const sendSpy = vitest.vi.spyOn(server, "send").mockImplementation(() => {});
-    const events = ["AudioHighest"];
-    await new Promise<void>(resolve => {
-      server.on("open", async () => {
-        for (const event of events) {
-          const payload = JSON.stringify({
-            event,
-            payload: {
-              stream: true,
-              useTor: false,
-              verbose: true,
-              metadata: false,
-              query: "careless whisper",
-              output: path.join(process.cwd(), "downloads"),
-            },
-          });
-          server.send(payload);
-          await new Promise(res => setTimeout(res, 10000));
-        }
-        resolve();
-      });
+const server = new socket("ws://localhost:8642")
+    .on("close", ip => console.log("@disconnected:", ip))
+    .on("error", error => console.error("@error:", error))
+    .on("open", async () => {
+        await async.series([
+            callback => sendEvents(["AudioLowest", "AudioHighest"], "Audio", callback),
+            callback => sendEvents(["VideoLowest", "VideoHighest"], "Video", callback),
+            callback => sendEvents(["AudioVideoLowest", "AudioVideoHighest"], "AudioVideo", callback),
+        ]);
+    })
+    .on("message", response => {
+        const input = JSON.parse(response.toString());
+        if (input.event === "end") console.log("@end", input.data);
+        if (input.event === "error") console.log("@error:", input.data);
+        if (input.event === "start") console.log("@start:", input.data);
+        if (input.event === "progress") console.log("@progress:", input.data);
+        if (input.event === "metadata") console.log("@metadata:", input.data);
     });
-    vitest.expect(sendSpy).toHaveBeenCalledTimes(events.length);
-    vitest.vi
-      .spyOn(console, "log")
-      .mockImplementation(() => {})
-      .mockRestore();
-    vitest.vi
-      .spyOn(console, "error")
-      .mockImplementation(() => {})
-      .mockRestore();
-    sendSpy.mockRestore();
-  });
-});

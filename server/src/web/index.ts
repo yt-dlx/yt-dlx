@@ -9,19 +9,13 @@ import type { searchVideosType } from "./searchVideos";
 import singleVideo from "./singleVideo";
 import type { singleVideoType } from "./singleVideo";
 
-export type {
-  singleVideoType,
-  searchVideosType,
-  relatedVideosType,
-  playlistVideosType,
-  searchPlaylistsType,
-};
+export type { singleVideoType, searchVideosType, relatedVideosType, playlistVideosType, searchPlaylistsType };
 
 var web = {
-  singleVideo,
-  searchVideos,
-  relatedVideos,
-  playlistVideos,
-  searchPlaylists,
+    singleVideo,
+    searchVideos,
+    relatedVideos,
+    playlistVideos,
+    searchPlaylists,
 };
 export default web;
