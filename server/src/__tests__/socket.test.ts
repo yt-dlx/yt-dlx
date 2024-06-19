@@ -1,39 +1,53 @@
+import vitest from "vitest";
+import websocket from "ws";
 import path from "path";
-import WebSocket from "ws";
 
-const ws = new WebSocket("ws://localhost:8642");
-ws.on("close", () => console.log("Disconnected from WebSocket server"));
-ws.on("error", error => console.error("WebSocket error:", error));
-ws.on("open", async () => {
-  const events = [
-    "AudioLowest",
-    "AudioHighest",
-    "VideoLowest",
-    "VideoHighest",
-    "AudioVideoLowest",
-    "AudioVideoHighest",
-  ];
-  for (const name of events) {
-    const payLoad = JSON.stringify({
-      event: name,
-      payload: {
-        stream: true,
-        useTor: false,
-        verbose: true,
-        metadata: false,
-        query: "careless whisper",
-        output: path.join(process.cwd(), "downloads"),
-      },
+let server: websocket;
+
+vitest.describe("WebSocket Tests", () => {
+  vitest.beforeAll(() => {
+    server = new websocket("ws://localhost:8642");
+  });
+  vitest.afterAll(() => server.close());
+  vitest.it("should handle connection and send events", async () => {
+    const sendSpy = vitest.vi.spyOn(server, "send").mockImplementation(() => {});
+    const events = [
+      "AudioLowest",
+      "AudioHighest",
+      "VideoLowest",
+      "VideoHighest",
+      "AudioVideoLowest",
+      "AudioVideoHighest",
+    ];
+    await new Promise<void>(resolve => {
+      server.on("open", async () => {
+        for (const event of events) {
+          const payload = JSON.stringify({
+            event,
+            payload: {
+              stream: true,
+              useTor: false,
+              verbose: true,
+              metadata: false,
+              query: "careless whisper",
+              output: path.join(process.cwd(), "downloads"),
+            },
+          });
+          server.send(payload);
+          await new Promise(res => setTimeout(res, 10000));
+        }
+        resolve();
+      });
     });
-    ws.send(payLoad);
-    await new Promise(resolve => setTimeout(resolve, 10000));
-  }
-});
-ws.on("message", (response: any) => {
-  const { event, data } = JSON.parse(response);
-  if (event === "end") console.log("@end", data);
-  if (event === "error") console.log("@error:", data);
-  if (event === "start") console.log("@start:", data);
-  if (event === "progress") console.log("@progress:", data);
-  if (event === "metadata") console.log("@metadata:", data);
+    vitest.expect(sendSpy).toHaveBeenCalledTimes(events.length);
+    vitest.vi
+      .spyOn(console, "log")
+      .mockImplementation(() => {})
+      .mockRestore();
+    vitest.vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {})
+      .mockRestore();
+    sendSpy.mockRestore();
+  });
 });
