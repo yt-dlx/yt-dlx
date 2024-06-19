@@ -18,7 +18,6 @@ import routeSearchVideos from "./routes/command/search_videos";
 import routeVideoData from "./routes/command/video_data";
 
 dotenv.config();
-
 const port = process.env.PORT || 8642;
 const server = http
     .createServer()
@@ -29,60 +28,26 @@ const wss = new WebSocket.Server({ server }).on("connection", (ws: WebSocket, re
     ws.on("message", (message: string) => {
         const data = JSON.parse(message);
         const { event, payload } = data;
-        switch (event) {
-            case "AudioLowest":
-                routeAudioLowest(ws, payload);
-                break;
-            case "AudioHighest":
-                routeAudioHighest(ws, payload);
-                break;
-            case "AudioCustom":
-                routeAudioCustom(ws, payload);
-                break;
-            case "VideoLowest":
-                routeVideoLowest(ws, payload);
-                break;
-            case "VideoHighest":
-                routeVideoHighest(ws, payload);
-                break;
-            case "VideoCustom":
-                routeVideoCustom(ws, payload);
-                break;
-            case "AudioVideoLowest":
-                routeAudioVideoLowest(ws, payload);
-                break;
-            case "AudioVideoHighest":
-                routeAudioVideoHighest(ws, payload);
-                break;
-            case "AudioVideoCustom":
-                routeAudioVideoCustom(ws, payload);
-                break;
-            case "Extract":
-                routeExtract(ws, payload);
-                break;
-            case "VideoData":
-                routeVideoData(ws, payload);
-                break;
-            case "ListFormats":
-                routeListFormats(ws, payload);
-                break;
-            case "PlaylistData":
-                routePlaylistData(ws, payload);
-                break;
-            case "SearchVideos":
-                routeSearchVideos(ws, payload);
-                break;
-            case "SearchPlaylists":
-                routeSearchPlaylists(ws, payload);
-                break;
-            default:
-                break;
+        if (event === "AudioLowest") routeAudioLowest(ws, payload);
+        else if (event === "AudioHighest") routeAudioHighest(ws, payload);
+        else if (event === "AudioCustom") routeAudioCustom(ws, payload);
+        else if (event === "VideoLowest") routeVideoLowest(ws, payload);
+        else if (event === "VideoHighest") routeVideoHighest(ws, payload);
+        else if (event === "VideoCustom") routeVideoCustom(ws, payload);
+        else if (event === "AudioVideoLowest") routeAudioVideoLowest(ws, payload);
+        else if (event === "AudioVideoHighest") routeAudioVideoHighest(ws, payload);
+        else if (event === "AudioVideoCustom") routeAudioVideoCustom(ws, payload);
+        else if (event === "Extract") routeExtract(ws, payload);
+        else if (event === "VideoData") routeVideoData(ws, payload);
+        else if (event === "ListFormats") routeListFormats(ws, payload);
+        else if (event === "PlaylistData") routePlaylistData(ws, payload);
+        else if (event === "SearchVideos") routeSearchVideos(ws, payload);
+        else if (event === "SearchPlaylists") routeSearchPlaylists(ws, payload);
+        else {
         }
     });
     ws.on("error", error => console.error(`WebSocket error: ${error.message}`));
-    ws.on("close", () => {
-        console.log(`WebSocket client disconnected from ip: ${req.socket.remoteAddress}`);
-    });
+    ws.on("close", () => console.log(`WebSocket disconnected from ip: ${req.socket.remoteAddress}`));
 });
 const powerdown = () => {
     console.log("Shutting down gracefully...");

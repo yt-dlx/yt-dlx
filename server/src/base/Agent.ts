@@ -1,3 +1,4 @@
+console.clear();
 import web from "../web";
 import colors from "colors";
 import Engine from "./Engine";
