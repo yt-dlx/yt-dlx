@@ -63,8 +63,8 @@ const routeAudioVideoCustom = (
                 proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
                 proc.addInput(engineData.AudioHighF.url);
                 proc.withOutputFormat("matroska");
-                const filenameBase = `yt-dlx_(AudioVideoCustom_${resolution}_`;
-                let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
+                const filenameBase = `yt-dlx_AudioVideoCustom_${resolution}_`;
+                let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.mkv`;
                 const vdata = engineData.ManifestHigh.find(i => i.format.includes(resolution.replace("p", "").toString()));
                 if (vdata) proc.addInput(vdata.url.toString());
                 else {

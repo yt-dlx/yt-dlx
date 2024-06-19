@@ -68,8 +68,8 @@ const routeVideoCustom = (
                 proc.addInput(vdata.url.toString());
                 proc.withOutputFormat("matroska");
                 proc.videoCodec("copy");
-                const filenameBase = `yt-dlx_(VideoCustom_${resolution}_`;
-                let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
+                const filenameBase = `yt-dlx_VideoCustom_${resolution}_`;
+                let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.mkv`;
                 const filterMap: Record<string, string[]> = {
                     grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
                     invert: ["negate"],

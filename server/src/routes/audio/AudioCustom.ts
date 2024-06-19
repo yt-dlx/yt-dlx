@@ -70,8 +70,8 @@ const routeAudioCustom = (
                 proc.addInput(engineData.metaData.thumbnail);
                 proc.withOutputFormat("avi");
                 proc.addInput(adata.url);
-                const filenameBase = `yt-dlx_(AudioCustom_${resolution}_`;
-                let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.avi`;
+                const filenameBase = `yt-dlx_AudioCustom_${resolution}_`;
+                let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.avi`;
                 const filterMap = {
                     bassboost: ["bass=g=10,dynaudnorm=f=150"],
                     echo: ["aecho=0.8:0.9:1000:0.3"],

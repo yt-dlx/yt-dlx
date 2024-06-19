@@ -63,8 +63,8 @@ const routeVideoHighest = (
                 proc.addInput(lastHighManifest.url);
                 proc.withOutputFormat("matroska");
                 proc.videoCodec("copy");
-                const filenameBase = `yt-dlx_(VideoHighest_`;
-                let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
+                const filenameBase = `yt-dlx_VideoHighest_`;
+                let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.mkv`;
                 const filterMap: Record<string, string[]> = {
                     grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
                     invert: ["negate"],

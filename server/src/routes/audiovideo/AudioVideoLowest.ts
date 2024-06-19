@@ -60,8 +60,8 @@ const routeAudioVideoLowest = (
                 proc.addInput(engineData.AudioLowF.url);
                 proc.withOutputFormat("matroska");
                 proc.outputOptions("-c copy");
-                const filenameBase = `yt-dlx_(AudioVideoLowest_`;
-                let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
+                const filenameBase = `yt-dlx_AudioVideoLowest_`;
+                let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.mkv`;
                 const filterMap: Record<string, string[]> = {
                     grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
                     invert: ["negate"],

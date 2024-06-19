@@ -58,8 +58,8 @@ const routeAudioHighest = (
                 proc.addInput(engineData.metaData.thumbnail);
                 proc.addInput(engineData.AudioHighF.url);
                 proc.withOutputFormat("avi");
-                const filenameBase = `yt-dlx_(AudioHighest_`;
-                let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.avi`;
+                const filenameBase = `yt-dlx_AudioHighest_`;
+                let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.avi`;
                 const filterMap: Record<string, string[]> = {
                     bassboost: ["bass=g=10,dynaudnorm=f=150"],
                     echo: ["aecho=0.8:0.9:1000:0.3"],
