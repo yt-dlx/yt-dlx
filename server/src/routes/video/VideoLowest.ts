@@ -45,7 +45,6 @@ const routeVideoLowest = (
                     verbose,
                     useTor,
                 });
-
                 if (!engineData) {
                     throw new Error(`${colors.red("@error:")} unable to get response!`);
                 }
@@ -56,11 +55,7 @@ const routeVideoLowest = (
                 proc.setFfmpegPath(path.join(process.cwd(), "public", "ffmpeg.exe"));
                 proc.setFfprobePath(path.join(process.cwd(), "public", "ffprobe.exe"));
                 proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-                const firstLowManifest = engineData.ManifestLow[0];
-                if (!firstLowManifest) {
-                    throw new Error(`${colors.red("@error:")} no lowest quality video found.`);
-                }
-                proc.addInput(firstLowManifest.url);
+                proc.addInput(engineData.VideoLowF.url);
                 proc.withOutputFormat("matroska");
                 proc.videoCodec("copy");
                 const filenameBase = `yt-dlx_VideoLowest_`;
