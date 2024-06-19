@@ -22,10 +22,7 @@ dotenv.config();
 const port = process.env.PORT || 8642;
 const server = http
     .createServer()
-    .listen(port, () => {
-        console.clear();
-        console.log(`@web-socket: listening on port ${port}`);
-    })
+    .listen(port, () => console.log(`@web-socket: listening on port ${port}`))
     .on("error", error => console.error("Server error:", error));
 const wss = new WebSocket.Server({ server }).on("connection", (ws: WebSocket, req) => {
     console.log(`WebSocket client connected from ip: ${req.socket.remoteAddress}`);

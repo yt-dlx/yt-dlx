@@ -137,10 +137,7 @@ const routeAudioCustom = (
         metadata: message.metadata,
         resolution: message.resolution,
     });
-    res.on("end", data => {
-        ws.send(JSON.stringify({ event: "end", data }));
-        ws.close();
-    });
+    res.on("end", data => ws.send(JSON.stringify({ event: "end", data })));
     res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
     res.on("start", data => ws.send(JSON.stringify({ event: "start", data })));
     res.on("progress", data => ws.send(JSON.stringify({ event: "progress", data })));

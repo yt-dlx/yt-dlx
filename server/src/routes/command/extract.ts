@@ -125,10 +125,9 @@ const routeExtract = (
         query: message.query,
         verbose: message.verbose,
     });
-
     res.on("data", data => ws.send(JSON.stringify({ event: "data", data })));
-    res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
     res.on("info", data => ws.send(JSON.stringify({ event: "info", data })));
+    res.on("error", data => ws.send(JSON.stringify({ event: "error", data })));
 };
 
 export default routeExtract;
