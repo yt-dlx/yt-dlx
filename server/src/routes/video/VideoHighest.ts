@@ -27,7 +27,6 @@ const routeVideoHighest = (
         metadata: z.boolean().optional(),
         filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
     });
-
     function VideoHighest({ query, stream, verbose, output, metadata, useTor, filter }: z.infer<typeof ZodSchema>): EventEmitter {
         const emitter = new EventEmitter();
         (async () => {

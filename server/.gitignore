@@ -136,3 +136,5 @@ ffmpeg**
 ffprobe**
 downloads
 out
+**.avi
+**.mkv
