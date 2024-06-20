@@ -11,57 +11,57 @@ if (onprod) serve({ directory: "app" });
 else app.setPath("userData", `${app.getPath("userData")} (development)`);
 
 (async () => {
- await app.whenReady();
- const mainWindow = createWindow("main", {
-  show: true,
-  width: 900,
-  height: 670,
-  autoHideMenuBar: true,
-  webPreferences: {
-   sandbox: false,
-   preload: path.join(__dirname, "preload.js"),
-  },
- });
- switch (onprod) {
-  case false:
-   await mainWindow.loadURL("http://localhost:" + process.argv[2] + "/home");
-   mainWindow.webContents.openDevTools();
-   break;
-  default:
-   await mainWindow.loadURL("app://./home");
-   break;
- }
+  await app.whenReady();
+  const mainWindow = createWindow("main", {
+    show: true,
+    width: 900,
+    height: 670,
+    autoHideMenuBar: true,
+    webPreferences: {
+      sandbox: false,
+      preload: path.join(__dirname, "preload.js"),
+    },
+  });
+  switch (onprod) {
+    case false:
+      await mainWindow.loadURL("http://localhost:" + process.argv[2] + "/home");
+      mainWindow.webContents.openDevTools();
+      break;
+    default:
+      await mainWindow.loadURL("app://./home");
+      break;
+  }
 })();
 
 api.on("search", async (event, response) => {
- try {
-  let TubeBody: singleVideoType | searchVideosType[];
-  if (response.videoId) {
-   console.log(colors.green("❓ videoId:"), colors.italic(response.videoId));
-   TubeBody = await ytdlx.ytSearch.Video.Single({
-    query: "https://youtu.be/" + response.videoId,
-   });
-   if (TubeBody) event.reply("search", TubeBody);
-   else event.sender.send("search", null);
-  } else {
-   console.log(colors.green("❓ query:"), colors.italic(response.query));
-   TubeBody = await ytdlx.ytSearch.Video.Multiple({
-    query: response.query,
-   });
-   if (TubeBody) event.reply("search", TubeBody);
-   else event.sender.send("search", null);
+  try {
+    let TubeBody: singleVideoType | searchVideosType[];
+    if (response.videoId) {
+      console.log(colors.green("❓ videoId:"), colors.italic(response.videoId));
+      TubeBody = await ytdlx.ytSearch.Video.Single({
+        query: "https://youtu.be/" + response.videoId,
+      });
+      if (TubeBody) event.reply("search", TubeBody);
+      else event.sender.send("search", null);
+    } else {
+      console.log(colors.green("❓ query:"), colors.italic(response.query));
+      TubeBody = await ytdlx.ytSearch.Video.Multiple({
+        query: response.query,
+      });
+      if (TubeBody) event.reply("search", TubeBody);
+      else event.sender.send("search", null);
+    }
+  } catch (error) {
+    event.reply("search", error.message);
   }
- } catch (error) {
-  event.reply("search", error.message);
- }
 });
 
 api.handle("select-output-folder", async event => {
- const result = await dialog.showOpenDialog({
-  properties: ["openDirectory"],
- });
- if (result.canceled) return null;
- else return result.filePaths[0];
+  const result = await dialog.showOpenDialog({
+    properties: ["openDirectory"],
+  });
+  if (result.canceled) return null;
+  else return result.filePaths[0];
 });
 
 app.on("window-all-closed", () => app.quit());
