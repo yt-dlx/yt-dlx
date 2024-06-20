@@ -42,7 +42,6 @@ const AudioOnly: React.FC<{
     ws.current.onopen = () => console.log("WebSocket connected");
     ws.current.onmessage = event => {
       const message = JSON.parse(event.data);
-      console.log("Received message:", message); // Add this line
       if (message.event === "progress") _progress(message.data);
       if (message.event === "end") _filename(message.data);
       if (message.event === "error") _error(message.data);

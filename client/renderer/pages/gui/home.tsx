@@ -24,10 +24,19 @@ const FromBottomToTop = {
 };
 
 export default function Gui(): JSX.Element {
-  var [Query, setQuery] = react.useState<string>("");
-  var [TubeSearch, setTubeSearch] = react.useState<any>(null);
+  const [Query, setQuery] = react.useState<string>("");
+  const [TubeSearch, setTubeSearch] = react.useState<any>(null);
+  const ws = react.useRef<WebSocket | null>(null);
   react.useEffect(() => {
-    window.ipc.on("search", (response: string) => setTubeSearch(response));
+    ws.current = new WebSocket("ws://localhost:8642");
+    ws.current.onopen = () => console.log("WebSocket connected");
+    ws.current.onmessage = event => {
+      const message = JSON.parse(event.data);
+      if (message.event === "data") setTubeSearch(message.data);
+    };
+    return () => {
+      if (ws.current) ws.current.close();
+    };
   }, []);
 
   return (
@@ -40,7 +49,16 @@ export default function Gui(): JSX.Element {
             onSubmit={event => {
               setTubeSearch(null);
               event.preventDefault();
-              window.ipc.send("search", { query: Query });
+              if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+                const payLoad = {
+                  event: "SearchVideos",
+                  payload: {
+                    query: Query,
+                    verbose: true,
+                  },
+                };
+                ws.current.send(JSON.stringify(payLoad));
+              }
             }}
             className="bg-neutral-950 max-w-screen-2xl p-10 text-red-600 mx-auto my-8 rounded-3xl border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600">
             <motion.h1 className="text-7xl mb-4 font-black" {...FromBottomToTop}>

@@ -33,29 +33,6 @@ else app.setPath("userData", `${app.getPath("userData")} (development)`);
   }
 })();
 
-api.on("search", async (event, response) => {
-  try {
-    let TubeBody: singleVideoType | searchVideosType[];
-    if (response.videoId) {
-      console.log(colors.green("❓ videoId:"), colors.italic(response.videoId));
-      TubeBody = await ytdlx.ytSearch.Video.Single({
-        query: "https://youtu.be/" + response.videoId,
-      });
-      if (TubeBody) event.reply("search", TubeBody);
-      else event.sender.send("search", null);
-    } else {
-      console.log(colors.green("❓ query:"), colors.italic(response.query));
-      TubeBody = await ytdlx.ytSearch.Video.Multiple({
-        query: response.query,
-      });
-      if (TubeBody) event.reply("search", TubeBody);
-      else event.sender.send("search", null);
-    }
-  } catch (error) {
-    event.reply("search", error.message);
-  }
-});
-
 api.handle("select-output-folder", async event => {
   const result = await dialog.showOpenDialog({
     properties: ["openDirectory"],
