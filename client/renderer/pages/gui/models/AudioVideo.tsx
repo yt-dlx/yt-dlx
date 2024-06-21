@@ -57,9 +57,9 @@ const AudioVideo: React.FC<{
       }
     };
     ws.current.onerror = event => _error("WebSocket error occurred");
-    return () => {
-      if (ws.current) ws.current.close();
-    };
+    // return () => {
+    // if (ws.current) ws.current.close();
+    // };
   }, []);
 
   return (

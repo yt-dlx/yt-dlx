@@ -47,9 +47,9 @@ const AudioOnly: React.FC<{
       if (message.event === "error") _error(message.data);
     };
     ws.current.onerror = event => _error("WebSocket error occurred");
-    return () => {
-      if (ws.current) ws.current.close();
-    };
+    // return () => {
+    // if (ws.current) ws.current.close();
+    // };
   }, []);
 
   return (

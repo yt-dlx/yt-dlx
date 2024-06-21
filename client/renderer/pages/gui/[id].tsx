@@ -57,9 +57,9 @@ export default function VideoId(): JSX.Element {
       const message = JSON.parse(event.data);
       if (message.event === "data") setTubeSearch(message.data);
     };
-    return () => {
-      if (ws.current) ws.current.close();
-    };
+    // return () => {
+    // if (ws.current) ws.current.close();
+    // };
   }, [id]);
 
   react.useEffect(() => {
