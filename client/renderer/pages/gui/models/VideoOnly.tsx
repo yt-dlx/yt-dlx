@@ -2,10 +2,11 @@ import { motion } from "framer-motion";
 import React, { useEffect, useRef, useState } from "react";
 
 const VideoOnly: React.FC<{
+  socket: any;
   videoId: string;
   isOpen: boolean;
   onClose: () => void;
-}> = ({ isOpen, onClose, videoId }) => {
+}> = ({ isOpen, onClose, videoId, socket: ws }) => {
   const [outputFolder, _outputFolder] = useState<string | null>(null);
   const [quality, _quality] = useState<string | null>(null);
   const [progress, _progress] = useState<any>(null);
@@ -36,7 +37,6 @@ const VideoOnly: React.FC<{
     };
   }, [isOpen, onClose]);
 
-  const ws = React.useRef<WebSocket | null>(null);
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:8642");
     ws.current.onopen = () => console.log("WebSocket connected");
