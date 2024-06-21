@@ -23,14 +23,14 @@ const FromTopToBottom = {
 };
 
 export default function Introduction(): JSX.Element {
-  const [ShowYarn, setShowYarn] = react.useState(false);
-  const [ShowPnpm, setShowPnpm] = react.useState(false);
-  const [ShowNpm, setShowNpm] = react.useState(false);
-  const [ShowBun, setShowBun] = react.useState(false);
-  const ToggleYarn = () => setShowYarn(!ShowYarn);
-  const TogglePnpm = () => setShowPnpm(!ShowPnpm);
-  const ToggleNpm = () => setShowNpm(!ShowNpm);
-  const ToggleBun = () => setShowBun(!ShowBun);
+  const [_yarn, yarn_] = react.useState(false);
+  const [_pnpm, pnpm_] = react.useState(false);
+  const [_npm, npm_] = react.useState(false);
+  const [_bun, bun_] = react.useState(false);
+  const _yarn_ = () => yarn_(!_yarn);
+  const _pnpm_ = () => pnpm_(!_pnpm);
+  const _npm_ = () => npm_(!_npm);
+  const _bun_ = () => bun_(!_bun);
 
   return (
     <react.Fragment>
@@ -48,25 +48,25 @@ export default function Introduction(): JSX.Element {
             </div>
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
               <button
-                onClick={ToggleNpm}
+                onClick={_npm_}
                 className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50">
                 <TbBrandNpm className="mr-2 h-5 w-5" />
                 Install Using Npm
               </button>
               <button
-                onClick={ToggleYarn}
+                onClick={_yarn_}
                 className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50">
                 <FaYarn className="mr-2 h-5 w-5" />
                 Install Using Yarn
               </button>
               <button
-                onClick={TogglePnpm}
+                onClick={_pnpm_}
                 className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50">
                 <SiPnpm className="mr-2 h-5 w-5" />
                 Install Using Pnpm
               </button>
               <button
-                onClick={ToggleBun}
+                onClick={_bun_}
                 className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50">
                 <SiBun className="mr-2 h-5 w-5" />
                 Install Using Bun
@@ -83,10 +83,10 @@ export default function Introduction(): JSX.Element {
         </div>
       </motion.section>
       {/* [ Modals ] */}
-      <YarnModel isOpen={ShowYarn} onClose={ToggleYarn} />
-      <PnpmModel isOpen={ShowPnpm} onClose={TogglePnpm} />
-      <NpmModel isOpen={ShowNpm} onClose={ToggleNpm} />
-      <BunModel isOpen={ShowBun} onClose={ToggleBun} />
+      <YarnModel open={_yarn} close={_yarn_} />
+      <PnpmModel open={_pnpm} close={_pnpm_} />
+      <NpmModel open={_npm} close={_npm_} />
+      <BunModel open={_bun} close={_bun_} />
     </react.Fragment>
   );
 }

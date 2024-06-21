@@ -2,12 +2,12 @@ import react from "react";
 import { motion } from "framer-motion";
 
 const NpmModel: React.FC<{
-  isOpen: boolean;
-  onClose: () => void;
-}> = ({ isOpen, onClose }) => {
+  open: boolean;
+  close: () => void;
+}> = ({ open, close }) => {
   return (
     <react.Fragment>
-      {isOpen && (
+      {open && (
         <motion.div
           exit={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -25,7 +25,7 @@ const NpmModel: React.FC<{
               <li>npm install yt-dlx</li>
             </ul>
             <button
-              onClick={onClose}
+              onClick={close}
               className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-600 disabled:pointer-events-none disabled:opacity-50">
               Close Model Box
             </button>
