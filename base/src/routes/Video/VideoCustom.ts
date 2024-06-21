@@ -42,7 +42,7 @@ export default function VideoCustom({
   metadata,
   resolution,
 }: z.infer<typeof ZodSchema>): EventEmitter {
-  var emitter = new EventEmitter();
+  const emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse({
@@ -55,7 +55,7 @@ export default function VideoCustom({
         metadata,
         resolution,
       });
-      var engineData = await ytdlx({
+      const engineData = await ytdlx({
         query,
         verbose,
         useTor,
@@ -63,25 +63,24 @@ export default function VideoCustom({
       if (!engineData) {
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
-      var title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
-      var folder = output ? output : __dirname;
+      const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
+      const folder = output ? output : process.cwd();
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
-      var ff = ffmpeg()
-        .setFfmpegPath((await locator().then(fp => fp.ffmpeg)).toString())
-        .setFfprobePath((await locator().then(fp => fp.ffprobe)).toString())
-        .addInput(engineData.AudioHighF.url)
-        .withOutputFormat("matroska")
-        .videoCodec("copy")
-        .addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      var filenameBase = `yt-dlx_(VideoCustom_${resolution}_`;
-      let filename = `${filenameBase}${filter ? filter + ")_" : ")_"}${title}.mkv`;
-      var vdata = engineData.ManifestHigh.find(i => i.format.includes(resolution.replace("p", "").toString()));
-
-      if (vdata) ff.addInput(vdata.url.toString());
-      else {
+      const proc: ffmpeg.FfmpegCommand = ffmpeg();
+      proc.setFfmpegPath(path.join(process.cwd(), "public", "ffmpeg.exe"));
+      proc.setFfprobePath(path.join(process.cwd(), "public", "ffprobe.exe"));
+      proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+      const vdata = engineData.ManifestHigh.find((i: { format: string | string[] }) => i.format.includes(resolution.replace("p", "").toString()));
+      if (!vdata) {
         throw new Error(`${colors.red("@error:")} no video data found. Use list_formats() maybe?`);
       }
-      var filterMap: Record<string, string[]> = {
+      proc.addInput(engineData.AudioHighF.url);
+      proc.addInput(vdata.url.toString());
+      proc.withOutputFormat("matroska");
+      proc.videoCodec("copy");
+      const filenameBase = `yt-dlx_VideoCustom_${resolution}_`;
+      let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.mkv`;
+      const filterMap: Record<string, string[]> = {
         grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
         invert: ["negate"],
         rotate90: ["rotate=PI/2"],
@@ -90,54 +89,52 @@ export default function VideoCustom({
         flipHorizontal: ["hflip"],
         flipVertical: ["vflip"],
       };
-      if (filter && filterMap[filter]) ff.withVideoFilter(filterMap[filter]);
-      ff.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      ff.on("start", comd => {
-        if (verbose) emitter.emit("log", colors.green("@comd:"), comd);
-        emitter.emit("start", comd);
-      })
-        .on("progress", progress => emitter.emit("progress", progress))
-        .on("error", error => emitter.emit("error", error.message))
-        .on("end", () => emitter.emit("end", filename));
-      switch (true) {
-        case stream:
-          emitter.emit("ready", {
-            ffmpeg: ff,
-            filename: path.join(folder, filename),
-          });
-          break;
-        case metadata:
-          emitter.emit("metadata", {
-            filename,
-            metaData: engineData.metaData,
-            ipAddress: engineData.ipAddress,
-            VideoLowF: engineData.VideoLowF,
-            VideoHighF: engineData.VideoHighF,
-            VideoLowHDR: engineData.VideoLowHDR,
-            VideoHighHDR: engineData.VideoHighHDR,
-            ManifestLow: engineData.ManifestLow,
-            ManifestHigh: engineData.ManifestHigh,
-          });
-          break;
-        default:
-          ff.output(path.join(folder, filename))
-            .on("end", () => emitter.emit("end", filename))
-            .on("error", error => emitter.emit("error", error.message))
-            .run();
-          break;
+      if (filter && filterMap[filter]) proc.withAudioFilter(filterMap[filter]);
+      proc.on("progress", progress => {
+        emitter.emit("progress", progress);
+      });
+      proc.on("error", error => {
+        emitter.emit("error", error.message);
+      });
+      proc.on("start", start => {
+        emitter.emit("start", start);
+      });
+      proc.on("end", () => {
+        emitter.emit("end", filename);
+      });
+      if (stream && !metadata) {
+        emitter.emit("ready", {
+          filename: path.join(folder, filename),
+          ffmpeg: proc,
+        });
+        proc.output(path.join(folder, filename));
+        proc.run();
+      }
+      if (!stream && metadata) {
+        emitter.emit("metadata", {
+          filename,
+          metaData: engineData.metaData,
+          ipAddress: engineData.ipAddress,
+          VideoLowF: engineData.VideoLowF,
+          VideoHighF: engineData.VideoHighF,
+          VideoLowHDR: engineData.VideoLowHDR,
+          VideoHighHDR: engineData.VideoHighHDR,
+          ManifestLow: engineData.ManifestLow,
+          ManifestHigh: engineData.ManifestHigh,
+        });
       }
     } catch (error: any) {
       switch (true) {
         case error instanceof ZodError:
-          emitter.emit("error", colors.red("@zod-error:"), error.errors);
+          emitter.emit("error", error.errors);
           break;
         default:
-          emitter.emit("error", colors.red("@error:"), error.message);
+          emitter.emit("error", error.message);
           break;
       }
     } finally {
-      emitter.emit("info", colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
+      console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  })();
+  })().catch(error => emitter.emit("error", error.message));
   return emitter;
 }
