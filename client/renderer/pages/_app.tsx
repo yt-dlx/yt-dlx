@@ -1,9 +1,11 @@
+// ============================================================================/ no-websocket /============================================================================
+//
 import "./globals.css";
 import React from "react";
 import type { AppProps } from "next/app";
-
-function MyApp({ Component, pageProps }: AppProps) {
+function core({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;
 }
-
-export default MyApp;
+export default core;
+//
+// ============================================================================/ no-websocket /============================================================================

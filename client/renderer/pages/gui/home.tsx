@@ -1,4 +1,6 @@
-import react from "react";
+// ============================================================================/ with-websocket /============================================================================
+//
+import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { HiFire } from "react-icons/hi";
@@ -9,33 +11,34 @@ import Introduction from "../home/Introduction";
 import { TbDiamondFilled } from "react-icons/tb";
 import { SiGradleplaypublisher } from "react-icons/si";
 
-const FromBottomToTop = {
-  initial: { opacity: 0, y: 100 },
-  exit: {
-    opacity: 0,
-    y: 50,
-    transition: { duration: 0.3 },
-  },
-  whileInView: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8 },
-  },
-};
+export default function HomeGUI(): JSX.Element {
+  const socket = React.useRef<WebSocket | null>(null);
+  const [Query, setQuery] = React.useState<string>("");
+  const [TubeSearch, setTubeSearch] = React.useState<any>(null);
 
-export default function Gui(): JSX.Element {
-  const [Query, setQuery] = react.useState<string>("");
-  const [TubeSearch, setTubeSearch] = react.useState<any>(null);
-  const ws = react.useRef<WebSocket | null>(null);
-  react.useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:8642");
-    ws.current.onopen = () => console.log("WebSocket connected");
-    ws.current.onmessage = event => {
+  const FromBottomToTop = {
+    initial: { opacity: 0, y: 100 },
+    exit: {
+      opacity: 0,
+      y: 50,
+      transition: { duration: 0.3 },
+    },
+    whileInView: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.8 },
+    },
+  };
+
+  React.useEffect(() => {
+    socket.current = new WebSocket("ws://localhost:8642");
+    socket.current.onopen = () => console.log("WebSocket connected");
+    socket.current.onmessage = event => {
       const message = JSON.parse(event.data);
       if (message.event === "data") setTubeSearch(message.data);
     };
     return () => {
-      if (ws.current) ws.current.close();
+      if (socket.current) socket.current.close();
     };
   }, []);
 
@@ -49,7 +52,7 @@ export default function Gui(): JSX.Element {
             onSubmit={event => {
               setTubeSearch(null);
               event.preventDefault();
-              if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+              if (socket.current && socket.current.readyState === WebSocket.OPEN) {
                 const payLoad = {
                   event: "SearchVideos",
                   payload: {
@@ -57,7 +60,7 @@ export default function Gui(): JSX.Element {
                     verbose: true,
                   },
                 };
-                ws.current.send(JSON.stringify(payLoad));
+                socket.current.send(JSON.stringify(payLoad));
               }
             }}
             className="bg-neutral-950 max-w-screen-2xl p-10 text-red-600 mx-auto my-8 rounded-3xl border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-600">
@@ -110,7 +113,7 @@ export default function Gui(): JSX.Element {
               </button>
             </div>
             {TubeSearch && (
-              <react.Fragment>
+              <React.Fragment>
                 <section className="w-full mx-auto p-6">
                   <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
                     {TubeSearch &&
@@ -168,7 +171,7 @@ export default function Gui(): JSX.Element {
                       ))}
                   </div>
                 </section>
-              </react.Fragment>
+              </React.Fragment>
             )}
           </form>
         </div>
@@ -177,3 +180,5 @@ export default function Gui(): JSX.Element {
     </main>
   );
 }
+//
+// ============================================================================/ with-websocket /============================================================================
