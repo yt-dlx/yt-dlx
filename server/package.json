@@ -10,9 +10,9 @@
   },
   "scripts": {
     "postinstall": "node public/cprobe.js",
-    "start": "tsc -p tsconfig.json && node build/index.js",
-    "test": "tsc -p tsconfig.json && node build/__tests__/socker.test.js",
-    "build": "rimraf build out && node public/build.mjs && shx chmod +x out/**"
+    "start": "tsc -p tsconfig.json && node dist/index.js",
+    "test": "tsc -p tsconfig.json && node dist/__tests__/socker.test.js",
+    "dist": "rimraf dist out && node public/dist.mjs && shx chmod +x out/**"
   },
   "dependencies": {
     "async": "^3.2.5",
