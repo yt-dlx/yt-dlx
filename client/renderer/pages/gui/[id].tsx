@@ -14,22 +14,22 @@ import Introduction from "../home/Introduction";
 import { PiTelevisionFill } from "react-icons/pi";
 
 export default function VideoId(): JSX.Element {
-  const router = useRouter();
-  const { id } = router.query;
-  const socket = React.useRef<WebSocket | null>(null);
-  const [ShowAudio, setShowAudio] = React.useState(false);
-  const [ShowVideo, setShowVideo] = React.useState(false);
-  const [TubeSearch, setTubeSearch] = React.useState<any>(null);
-  const [ShowAudioVideo, setShowAudioVideo] = React.useState(false);
-  const ToggleAudioVideo = () => setShowAudioVideo(!ShowAudioVideo);
-  const ToggleAudio = () => setShowAudio(!ShowAudio);
-  const ToggleVideo = () => setShowVideo(!ShowVideo);
-  const FromBottomToTop = {
+  var router = useRouter();
+  var { id } = router.query;
+  var socket = React.useRef<WebSocket | null>(null);
+  var [ShowAudio, setShowAudio] = React.useState(false);
+  var [ShowVideo, setShowVideo] = React.useState(false);
+  var [TubeSearch, setTubeSearch] = React.useState<any>(null);
+  var [ShowAudioVideo, setShowAudioVideo] = React.useState(false);
+  var ToggleAudioVideo = () => setShowAudioVideo(!ShowAudioVideo);
+  var ToggleAudio = () => setShowAudio(!ShowAudio);
+  var ToggleVideo = () => setShowVideo(!ShowVideo);
+  var FromBottomToTop = {
     initial: { opacity: 0, y: 100 },
     exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
     whileInView: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
-  const FromRightToLeft = {
+  var FromRightToLeft = {
     initial: { opacity: 0, x: 100 },
     exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
     whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } },
@@ -47,8 +47,7 @@ export default function VideoId(): JSX.Element {
       }
     };
     socket.current.onmessage = event => {
-      const message = JSON.parse(event.data);
-      console.log(message);
+      var message = JSON.parse(event.data);
       if (message.event === "data") setTubeSearch(message.data);
     };
     return () => {
@@ -150,7 +149,7 @@ export default function VideoId(): JSX.Element {
 // React.React.useEffect(() => {
 // switch (true) {
 // case typeof id === "string" && /^[a-zA-Z0-9_-]{11}$/.test(id):
-// const payLoad = {
+// var payLoad = {
 // event: "SearchVideos",
 // payload: {
 // query: id,

@@ -8,7 +8,7 @@ import BunModel from "../home/models/BunModel";
 import YarnModel from "../home/models/YarnModel";
 import PnpmModel from "../home/models/PnpmModel";
 
-const FromTopToBottom = {
+var FromTopToBottom = {
   initial: { opacity: 0, y: -100 },
   exit: {
     opacity: 0,
@@ -23,14 +23,14 @@ const FromTopToBottom = {
 };
 
 export default function Introduction(): JSX.Element {
-  const [_yarn, yarn_] = react.useState(false);
-  const [_pnpm, pnpm_] = react.useState(false);
-  const [_npm, npm_] = react.useState(false);
-  const [_bun, bun_] = react.useState(false);
-  const _yarn_ = () => yarn_(!_yarn);
-  const _pnpm_ = () => pnpm_(!_pnpm);
-  const _npm_ = () => npm_(!_npm);
-  const _bun_ = () => bun_(!_bun);
+  var [_yarn, yarn_] = react.useState(false);
+  var [_pnpm, pnpm_] = react.useState(false);
+  var [_npm, npm_] = react.useState(false);
+  var [_bun, bun_] = react.useState(false);
+  var _yarn_ = () => yarn_(!_yarn);
+  var _pnpm_ = () => pnpm_(!_pnpm);
+  var _npm_ = () => npm_(!_npm);
+  var _bun_ = () => bun_(!_bun);
 
   return (
     <react.Fragment>

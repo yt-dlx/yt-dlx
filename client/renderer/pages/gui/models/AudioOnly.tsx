@@ -2,13 +2,14 @@
 //
 import React from "react";
 import { motion } from "framer-motion";
-interface input {
+
+interface Input {
   videoId: string;
   isOpen: boolean;
   onClose: () => void;
 }
 
-const AudioOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId }) => {
+const AudioOnly: React.FunctionComponent<Input> = ({ isOpen, onClose, videoId }) => {
   const [_outputFolder, outputFolder_] = React.useState<string | null>(null);
   const [_quality, quality_] = React.useState<string | null>(null);
   const [_filename, filename_] = React.useState<any>(null);
@@ -45,11 +46,14 @@ const AudioOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId })
     socket.current.onopen = () => console.log("WebSocket connected");
     socket.current.onmessage = event => {
       const message = JSON.parse(event.data);
-      if (message.event === "_progress") progress_(message.data);
+      if (message.event === "progress") {
+        progress_(null);
+        progress_((prev: any) => ({ ...prev, ...message.data }));
+      }
       if (message.event === "end") filename_(message.data);
       if (message.event === "error") _error(message.data);
     };
-    socket.current.onerror = event => _error("WebSocket error occurred");
+    socket.current.onerror = () => _error("WebSocket error occurred");
     return () => {
       if (socket.current) socket.current.close();
     };
@@ -160,19 +164,23 @@ const AudioOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId })
                 </li>
                 <li>
                   <span className="text-red-600 font-black mr-2">frames:</span>
-                  {_progress.frames || "-"}
+                  {_progress?.frames || "-"}
                 </li>
                 <li>
                   <span className="text-red-600 font-black mr-2">currentFps:</span>
-                  {_progress.currentFps || "-"}
+                  {_progress?.currentFps || "-"}
                 </li>
                 <li>
                   <span className="text-red-600 font-black mr-2">targetSize:</span>
-                  {_progress.targetSize || "-"}
+                  {_progress?.targetSize || "-"}
                 </li>
                 <li>
                   <span className="text-red-600 font-black mr-2">timemark:</span>
-                  {_progress.timemark || "-"}
+                  {_progress?.timemark || "-"}
+                </li>
+                <li>
+                  <span className="text-red-600 font-black mr-2">progress:</span>
+                  {_progress?.progress || "-"}
                 </li>
                 <li>
                   <span className="text-red-600 font-black mr-2">Error:</span>
@@ -186,6 +194,8 @@ const AudioOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId })
     </React.Fragment>
   );
 };
+
 export default AudioOnly;
+
 //
 // ============================================================================/ with-websocket /============================================================================

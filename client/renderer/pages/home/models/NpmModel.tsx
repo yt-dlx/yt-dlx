@@ -1,7 +1,7 @@
 import react from "react";
 import { motion } from "framer-motion";
 
-const NpmModel: React.FC<{
+var NpmModel: React.FC<{
   open: boolean;
   close: () => void;
 }> = ({ open, close }) => {

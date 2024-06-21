@@ -1,7 +1,7 @@
 import react from "react";
 import { motion } from "framer-motion";
 
-const BunModel: React.FC<{
+var BunModel: React.FC<{
   open: boolean;
   close: () => void;
 }> = ({ open, close }) => {

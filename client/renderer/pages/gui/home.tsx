@@ -12,11 +12,11 @@ import { TbDiamondFilled } from "react-icons/tb";
 import { SiGradleplaypublisher } from "react-icons/si";
 
 export default function HomeGUI(): JSX.Element {
-  const socket = React.useRef<WebSocket | null>(null);
-  const [Query, setQuery] = React.useState<string>("");
-  const [TubeSearch, setTubeSearch] = React.useState<any>(null);
+  var socket = React.useRef<WebSocket | null>(null);
+  var [Query, setQuery] = React.useState<string>("");
+  var [TubeSearch, setTubeSearch] = React.useState<any>(null);
 
-  const FromBottomToTop = {
+  var FromBottomToTop = {
     initial: { opacity: 0, y: 100 },
     exit: {
       opacity: 0,
@@ -34,7 +34,7 @@ export default function HomeGUI(): JSX.Element {
     socket.current = new WebSocket("ws://localhost:8642");
     socket.current.onopen = () => console.log("WebSocket connected");
     socket.current.onmessage = event => {
-      const message = JSON.parse(event.data);
+      var message = JSON.parse(event.data);
       if (message.event === "data") setTubeSearch(message.data);
     };
     return () => {
@@ -53,7 +53,7 @@ export default function HomeGUI(): JSX.Element {
               setTubeSearch(null);
               event.preventDefault();
               if (socket.current && socket.current.readyState === WebSocket.OPEN) {
-                const payLoad = {
+                var payLoad = {
                   event: "SearchVideos",
                   payload: {
                     query: Query,

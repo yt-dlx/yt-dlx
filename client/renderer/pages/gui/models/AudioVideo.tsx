@@ -8,14 +8,14 @@ interface input {
   onClose: () => void;
 }
 
-const AudioVideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId }) => {
-  const [_outputFolder, outputFolder_] = React.useState<string | null>(null);
-  const [_quality, quality_] = React.useState<string | null>(null);
-  const [_filename, filename_] = React.useState<any>(null);
-  const [_progress, progress_] = React.useState<any>(null);
-  const _modelref = React.useRef<HTMLDivElement>(null);
-  const [error, _error] = React.useState<any>(null);
-  const [formData, _formData] = React.useState({
+var AudioVideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId }) => {
+  var [_outputFolder, outputFolder_] = React.useState<string | null>(null);
+  var [_quality, quality_] = React.useState<string | null>(null);
+  var [_filename, filename_] = React.useState<any>(null);
+  var [_progress, progress_] = React.useState<any>(null);
+  var _modelref = React.useRef<HTMLDivElement>(null);
+  var [error, _error] = React.useState<any>(null);
+  var [formData, _formData] = React.useState({
     metadata: false,
     verbose: true,
     useTor: true,
@@ -23,7 +23,7 @@ const AudioVideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, video
   });
 
   React.useEffect(() => {
-    const ClickOutside = (event: MouseEvent) => {
+    var ClickOutside = (event: MouseEvent) => {
       if (_modelref.current && !_modelref.current.contains(event.target as Node)) {
         onClose();
         quality_(null);
@@ -39,13 +39,13 @@ const AudioVideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, video
     };
   }, [isOpen, onClose]);
 
-  const socket = React.useRef<WebSocket | null>(null);
+  var socket = React.useRef<WebSocket | null>(null);
   React.useEffect(() => {
     socket.current = new WebSocket("ws://localhost:8642");
     socket.current.onopen = () => console.log("WebSocket connected");
     socket.current.onmessage = event => {
-      const message = JSON.parse(event.data);
-      if (message.event === "_progress") progress_(message.data);
+      var message = JSON.parse(event.data);
+      if (message.event === "progress") progress_(message.data);
       if (message.event === "end") filename_(message.data);
       if (message.event === "error") _error(message.data);
     };
@@ -98,7 +98,7 @@ const AudioVideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, video
                   onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
                     event.preventDefault();
                     if (socket.current && socket.current.readyState === WebSocket.OPEN) {
-                      const payLoad = {
+                      var payLoad = {
                         event: _quality,
                         payload: {
                           metadata: formData.metadata,
@@ -118,7 +118,7 @@ const AudioVideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, video
                       <button
                         type="button"
                         onClick={async () => {
-                          const folder = await window.ipc.invoke("select-output-folder");
+                          var folder = await window.ipc.invoke("select-output-folder");
                           if (folder) outputFolder_(folder);
                         }}
                         className="rounded-3xl border p-2 btn-wide italic text-neutral-900 font-black border-neutral-900 bg-red-600 px-8 text-sm scale-110 mb-4">
@@ -128,7 +128,7 @@ const AudioVideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, video
                       <button
                         type="button"
                         onClick={async () => {
-                          const folder = await window.ipc.invoke("select-output-folder");
+                          var folder = await window.ipc.invoke("select-output-folder");
                           if (folder) outputFolder_(folder);
                         }}
                         className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mb-4">
@@ -173,6 +173,10 @@ const AudioVideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, video
                 <li>
                   <span className="text-red-600 font-black mr-2">timemark:</span>
                   {_progress.timemark || "-"}
+                </li>
+                <li>
+                  <span className="text-red-600 font-black mr-2">progress:</span>
+                  {_progress.progress || "-"}
                 </li>
                 <li>
                   <span className="text-red-600 font-black mr-2">Error:</span>

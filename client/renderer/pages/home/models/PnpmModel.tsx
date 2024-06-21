@@ -1,7 +1,7 @@
 import react from "react";
 import { motion } from "framer-motion";
 
-const PnpmModel: React.FC<{
+var PnpmModel: React.FC<{
   open: boolean;
   close: () => void;
 }> = ({ open, close }) => {
