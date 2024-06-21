@@ -1,6 +1,6 @@
 {
   "name": "yt-dlx",
-  "version": "13.4.0",
+  "version": "13.5.0",
   "license": "Apache-2.0",
   "main": "app/background.js",
   "author": "yt-dlx <yt-dlx@proton.me>",
