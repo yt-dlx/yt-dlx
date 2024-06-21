@@ -49,36 +49,21 @@ export default function VideoId(): JSX.Element {
   const ToggleAudio = () => setShowAudio(!ShowAudio);
   const ToggleVideo = () => setShowVideo(!ShowVideo);
 
-  const ws = react.useRef<WebSocket | null>(null);
   react.useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:8642");
-    ws.current.onopen = () => console.log("WebSocket connected");
-    ws.current.onmessage = event => {
-      const message = JSON.parse(event.data);
-      if (message.event === "data") setTubeSearch(message.data);
-    };
-    // return () => {
-    // if (ws.current) ws.current.close();
-    // };
+    if (typeof id === "string" && /^[a-zA-Z0-9_-]{11}$/.test(id)) {
+      window.ipc.send("search", { videoId: id });
+    } else {
+      try {
+        window.history.back();
+      } catch {
+        router.push("/home");
+      }
+    }
   }, [id]);
 
   react.useEffect(() => {
-    if (typeof id === "string" && /^[a-zA-Z0-9_-]{11}$/.test(id)) {
-      if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-        const payLoad = {
-          event: "SearchVideos",
-          payload: {
-            query: id,
-            verbose: true,
-          },
-        };
-        ws.current.send(JSON.stringify(payLoad));
-      }
-    }
-    try {
-      window.history.back();
-    } catch {
-      router.push("/home");
+    if (typeof id === "string") {
+      window.ipc.on("search", (response: string) => setTubeSearch(response));
     }
   }, [id]);
 
@@ -104,17 +89,26 @@ export default function VideoId(): JSX.Element {
                       />
                       <div className="flex mt-1 flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-2 mb-4">
                         <button
-                          onClick={() => ToggleAudio()}
+                          onClick={() => {
+                            // window.ipc.send("formats", { query: id })
+                            ToggleAudio();
+                          }}
                           className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
                           <AiFillAudio className="mr-2 h-6 w-6" /> Download Audio only
                         </button>
                         <button
-                          onClick={() => ToggleVideo()}
+                          onClick={() => {
+                            // window.ipc.send("formats", { query: id })
+                            ToggleVideo();
+                          }}
                           className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
                           <IoVideocam className="mr-2 h-6 w-6" /> Download Video only
                         </button>
                         <button
-                          onClick={() => ToggleAudioVideo()}
+                          onClick={() => {
+                            // window.ipc.send("formats", { query: id })
+                            ToggleAudioVideo();
+                          }}
                           className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
                           <PiTelevisionFill className="mr-2 h-6 w-6" /> Download Audio + Video
                         </button>
@@ -152,9 +146,9 @@ export default function VideoId(): JSX.Element {
               </section>
             </div>
             {/* [ Modals ] */}
-            <AudioOnly isOpen={ShowAudio} onClose={ToggleAudio} videoId={TubeSearch.id} socket={ws} />
-            <VideoOnly isOpen={ShowVideo} onClose={ToggleVideo} videoId={TubeSearch.id} socket={ws} />
-            <AudioVideo isOpen={ShowAudioVideo} onClose={ToggleAudioVideo} videoId={TubeSearch.id} socket={ws} />
+            <AudioOnly isOpen={ShowAudio} onClose={ToggleAudio} videoId={TubeSearch.id} />
+            <VideoOnly isOpen={ShowVideo} onClose={ToggleVideo} videoId={TubeSearch.id} />
+            <AudioVideo isOpen={ShowAudioVideo} onClose={ToggleAudioVideo} videoId={TubeSearch.id} />
           </section>
         ) : (
           <section className="flex flex-col items-center justify-center w-full mt-10">
