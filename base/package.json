@@ -32,11 +32,10 @@
     "fs-extra": "^11.2.0",
     "minimist": "^1.2.8",
     "npm-run-all": "^4.1.5",
-    "readline-sync": "^1.4.10",
     "prettier": "^3.3.2",
+    "readline-sync": "^1.4.10",
     "shx": "^0.3.4",
-    "youtubei": "^1.4.4",
-    "yt-dlx": "^13.2.0"
+    "youtubei": "^1.4.4"
   },
   "devDependencies": {
     "@types/async": "^3.2.24",
