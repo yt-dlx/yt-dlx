@@ -12,11 +12,9 @@ import { TbDiamondFilled } from "react-icons/tb";
 import { SiGradleplaypublisher } from "react-icons/si";
 
 export default function HomeGUI(): JSX.Element {
-  var socket = React.useRef<WebSocket | null>(null);
-  var [Query, setQuery] = React.useState<string>("");
-  var [TubeSearch, setTubeSearch] = React.useState<any>(null);
-
-  var FromBottomToTop = {
+  const [Query, setQuery] = React.useState<string>("");
+  const [TubeSearch, setTubeSearch] = React.useState<any>(null);
+  const FromBottomToTop = {
     initial: { opacity: 0, y: 100 },
     exit: {
       opacity: 0,
@@ -31,15 +29,7 @@ export default function HomeGUI(): JSX.Element {
   };
 
   React.useEffect(() => {
-    socket.current = new WebSocket("ws://localhost:8642");
-    socket.current.onopen = () => console.log("WebSocket connected");
-    socket.current.onmessage = event => {
-      var message = JSON.parse(event.data);
-      if (message.event === "data") setTubeSearch(message.data);
-    };
-    return () => {
-      if (socket.current) socket.current.close();
-    };
+    window.ipc.on("SearchVideos", (response: { data: Object[] }) => setTubeSearch(response.data));
   }, []);
 
   return (
@@ -52,16 +42,7 @@ export default function HomeGUI(): JSX.Element {
             onSubmit={event => {
               setTubeSearch(null);
               event.preventDefault();
-              if (socket.current && socket.current.readyState === WebSocket.OPEN) {
-                var payLoad = {
-                  event: "SearchVideos",
-                  payload: {
-                    query: Query,
-                    verbose: true,
-                  },
-                };
-                socket.current.send(JSON.stringify(payLoad));
-              }
+              window.ipc.send("SearchVideos", { query: Query });
             }}
             className="bg-neutral-950 max-w-screen-2xl p-10 text-red-700 mx-auto my-8 rounded-3xl border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-700">
             <motion.h1 className="text-7xl mb-4 font-black" {...FromBottomToTop}>

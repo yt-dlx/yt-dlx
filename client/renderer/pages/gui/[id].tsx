@@ -14,45 +14,28 @@ import Introduction from "../home/Introduction";
 import { PiTelevisionFill } from "react-icons/pi";
 
 export default function VideoId(): JSX.Element {
-  var router = useRouter();
-  var { id } = router.query;
-  var socket = React.useRef<WebSocket | null>(null);
-  var [ShowAudio, setShowAudio] = React.useState(false);
-  var [ShowVideo, setShowVideo] = React.useState(false);
-  var [TubeSearch, setTubeSearch] = React.useState<any>(null);
-  var [ShowAudioVideo, setShowAudioVideo] = React.useState(false);
-  var ToggleAudioVideo = () => setShowAudioVideo(!ShowAudioVideo);
-  var ToggleAudio = () => setShowAudio(!ShowAudio);
-  var ToggleVideo = () => setShowVideo(!ShowVideo);
-  var FromBottomToTop = {
+  const router = useRouter();
+  const { id } = router.query;
+  const [ShowAudio, setShowAudio] = React.useState(false);
+  const [ShowVideo, setShowVideo] = React.useState(false);
+  const [TubeSearch, setTubeSearch] = React.useState<any>(null);
+  const [ShowAudioVideo, setShowAudioVideo] = React.useState(false);
+  const ToggleAudioVideo = () => setShowAudioVideo(!ShowAudioVideo);
+  const ToggleAudio = () => setShowAudio(!ShowAudio);
+  const ToggleVideo = () => setShowVideo(!ShowVideo);
+  const FromBottomToTop = {
     initial: { opacity: 0, y: 100 },
     exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
     whileInView: { opacity: 1, y: 0, transition: { duration: 0.8 } },
   };
-  var FromRightToLeft = {
+  const FromRightToLeft = {
     initial: { opacity: 0, x: 100 },
     exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
     whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } },
   };
   React.useEffect(() => {
-    socket.current = new WebSocket("ws://localhost:8642");
-    socket.current.onopen = () => {
-      if (socket.current?.readyState === WebSocket.OPEN) {
-        socket.current.send(
-          JSON.stringify({
-            event: "VideoData",
-            payload: { query: "https://youtu.be/" + id, verbose: true },
-          }),
-        );
-      }
-    };
-    socket.current.onmessage = event => {
-      var message = JSON.parse(event.data);
-      if (message.event === "data") setTubeSearch(message.data);
-    };
-    return () => {
-      if (socket.current) socket.current.close();
-    };
+    window.ipc.send("VideoData", { query: "https://youtu.be/" + id, verbose: true });
+    window.ipc.on("VideoData", (response: any) => setTubeSearch(response.data));
   }, [id]);
 
   return (
@@ -143,23 +126,5 @@ export default function VideoId(): JSX.Element {
     </main>
   );
 }
-
 //
 // ============================================================================/ with-websocket /============================================================================
-// React.React.useEffect(() => {
-// switch (true) {
-// case typeof id === "string" && /^[a-zA-Z0-9_-]{11}$/.test(id):
-// var payLoad = {
-// event: "SearchVideos",
-// payload: {
-// query: id,
-// verbose: true,
-// },
-// };
-// socket.current.send(JSON.stringify(payLoad));
-// break;
-// default:
-// window.history.back();
-// break;
-// }
-// }, [id]);
