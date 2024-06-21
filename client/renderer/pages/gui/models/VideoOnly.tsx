@@ -65,8 +65,8 @@ var VideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId }) =
           className="fixed inset-0 z-50 flex items-center justify-center h-full w-full backdrop-blur-lg bg-neutral-900/60">
           <div
             ref={_modelref}
-            className="bg-neutral-900 rounded-3xl p-8 backdrop-blur-lg border-4 border-double border-red-600 shadow-red-600 shadow-[0_0_800px_rgba(255,0,0,0.5)] w-auto max-w-[90vw] max-h-[90vh] overflow-y-auto flex flex-col items-center justify-start text-center">
-            <h2 className="text-7xl text-red-600 font-black mb-10">
+            className="bg-neutral-900 rounded-3xl p-8 backdrop-blur-lg border-4 border-double border-red-700 shadow-red-700 shadow-[0_0_800px_rgba(255,0,0,0.5)] w-auto max-w-[90vw] max-h-[90vh] overflow-y-auto flex flex-col items-center justify-start text-center">
+            <h2 className="text-7xl text-red-700 font-black mb-10">
               Choose Your Poison For <br />
               <span className="text-9xl block italic">Video</span>
             </h2>
@@ -78,7 +78,7 @@ var VideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId }) =
                   filename_(null);
                   quality_("VideoHighest");
                 }}
-                className={`hover:text-red-600 text-2xl cursor-pointer italic font-bold ${_quality === "VideoHighest" ? "text-red-600" : "text-white/40"}`}>
+                className={`hover:text-red-700 text-2xl cursor-pointer italic font-bold ${_quality === "VideoHighest" ? "text-red-700" : "text-white/40"}`}>
                 Highest Possible Download
               </li>
               <li
@@ -88,7 +88,7 @@ var VideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId }) =
                   filename_(null);
                   quality_("VideoLowest");
                 }}
-                className={`hover:text-red-600 text-2xl cursor-pointer italic font-bold ${_quality === "VideoLowest" ? "text-red-600" : "text-white/40"}`}>
+                className={`hover:text-red-700 text-2xl cursor-pointer italic font-bold ${_quality === "VideoLowest" ? "text-red-700" : "text-white/40"}`}>
                 Lowest Possible Download
               </li>
             </ul>
@@ -121,7 +121,7 @@ var VideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId }) =
                           var folder = await window.ipc.invoke("select-output-folder");
                           if (folder) outputFolder_(folder);
                         }}
-                        className="rounded-3xl border p-2 btn-wide italic text-neutral-900 font-black border-neutral-900 bg-red-600 px-8 text-sm scale-110 mb-4">
+                        className="rounded-3xl border p-2 btn-wide italic text-neutral-900 font-black border-neutral-900 bg-red-700 px-8 text-sm scale-110 mb-4">
                         Location: {_outputFolder}
                       </button>
                     ) : (
@@ -131,7 +131,7 @@ var VideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId }) =
                           var folder = await window.ipc.invoke("select-output-folder");
                           if (folder) outputFolder_(folder);
                         }}
-                        className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mb-4">
+                        className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110 mb-4">
                         Browse Output Location
                       </button>
                     )}
@@ -139,7 +139,7 @@ var VideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId }) =
                       <React.Fragment>
                         <button
                           type="submit"
-                          className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-600 font-black border-red-600/50 bg-neutral-900 hover:bg-red-600 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110">
+                          className="rounded-3xl border p-2 btn-wide hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-110">
                           Connect and Download
                         </button>
                       </React.Fragment>
@@ -151,35 +151,35 @@ var VideoOnly: React.FunctionComponent<input> = ({ isOpen, onClose, videoId }) =
             {_filename && (
               <ul className="text-white/60 items-start justify-start flex flex-col list-disc mt-6">
                 <li>
-                  <span className="text-red-600 font-black mr-2">Location:</span>
+                  <span className="text-red-700 font-black mr-2">Location:</span>
                   {_outputFolder || "-"}
                 </li>
                 <li>
-                  <span className="text-red-600 font-black mr-2">Filename:</span>
+                  <span className="text-red-700 font-black mr-2">Filename:</span>
                   {_filename || "-"}
                 </li>
                 <li>
-                  <span className="text-red-600 font-black mr-2">frames:</span>
+                  <span className="text-red-700 font-black mr-2">frames:</span>
                   {_progress.frames || "-"}
                 </li>
                 <li>
-                  <span className="text-red-600 font-black mr-2">currentFps:</span>
+                  <span className="text-red-700 font-black mr-2">currentFps:</span>
                   {_progress.currentFps || "-"}
                 </li>
                 <li>
-                  <span className="text-red-600 font-black mr-2">targetSize:</span>
+                  <span className="text-red-700 font-black mr-2">targetSize:</span>
                   {_progress.targetSize || "-"}
                 </li>
                 <li>
-                  <span className="text-red-600 font-black mr-2">timemark:</span>
+                  <span className="text-red-700 font-black mr-2">timemark:</span>
                   {_progress.timemark || "-"}
                 </li>
                 <li>
-                  <span className="text-red-600 font-black mr-2">progress:</span>
+                  <span className="text-red-700 font-black mr-2">progress:</span>
                   {_progress.progress || "-"}
                 </li>
                 <li>
-                  <span className="text-red-600 font-black mr-2">Error:</span>
+                  <span className="text-red-700 font-black mr-2">Error:</span>
                   {error || "-"}
                 </li>
               </ul>

@@ -56,14 +56,14 @@ export default function VideoId(): JSX.Element {
   }, [id]);
 
   return (
-    <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-600">
+    <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-700">
       <NavPackage />
       <Introduction />
       {TubeSearch ? (
         <section className="flex flex-col items-center justify-center">
           <div className="max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
             <section className="flex flex-col items-center justify-center">
-              <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-neutral-950 border-4 border-[#cd322d6e] rounded-3xl shadow-red-600 shadow-[0_0_80px_rgba(255,0,0,0.5)]">
+              <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-neutral-950 border-4 border-[#cd322d6e] rounded-3xl shadow-red-700 shadow-[0_0_80px_rgba(255,0,0,0.5)]">
                 <div className="overflow-x-auto">
                   <section className="max-w-screen-2xl px-6 mx-auto p-1">
                     {TubeSearch.thumbnails && TubeSearch.thumbnails.length > 0 && (
@@ -73,51 +73,51 @@ export default function VideoId(): JSX.Element {
                         height={310}
                         {...FromRightToLeft}
                         src={TubeSearch.thumbnails[TubeSearch.thumbnails.length - 1].url}
-                        className="object-cover w-full h-80 mt-4 rounded-t-3xl md:h-80 border-b-4 border-[#cd322d6e] shadow-red-600 shadow-2xl"
+                        className="object-cover w-full h-80 mt-4 rounded-t-3xl md:h-80 border-b-4 border-[#cd322d6e] shadow-red-700 shadow-2xl"
                       />
                     )}
                     <div className="flex mt-1 flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-2 mb-4">
                       <button
                         onClick={ToggleAudio}
-                        className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
+                        className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-700 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-700 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
                         <AiFillAudio className="mr-2 h-6 w-6" /> Download Audio only
                       </button>
                       <button
                         onClick={ToggleVideo}
-                        className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
+                        className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-700 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-700 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
                         <IoVideocam className="mr-2 h-6 w-6" /> Download Video only
                       </button>
                       <button
                         onClick={ToggleAudioVideo}
-                        className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-600 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-600 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
+                        className="inline-flex w-[500px] h-[50px] items-center justify-center rounded-b-3xl text-white font-semibold lowercase bg-neutral-900 hover:bg-red-700 border border-red-900 hover:border-neutral-900 hover:text-neutral-900 hover:font-bold shadow-red-700 shadow-2xl text-sm duration-700 transition-transform hover:scale-95">
                         <PiTelevisionFill className="mr-2 h-6 w-6" /> Download Audio + Video
                       </button>
                     </div>
-                    <motion.h2 className="text-6xl font-black text-red-600" {...FromBottomToTop}>
+                    <motion.h2 className="text-6xl font-black text-red-700" {...FromBottomToTop}>
                       {TubeSearch.title}
                     </motion.h2>
                     <p className="mt-8 leading-loose text-white font-semibold lowercase text-sm">
-                      <span className="text-red-600 font-black text-lg">@description: </span>
+                      <span className="text-red-700 font-black text-lg">@description: </span>
                       {TubeSearch.description}
                     </p>
                     <ul className="text-white font-semibold p-1 mb-4 text-sm">
                       <li>
-                        <span className="text-red-600 font-black text-lg">@videoId:</span> {TubeSearch.id}
+                        <span className="text-red-700 font-black text-lg">@videoId:</span> {TubeSearch.id}
                       </li>
                       <li>
-                        <span className="text-red-600 font-black text-lg">@channelid:</span> {TubeSearch.channelid}
+                        <span className="text-red-700 font-black text-lg">@channelid:</span> {TubeSearch.channelid}
                       </li>
                       <li>
-                        <span className="text-red-600 font-black text-lg">@channelname:</span> {TubeSearch.channelname}
+                        <span className="text-red-700 font-black text-lg">@channelname:</span> {TubeSearch.channelname}
                       </li>
                       <li>
-                        <span className="text-red-600 font-black text-lg">@duration:</span> {TubeSearch.duration}
+                        <span className="text-red-700 font-black text-lg">@duration:</span> {TubeSearch.duration}
                       </li>
                       <li>
-                        <span className="text-red-600 font-black text-lg">@uploadDate:</span> {TubeSearch.uploadDate}
+                        <span className="text-red-700 font-black text-lg">@uploadDate:</span> {TubeSearch.uploadDate}
                       </li>
                       <li>
-                        <span className="text-red-600 font-black text-lg">@viewCount:</span> {TubeSearch.viewCount}
+                        <span className="text-red-700 font-black text-lg">@viewCount:</span> {TubeSearch.viewCount}
                       </li>
                     </ul>
                   </section>
@@ -132,10 +132,10 @@ export default function VideoId(): JSX.Element {
       ) : (
         <section className="flex flex-col items-center justify-center w-full mt-10">
           <div className="flex flex-col items-center justify-center gap-4 w-96">
-            <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-40 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
-            <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-28 shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
-            <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
-            <div className="skeleton bg-red-600 border-4 border-neutral-800/60 h-10 w-full shadow-red-600 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
+            <div className="skeleton bg-red-700 border-4 border-neutral-800/60 h-40 w-full shadow-red-700 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
+            <div className="skeleton bg-red-700 border-4 border-neutral-800/60 h-10 w-28 shadow-red-700 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
+            <div className="skeleton bg-red-700 border-4 border-neutral-800/60 h-10 w-full shadow-red-700 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
+            <div className="skeleton bg-red-700 border-4 border-neutral-800/60 h-10 w-full shadow-red-700 shadow-[0_0_20px_rgba(255,0,0,0.5)]"></div>
           </div>
         </section>
       )}

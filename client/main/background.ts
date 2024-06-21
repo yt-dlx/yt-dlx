@@ -3,162 +3,227 @@ import path from "path";
 import retry from "async-retry";
 import serve from "electron-serve";
 import { createWindow } from "./helpers";
-import { ipcMain, dialog, app as client } from "electron";
+import { ipcMain as ipc, dialog, app as client } from "electron";
 //
 //
-const onprod = process.env.NODE_ENV === "production";
-if (onprod) serve({ directory: "app" });
-else client.setPath("userData", client.getPath("userData") + " (development)");
 //
 //
 (async () => {
+  var port = 8642;
+  var production = process.env.NODE_ENV === "production";
+  var server: socket = new socket("ws://localhost:" + port);
+  server.on("open", () => console.log("@connected:", port));
+  server.on("error", error => console.error("@error:", error));
+  server.on("close", ip => console.log("@disconnected:", ip, " @port:", port));
+  //
+  //
+  //
+  //
+  var reops: object = {
+    retries: 3,
+    minTimeout: 1000,
+    maxTimeout: 5000,
+    factor: 2,
+  };
+  if (production) serve({ directory: "app" });
+  else client.setPath("userData", client.getPath("userData") + " (development)");
+  //
+  //
+  //
+  //
   await client.whenReady();
-  const mainWindow = createWindow("main", {
+  var mainwindow = createWindow("main", {
     show: true,
-    width: 800,
-    height: 600,
+    fullscreen: true,
     autoHideMenuBar: true,
     webPreferences: {
       sandbox: false,
       preload: path.join(__dirname, "preload.js"),
     },
   });
-  switch (onprod) {
+  switch (production) {
     case false:
-      await mainWindow.loadURL("http://localhost:" + process.argv[2] + "/home");
-      mainWindow.webContents.openDevTools();
+      await mainwindow.loadURL("http://localhost:" + process.argv[2] + "/home");
+      mainwindow.webContents.openDevTools();
       break;
     case true:
-      await mainWindow.loadURL("app://./home");
+      await mainwindow.loadURL("app://./home");
       break;
     default:
       process.exit(0);
   }
+  //
+  //
+  //
+  //
+  ipc.handle("select-output-folder", async event => {
+    var result = await dialog.showOpenDialog({ properties: ["openDirectory"] });
+    if (result.canceled) return null;
+    else return result.filePaths[0];
+  });
+  //
+  //
+  //
+  //
+  interface SearchVideos {
+    query: string;
+    verbose: boolean;
+  }
+  ipc.on("SearchVideos", (event, response: SearchVideos) => {
+    retry(async () => {
+      server.on("open", () => server.send(JSON.stringify({ event: "SearchVideos", payload: response })));
+      server.on("message", output => {
+        var { event: msgEvent, data: msgData } = JSON.parse(output.toString());
+        event.reply(msgEvent, msgData);
+      });
+    }, reops);
+  });
+  //
+  //
+  //
+  //
+  interface VideoData {
+    query: string;
+    verbose: boolean;
+  }
+  ipc.on("VideoData", (event, response: VideoData) => {
+    retry(async () => {
+      server.on("open", () => server.send(JSON.stringify({ event: "VideoData", payload: response })));
+      server.on("message", output => {
+        var { event: msgEvent, data: msgData } = JSON.parse(output.toString());
+        event.reply(msgEvent, msgData);
+      });
+    }, reops);
+  });
+  //
+  //
+  //
+  //
+  interface AudioLowest {
+    query: string;
+    output: string;
+    stream: boolean;
+    useTor: boolean;
+    verbose: boolean;
+    metadata: boolean;
+  }
+  ipc.on("AudioLowest", (event, response: AudioLowest) => {
+    retry(async () => {
+      server.on("open", () => server.send(JSON.stringify({ event: "AudioLowest", payload: response })));
+      server.on("message", output => {
+        var { event: msgEvent, data: msgData } = JSON.parse(output.toString());
+        event.reply(msgEvent, msgData);
+      });
+    }, reops);
+  });
+  //
+  //
+  //
+  //
+  interface AudioHighest {
+    query: string;
+    output: string;
+    stream: boolean;
+    useTor: boolean;
+    verbose: boolean;
+    metadata: boolean;
+  }
+  ipc.on("AudioHighest", (event, response: AudioHighest) => {
+    retry(async () => {
+      server.on("open", () => server.send(JSON.stringify({ event: "AudioHighest", payload: response })));
+      server.on("message", output => {
+        var { event: msgEvent, data: msgData } = JSON.parse(output.toString());
+        event.reply(msgEvent, msgData);
+      });
+    }, reops);
+  });
+  //
+  //
+  //
+  //
+  interface VideoLowest {
+    query: string;
+    output: string;
+    stream: boolean;
+    useTor: boolean;
+    verbose: boolean;
+    metadata: boolean;
+  }
+  ipc.on("VideoLowest", (event, response: VideoLowest) => {
+    retry(async () => {
+      server.on("open", () => server.send(JSON.stringify({ event: "VideoLowest", payload: response })));
+      server.on("message", output => {
+        var { event: msgEvent, data: msgData } = JSON.parse(output.toString());
+        event.reply(msgEvent, msgData);
+      });
+    }, reops);
+  });
+  //
+  //
+  //
+  //
+  interface VideoHighest {
+    query: string;
+    output: string;
+    stream: boolean;
+    useTor: boolean;
+    verbose: boolean;
+    metadata: boolean;
+  }
+  ipc.on("VideoHighest", (event, response: VideoHighest) => {
+    retry(async () => {
+      server.on("open", () => server.send(JSON.stringify({ event: "VideoHighest", payload: response })));
+      server.on("message", output => {
+        var { event: msgEvent, data: msgData } = JSON.parse(output.toString());
+        event.reply(msgEvent, msgData);
+      });
+    }, reops);
+  });
+  //
+  //
+  //
+  //
+  interface AudioVideoLowest {
+    query: string;
+    output: string;
+    stream: boolean;
+    useTor: boolean;
+    verbose: boolean;
+    metadata: boolean;
+  }
+  ipc.on("AudioVideoLowest", (event, response: AudioVideoLowest) => {
+    retry(async () => {
+      server.on("open", () => server.send(JSON.stringify({ event: "AudioVideoLowest", payload: response })));
+      server.on("message", output => {
+        var { event: msgEvent, data: msgData } = JSON.parse(output.toString());
+        event.reply(msgEvent, msgData);
+      });
+    }, reops);
+  });
+  //
+  //
+  //
+  //
+  interface AudioVideoHighest {
+    query: string;
+    output: string;
+    stream: boolean;
+    useTor: boolean;
+    verbose: boolean;
+    metadata: boolean;
+  }
+  ipc.on("AudioVideoHighest", (event, response: AudioVideoHighest) => {
+    retry(async () => {
+      server.on("open", () => server.send(JSON.stringify({ event: "AudioVideoHighest", payload: response })));
+      server.on("message", output => {
+        var { event: msgEvent, data: msgData } = JSON.parse(output.toString());
+        event.reply(msgEvent, msgData);
+      });
+    }, reops);
+  });
+  //
+  //
+  //
+  //
+  client.on("window-all-closed", () => client.quit());
 })();
-//
-//
-ipcMain.handle("select-output-folder", async event => {
-  const result = await dialog.showOpenDialog({ properties: ["openDirectory"] });
-  if (result.canceled) return null;
-  else return result.filePaths[0];
-});
-// ====================================================/ Ipc - WebSocket /====================================================
-//
-//
-const reops = {
-  retries: 3,
-  minTimeout: 1000,
-  maxTimeout: 5000,
-  factor: 2,
-};
-const server = new socket("ws://localhost:8642");
-server.on("close", ip => console.log("@disconnected:", ip));
-server.on("error", error => console.error("@error:", error));
-//
-//
-interface AudioLowest {
-  query: string;
-  output: string;
-  stream: boolean;
-  useTor: boolean;
-  verbose: boolean;
-  metadata: boolean;
-}
-ipcMain.on("AudioLowest", (event, response: AudioLowest) => {
-  try {
-    retry(async () => {
-      server.on("open", () => {
-        const payLoad = JSON.stringify({ event: "AudioLowest", payload: response });
-        server.send(payLoad);
-      });
-    }, reops);
-    server.on("message", response => {
-      const { event: msgEvent, data: msgData } = JSON.parse(response.toString());
-      event.reply(msgEvent, msgData);
-    });
-  } catch (error: any) {
-    event.reply("error", error.message);
-  }
-});
-//
-//
-interface AudioHighest {
-  query: string;
-  output: string;
-  stream: boolean;
-  useTor: boolean;
-  verbose: boolean;
-  metadata: boolean;
-}
-ipcMain.on("AudioHighest", (event, response: AudioHighest) => {
-  try {
-    retry(async () => {
-      server.on("open", () => {
-        const payLoad = JSON.stringify({ event: "AudioHighest", payload: response });
-        server.send(payLoad);
-      });
-    }, reops);
-    server.on("message", response => {
-      const { event: msgEvent, data: msgData } = JSON.parse(response.toString());
-      event.reply(msgEvent, msgData);
-    });
-  } catch (error: any) {
-    event.reply("error", error.message);
-  }
-});
-//
-//
-interface VideoLowest {
-  query: string;
-  output: string;
-  stream: boolean;
-  useTor: boolean;
-  verbose: boolean;
-  metadata: boolean;
-}
-ipcMain.on("VideoLowest", (event, response: VideoLowest) => {
-  try {
-    retry(async () => {
-      server.on("open", () => {
-        const payLoad = JSON.stringify({ event: "VideoLowest", payload: response });
-        server.send(payLoad);
-      });
-    }, reops);
-    server.on("message", response => {
-      const { event: msgEvent, data: msgData } = JSON.parse(response.toString());
-      event.reply(msgEvent, msgData);
-    });
-  } catch (error: any) {
-    event.reply("error", error.message);
-  }
-});
-//
-//
-interface VideoHighest {
-  query: string;
-  output: string;
-  stream: boolean;
-  useTor: boolean;
-  verbose: boolean;
-  metadata: boolean;
-}
-ipcMain.on("VideoHighest", (event, response: VideoHighest) => {
-  try {
-    retry(async () => {
-      server.on("open", () => {
-        const payLoad = JSON.stringify({ event: "VideoHighest", payload: response });
-        server.send(payLoad);
-      });
-    }, reops);
-    server.on("message", response => {
-      const { event: msgEvent, data: msgData } = JSON.parse(response.toString());
-      event.reply(msgEvent, msgData);
-    });
-  } catch (error: any) {
-    event.reply("error", error.message);
-  }
-});
-//
-//
-// ====================================================/ Ipc - WebSocket /====================================================
-client.on("window-all-closed", () => client.quit());
