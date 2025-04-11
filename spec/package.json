@@ -7,7 +7,7 @@
     "colors": "^1.4.0",
     "express": "^5.1.0",
     "typescript": "^5.8.3",
-    "yt-dlx": "^14.0.4",
+    "yt-dlx": "^14.0.6",
     "zod": "^3.24.2"
   },
   "devDependencies": {

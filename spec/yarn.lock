@@ -1566,10 +1566,10 @@ youtubei@^1.6.7:
     node-fetch "2.6.7"
     protobufjs "7.2.6"
 
-yt-dlx@^14.0.4:
-  version "14.0.4"
-  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-14.0.4.tgz#fcf0edd2cb7c0bdf6ee9e9cb9bdf89bb008f1faf"
-  integrity sha512-9q5oDIt5bh7UZHCkEYqTZEOaYTfKL/arcSYgtNS0Eap7eYIWB7bkD6Q6Jk7UqoN4mG/g6W6Qqlr/v5JfsCpgeg==
+yt-dlx@^14.0.6:
+  version "14.0.6"
+  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-14.0.6.tgz#ec68744e96568ac6792ae70b53824b401cddb435"
+  integrity sha512-Iy/L0yo7Y9tLfaXQIwNwawbwt9Z5sDPcnPQUBhD+j6+WYb0rj9beEtqPD/Y2AIyHUYZ+EItyZkX/5eevgrclhw==
   dependencies:
     async-retry "^1.3.3"
     axios "^1.8.4"
@@ -1582,6 +1582,7 @@ yt-dlx@^14.0.4:
     shx "^0.4.0"
     youtubei "^1.6.7"
     yt-search "^2.12.1"
+    zod "^3.24.2"
 
 yt-search@^2.12.1:
   version "2.12.1"
