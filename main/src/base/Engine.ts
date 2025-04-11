@@ -99,7 +99,7 @@ function pManifest(i: any) {
     format: i.format as string,
   };
 }
-export default async function Engine({ sudo, query, useTor, ipAddress }: { query: string; sudo?: boolean; useTor?: boolean; ipAddress: string }) {
+export default async function Engine({ sudo, query, useTor }: { query: string; sudo?: boolean; useTor?: boolean }) {
   var AudioLow: any = {};
   var AudioHigh: any = {};
   var VideoLow: any = {};
@@ -194,7 +194,6 @@ export default async function Engine({ sudo, query, useTor, ipAddress }: { query
     });
   }
   var payLoad: EngineOutput = {
-    ipAddress,
     AudioLowF: (() => {
       var i = AudioLowF || ({} as AudioFormat);
       return nAudio(i);
@@ -222,7 +221,6 @@ export default async function Engine({ sudo, query, useTor, ipAddress }: { query
     ManifestLow: Object.values(ManifestLow).map(i => pManifest(i)),
     ManifestHigh: Object.values(ManifestHigh).map(i => pManifest(i)),
     metaData: {
-      ipAddress,
       id: i.id as string,
       title: i.title as string,
       channel: i.channel as string,

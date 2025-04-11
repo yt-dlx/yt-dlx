@@ -3,7 +3,6 @@ import type AudioFormat from "./AudioFormat";
 import type VideoFormat from "./VideoFormat";
 import type ManifestFormat from "./ManifestFormat";
 export default interface EngineOutput {
-  ipAddress: string;
   metaData: VideoInfo;
   AudioLowF: AudioFormat;
   AudioHighF: AudioFormat;
