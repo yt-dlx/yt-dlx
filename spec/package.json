@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "tsc && node build/index.js"
+    "aio": "tsc && node build/aio.js",
+    "server": "tsc && node build/server.js"
   },
   "dependencies": {
     "colors": "^1.4.0",
