@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "sourceMap": true,
+    "alwaysStrict": true,
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "noUnusedLocals": false,
+    "esModuleInterop": true,
+    "strictNullChecks": true,
+    "resolveJsonModule": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+    "downlevelIteration": true,
+    "noUnusedParameters": false,
+    "experimentalDecorators": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "build",
+    "target": "esnext",
+    "module": "commonjs",
+    "moduleResolution": "node"
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["main", "node_modules"]
+}

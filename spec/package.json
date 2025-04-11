@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "tsc && node build/index.js"
+  },
+  "dependencies": {
+    "colors": "^1.4.0",
+    "typescript": "^5.8.3",
+    "yt-dlx": "^14.0.4",
+    "zod": "^3.24.2"
+  }
+}

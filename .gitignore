@@ -1,0 +1,7 @@
+node_modules
+ffprobe.**
+cprobe.**
+ffmpeg.**
+ffprobe_**
+cprobe_**
+ffmpeg_**
