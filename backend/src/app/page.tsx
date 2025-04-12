@@ -21,9 +21,7 @@ export default function Home() {
     setResults([]);
 
     try {
-      // Search videos
-      let response = await fetch(`/api/Mixed/Search_Multiple_Videos?query=${encodeURIComponent(searchQuery)}`);
-      // Log raw response for debugging
+      let response = await fetch(`/api/Search_Multiple_Videos?query=${encodeURIComponent(searchQuery)}`);
       const rawText = await response.text();
       console.log("Raw video response:", rawText);
 
@@ -38,11 +36,9 @@ export default function Home() {
       if (response.ok && Array.isArray(data) && data.length > 0) {
         setResults(data);
       } else {
-        // Search playlists
-        response = await fetch(`/api/Mixed/Search_Multiple_Playlists?playlistLink=${encodeURIComponent(searchQuery)}`);
+        response = await fetch(`/api/Search_Multiple_Playlists?playlistLink=${encodeURIComponent(searchQuery)}`);
         const playlistText = await response.text();
         console.log("Raw playlist response:", playlistText);
-
         try {
           data = JSON.parse(playlistText);
         } catch (jsonError) {
