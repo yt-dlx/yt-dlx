@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import colorize from "../colorize";
+import colorize from "../utils/colorize";
 import { SafeAreaView, StatusBar, View } from "react-native";
 
 export default function RootLayout() {
