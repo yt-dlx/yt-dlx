@@ -22,7 +22,6 @@
     "dotenv": "^16.4.7",
     "fluent-ffmpeg": "^2.1.3",
     "fs-extra": "^11.3.0",
-    "prettier": "^3.5.3",
     "shx": "^0.4.0",
     "ws": "^8.18.1",
     "youtubei": "^1.6.7",
