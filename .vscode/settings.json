@@ -5,6 +5,7 @@
     "**/venv": true,
     "**/.svn": true,
     "**/.git": true,
+    "**/.next": true,
     "**/dist": false,
     "**/.venv": true,
     "**/build": false,
