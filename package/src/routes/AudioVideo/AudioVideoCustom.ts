@@ -38,9 +38,7 @@ export default function AudioVideoCustom({ query, stream, output, useTor, filter
       let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.mkv`;
       const vdata = engineData.ManifestHigh.find(i => i.format.includes(resolution.replace("p", "").toString()));
       if (vdata) proc.addInput(vdata.url.toString());
-      else {
-        throw new Error(`${colors.red("@error:")} no video data found. use list_formats() maybe?`);
-      }
+      else throw new Error(`${colors.red("@error:")} no video data found. use list_formats() maybe?`);
       const filterMap: Record<string, string[]> = {
         grayscale: ["colorchannelmixer=.3:.4:.3:0:.3:.4:.3:0:.3:.4:.3"],
         invert: ["negate"],

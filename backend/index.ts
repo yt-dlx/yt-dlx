@@ -16,9 +16,9 @@ server.get("/Audio_Only_Custom_Data", async (req: any, res: any) => {
     instance.on("metadata", (metadata: any) => res.json(metadata));
     instance.on("start", (command: any) => console.log(colors.gray("start:"), command));
     instance.on("error", (error: any) => res.status(500).json({ error: error.message || error }));
-  } catch (err: any) {
+  } catch (err) {
     console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err.message });
+    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
   }
 });
 // ====================================================================================
@@ -195,7 +195,7 @@ server.get("/Search_Related_Videos", async (req: any, res: any) => {
   }
 });
 // ====================================================================================
-server.get("/Search_Multiple_Videos", async (req: any, res: any) => {
+server.get("/Search_Multiple_Playlists", async (req: any, res: any) => {
   const playlistLink = req.query.playlistLink as string;
   if (!playlistLink) return res.status(400).json({ error: "Missing playlistLink parameter." });
   try {
@@ -208,7 +208,7 @@ server.get("/Search_Multiple_Videos", async (req: any, res: any) => {
   }
 });
 // ====================================================================================
-server.get("/Search_Single_Video", async (req: any, res: any) => {
+server.get("/Search_Single_Playlist", async (req: any, res: any) => {
   const playlistLink = req.query.playlistLink as string;
   if (!playlistLink) return res.status(400).json({ error: "Missing playlistLink parameter." });
   try {

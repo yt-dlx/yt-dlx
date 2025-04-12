@@ -1,0 +1,11 @@
+=================| SEARCH
+- Video/Playlist Id/Link/Name
+    - Search_Multiple_Videos
+    - Search_Single_Video
+    - Search_Multiple_Playlists
+    - Search_Single_Playlist
+        - Extract_Video_Data
+=================| TRENDING
+- Fetch_Trending_Videos
+=================| MUSIC
+=================| DOWNLOADS
