@@ -3,23 +3,7 @@ const colors = require("colors");
 const express = require("express");
 const YouTube = require("../../../out/cjs/src/index.js");
 
-const audioFilters = [
-  "echo",
-  "slow",
-  "speed",
-  "phaser",
-  "flanger",
-  "panning",
-  "reverse",
-  "vibrato",
-  "subboost",
-  "surround",
-  "bassboost",
-  "nightcore",
-  "superslow",
-  "vaporwave",
-  "superspeed",
-];
+const audioFilters = ["echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed"];
 const resolutions = ["high", "medium", "low", "ultralow"];
 
 (async () => {

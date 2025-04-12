@@ -14,25 +14,7 @@ var ZodSchema = z.object({
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
   metadata: z.boolean().optional(),
-  filter: z
-    .enum([
-      "echo",
-      "slow",
-      "speed",
-      "phaser",
-      "flanger",
-      "panning",
-      "reverse",
-      "vibrato",
-      "subboost",
-      "surround",
-      "bassboost",
-      "nightcore",
-      "superslow",
-      "vaporwave",
-      "superspeed",
-    ])
-    .optional(),
+  filter: z.enum(["echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed"]).optional(),
 });
 export default function AudioLowest({ query, output, useTor, stream, filter, metadata, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

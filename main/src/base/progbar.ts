@@ -9,8 +9,6 @@ var progbar = ({ percent, timemark, baseTime }) => {
   var scomp = Math.round((width * percent) / 100);
   var progb = color("━").repeat(scomp) + color(" ").repeat(width - scomp);
   var timemark: any = calculateETA(baseTime, percent);
-  process.stdout.write(
-    `\r${color("@prog:")} ${progb} ${color("| @percent:")} ${percent.toFixed(2)}% ${color("| @timemark:")} ${timemark} ${color("| @eta:")} ${formatTime(timemark)}`,
-  );
+  process.stdout.write(`\r${color("@prog:")} ${progb} ${color("| @percent:")} ${percent.toFixed(2)}% ${color("| @timemark:")} ${timemark} ${color("| @eta:")} ${formatTime(timemark)}`);
 };
 export default progbar;

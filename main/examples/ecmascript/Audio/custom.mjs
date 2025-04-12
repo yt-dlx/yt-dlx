@@ -2,23 +2,7 @@ import * as fs from "fs";
 import colors from "colors";
 import express from "express";
 import YouTube from "../../../out/esm/src/index.js";
-const audioFilters = [
-  "echo",
-  "slow",
-  "speed",
-  "phaser",
-  "flanger",
-  "panning",
-  "reverse",
-  "vibrato",
-  "subboost",
-  "surround",
-  "bassboost",
-  "nightcore",
-  "superslow",
-  "vaporwave",
-  "superspeed",
-];
+const audioFilters = ["echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed"];
 const resolutions = ["high", "medium", "low", "ultralow"];
 (async () => {
   try {

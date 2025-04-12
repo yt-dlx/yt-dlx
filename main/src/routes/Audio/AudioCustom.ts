@@ -14,36 +14,9 @@ const ZodSchema = z.object({
   verbose: z.boolean().optional(),
   metadata: z.boolean().optional(),
   resolution: z.enum(["high", "medium", "low", "ultralow"]),
-  filter: z
-    .enum([
-      "echo",
-      "slow",
-      "speed",
-      "phaser",
-      "flanger",
-      "panning",
-      "reverse",
-      "vibrato",
-      "subboost",
-      "surround",
-      "bassboost",
-      "nightcore",
-      "superslow",
-      "vaporwave",
-      "superspeed",
-    ])
-    .optional(),
+  filter: z.enum(["echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed"]).optional(),
 });
-export default function AudioCustom({
-  query,
-  output,
-  useTor,
-  stream,
-  filter,
-  verbose,
-  metadata,
-  resolution,
-}: z.infer<typeof ZodSchema>): EventEmitter {
+export default function AudioCustom({ query, output, useTor, stream, filter, verbose, metadata, resolution }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {

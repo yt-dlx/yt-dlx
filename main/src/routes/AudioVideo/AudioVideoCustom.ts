@@ -16,16 +16,7 @@ var ZodSchema = z.object({
   resolution: z.enum(["144p", "240p", "360p", "480p", "720p", "1080p", "1440p", "2160p", "3072p", "4320p", "6480p", "8640p", "12000p"]),
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
-export default function AudioVideoCustom({
-  query,
-  stream,
-  output,
-  useTor,
-  filter,
-  metadata,
-  verbose,
-  resolution,
-}: z.infer<typeof ZodSchema>): EventEmitter {
+export default function AudioVideoCustom({ query, stream, output, useTor, filter, metadata, verbose, resolution }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
