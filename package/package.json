@@ -1,6 +1,6 @@
 {
   "name": "yt-dlx",
-  "version": "14.0.9",
+  "version": "14.0.10",
   "license": "Apache-2.0",
   "main": "out/cjs/src/index.js",
   "types": "out/types/index.d.ts",
@@ -53,10 +53,9 @@
     "zod": "^3.24.2"
   },
   "scripts": {
-    "format": "prettier --write .",
+    "prepublishOnly": "yarn build",
     "make": "yarn install --frozen-lockfile",
     "postinstall": "shx chmod -R +x out/**/**",
-    "prepublishOnly": "yarn build && yarn format",
     "remake": "yarn clean && yarn make && yarn build",
     "spec": "yarn build && node out/cjs/src/__tests__/quick.spec.js",
     "deps": "node utils/downdeps.mjs && shx chmod -R +x utils/**/**",
