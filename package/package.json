@@ -55,6 +55,7 @@
   "scripts": {
     "format": "prettier --write .",
     "make": "yarn install --frozen-lockfile",
+    "postinstall": "shx chmod -R +x out/**/**",
     "prepublishOnly": "yarn build && yarn format",
     "remake": "yarn clean && yarn make && yarn build",
     "spec": "yarn build && node out/cjs/src/__tests__/quick.spec.js",
