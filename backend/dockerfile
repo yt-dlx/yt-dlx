@@ -1,10 +1,8 @@
 FROM node:23
-RUN apt-get update && apt-get install -y \
-    git \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y && git && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 RUN git clone https://github.com/yt-dlx/yt-dlx.git
-WORKDIR /app/yt-dlx/package/utils
+WORKDIR /app/yt-dlx/package
 RUN chmod +x ./Tor.sh && ./Tor.sh || echo "Tor.sh failed, continuing..."
 WORKDIR /app/yt-dlx/backend
 RUN yarn install --frozen-lockfile
