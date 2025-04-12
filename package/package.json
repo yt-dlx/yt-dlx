@@ -14,6 +14,7 @@
   "homepage": "https://yt-dlx-shovit.koyeb.app",
   "bin": {
     "youtube": "out/cjs/src/cli/main.js",
+    "yt-dlx-down-deps": "node deps.mjs",
     "yt-dlx": "out/cjs/src/cli/main.js",
     "ytdlx": "out/cjs/src/cli/main.js",
     "yt": "out/cjs/src/cli/main.js"
