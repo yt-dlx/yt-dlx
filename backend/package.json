@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "aio": "tsc && node build/aio.js",
-    "server": "tsc && node build/server.js"
+    "build": "tsc -p tsconfig.json",
+    "aio": "yarn build && node build/aio.js",
+    "start": "yarn build && node build/index.js"
   },
   "dependencies": {
     "colors": "^1.4.0",
