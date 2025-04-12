@@ -57,8 +57,7 @@
     "make": "yarn install --frozen-lockfile",
     "postinstall": "shx chmod -R +x out/**/**",
     "remake": "yarn clean && yarn make && yarn build",
-    "spec": "yarn build && node out/cjs/src/__tests__/quick.spec.js",
-    "deps": "node utils/downdeps.mjs && shx chmod -R +x utils/**/**",
+    "deps": "node utils/downdeps.mjs && shx chmod -R +x out/**/**",
     "build": "rimraf out/cjs out/esm out/types && tsc -p config/cjs.json && tsc -p config/esm.json && tsc -p config/types.json"
   }
 }

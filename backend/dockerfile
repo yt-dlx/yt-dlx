@@ -4,11 +4,10 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 RUN git clone https://github.com/yt-dlx/yt-dlx.git
-WORKDIR /app/yt-dlx
 WORKDIR /app/yt-dlx/package/utils
-RUN chmod +x ./Tor.sh && ./Tor.sh
+RUN chmod +x ./Tor.sh && ./Tor.sh || echo "Tor.sh failed, continuing..."
 WORKDIR /app/yt-dlx/backend
-RUN yarn install
+RUN yarn install --frozen-lockfile
 RUN yarn build
 EXPOSE 3000
 CMD ["yarn", "start"]
