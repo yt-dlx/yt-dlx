@@ -7,9 +7,11 @@ export async function GET(request: Request) {
   try {
     const instance = ytdlx.ytSearch.Video.Multiple({ query });
     instance.on("data", data => {
+      console.log("Data received:", data);
       return NextResponse.json(data);
     });
     instance.on("error", error => {
+      console.error("Error occurred:", error);
       return NextResponse.json({ error: error.message || error }, { status: 500 });
     });
     return new Response("Search in progress...", { status: 200 });
