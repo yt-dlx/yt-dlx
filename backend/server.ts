@@ -1,14 +1,11 @@
 // ====================================================================================
-// ====================================================================================
 import ytdlx from "yt-dlx";
 import colors from "colors";
 import express from "express";
 // ====================================================================================
-// ====================================================================================
 const client = express();
 const PORT = process.env.PORT || 3000;
 client.listen(PORT, () => console.log(colors.cyan(`🚀 YT-DLX Server is live at port ${PORT}`)));
-// ====================================================================================
 // ====================================================================================
 client.get("/AudioOnlyCustom", async (req: any, res: any) => {
   const query = req.query.query as string;
@@ -26,7 +23,6 @@ client.get("/AudioOnlyCustom", async (req: any, res: any) => {
   }
 });
 // ====================================================================================
-// ====================================================================================
 client.get("/AudioOnlyHighest", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
@@ -41,7 +37,6 @@ client.get("/AudioOnlyHighest", async (req: any, res: any) => {
   }
 });
 // ====================================================================================
-// ====================================================================================
 client.get("/AudioOnlyLowest", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
@@ -55,7 +50,6 @@ client.get("/AudioOnlyLowest", async (req: any, res: any) => {
     res.status(500).json({ error: err.message });
   }
 });
-// ====================================================================================
 // ====================================================================================
 client.get("/VideoOnlyCustom", async (req: any, res: any) => {
   const query = req.query.query as string;
@@ -75,7 +69,6 @@ client.get("/VideoOnlyCustom", async (req: any, res: any) => {
   }
 });
 // ====================================================================================
-// ====================================================================================
 client.get("/VideoOnlyHighest", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
@@ -89,7 +82,6 @@ client.get("/VideoOnlyHighest", async (req: any, res: any) => {
     res.status(500).json({ error: err.message });
   }
 });
-// ====================================================================================
 // ====================================================================================
 client.get("/VideoOnlyLowest", async (req: any, res: any) => {
   const query = req.query.query as string;
@@ -105,7 +97,6 @@ client.get("/VideoOnlyLowest", async (req: any, res: any) => {
   }
 });
 // ====================================================================================
-// ====================================================================================
 client.get("/AudioVideoHighest", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
@@ -119,7 +110,6 @@ client.get("/AudioVideoHighest", async (req: any, res: any) => {
     res.status(500).json({ error: err.message });
   }
 });
-// ====================================================================================
 // ====================================================================================
 client.get("/AudioVideoCustom", async (req: any, res: any) => {
   const query = req.query.query as string;
@@ -139,7 +129,6 @@ client.get("/AudioVideoCustom", async (req: any, res: any) => {
   }
 });
 // ====================================================================================
-// ====================================================================================
 client.get("/AudioVideoLowest", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
@@ -154,7 +143,6 @@ client.get("/AudioVideoLowest", async (req: any, res: any) => {
   }
 });
 // ====================================================================================
-// ====================================================================================
 client.get("/AudioVideoLowest", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
@@ -168,7 +156,6 @@ client.get("/AudioVideoLowest", async (req: any, res: any) => {
     res.status(500).json({ error: err.message });
   }
 });
-// ====================================================================================
 // ====================================================================================
 client.get("/SearchMultipleVideos", async (req: any, res: any) => {
   const query = req.query.query as string;
@@ -183,7 +170,6 @@ client.get("/SearchMultipleVideos", async (req: any, res: any) => {
   }
 });
 // ====================================================================================
-// ====================================================================================
 client.get("/SearchSingleVideo", async (req: any, res: any) => {
   const videoLink = req.query.videoLink as string;
   if (!videoLink) return res.status(400).json({ error: "Missing videoLink parameter." });
@@ -196,7 +182,6 @@ client.get("/SearchSingleVideo", async (req: any, res: any) => {
     res.status(500).json({ error: err.message });
   }
 });
-// ====================================================================================
 // ====================================================================================
 client.get("/SearchRelatedVideos", async (req: any, res: any) => {
   const videoId = req.query.videoId as string;
@@ -211,7 +196,6 @@ client.get("/SearchRelatedVideos", async (req: any, res: any) => {
   }
 });
 // ====================================================================================
-// ====================================================================================
 client.get("/SearchMultipleVideos", async (req: any, res: any) => {
   const playlistLink = req.query.playlistLink as string;
   if (!playlistLink) return res.status(400).json({ error: "Missing playlistLink parameter." });
@@ -224,7 +208,6 @@ client.get("/SearchMultipleVideos", async (req: any, res: any) => {
     res.status(500).json({ error: err.message });
   }
 });
-// ====================================================================================
 // ====================================================================================
 client.get("/SearchSingleVideo", async (req: any, res: any) => {
   const playlistLink = req.query.playlistLink as string;
@@ -239,7 +222,6 @@ client.get("/SearchSingleVideo", async (req: any, res: any) => {
   }
 });
 // ====================================================================================
-// ====================================================================================
 client.get("/ExtractVideoData", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
@@ -253,7 +235,6 @@ client.get("/ExtractVideoData", async (req: any, res: any) => {
   }
 });
 // ====================================================================================
-// ====================================================================================
 client.get("/ListVideoFormats", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
@@ -266,5 +247,4 @@ client.get("/ListVideoFormats", async (req: any, res: any) => {
     res.status(500).json({ error: err.message });
   }
 });
-// ====================================================================================
 // ====================================================================================
