@@ -170,9 +170,6 @@ client.get("/AudioVideoLowest", async (req: any, res: any) => {
 });
 // ====================================================================================
 // ====================================================================================
-// NON DOWNLOADER RELATED FUNCTIONS
-// ====================================================================================
-// ====================================================================================
 client.get("/SearchMultipleVideos", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
@@ -206,6 +203,62 @@ client.get("/SearchRelatedVideos", async (req: any, res: any) => {
   if (!videoId) return res.status(400).json({ error: "Missing videoId parameter." });
   try {
     const instance = ytdlx.ytSearch.Video.Related({ videoId });
+    instance.on("data", (data: any) => res.json(data));
+    instance.on("error", (error: any) => res.status(500).json({ error: error.message || error }));
+  } catch (err: any) {
+    console.error(colors.red("❌ Unexpected error:"), err);
+    res.status(500).json({ error: err.message });
+  }
+});
+// ====================================================================================
+// ====================================================================================
+client.get("/SearchMultipleVideos", async (req: any, res: any) => {
+  const playlistLink = req.query.playlistLink as string;
+  if (!playlistLink) return res.status(400).json({ error: "Missing playlistLink parameter." });
+  try {
+    const instance = ytdlx.ytSearch.Playlist.Multiple({ playlistLink });
+    instance.on("data", (data: any) => res.json(data));
+    instance.on("error", (error: any) => res.status(500).json({ error: error.message || error }));
+  } catch (err: any) {
+    console.error(colors.red("❌ Unexpected error:"), err);
+    res.status(500).json({ error: err.message });
+  }
+});
+// ====================================================================================
+// ====================================================================================
+client.get("/SearchSingleVideo", async (req: any, res: any) => {
+  const playlistLink = req.query.playlistLink as string;
+  if (!playlistLink) return res.status(400).json({ error: "Missing playlistLink parameter." });
+  try {
+    const instance = ytdlx.ytSearch.Playlist.Single({ playlistLink });
+    instance.on("data", (data: any) => res.json(data));
+    instance.on("error", (error: any) => res.status(500).json({ error: error.message || error }));
+  } catch (err: any) {
+    console.error(colors.red("❌ Unexpected error:"), err);
+    res.status(500).json({ error: err.message });
+  }
+});
+// ====================================================================================
+// ====================================================================================
+client.get("/ExtractVideoData", async (req: any, res: any) => {
+  const query = req.query.query as string;
+  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  try {
+    const instance = ytdlx.info.extract({ query });
+    instance.on("data", (data: any) => res.json(data));
+    instance.on("error", (error: any) => res.status(500).json({ error: error.message || error }));
+  } catch (err: any) {
+    console.error(colors.red("❌ Unexpected error:"), err);
+    res.status(500).json({ error: err.message });
+  }
+});
+// ====================================================================================
+// ====================================================================================
+client.get("/ListVideoFormats", async (req: any, res: any) => {
+  const query = req.query.query as string;
+  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  try {
+    const instance = ytdlx.info.list_formats({ query });
     instance.on("data", (data: any) => res.json(data));
     instance.on("error", (error: any) => res.status(500).json({ error: error.message || error }));
   } catch (err: any) {
