@@ -1,6 +1,5 @@
 import colors from "colors";
 import { Client } from "youtubei";
-
 export interface relatedVideosType {
   id: string;
   title: string;

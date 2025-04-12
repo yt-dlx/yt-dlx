@@ -10,13 +10,9 @@ export default function search_videos({ query }: z.infer<typeof ZodSchema>): Eve
     try {
       ZodSchema.parse({ query });
       const isID = await YouTubeID(query);
-      if (isID) {
-        throw new Error(colors.red("@error: ") + "use video_data() for video link!");
-      }
+      if (isID) throw new Error(colors.red("@error: ") + "use video_data() for video link!");
       const metaData: searchVideosType[] = await web.searchVideos({ query });
-      if (!metaData) {
-        throw new Error(colors.red("@error: ") + "Unable to get response!");
-      }
+      if (!metaData) throw new Error(colors.red("@error: ") + "Unable to get response!");
       emitter.emit("data", metaData);
     } catch (error: unknown) {
       switch (true) {

@@ -3,13 +3,13 @@ import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
 import YouTubeID from "../../web/YouTubeId";
 import web, { playlistVideosType } from "../../web";
-const ZodSchema = z.object({ query: z.string().min(2) });
-export default function playlist_data({ query }: z.infer<typeof ZodSchema>): EventEmitter {
+const ZodSchema = z.object({ playlistLink: z.string().min(2) });
+export default function playlist_data({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
-      ZodSchema.parse({ query });
-      const playlistId = await YouTubeID(query);
+      ZodSchema.parse({ playlistLink });
+      const playlistId = await YouTubeID(playlistLink);
       if (!playlistId) throw new Error(colors.red("@error: ") + "incorrect playlist link");
       const metaData: playlistVideosType = await web.playlistVideos({ playlistId });
       if (!metaData) throw new Error(colors.red("@error: ") + "Unable to get response!");

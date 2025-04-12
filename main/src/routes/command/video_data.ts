@@ -3,15 +3,15 @@ import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
 import YouTubeID from "../../web/YouTubeId";
 import web, { singleVideoType } from "../../web";
-const ZodSchema = z.object({ query: z.string().min(2) });
-export default function video_data({ query }: z.infer<typeof ZodSchema>): EventEmitter {
+const ZodSchema = z.object({ videoLink: z.string().min(2) });
+export default function video_data({ videoLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
-      ZodSchema.parse({ query });
-      const videoId = await YouTubeID(query);
-      if (!videoId) throw new Error(colors.red("@error: ") + "incorrect video link");
-      const metaData: singleVideoType = await web.singleVideo({ videoId });
+      ZodSchema.parse({ videoLink });
+      const vId = await YouTubeID(videoLink);
+      if (!vId) throw new Error(colors.red("@error: ") + "incorrect video link");
+      const metaData: singleVideoType = await web.singleVideo({ videoId: vId });
       if (!metaData) throw new Error(colors.red("@error: ") + "Unable to get response!");
       emitter.emit("data", metaData);
     } catch (error: unknown) {

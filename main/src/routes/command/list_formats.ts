@@ -10,9 +10,7 @@ export default function list_formats({ query, verbose }: z.infer<typeof ZodSchem
     try {
       ZodSchema.parse({ query, verbose });
       const metaBody: EngineOutput = await ytdlx({ query, verbose });
-      if (!metaBody) {
-        throw new Error("@error: Unable to get response from YouTube.");
-      }
+      if (!metaBody) throw new Error("@error: Unable to get response from YouTube.");
       const formatData = {
         ManifestLow: metaBody.ManifestLow.map(item => ({ format: item.format, tbr: item.tbr })),
         ManifestHigh: metaBody.ManifestHigh.map(item => ({ format: item.format, tbr: item.tbr })),

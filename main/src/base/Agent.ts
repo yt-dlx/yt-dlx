@@ -1,7 +1,6 @@
 import web from "../web";
 import colors from "colors";
 import Engine from "./Engine";
-import ytSearch from "yt-search";
 import { execSync } from "child_process";
 import YouTubeID from "../web/YouTubeId";
 import type EngineOutput from "../interfaces/EngineOutput";
@@ -55,11 +54,11 @@ export default async function Agent({ query, useTor, verbose }: { query: string;
   let respEngine: EngineOutput | undefined = undefined;
   const videoId: string | undefined = await YouTubeID(query);
   if (!videoId) {
-    const searchResult = await ytSearch(query);
-    const video = searchResult.videos[0];
+    const searchResult = await web.searchVideos({ query });
+    const video = searchResult[0];
     if (!video) throw new Error("Unable to find a video!");
     console.log(colors.green("@info:"), "preparing payload for", video.title);
-    respEngine = await Engine({ query: `https://www.youtube.com/watch?v=${video.videoId}`, useTor });
+    respEngine = await Engine({ query: `https://www.youtube.com/watch?v=${video.id}`, useTor });
     return respEngine;
   } else {
     TubeBody = await web.singleVideo({ videoId });

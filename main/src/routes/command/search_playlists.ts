@@ -3,15 +3,17 @@ import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
 import YouTubeID from "../../web/YouTubeId";
 import web, { searchPlaylistsType } from "../../web";
-const ZodSchema = z.object({ query: z.string().min(2) });
-export default function search_playlists({ query }: z.infer<typeof ZodSchema>): EventEmitter {
+const ZodSchema = z.object({ playlistLink: z.string().min(2) });
+export default function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
-      ZodSchema.parse({ query });
-      const isID = await YouTubeID(query);
+      ZodSchema.parse({ playlistLink });
+      const isID = await YouTubeID(playlistLink);
       if (isID) throw new Error(colors.red("@error: ") + "use playlist_data() for playlist link!");
-      const metaData: any = await web.searchPlaylists({ query });
+      const metaDataArray: searchPlaylistsType[] = await web.searchPlaylists({ query: playlistLink });
+      if (!metaDataArray.length) throw new Error(colors.red("@error: ") + "No playlists found!");
+      const metaData: searchPlaylistsType = metaDataArray[0];
       if (!metaData) throw new Error(colors.red("@error: ") + "Unable to get response!");
       emitter.emit("data", metaData);
     } catch (error: unknown) {

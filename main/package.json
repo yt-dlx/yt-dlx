@@ -35,7 +35,6 @@
     "readline-sync": "^1.4.10",
     "shx": "^0.4.0",
     "youtubei": "^1.6.7",
-    "yt-search": "^2.12.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -45,13 +44,15 @@
     "@types/fluent-ffmpeg": "^2.1.27",
     "@types/fs-extra": "^11.0.4",
     "@types/minimist": "^1.2.5",
-    "@types/node": "^22.13.13",
+    "@types/node": "^22.14.1",
     "@types/readline-sync": "^1.4.8",
-    "caxa": "^3.0.1",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2",
     "tsup": "^8.0.0",
     "typescript": "^5.8.2"
+  },
+  "peerDependencies": {
+    "zod": "^3.24.2"
   },
   "scripts": {
     "format": "prettier --write .",

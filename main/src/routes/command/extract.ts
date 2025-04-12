@@ -35,9 +35,7 @@ export default function extract({ query, verbose }: z.infer<typeof ZodSchema>): 
     try {
       ZodSchema.parse({ query, verbose });
       const metaBody: EngineOutput = await ytdlx({ query, verbose });
-      if (!metaBody) {
-        throw new Error("Unable to get response!");
-      }
+      if (!metaBody) throw new Error("Unable to get response!");
       const uploadDate = new Date(metaBody.metaData.upload_date.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"));
       const currentDate = new Date();
       const daysAgo = Math.floor((currentDate.getTime() - uploadDate.getTime()) / (1000 * 60 * 60 * 24));
