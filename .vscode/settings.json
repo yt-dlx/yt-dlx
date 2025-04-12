@@ -1,10 +1,15 @@
 {
   "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
+    "**/out": false,
     "**/.hg": true,
-    "**/.DS_Store": true,
+    "**/venv": true,
+    "**/.svn": true,
+    "**/.git": true,
+    "**/dist": false,
+    "**/.venv": true,
+    "**/build": false,
     "**/Thumbs.db": true,
+    "**/.DS_Store": true,
     "**/node_modules": true
   }
 }
