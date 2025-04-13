@@ -6,6 +6,6 @@
   "theme": "default",
   "excludePrivate": true,
   "excludeExternals": true,
-  "includes": "src/**/*.ts",
+  "includes": "app/**/*.ts",
   "exclude": ["**/*.test.ts", "**/*.spec.ts"]
 }
