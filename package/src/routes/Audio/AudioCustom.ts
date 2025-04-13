@@ -6,7 +6,6 @@ import ffmpeg from "fluent-ffmpeg";
 import Tuber from "../../base/Agent";
 import { EventEmitter } from "events";
 import { locator } from "../../base/locator";
-
 /**
  * Defines the schema for the input parameters used in the `AudioCustom` function.
  *
@@ -31,7 +30,6 @@ const ZodSchema = z.object({
   metadata: z.boolean().optional(),
   resolution: z.enum(["high", "medium", "low", "ultralow"]),
 });
-
 /**
  * Processes a YouTube video query and applies audio effects (if any) while streaming or saving the result.
  *

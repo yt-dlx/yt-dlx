@@ -1,0 +1,11 @@
+{
+  "out": "docs",
+  "target": "ES6",
+  "readme": "none",
+  "mode": "modules",
+  "theme": "default",
+  "excludePrivate": true,
+  "excludeExternals": true,
+  "includes": "src/**/*.ts",
+  "exclude": ["**/*.test.ts", "**/*.spec.ts"]
+}
