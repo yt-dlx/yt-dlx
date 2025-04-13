@@ -1,6 +1,6 @@
 {
   "name": "yt-dlx",
-  "version": "14.0.23",
+  "version": "14.0.24",
   "license": "Apache-2.0",
   "main": "out/cjs/src/index.js",
   "types": "out/types/index.d.ts",
@@ -52,8 +52,8 @@
     "typescript": "^5.8.2"
   },
   "scripts": {
-    "prepublishOnly": "yarn build",
     "make": "yarn install --frozen-lockfile",
+    "prepublishOnly": "rimraf out && yarn build",
     "spec": "yarn build && node out/cjs/src/spec/aio.spec.js",
     "server": "yarn build && node out/cjs/src/spec/server.spec.js",
     "build": "rimraf out/cjs out/esm out/types && tsc -p config/cjs.json && tsc -p config/esm.json && tsc -p config/types.json",
