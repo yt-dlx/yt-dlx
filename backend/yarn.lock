@@ -3602,10 +3602,10 @@ youtubei@^1.6.7:
     node-fetch "2.6.7"
     protobufjs "7.2.6"
 
-yt-dlx@^14.0.21:
-  version "14.0.21"
-  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-14.0.21.tgz#86e8e7c1665c23aeb2e76710c2cc02521c57309a"
-  integrity sha512-+0kDQRkPBAafq+m32IwuToAXcnycPa7vxmMVOyali9rQrK3ezpaCsSBp1wwLn+nRo+4e/7Ynmn+ooEGHVgYWJA==
+yt-dlx@^14.0.22:
+  version "14.0.22"
+  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-14.0.22.tgz#aeda80490e33f8f9842a8e63fed82e75f2f2e737"
+  integrity sha512-33DEA2NIyVeI8ZYmJFrmr7+/pLUSl9hw1CeRW1t3TVRlEFbo04423/ciLUTgdzC7x27/ltVVSjhlJX0dtvNhkg==
   dependencies:
     async-retry "^1.3.3"
     axios "^1.8.4"

@@ -16,7 +16,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-player": "^2.16.0",
-    "yt-dlx": "^14.0.21",
+    "yt-dlx": "^14.0.22",
     "zod": "^3.24.2"
   },
   "devDependencies": {
