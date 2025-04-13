@@ -53,6 +53,7 @@
     "typescript": "^5.8.2"
   },
   "scripts": {
+    "docs": "typedoc .",
     "make": "yarn install --frozen-lockfile",
     "prepublishOnly": "rimraf out && yarn build",
     "spec": "yarn build && node out/cjs/src/spec/aio.spec.js",
