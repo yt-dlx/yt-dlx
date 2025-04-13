@@ -1,59 +1,77 @@
 import colors from "colors";
-import * as path from "path";
-import * as fsx from "fs-extra";
-async function findRootDirectory(currentPath: string): Promise<string | null> {
-  const markerFile = "package.json";
-  try {
-    const files = await fsx.readdir(currentPath);
-    if (files.includes(markerFile)) return currentPath;
-    const parentDir = path.resolve(currentPath, "..");
-    if (parentDir === currentPath) return null;
-    return findRootDirectory(parentDir);
-  } catch (error) {
-    return null;
-  }
+import { readdir, stat } from "fs/promises";
+import { resolve, join, extname } from "path";
+interface ExecPaths {
+  [key: string]: string;
 }
-async function scanner(directory: string, execName: string): Promise<string | null> {
-  try {
-    const files = await fsx.readdir(directory);
-    for (const file of files) {
-      const filePath = path.join(directory, file);
-      const stat = await fsx.stat(filePath);
-      if (stat.isDirectory()) {
-        if (file === "node_modules") continue;
-        const subFiles = await fsx.readdir(filePath);
-        for (const subFile of subFiles) {
-          const subFilePath = path.join(filePath, subFile);
-          if (subFile.toLowerCase() === execName.toLowerCase() || subFile.toLowerCase() === execName.toLowerCase() + ".exe") return subFilePath;
-        }
-      } else {
-        if (file.toLowerCase() === execName.toLowerCase() || file.toLowerCase() === execName.toLowerCase() + ".exe") return filePath;
-      }
+async function findRootDirectory(startPath: string): Promise<string | null> {
+  let currentPath = resolve(startPath);
+  const root = resolve("/");
+  while (currentPath !== root) {
+    try {
+      const files = await readdir(currentPath);
+      if (files.includes("package.json")) return currentPath;
+      currentPath = resolve(currentPath, "..");
+    } catch (error) {
+      console.warn(colors.yellow("@warning:"), `Cannot read ${currentPath}:`, error);
+      return null;
     }
-    return null;
-  } catch (error) {
-    return null;
   }
+  return null;
 }
-export async function locator() {
+async function scanForExecutables(directory: string, execNames: string[], platform: NodeJS.Platform = process.platform): Promise<ExecPaths> {
+  const results: ExecPaths = {};
+  const targetNames = new Set<string>();
+  for (const name of execNames) {
+    targetNames.add(name.toLowerCase());
+    if (platform === "win32") {
+      targetNames.add(`${name.toLowerCase()}.exe`);
+    }
+  }
+  async function searchDir(currentDir: string): Promise<void> {
+    try {
+      const entries = await readdir(currentDir, { withFileTypes: true });
+      for (const entry of entries) {
+        const fullPath = join(currentDir, entry.name);
+        if (entry.isDirectory()) {
+          if (entry.name === "node_modules") continue;
+          await searchDir(fullPath);
+        } else if (entry.isFile()) {
+          const fileName = entry.name.toLowerCase();
+          if (targetNames.has(fileName)) {
+            const fileStat = await stat(fullPath);
+            const isExecutable = process.platform !== "win32" ? (fileStat.mode & 0o111) !== 0 : extname(fileName) === ".exe";
+            if (isExecutable) {
+              const baseName = fileName.replace(/\.exe$/, "");
+              if (!results[baseName]) results[baseName] = fullPath;
+            }
+          }
+        }
+      }
+    } catch (error) {
+      console.warn(colors.yellow("@warning:"), `Error scanning ${currentDir}:`, error);
+    }
+  }
+  await searchDir(directory);
+  return results;
+}
+export async function locator(execNames: string[] = ["ffmpeg", "ffprobe", "cprobe"], startPath: string = resolve(__dirname, "../../..")): Promise<ExecPaths> {
   try {
-    const initialPath = path.resolve(__dirname, "../../..");
-    const rootDirectory = await findRootDirectory(initialPath);
-    if (!rootDirectory) return {};
-    const results: { [key: string]: string } = {};
-    const execNames = ["ffmpeg", "ffprobe", "cprobe"];
-    for (const execName of execNames) {
-      const execPath = await scanner(rootDirectory, execName);
-      if (execPath) {
-        results[execName] = execPath;
-      } else {
-        console.log(colors.red("@error:"), `${execName} not found.`);
-        results[execName] = "";
+    const rootDir = await findRootDirectory(startPath);
+    if (!rootDir) {
+      console.log(colors.red("@error:"), "Root directory not found.");
+      return {};
+    }
+    const results = await scanForExecutables(rootDir, execNames);
+    for (const name of execNames) {
+      if (!results[name]) {
+        console.log(colors.red("@error:"), `${name} not found.`);
+        results[name] = "";
       }
     }
     return results;
   } catch (error) {
-    console.error(colors.red("@error:"), "Error in locator function:", error);
+    console.error(colors.red("@error:"), "Error in locator:", error);
     return {};
   }
 }

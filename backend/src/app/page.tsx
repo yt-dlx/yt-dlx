@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Image from "next/image";
-import { useState } from "react";
 import { Search } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
 import ReactPlayer from "react-player";
+import { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface SearchResult {
   id: string;
@@ -26,6 +26,7 @@ export default function Home() {
   const [error, setError] = useState<string | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<SearchResult | null>(null);
   const [videoUrl, setVideoUrl] = useState<string | null>(null);
+  const playerRef = useRef<ReactPlayer>(null);
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
@@ -175,8 +176,8 @@ export default function Home() {
               className="flex-1 bg-transparent text-[#f1f1f1] placeholder-[#606060] text-base sm:text-lg px-4 py-3 outline-none"
               placeholder="Search videos or playlists..."
               value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              onKeyDown={e => e.key === "Enter" && handleSearch()}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleSearch()}
               autoCapitalize="none"
               autoCorrect="off"
             />
@@ -225,9 +226,17 @@ export default function Home() {
                     onClick={() => handleVideoSelect(item)}>
                     {item.thumbnails && item.thumbnails.length > 0 && (
                       <div className="relative flex-shrink-0 w-full">
-                        <Image src={item.thumbnails[0]?.url || ""} alt={item.title} width={640} height={360} className="rounded-xl object-cover w-full h-auto" />
+                        <Image
+                          src={item.thumbnails[0]?.url || ""}
+                          alt={item.title}
+                          width={640}
+                          height={360}
+                          className="rounded-xl object-cover w-full h-auto"
+                        />
                         {item.isLive && <span className="absolute top-2 left-2 bg-[#ff0000] text-white text-xs font-bold px-2 py-1 rounded-md">LIVE</span>}
-                        <span className="absolute bottom-2 right-2 bg-[#0f0f0f] bg-opacity-80 text-white text-xs font-medium px-2 py-1 rounded-md">{formatDuration(item.duration)}</span>
+                        <span className="absolute bottom-2 right-2 bg-[#0f0f0f] bg-opacity-80 text-white text-xs font-medium px-2 py-1 rounded-md">
+                          {formatDuration(item.duration)}
+                        </span>
                       </div>
                     )}
                     <div className="flex-1">
@@ -243,7 +252,11 @@ export default function Home() {
                 ))}
               </div>
             ) : !isLoading && !error ? (
-              <motion.p className="text-[#606060] text-center text-base sm:text-lg mt-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+              <motion.p
+                className="text-[#606060] text-center text-base sm:text-lg mt-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}>
                 Search to find videos or playlists.
               </motion.p>
             ) : isLoading ? (
@@ -269,7 +282,6 @@ export default function Home() {
           </AnimatePresence>
         </div>
       </div>
-      {/* Video Player Modal */}
       <AnimatePresence>
         {selectedVideo && (
           <motion.div
@@ -279,24 +291,68 @@ export default function Home() {
             exit={{ opacity: 0 }}
             onClick={closeVideoPlayer}>
             <motion.div
-              className="bg-[#181818] rounded-lg p-4 max-w-4xl w-full relative"
-              onClick={e => e.stopPropagation()} // Prevent closing when clicking inside
+              className="bg-white text-black rounded-lg p-4 max-w-5xl w-full relative"
+              onClick={(e) => e.stopPropagation()}
               initial={{ scale: 0.7, y: 50 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.7, y: 50 }}
               transition={{ duration: 0.3 }}>
-              <button className="absolute top-2 right-2 text-[#f1f1f1] hover:text-[#ff0000] text-2xl" onClick={closeVideoPlayer}>
+              <button
+                className="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-2xl"
+                onClick={closeVideoPlayer}>
                 ×
               </button>
-              <h2 className="text-lg font-semibold text-[#f1f1f1] mb-2">{selectedVideo.title}</h2>
-              {videoUrl && <ReactPlayer url={videoUrl} controls width="100%" height="auto" playing={true} onError={e => setError(`Video playback error: ${e}`)} />}
-              {!videoUrl && <p className="text-[#ff4444] text-center">Loading video... {error}</p>}
+              <div className="w-full">
+                {videoUrl && (
+                  <ReactPlayer
+                    ref={playerRef}
+                    url={videoUrl}
+                    controls
+                    width="100%"
+                    height="auto"
+                    playing={true}
+                    onError={(e) => setError(`Video playback error: ${e}`)}
+                  />
+                )}
+                {!videoUrl && <p className="text-red-600 text-center">Loading video... {error}</p>}
+              </div>
+              <div className="mt-4">
+                <h2 className="text-xl font-semibold">{selectedVideo.title}</h2>
+                <div className="flex items-center mt-2">
+                  <span className="text-sm text-gray-600 mr-4">{formatViewCount(selectedVideo.viewCount)}</span>
+                  <span className="text-sm text-gray-600">{selectedVideo.uploadDate || "Unknown date"}</span>
+                </div>
+                <div className="flex items-center mt-2">
+                  <div className="w-10 h-10 rounded-full overflow-hidden mr-2">
+                    {selectedVideo.thumbnails && selectedVideo.thumbnails.length > 0 && (
+                      <Image
+                        src={selectedVideo.thumbnails[0].url}
+                        alt={selectedVideo.channelname || "Channel"}
+                        width={40}
+                        height={40}
+                        className="object-cover"
+                      />
+                    )}
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">{selectedVideo.channelname || "Unknown channel"}</p>
+                    <p className="text-xs text-gray-500">Subscriber count unavailable</p>
+                  </div>
+                  <button className="ml-auto bg-red-600 text-white px-4 py-2 rounded-full text-sm hover:bg-red-700">Subscribe</button>
+                </div>
+                <div className="mt-4">
+                  <p className="text-sm text-gray-700 line-clamp-3">{selectedVideo.description || "No description available"}</p>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-      {/* Footer Sticker */}
-      <motion.footer className="bg-[#212121] w-full py-3 fixed bottom-0 left-0 flex justify-around items-center shadow-lg" initial={{ y: 100 }} animate={{ y: 0 }} transition={{ duration: 0.5 }}>
+      <motion.footer
+        className="bg-[#212121] w-full py-3 fixed bottom-0 left-0 flex justify-around items-center shadow-lg"
+        initial={{ y: 100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5 }}>
         <button className="text-[#aaaaaa] hover:text-[#ff0000] text-center flex-1 py-2" onClick={handleTrending}>
           <svg className="w-6 h-6 mx-auto" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" />
