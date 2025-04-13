@@ -12,13 +12,14 @@ import list_formats from "./routes/command/list_formats";
 import search_videos from "./routes/command/search_videos";
 import playlist_data from "./routes/command/playlist_data";
 import related_videos from "./routes/command/related_videos";
+import video_transcript from "./routes/command/video_transcript";
 import search_playlists from "./routes/command/search_playlists";
 import AudioVideoLowest from "./routes/AudioVideo/AudioVideoLowest";
 import AudioVideoCustom from "./routes/AudioVideo/AudioVideoCustom";
 import AudioVideoHighest from "./routes/AudioVideo/AudioVideoHighest";
 var ytdlx = {
   progbar,
-  info: { help, extract, list_formats },
+  info: { help, extract, list_formats, video_transcript },
   AudioOnly: { Lowest: AudioLowest, Highest: AudioHighest, Custom: AudioCustom },
   VideoOnly: { Lowest: VideoLowest, Highest: VideoHighest, Custom: VideoCustom },
   AudioVideo: { Lowest: AudioVideoLowest, Highest: AudioVideoHighest, Custom: AudioVideoCustom },

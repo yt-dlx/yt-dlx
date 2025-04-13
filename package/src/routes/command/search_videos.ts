@@ -16,7 +16,7 @@ export interface searchVideosType {
   description: string;
   thumbnails: string[];
 }
-async function searchVideos({ query }: { query: string }) {
+export async function searchVideos({ query }: { query: string }) {
   try {
     var youtube = new Client();
     var searchVideos = await youtube.search(query, { type: "video" });
@@ -37,6 +37,7 @@ async function searchVideos({ query }: { query: string }) {
     throw new Error(colors.red("@error: ") + error.message);
   }
 }
+
 export default function search_videos({ query }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

@@ -1,9 +1,11 @@
-import web from "../web";
 import colors from "colors";
 import Engine from "./Engine";
 import { execSync } from "child_process";
 import YouTubeID from "../YouTubeId";
 import type EngineOutput from "../interfaces/EngineOutput";
+import { searchVideos } from "../routes/command/search_videos";
+import { singleVideo } from "../routes/command/video_data";
+
 async function systemctlAvailable(): Promise<boolean> {
   try {
     execSync("systemctl --version", { stdio: "ignore" });
@@ -54,14 +56,14 @@ export default async function Agent({ query, useTor, verbose }: { query: string;
   let respEngine: EngineOutput | undefined = undefined;
   const videoId: string | undefined = await YouTubeID(query);
   if (!videoId) {
-    const searchResult = await web.searchVideos({ query });
+    const searchResult = await searchVideos({ query });
     const video = searchResult[0];
     if (!video) throw new Error("Unable to find a video!");
     console.log(colors.green("@info:"), "preparing payload for", video.title);
     respEngine = await Engine({ query: `https://www.youtube.com/watch?v=${video.id}`, useTor });
     return respEngine;
   } else {
-    TubeBody = await web.singleVideo({ videoId });
+    TubeBody = await singleVideo({ videoId });
     if (!TubeBody) throw new Error("Unable to get response!");
     console.log(colors.green("@info:"), "preparing payload for", TubeBody.title);
     respEngine = await Engine({ query: `https://www.youtube.com/watch?v=${TubeBody.id}`, useTor });
