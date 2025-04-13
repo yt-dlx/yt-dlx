@@ -1,5 +1,5 @@
 // ====================================================================================
-import ytdlx from "yt-dlx";
+import ytdlx from "..";
 import colors from "colors";
 import express from "express";
 const server = express();
