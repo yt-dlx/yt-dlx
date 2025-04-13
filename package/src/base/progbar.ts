@@ -1,6 +1,19 @@
 import colors from "colors";
 import formatTime from "./formatTime";
 import calculateETA from "./calculateETA";
+/**
+ * Displays a progress bar in the console.
+ *
+ * @function progbar
+ * @param {Object} options - Progress bar options.
+ * @param {number} options.percent - Percentage of completion (0-100).
+ * @param {number} options.timemark - Current time elapsed or remaining.
+ * @param {number} options.baseTime - Base time for ETA calculation.
+ *
+ * @example
+ * // Example usage:
+ * progbar({ percent: 50, timemark: 10, baseTime: 0 });
+ */
 var progbar = ({ percent, timemark, baseTime }) => {
   if (isNaN(percent)) percent = 0;
   percent = Math.min(Math.max(percent, 0), 100);

@@ -6,6 +6,19 @@ import type sizeFormat from "../interfaces/sizeFormat";
 import type AudioFormat from "../interfaces/AudioFormat";
 import type VideoFormat from "../interfaces/VideoFormat";
 import type EngineOutput from "../interfaces/EngineOutput";
+
+/**
+ * Converts a given filesize in bytes to a human-readable format (B, MB, GB, TB).
+ *
+ * @function sizeFormat
+ * @param {number} filesize - The filesize in bytes.
+ * @returns {string | number} A human-readable string representing the size in B, MB, GB, or TB.
+ *         Returns the original number if it's invalid or negative.
+ *
+ * @example
+ * sizeFormat(1048576); // Output: "1.00 MB"
+ * sizeFormat(-100); // Output: -100
+ */
 export var sizeFormat: sizeFormat = (filesize: number): string | number => {
   if (isNaN(filesize) || filesize < 0) return filesize;
   var bytesPerMegabyte = 1024 * 1024;
@@ -18,6 +31,17 @@ export var sizeFormat: sizeFormat = (filesize: number): string | number => {
     return (filesize / bytesPerGigabyte).toFixed(2) + " GB";
   } else return (filesize / bytesPerTerabyte).toFixed(2) + " TB";
 };
+
+/**
+ * Normalizes an audio format object by removing unnecessary properties.
+ *
+ * @function nAudio
+ * @param {any} i - The audio format object.
+ * @returns {any} The normalized audio format object.
+ *
+ * @example
+ * const normalizedAudio = nAudio(someAudioObject);
+ */
 function nAudio(i: any) {
   i.filesizeP = sizeFormat(i.filesize);
   delete i.format_id;
@@ -40,10 +64,32 @@ function nAudio(i: any) {
   delete i.video_ext;
   return i;
 }
+
+/**
+ * Normalizes a video format object by formatting the filesize.
+ *
+ * @function nVideo
+ * @param {VideoFormat} i - The video format object.
+ * @returns {VideoFormat} The normalized video format object.
+ *
+ * @example
+ * const normalizedVideo = nVideo(someVideoObject);
+ */
 function nVideo(i: VideoFormat) {
   i.filesizeP = sizeFormat(i.filesize);
   return i;
 }
+
+/**
+ * Prepares an audio format object for output by ensuring it has necessary properties.
+ *
+ * @function pAudio
+ * @param {any} i - The audio format object.
+ * @returns {Object} The processed audio format object.
+ *
+ * @example
+ * const processedAudio = pAudio(someAudioObject);
+ */
 function pAudio(i: any) {
   return {
     filesize: i.filesize as number,
@@ -61,6 +107,17 @@ function pAudio(i: any) {
     format: i.format as string,
   };
 }
+
+/**
+ * Prepares a video format object for output by ensuring it has necessary properties.
+ *
+ * @function pVideo
+ * @param {any} i - The video format object.
+ * @returns {Object} The processed video format object.
+ *
+ * @example
+ * const processedVideo = pVideo(someVideoObject);
+ */
 function pVideo(i: any) {
   return {
     filesize: i.filesize as number,
@@ -82,6 +139,17 @@ function pVideo(i: any) {
     format: i.format as string,
   };
 }
+
+/**
+ * Prepares a manifest format object for output by ensuring it has necessary properties.
+ *
+ * @function pManifest
+ * @param {any} i - The manifest format object.
+ * @returns {Object} The processed manifest format object.
+ *
+ * @example
+ * const processedManifest = pManifest(someManifestObject);
+ */
 function pManifest(i: any) {
   return {
     url: i.url as string,
@@ -99,6 +167,30 @@ function pManifest(i: any) {
     format: i.format as string,
   };
 }
+
+/**
+ * Main function that processes a query by fetching video data, retrying if necessary.
+ *
+ * This function orchestrates the retrieval of video data, either through querying a direct video URL
+ * or by searching for a video and then processing the video formats, audio formats, and metadata.
+ * It applies retries in case of failure and formats the output to return processed data.
+ *
+ * @function Engine
+ * @async
+ * @param {Object} options - The options object.
+ * @param {string} options.query - The query string for the video search or URL.
+ * @param {boolean} [options.sudo=false] - If true, runs with sudo privileges (optional).
+ * @param {boolean} [options.useTor=false] - If true, the request is routed through Tor (optional).
+ * @returns {Promise<EngineOutput>} A promise resolving to the processed engine output with video and audio formats, metadata, and manifests.
+ * @throws {Error} Throws an error if no valid video is found or if the video data cannot be processed.
+ *
+ * @example
+ * Engine({ query: "Sample video", useTor: true }).then(output => {
+ *   console.log(output); // Output: processed video and audio formats
+ * }).catch(error => {
+ *   console.error(error); // Output: Error message
+ * });
+ */
 export default async function Engine({ sudo, query, useTor }: { query: string; sudo?: boolean; useTor?: boolean }) {
   var AudioLow: any = {};
   var AudioHigh: any = {};

@@ -18,6 +18,10 @@ import search_playlists from "./routes/command/search_playlists";
 import AudioVideoLowest from "./routes/AudioVideo/AudioVideoLowest";
 import AudioVideoCustom from "./routes/AudioVideo/AudioVideoCustom";
 import AudioVideoHighest from "./routes/AudioVideo/AudioVideoHighest";
+/**
+ * @module ytdlx
+ * @description Main module for ytdlx library.
+ */
 var ytdlx = {
   Progress_Bar: progbar,
   Audio: { Lowest: AudioLowest, Highest: AudioHighest, Custom: AudioCustom },
@@ -26,4 +30,8 @@ var ytdlx = {
   Audio_Video: { Lowest: AudioVideoLowest, Highest: AudioVideoHighest, Custom: AudioVideoCustom },
   Search: { Video: { Single: video_data, Multiple: search_videos, Related: related_videos, Transcript: video_transcript }, Playlist: { Single: playlist_data, Multiple: search_playlists } },
 };
+/**
+ * @description Exported ytdlx module.
+ * @exports ytdlx
+ */
 export default ytdlx;
