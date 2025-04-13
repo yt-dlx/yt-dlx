@@ -12,7 +12,7 @@ server.get("/AudioOnlyCustomData", async (req: any, res: any) => {
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   if (!resolution) return res.status(400).json({ error: "Missing resolution parameter." });
   try {
-    const instance = ytdlx.AudioOnly.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
+    const instance = ytdlx.Audio.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
     instance.on("metadata", metadata => res.json(metadata));
     instance.on("start", command => console.log(colors.gray("start:"), command));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -26,7 +26,7 @@ server.get("/AudioOnlyHighestData", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const instance = ytdlx.AudioOnly.Highest({ useTor: true, metadata: true, verbose: true, query });
+    const instance = ytdlx.Audio.Highest({ useTor: true, metadata: true, verbose: true, query });
     instance.on("metadata", metadata => res.json(metadata));
     instance.on("start", command => console.log(colors.gray("start:"), command));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -40,7 +40,7 @@ server.get("/AudioOnlyLowestData", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const instance = ytdlx.AudioOnly.Lowest({ useTor: true, metadata: true, verbose: true, query });
+    const instance = ytdlx.Audio.Lowest({ useTor: true, metadata: true, verbose: true, query });
     instance.on("metadata", metadata => res.json(metadata));
     instance.on("start", command => console.log(colors.gray("start:"), command));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -58,7 +58,7 @@ server.get("/VideoOnlyCustomData", async (req: any, res: any) => {
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   if (!resolution) return res.status(400).json({ error: "Missing resolution parameter." });
   try {
-    const instance = ytdlx.VideoOnly.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
+    const instance = ytdlx.Video.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
     instance.on("metadata", metadata => res.json(metadata));
     instance.on("start", command => console.log(colors.gray("start:"), command));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -72,7 +72,7 @@ server.get("/VideoOnlyHighestData", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const instance = ytdlx.VideoOnly.Highest({ useTor: true, metadata: true, verbose: true, query });
+    const instance = ytdlx.Video.Highest({ useTor: true, metadata: true, verbose: true, query });
     instance.on("metadata", metadata => res.json(metadata));
     instance.on("start", command => console.log(colors.gray("start:"), command));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -86,7 +86,7 @@ server.get("/VideoOnlyLowestData", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const instance = ytdlx.VideoOnly.Lowest({ useTor: true, metadata: true, verbose: true, query });
+    const instance = ytdlx.Video.Lowest({ useTor: true, metadata: true, verbose: true, query });
     instance.on("metadata", metadata => res.json(metadata));
     instance.on("start", command => console.log(colors.gray("start:"), command));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -100,7 +100,7 @@ server.get("/AudioVideoHighestData", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const instance = ytdlx.AudioVideo.Highest({ useTor: true, metadata: true, verbose: true, query });
+    const instance = ytdlx.Audio_Video.Highest({ useTor: true, metadata: true, verbose: true, query });
     instance.on("metadata", metadata => res.json(metadata));
     instance.on("start", command => console.log(colors.gray("start:"), command));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -118,7 +118,7 @@ server.get("/AudioVideoCustomData", async (req: any, res: any) => {
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   if (!resolution) return res.status(400).json({ error: "Missing resolution parameter." });
   try {
-    const instance = ytdlx.AudioVideo.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
+    const instance = ytdlx.Audio_Video.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
     instance.on("metadata", metadata => res.json(metadata));
     instance.on("start", command => console.log(colors.gray("start:"), command));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -132,7 +132,7 @@ server.get("/AudioVideoLowestData", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const instance = ytdlx.AudioVideo.Lowest({ useTor: true, metadata: true, verbose: true, query });
+    const instance = ytdlx.Audio_Video.Lowest({ useTor: true, metadata: true, verbose: true, query });
     instance.on("metadata", metadata => res.json(metadata));
     instance.on("start", command => console.log(colors.gray("start:"), command));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -146,7 +146,7 @@ server.get("/AudioVideoLowestData", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const instance = ytdlx.AudioVideo.Lowest({ useTor: true, metadata: true, verbose: true, query });
+    const instance = ytdlx.Audio_Video.Lowest({ useTor: true, metadata: true, verbose: true, query });
     instance.on("metadata", metadata => res.json(metadata));
     instance.on("start", command => console.log(colors.gray("start:"), command));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -160,7 +160,7 @@ server.get("/SearchMultipleVideos", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const instance = ytdlx.ytSearch.Video.Multiple({ query });
+    const instance = ytdlx.Search.Video.Multiple({ query });
     instance.on("data", data => res.json(data));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (err: any) {
@@ -173,7 +173,7 @@ server.get("/SearchSingleVideo", async (req: any, res: any) => {
   const videoLink = req.query.videoLink as string;
   if (!videoLink) return res.status(400).json({ error: "Missing videoLink parameter." });
   try {
-    const instance = ytdlx.ytSearch.Video.Single({ videoLink });
+    const instance = ytdlx.Search.Video.Single({ videoLink });
     instance.on("data", data => res.json(data));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (err: any) {
@@ -186,7 +186,7 @@ server.get("/SearchRelatedVideos", async (req: any, res: any) => {
   const videoId = req.query.videoId as string;
   if (!videoId) return res.status(400).json({ error: "Missing videoId parameter." });
   try {
-    const instance = ytdlx.ytSearch.Video.Related({ videoId });
+    const instance = ytdlx.Search.Video.Related({ videoId });
     instance.on("data", data => res.json(data));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (err: any) {
@@ -199,7 +199,7 @@ server.get("/SearchMultiplePlaylists", async (req: any, res: any) => {
   const playlistLink = req.query.playlistLink as string;
   if (!playlistLink) return res.status(400).json({ error: "Missing playlistLink parameter." });
   try {
-    const instance = ytdlx.ytSearch.Playlist.Multiple({ playlistLink });
+    const instance = ytdlx.Search.Playlist.Multiple({ playlistLink });
     instance.on("data", data => res.json(data));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (err: any) {
@@ -212,7 +212,7 @@ server.get("/SearchSinglePlaylist", async (req: any, res: any) => {
   const playlistLink = req.query.playlistLink as string;
   if (!playlistLink) return res.status(400).json({ error: "Missing playlistLink parameter." });
   try {
-    const instance = ytdlx.ytSearch.Playlist.Single({ playlistLink });
+    const instance = ytdlx.Search.Playlist.Single({ playlistLink });
     instance.on("data", data => res.json(data));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (err: any) {
@@ -225,7 +225,7 @@ server.get("/ExtractVideoData", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const instance = ytdlx.info.extract({ query });
+    const instance = ytdlx.Info.extract({ query });
     instance.on("data", data => res.json(data));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (err: any) {
@@ -238,7 +238,7 @@ server.get("/ListVideoFormats", async (req: any, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const instance = ytdlx.info.list_formats({ query });
+    const instance = ytdlx.Info.list_formats({ query });
     instance.on("data", data => res.json(data));
     instance.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (err: any) {

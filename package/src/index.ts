@@ -19,11 +19,11 @@ import AudioVideoLowest from "./routes/AudioVideo/AudioVideoLowest";
 import AudioVideoCustom from "./routes/AudioVideo/AudioVideoCustom";
 import AudioVideoHighest from "./routes/AudioVideo/AudioVideoHighest";
 var ytdlx = {
-  progress_bar: progbar,
-  info: { help, extract, list_formats, video_transcript, get_videoId: YouTubeID },
-  AudioOnly: { Lowest: AudioLowest, Highest: AudioHighest, Custom: AudioCustom },
-  VideoOnly: { Lowest: VideoLowest, Highest: VideoHighest, Custom: VideoCustom },
-  AudioVideo: { Lowest: AudioVideoLowest, Highest: AudioVideoHighest, Custom: AudioVideoCustom },
-  ytSearch: { Video: { Single: video_data, Multiple: search_videos, Related: related_videos }, Playlist: { Single: playlist_data, Multiple: search_playlists } },
+  Progress_Bar: progbar,
+  Audio: { Lowest: AudioLowest, Highest: AudioHighest, Custom: AudioCustom },
+  Video: { Lowest: VideoLowest, Highest: VideoHighest, Custom: VideoCustom },
+  Info: { help, extract, list_formats, video_transcript, get_videoId: YouTubeID },
+  Audio_Video: { Lowest: AudioVideoLowest, Highest: AudioVideoHighest, Custom: AudioVideoCustom },
+  Search: { Video: { Single: video_data, Multiple: search_videos, Related: related_videos }, Playlist: { Single: playlist_data, Multiple: search_playlists } },
 };
 export default ytdlx;
