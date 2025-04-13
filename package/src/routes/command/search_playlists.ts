@@ -3,13 +3,42 @@ import { z, ZodError } from "zod";
 import { Client } from "youtubei";
 import { EventEmitter } from "events";
 import YouTubeID from "../../YouTubeId";
+
+/**
+ * Defines the schema for the input parameters used in the `search_playlists` function.
+ *
+ * @typedef {object} SearchPlaylistsOptions
+ * @property {string} playlistLink - The link to search for playlists.
+ */
 const ZodSchema = z.object({ playlistLink: z.string().min(2) });
+
+/**
+ * Represents the structure of a YouTube playlist search result.
+ *
+ * @interface searchPlaylistsType
+ * @property {string} id - The ID of the playlist.
+ * @property {string} title - The title of the playlist.
+ * @property {number} videoCount - The number of videos in the playlist.
+ * @property {string[]} thumbnails - The list of thumbnail URLs for the playlist.
+ */
 export interface searchPlaylistsType {
   id: string;
   title: string;
   videoCount: number;
   thumbnails: string[];
 }
+
+/**
+ * Searches for YouTube playlists based on a query string.
+ *
+ * @function searchPlaylists
+ * @param {object} options - The options object containing the search query.
+ * @param {string} options.query - The search query.
+ * @returns {Promise<searchPlaylistsType[]>} A promise that resolves with a list of playlists matching the search query.
+ *
+ * @example
+ * const playlists = await searchPlaylists({ query: "JavaScript tutorials" });
+ */
 async function searchPlaylists({ query }: { query: string }) {
   try {
     var youtube = new Client();
@@ -20,17 +49,33 @@ async function searchPlaylists({ query }: { query: string }) {
     throw new Error(colors.red("@error: ") + error.message);
   }
 }
+
+/**
+ * Searches for playlists using a given query string, validates the input, and emits the first playlist found.
+ *
+ * @function search_playlists
+ * @param {SearchPlaylistsOptions} options - The options object containing the playlist link to search for.
+ * @returns {EventEmitter} The event emitter to handle `data`, `error` events.
+ *
+ * @example
+ * const emitter = search_playlists({ playlistLink: "JavaScript tutorials" });
+ * emitter.on("data", data => console.log(data));
+ * emitter.on("error", error => console.error(error));
+ */
 export default function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse({ playlistLink });
+
       const isID = await YouTubeID(playlistLink);
       if (isID) throw new Error(colors.red("@error: ") + "use playlist_data() for playlist link!");
+
       const metaDataArray: searchPlaylistsType[] = await searchPlaylists({ query: playlistLink });
       if (!metaDataArray.length) throw new Error(colors.red("@error: ") + "No playlists found!");
       const metaData: searchPlaylistsType = metaDataArray[0];
       if (!metaData) throw new Error(colors.red("@error: ") + "Unable to get response!");
+
       emitter.emit("data", metaData);
     } catch (error: unknown) {
       switch (true) {

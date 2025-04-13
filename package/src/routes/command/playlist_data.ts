@@ -3,13 +3,42 @@ import { z, ZodError } from "zod";
 import { Client } from "youtubei";
 import { EventEmitter } from "events";
 import YouTubeID from "../../YouTubeId";
+
+/**
+ * Defines the schema for the input parameters used in the `playlist_data` function.
+ *
+ * @typedef {object} PlaylistDataOptions
+ * @property {string} playlistLink - The URL of the YouTube playlist.
+ */
 const ZodSchema = z.object({ playlistLink: z.string().min(2) });
+
+/**
+ * Represents the structure of a playlist with its videos.
+ *
+ * @interface playlistVideosType
+ * @property {string} id - The ID of the playlist.
+ * @property {string} title - The title of the playlist.
+ * @property {number} videoCount - The total number of videos in the playlist.
+ * @property {Array<{ id: string, title: string, isLive: boolean, duration: number, thumbnails: string[] }>} result - The list of videos in the playlist.
+ */
 export interface playlistVideosType {
   id: string;
   title: string;
   videoCount: number;
   result: { id: string; title: string; isLive: boolean; duration: number; thumbnails: string[] };
 }
+
+/**
+ * Fetches the details of all videos in a YouTube playlist.
+ *
+ * @function playlistVideos
+ * @param {object} options - The options object containing the playlist ID.
+ * @param {string} options.playlistId - The ID of the playlist.
+ * @returns {Promise<playlistVideosType>} A promise that resolves with the playlist details and its videos.
+ *
+ * @example
+ * const playlist = await playlistVideos({ playlistId: "PL1O3R10uGQ2jpXwhQID8IhX3" });
+ */
 async function playlistVideos({ playlistId }: { playlistId: string }) {
   try {
     var youtube = new Client();
@@ -20,6 +49,19 @@ async function playlistVideos({ playlistId }: { playlistId: string }) {
     throw new Error(colors.red("@error: ") + error.message);
   }
 }
+
+/**
+ * Fetches playlist data from YouTube based on the playlist URL and emits the formatted data.
+ *
+ * @function playlist_data
+ * @param {PlaylistDataOptions} options - The options object containing the playlist URL.
+ * @returns {EventEmitter} The event emitter to handle `data`, `error` events.
+ *
+ * @example
+ * const emitter = playlist_data({ playlistLink: "https://www.youtube.com/playlist?list=..." });
+ * emitter.on("data", data => console.log(data));
+ * emitter.on("error", error => console.error(error));
+ */
 export default function playlist_data({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
@@ -27,8 +69,10 @@ export default function playlist_data({ playlistLink }: z.infer<typeof ZodSchema
       ZodSchema.parse({ playlistLink });
       const playlistId = await YouTubeID(playlistLink);
       if (!playlistId) throw new Error(colors.red("@error: ") + "incorrect playlist link");
+
       const metaData: playlistVideosType = await playlistVideos({ playlistId });
       if (!metaData) throw new Error(colors.red("@error: ") + "Unable to get response!");
+
       emitter.emit("data", metaData);
     } catch (error: unknown) {
       switch (true) {
@@ -43,5 +87,6 @@ export default function playlist_data({ playlistLink }: z.infer<typeof ZodSchema
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
   })().catch(error => emitter.emit("error", error.message));
+
   return emitter;
 }

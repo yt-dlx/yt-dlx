@@ -3,6 +3,16 @@ import { z, ZodError } from "zod";
 import Tuber from "../../base/Agent";
 import { EventEmitter } from "events";
 import type EngineOutput from "../../interfaces/EngineOutput";
+
+/**
+ * Calculates the time ago from a given number of days and returns the formatted string.
+ *
+ * @function calculateUploadAgo
+ * @param {number} days - The number of days.
+ * @returns {object} The object with years, months, and days, and a formatted string.
+ * @example
+ * const uploadAgo = calculateUploadAgo(400); // Returns { years: 1, months: 1, days: 5, formatted: "1 years, 1 months, 5 days" }
+ */
 function calculateUploadAgo(days: number) {
   const years = Math.floor(days / 365);
   const months = Math.floor((days % 365) / 30);
@@ -10,6 +20,16 @@ function calculateUploadAgo(days: number) {
   const formattedString = `${years > 0 ? years + " years, " : ""}${months > 0 ? months + " months, " : ""}${remainingDays} days`;
   return { years, months, days: remainingDays, formatted: formattedString };
 }
+
+/**
+ * Calculates the video duration from seconds and returns the formatted string.
+ *
+ * @function calculateVideoDuration
+ * @param {number} seconds - The video duration in seconds.
+ * @returns {object} The object with hours, minutes, and seconds, and a formatted string.
+ * @example
+ * const videoDuration = calculateVideoDuration(3665); // Returns { hours: 1, minutes: 1, seconds: 5, formatted: "1 hours, 1 minutes, 5 seconds" }
+ */
 function calculateVideoDuration(seconds: number) {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
@@ -17,6 +37,16 @@ function calculateVideoDuration(seconds: number) {
   const formattedString = `${hours > 0 ? hours + " hours, " : ""}${minutes > 0 ? minutes + " minutes, " : ""}${remainingSeconds} seconds`;
   return { hours, minutes, seconds: remainingSeconds, formatted: formattedString };
 }
+
+/**
+ * Formats a large number (e.g., view count) with appropriate abbreviations (e.g., "K", "M", "B").
+ *
+ * @function formatCount
+ * @param {number} count - The number to be formatted.
+ * @returns {string} The formatted number with an abbreviation (e.g., "10K", "1.5M").
+ * @example
+ * const formattedCount = formatCount(1200); // Returns "1.2K"
+ */
 function formatCount(count: number) {
   const abbreviations = ["K", "M", "B", "T"];
   for (let i = abbreviations.length - 1; i >= 0; i--) {
@@ -28,23 +58,42 @@ function formatCount(count: number) {
   }
   return `${count}`;
 }
+
+/**
+ * Extracts the metadata of a YouTube video and returns the details in a formatted structure.
+ *
+ * @function extract
+ * @param {object} options - The options object containing query and settings.
+ * @param {string} options.query - The query string for the YouTube video.
+ * @param {boolean} [options.verbose] - Whether to enable verbose logging.
+ * @returns {EventEmitter} The event emitter to handle `data`, `error` events.
+ *
+ * @example
+ * const emitter = extract({ query: "Funny Video" });
+ * emitter.on("data", data => console.log(data));
+ */
 const ZodSchema = z.object({ query: z.string().min(2), verbose: z.boolean().optional() });
+
 export default function extract({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse({ query, verbose });
+
       const metaBody: EngineOutput = await Tuber({ query, verbose });
       if (!metaBody) throw new Error("Unable to get response!");
+
       const uploadDate = new Date(metaBody.metaData.upload_date.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"));
       const currentDate = new Date();
       const daysAgo = Math.floor((currentDate.getTime() - uploadDate.getTime()) / (1000 * 60 * 60 * 24));
       const prettyDate = uploadDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+
       const uploadAgoObject = calculateUploadAgo(daysAgo);
       const videoTimeInSeconds = metaBody.metaData.duration;
       const videoDuration = calculateVideoDuration(videoTimeInSeconds);
       const viewCountFormatted = formatCount(metaBody.metaData.view_count);
       const likeCountFormatted = formatCount(metaBody.metaData.like_count);
+
       const payload = {
         AudioLowF: metaBody.AudioLowF,
         AudioHighF: metaBody.AudioHighF,
@@ -92,6 +141,7 @@ export default function extract({ query, verbose }: z.infer<typeof ZodSchema>): 
           channel_follower_count_formatted: formatCount(metaBody.metaData.channel_follower_count),
         },
       };
+
       emitter.emit("data", payload);
     } catch (error: unknown) {
       switch (true) {
