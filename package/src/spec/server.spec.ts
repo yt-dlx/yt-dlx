@@ -4,6 +4,7 @@ import ytdlx from "..";
 const server = express();
 const PORT = process.env.PORT || 4040;
 server.listen(PORT, () => console.log(colors.cyan(`🚀 YT-DLX Server is live at http://localhost:${PORT}`)));
+export default server;
 /* ============================================================================ AUDIO Endpoints */
 server.get("/AudioCustomData", async (req, res: any) => {
   const query = req.query.query as string;
