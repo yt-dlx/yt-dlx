@@ -774,11 +774,6 @@ picomatch@^2.3.1:
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
   integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
 
-prettier@^3.5.3:
-  version "3.5.3"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-3.5.3.tgz#4fc2ce0d657e7a02e602549f053b239cb7dfe1b5"
-  integrity sha512-QQtaxnoDJeAkDvDKWCLiwIXkTgRhwYDEQCghU9Z6q03iyek/rxRh/2lC3HB7P8sWT2xC/y5JDctPLBIGzHKbhw==
-
 protobufjs@7.2.6:
   version "7.2.6"
   resolved "https://registry.yarnpkg.com/protobufjs/-/protobufjs-7.2.6.tgz#4a0ccd79eb292717aacf07530a07e0ed20278215"
@@ -1115,10 +1110,10 @@ youtubei@^1.6.7:
     node-fetch "2.6.7"
     protobufjs "7.2.6"
 
-yt-dlx@^14.0.8:
-  version "14.0.8"
-  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-14.0.8.tgz#b094f42b95db0ea0ab31f09fce47f6fb21e8ddad"
-  integrity sha512-ELHRJzR6FDyN7g2vihAoOhUwLJv/e/Ct5a+h1ETnB7tVWbnzSxOyig+8zVlT3r25ZVEExty1sda4QMe8b4gm1A==
+yt-dlx@^14.0.10:
+  version "14.0.10"
+  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-14.0.10.tgz#0c4412755e1dfdd6f6ea477bd6a7d7894fb7913f"
+  integrity sha512-txB6//QupTdMLjU3/ymibgz5/CgkZftep0eMfLYWhgLTHnaqUTljcvNCdH4mmbSasqZo4ex0SXYXiLPVd3o5wQ==
   dependencies:
     async-retry "^1.3.3"
     axios "^1.8.4"
@@ -1126,7 +1121,6 @@ yt-dlx@^14.0.8:
     fluent-ffmpeg "^2.1.3"
     fs-extra "^11.3.0"
     minimist "^1.2.8"
-    prettier "^3.5.3"
     readline-sync "^1.4.10"
     shx "^0.4.0"
     youtubei "^1.6.7"
