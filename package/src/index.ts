@@ -19,7 +19,7 @@ import AudioVideoLowest from "./routes/AudioVideo/AudioVideoLowest";
 import AudioVideoCustom from "./routes/AudioVideo/AudioVideoCustom";
 import AudioVideoHighest from "./routes/AudioVideo/AudioVideoHighest";
 var ytdlx = {
-  progbar,
+  progress_bar: progbar,
   info: { help, extract, list_formats, video_transcript, get_videoId: YouTubeID },
   AudioOnly: { Lowest: AudioLowest, Highest: AudioHighest, Custom: AudioCustom },
   VideoOnly: { Lowest: VideoLowest, Highest: VideoHighest, Custom: VideoCustom },
