@@ -4,7 +4,6 @@ import { Client } from "youtubei";
 import { EventEmitter } from "events";
 import YouTubeID from "../../YouTubeId";
 const ZodSchema = z.object({ playlistLink: z.string().min(2) });
-
 export interface searchPlaylistsType {
   id: string;
   title: string;
@@ -21,7 +20,6 @@ async function searchPlaylists({ query }: { query: string }) {
     throw new Error(colors.red("@error: ") + error.message);
   }
 }
-
 export default function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
