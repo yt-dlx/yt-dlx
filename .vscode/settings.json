@@ -1,0 +1,16 @@
+{
+  "files.exclude": {
+    "**/out": false,
+    "**/.hg": true,
+    "**/venv": true,
+    "**/.svn": true,
+    "**/.git": true,
+    "**/.next": true,
+    "**/dist": false,
+    "**/.venv": true,
+    "**/build": false,
+    "**/Thumbs.db": true,
+    "**/.DS_Store": true,
+    "**/node_modules": true
+  }
+}

@@ -1,0 +1,37 @@
+import YouTubeID from "./YouTubeId";
+import progbar from "./base/progbar";
+import help from "./routes/command/help";
+import extract from "./routes/command/extract";
+import video_data from "./routes/command/video_data";
+import AudioLowest from "./routes/Audio/AudioLowest";
+import AudioCustom from "./routes/Audio/AudioCustom";
+import VideoLowest from "./routes/Video/VideoLowest";
+import VideoCustom from "./routes/Video/VideoCustom";
+import AudioHighest from "./routes/Audio/AudioHighest";
+import VideoHighest from "./routes/Video/VideoHighest";
+import list_formats from "./routes/command/list_formats";
+import search_videos from "./routes/command/search_videos";
+import playlist_data from "./routes/command/playlist_data";
+import related_videos from "./routes/command/related_videos";
+import video_transcript from "./routes/command/video_transcript";
+import search_playlists from "./routes/command/search_playlists";
+import AudioVideoLowest from "./routes/AudioVideo/AudioVideoLowest";
+import AudioVideoCustom from "./routes/AudioVideo/AudioVideoCustom";
+import AudioVideoHighest from "./routes/AudioVideo/AudioVideoHighest";
+/**
+ * @module ytdlx
+ * @description Main module for ytdlx library.
+ */
+var ytdlx = {
+  Progress_Bar: progbar,
+  Audio: { Lowest: AudioLowest, Highest: AudioHighest, Custom: AudioCustom },
+  Video: { Lowest: VideoLowest, Highest: VideoHighest, Custom: VideoCustom },
+  Info: { help, extract, list_formats, video_transcript, get_videoId: YouTubeID },
+  Audio_Video: { Lowest: AudioVideoLowest, Highest: AudioVideoHighest, Custom: AudioVideoCustom },
+  Search: { Video: { Single: video_data, Multiple: search_videos, Related: related_videos, Transcript: video_transcript }, Playlist: { Single: playlist_data, Multiple: search_playlists } },
+};
+/**
+ * @description Exported ytdlx module.
+ * @exports ytdlx
+ */
+export default ytdlx;
