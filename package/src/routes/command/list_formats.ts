@@ -1,6 +1,6 @@
 import colors from "colors";
 import { z, ZodError } from "zod";
-import ytdlx from "../../base/Agent";
+import Tuber from "../../base/Agent";
 import { EventEmitter } from "events";
 import type EngineOutput from "../../interfaces/EngineOutput";
 const ZodSchema = z.object({ query: z.string().min(2), verbose: z.boolean().optional() });
@@ -9,7 +9,7 @@ export default function list_formats({ query, verbose }: z.infer<typeof ZodSchem
   (async () => {
     try {
       ZodSchema.parse({ query, verbose });
-      const metaBody: EngineOutput = await ytdlx({ query, verbose });
+      const metaBody: EngineOutput = await Tuber({ query, verbose });
       if (!metaBody) throw new Error("@error: Unable to get response from YouTube.");
       emitter.emit("data", {
         ManifestLow: metaBody.ManifestLow.map(item => ({ format: item.format, tbr: item.tbr })),

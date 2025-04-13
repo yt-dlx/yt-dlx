@@ -7,6 +7,18 @@ import Agent from "../../base/Agent";
 import { EventEmitter } from "events";
 import { locator } from "../../base/locator";
 
+/**
+ * Defines the schema for the input parameters used in the `AudioLowest` function.
+ *
+ * @typedef {object} AudioLowestOptions
+ * @property {string} query - The query string for the YouTube video.
+ * @property {string} [output] - The output folder to store the result.
+ * @property {boolean} [useTor] - Whether to use Tor for anonymization.
+ * @property {boolean} [stream] - Whether to stream the output.
+ * @property {string} [filter] - The audio filter to apply (e.g., "bassboost", "echo").
+ * @property {boolean} [metadata] - Whether to include metadata.
+ * @property {boolean} [verbose] - Whether to enable verbose logging.
+ */
 var ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
@@ -16,8 +28,22 @@ var ZodSchema = z.object({
   metadata: z.boolean().optional(),
   filter: z.enum(["echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed"]).optional(),
 });
+
+/**
+ * Processes a YouTube video query and applies the lowest quality audio format to it with optional effects,
+ * either streaming or saving the result.
+ *
+ * @function AudioLowest
+ * @param {AudioLowestOptions} options - The options object containing query and settings.
+ * @returns {EventEmitter} The event emitter to handle progress, error, start, end, and stream events.
+ *
+ * @example
+ * const emitter = AudioLowest({ query: "Funny Video", filter: "bassboost", stream: true });
+ * emitter.on("progress", progress => console.log(progress));
+ */
 export default function AudioLowest({ query, output, useTor, stream, filter, metadata, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
+
   (async () => {
     try {
       ZodSchema.parse({
@@ -29,26 +55,32 @@ export default function AudioLowest({ query, output, useTor, stream, filter, met
         metadata,
         verbose,
       });
+
       const engineData = await Agent({
         query,
         verbose,
         useTor,
       });
+
       if (!engineData) {
         throw new Error(`${colors.red("@error:")} unable to get response!`);
       }
+
       const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
       const folder = output ? output : process.cwd();
       if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
-      const proc: ffmpeg.FfmpegCommand = ffmpeg();
-      proc.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
-      proc.setFfprobePath(await locator().then(fp => fp.ffprobe));
-      proc.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
-      proc.addInput(engineData.metaData.thumbnail);
-      proc.addInput(engineData.AudioLowF.url);
-      proc.withOutputFormat("avi");
+
+      const instance: ffmpeg.FfmpegCommand = ffmpeg();
+      instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
+      instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
+      instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+      instance.addInput(engineData.metaData.thumbnail);
+      instance.addInput(engineData.AudioLowF.url);
+      instance.withOutputFormat("avi");
+
       const filenameBase = `yt-dlx_AudioLowest_`;
       let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.avi`;
+
       const filterMap: Record<string, string[]> = {
         bassboost: ["bass=g=10,dynaudnorm=f=150"],
         echo: ["aecho=0.8:0.9:1000:0.3"],
@@ -66,19 +98,23 @@ export default function AudioLowest({ query, output, useTor, stream, filter, met
         vaporwave: ["aresample=48000,asetrate=48000*0.8"],
         vibrato: ["vibrato=f=6.5"],
       };
-      if (filter && filterMap[filter]) proc.withAudioFilter(filterMap[filter]);
-      proc.on("progress", progress => emitter.emit("progress", progress));
-      proc.on("error", error => emitter.emit("error", error.message));
-      proc.on("start", start => emitter.emit("start", start));
-      proc.on("end", () => emitter.emit("end", filename));
+
+      if (filter && filterMap[filter]) instance.withAudioFilter(filterMap[filter]);
+
+      instance.on("progress", progress => emitter.emit("progress", progress));
+      instance.on("error", error => emitter.emit("error", error.message));
+      instance.on("start", start => emitter.emit("start", start));
+      instance.on("end", () => emitter.emit("end", filename));
+
       if (stream && !metadata) {
         emitter.emit("stream", {
           filename: path.join(folder, filename),
-          ffmpeg: proc,
+          ffmpeg: instance,
         });
-        proc.output(path.join(folder, filename));
-        proc.run();
+        instance.output(path.join(folder, filename));
+        instance.run();
       }
+
       if (!stream && metadata) {
         emitter.emit("metadata", {
           AudioLowDRC: engineData.AudioLowDRC,
@@ -101,5 +137,6 @@ export default function AudioLowest({ query, output, useTor, stream, filter, met
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
   })().catch(error => emitter.emit("error", error.message));
+
   return emitter;
 }
