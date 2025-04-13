@@ -2,7 +2,7 @@ import web from "../web";
 import colors from "colors";
 import Engine from "./Engine";
 import { execSync } from "child_process";
-import YouTubeID from "../web/YouTubeId";
+import YouTubeID from "../YouTubeId";
 import type EngineOutput from "../interfaces/EngineOutput";
 async function systemctlAvailable(): Promise<boolean> {
   try {

@@ -11,7 +11,7 @@ export default function list_formats({ query, verbose }: z.infer<typeof ZodSchem
       ZodSchema.parse({ query, verbose });
       const metaBody: EngineOutput = await ytdlx({ query, verbose });
       if (!metaBody) throw new Error("@error: Unable to get response from YouTube.");
-      const formatData = {
+      emitter.emit("data", {
         ManifestLow: metaBody.ManifestLow.map(item => ({ format: item.format, tbr: item.tbr })),
         ManifestHigh: metaBody.ManifestHigh.map(item => ({ format: item.format, tbr: item.tbr })),
         AudioLow: metaBody.AudioLow.map(item => ({ filesizeP: item.filesizeP, format_note: item.format_note })),
@@ -22,8 +22,7 @@ export default function list_formats({ query, verbose }: z.infer<typeof ZodSchem
         AudioLowDRC: metaBody.AudioLowDRC.map(item => ({ filesizeP: item.filesizeP, format_note: item.format_note })),
         AudioHighDRC: metaBody.AudioHighDRC.map(item => ({ filesizeP: item.filesizeP, format_note: item.format_note })),
         VideoHighHDR: metaBody.VideoHighHDR.map(item => ({ filesizeP: item.filesizeP, format_note: item.format_note })),
-      };
-      emitter.emit("data", formatData);
+      });
     } catch (error: unknown) {
       switch (true) {
         case error instanceof ZodError:

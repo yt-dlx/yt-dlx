@@ -23,21 +23,21 @@ export async function GET(request: NextRequest) {
         if (!["high", "medium", "low", "ultralow"].includes(resolution || "")) {
           return NextResponse.json({ error: "Invalid or missing resolution parameter." }, { status: 400 });
         }
-        const instance = ytdlx.AudioOnly.Custom({ useTor: false, metadata: true, verbose: true, query, resolution: resolution as "high" | "medium" | "low" | "ultralow" });
+        const instance = ytdlx.AudioOnly.Custom({ useTor: true, metadata: true, verbose: true, query, resolution: resolution as "high" | "medium" | "low" | "ultralow" });
         const data = await ytdlxPromise(instance);
         console.log("AudioOnlyCustomData started:", query);
         return NextResponse.json(data);
       }
       case "AudioOnlyHighestData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.AudioOnly.Highest({ useTor: false, metadata: true, verbose: true, query });
+        const instance = ytdlx.AudioOnly.Highest({ useTor: true, metadata: true, verbose: true, query });
         const data = await ytdlxPromise(instance);
         console.log("AudioOnlyHighestData started:", query);
         return NextResponse.json(data);
       }
       case "AudioOnlyLowestData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.AudioOnly.Lowest({ useTor: false, metadata: true, verbose: true, query });
+        const instance = ytdlx.AudioOnly.Lowest({ useTor: true, metadata: true, verbose: true, query });
         const data = await ytdlxPromise(instance);
         console.log("AudioOnlyLowestData started:", query);
         return NextResponse.json(data);
@@ -48,28 +48,28 @@ export async function GET(request: NextRequest) {
         if (!validResolutions.includes(resolution || "")) {
           return NextResponse.json({ error: "Invalid or missing resolution parameter." }, { status: 400 });
         }
-        const instance = ytdlx.VideoOnly.Custom({ useTor: false, metadata: true, verbose: true, query, resolution: resolution as any });
+        const instance = ytdlx.VideoOnly.Custom({ useTor: true, metadata: true, verbose: true, query, resolution: resolution as any });
         const data = await ytdlxPromise(instance);
         console.log("VideoOnlyCustomData started:", query);
         return NextResponse.json(data);
       }
       case "VideoOnlyHighestData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.VideoOnly.Highest({ useTor: false, metadata: true, verbose: true, query });
+        const instance = ytdlx.VideoOnly.Highest({ useTor: true, metadata: true, verbose: true, query });
         const data = await ytdlxPromise(instance);
         console.log("VideoOnlyHighestData started:", query);
         return NextResponse.json(data);
       }
       case "VideoOnlyLowestData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.VideoOnly.Lowest({ useTor: false, metadata: true, verbose: true, query });
+        const instance = ytdlx.VideoOnly.Lowest({ useTor: true, metadata: true, verbose: true, query });
         const data = await ytdlxPromise(instance);
         console.log("VideoOnlyLowestData started:", query);
         return NextResponse.json(data);
       }
       case "AudioVideoHighestData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.AudioVideo.Highest({ useTor: false, metadata: true, verbose: true, query });
+        const instance = ytdlx.AudioVideo.Highest({ useTor: true, metadata: true, verbose: true, query });
         const data = await ytdlxPromise(instance);
         console.log("AudioVideoHighestData started:", query);
         return NextResponse.json(data);
@@ -80,14 +80,14 @@ export async function GET(request: NextRequest) {
         if (!validResolutions.includes(resolution || "")) {
           return NextResponse.json({ error: "Invalid or missing resolution parameter." }, { status: 400 });
         }
-        const instance = ytdlx.AudioVideo.Custom({ useTor: false, metadata: true, verbose: true, query, resolution: resolution as any });
+        const instance = ytdlx.AudioVideo.Custom({ useTor: true, metadata: true, verbose: true, query, resolution: resolution as any });
         const data = await ytdlxPromise(instance);
         console.log("AudioVideoCustomData started:", query);
         return NextResponse.json(data);
       }
       case "AudioVideoLowestData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.AudioVideo.Lowest({ useTor: false, metadata: true, verbose: true, query });
+        const instance = ytdlx.AudioVideo.Lowest({ useTor: true, metadata: true, verbose: true, query });
         const data = await ytdlxPromise(instance);
         console.log("AudioVideoLowestData started:", query);
         return NextResponse.json(data);
