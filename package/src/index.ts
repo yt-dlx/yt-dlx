@@ -1,3 +1,4 @@
+import YouTubeID from "./YouTubeId";
 import progbar from "./base/progbar";
 import help from "./routes/command/help";
 import extract from "./routes/command/extract";
@@ -19,7 +20,7 @@ import AudioVideoCustom from "./routes/AudioVideo/AudioVideoCustom";
 import AudioVideoHighest from "./routes/AudioVideo/AudioVideoHighest";
 var ytdlx = {
   progbar,
-  info: { help, extract, list_formats, video_transcript },
+  info: { help, extract, list_formats, video_transcript, get_videoId: YouTubeID },
   AudioOnly: { Lowest: AudioLowest, Highest: AudioHighest, Custom: AudioCustom },
   VideoOnly: { Lowest: VideoLowest, Highest: VideoHighest, Custom: VideoCustom },
   AudioVideo: { Lowest: AudioVideoLowest, Highest: AudioVideoHighest, Custom: AudioVideoCustom },
