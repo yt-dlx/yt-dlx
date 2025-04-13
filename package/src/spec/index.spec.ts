@@ -1,249 +1,175 @@
-// ====================================================================================
-import ytdlx from "..";
-import colors from "colors";
-import express from "express";
-const server = express();
-const PORT = process.env.PORT || 4040;
-server.listen(PORT, () => console.log(colors.cyan(`🚀 YT-DLX Server is live at port ${PORT}`)));
-// ====================================================================================
-server.get("/AudioCustomData", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  const resolution = ["high", "medium", "low", "ultralow"].includes(req.query.resolution) ? (req.query.resolution as "high" | "medium" | "low" | "ultralow") : "medium";
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
-  if (!resolution) return res.status(400).json({ error: "Missing resolution parameter." });
+import axios from "axios";
+const baseUrl = "http://localhost:4040";
+async function AudioCustomData() {
+  console.log("Testing /AudioCustomData");
   try {
-    const Tuber = ytdlx.Audio.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
-    Tuber.on("metadata", metadata => res.json(metadata));
-    Tuber.on("start", command => console.log(colors.gray("start:"), command));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/AudioCustomData`, { params: { query: "sample audio custom query", resolution: "high" } });
+    console.log("/AudioCustomData Response:", response.data);
+  } catch (error: any) {
+    console.error("/AudioCustomData Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/AudioHighestData", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+}
+async function AudioHighestData() {
+  console.log("Testing /AudioHighestData");
   try {
-    const Tuber = ytdlx.Audio.Highest({ useTor: true, metadata: true, verbose: true, query });
-    Tuber.on("metadata", metadata => res.json(metadata));
-    Tuber.on("start", command => console.log(colors.gray("start:"), command));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/AudioHighestData`, { params: { query: "sample audio highest query" } });
+    console.log("/AudioHighestData Response:", response.data);
+  } catch (error: any) {
+    console.error("/AudioHighestData Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/AudioLowestData", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+}
+async function AudioLowestData() {
+  console.log("Testing /AudioLowestData");
   try {
-    const Tuber = ytdlx.Audio.Lowest({ useTor: true, metadata: true, verbose: true, query });
-    Tuber.on("metadata", metadata => res.json(metadata));
-    Tuber.on("start", command => console.log(colors.gray("start:"), command));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/AudioLowestData`, { params: { query: "sample audio lowest query" } });
+    console.log("/AudioLowestData Response:", response.data);
+  } catch (error: any) {
+    console.error("/AudioLowestData Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/VideoCustomData", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  const resolution = ["144p", "240p", "360p", "480p", "720p", "1080p", "1440p", "2160p", "3072p", "4320p", "6480p", "8640p", "12000p"].includes(req.query.resolution)
-    ? (req.query.resolution as "144p" | "240p" | "360p" | "480p" | "720p" | "1080p" | "1440p" | "2160p" | "3072p" | "4320p" | "6480p" | "8640p" | "12000p")
-    : "720p";
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
-  if (!resolution) return res.status(400).json({ error: "Missing resolution parameter." });
+}
+async function VideoCustomData() {
+  console.log("Testing /VideoCustomData");
   try {
-    const Tuber = ytdlx.Video.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
-    Tuber.on("metadata", metadata => res.json(metadata));
-    Tuber.on("start", command => console.log(colors.gray("start:"), command));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/VideoCustomData`, { params: { query: "sample video custom query", resolution: "1080p" } });
+    console.log("/VideoCustomData Response:", response.data);
+  } catch (error: any) {
+    console.error("/VideoCustomData Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/VideoHighestData", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+}
+async function VideoHighestData() {
+  console.log("Testing /VideoHighestData");
   try {
-    const Tuber = ytdlx.Video.Highest({ useTor: true, metadata: true, verbose: true, query });
-    Tuber.on("metadata", metadata => res.json(metadata));
-    Tuber.on("start", command => console.log(colors.gray("start:"), command));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/VideoHighestData`, { params: { query: "sample video highest query" } });
+    console.log("/VideoHighestData Response:", response.data);
+  } catch (error: any) {
+    console.error("/VideoHighestData Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/VideoLowestData", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+}
+async function VideoLowestData() {
+  console.log("Testing /VideoLowestData");
   try {
-    const Tuber = ytdlx.Video.Lowest({ useTor: true, metadata: true, verbose: true, query });
-    Tuber.on("metadata", metadata => res.json(metadata));
-    Tuber.on("start", command => console.log(colors.gray("start:"), command));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/VideoLowestData`, { params: { query: "sample video lowest query" } });
+    console.log("/VideoLowestData Response:", response.data);
+  } catch (error: any) {
+    console.error("/VideoLowestData Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/AudioVideoHighestData", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+}
+async function AudioVideoHighestData() {
+  console.log("Testing /AudioVideoHighestData");
   try {
-    const Tuber = ytdlx.Audio_Video.Highest({ useTor: true, metadata: true, verbose: true, query });
-    Tuber.on("metadata", metadata => res.json(metadata));
-    Tuber.on("start", command => console.log(colors.gray("start:"), command));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/AudioVideoHighestData`, { params: { query: "sample audio-video highest query" } });
+    console.log("/AudioVideoHighestData Response:", response.data);
+  } catch (error: any) {
+    console.error("/AudioVideoHighestData Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/AudioVideoCustomData", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  const resolution = ["144p", "240p", "360p", "480p", "720p", "1080p", "1440p", "2160p", "3072p", "4320p", "6480p", "8640p", "12000p"].includes(req.query.resolution)
-    ? (req.query.resolution as "144p" | "240p" | "360p" | "480p" | "720p" | "1080p" | "1440p" | "2160p" | "3072p" | "4320p" | "6480p" | "8640p" | "12000p")
-    : "720p";
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
-  if (!resolution) return res.status(400).json({ error: "Missing resolution parameter." });
+}
+async function AudioVideoCustomData() {
+  console.log("Testing /AudioVideoCustomData");
   try {
-    const Tuber = ytdlx.Audio_Video.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
-    Tuber.on("metadata", metadata => res.json(metadata));
-    Tuber.on("start", command => console.log(colors.gray("start:"), command));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/AudioVideoCustomData`, { params: { query: "sample audio-video custom query", resolution: "720p" } });
+    console.log("/AudioVideoCustomData Response:", response.data);
+  } catch (error: any) {
+    console.error("/AudioVideoCustomData Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/AudioVideoLowestData", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+}
+async function AudioVideoLowestData() {
+  console.log("Testing /AudioVideoLowestData");
   try {
-    const Tuber = ytdlx.Audio_Video.Lowest({ useTor: true, metadata: true, verbose: true, query });
-    Tuber.on("metadata", metadata => res.json(metadata));
-    Tuber.on("start", command => console.log(colors.gray("start:"), command));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/AudioVideoLowestData`, { params: { query: "sample audio-video lowest query" } });
+    console.log("/AudioVideoLowestData Response:", response.data);
+  } catch (error: any) {
+    console.error("/AudioVideoLowestData Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/AudioVideoLowestData", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+}
+async function SearchMultipleVideos() {
+  console.log("Testing /SearchMultipleVideos");
   try {
-    const Tuber = ytdlx.Audio_Video.Lowest({ useTor: true, metadata: true, verbose: true, query });
-    Tuber.on("metadata", metadata => res.json(metadata));
-    Tuber.on("start", command => console.log(colors.gray("start:"), command));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/SearchMultipleVideos`, { params: { query: "sample search multiple videos" } });
+    console.log("/SearchMultipleVideos Response:", response.data);
+  } catch (error: any) {
+    console.error("/SearchMultipleVideos Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/SearchMultipleVideos", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+}
+async function SearchSingleVideo() {
+  console.log("Testing /SearchSingleVideo");
   try {
-    const Tuber = ytdlx.Search.Video.Multiple({ query });
-    Tuber.on("data", data => res.json(data));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/SearchSingleVideo`, { params: { videoLink: "https://www.youtube.com/watch?v=sample" } });
+    console.log("/SearchSingleVideo Response:", response.data);
+  } catch (error: any) {
+    console.error("/SearchSingleVideo Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/SearchSingleVideo", async (req: any, res: any) => {
-  const videoLink = req.query.videoLink as string;
-  if (!videoLink) return res.status(400).json({ error: "Missing videoLink parameter." });
+}
+async function SearchRelatedVideos() {
+  console.log("Testing /SearchRelatedVideos");
   try {
-    const Tuber = ytdlx.Search.Video.Single({ videoLink });
-    Tuber.on("data", data => res.json(data));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/SearchRelatedVideos`, { params: { videoId: "sampleId" } });
+    console.log("/SearchRelatedVideos Response:", response.data);
+  } catch (error: any) {
+    console.error("/SearchRelatedVideos Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/SearchRelatedVideos", async (req: any, res: any) => {
-  const videoId = req.query.videoId as string;
-  if (!videoId) return res.status(400).json({ error: "Missing videoId parameter." });
+}
+async function SearchMultiplePlaylists() {
+  console.log("Testing /SearchMultiplePlaylists");
   try {
-    const Tuber = ytdlx.Search.Video.Related({ videoId });
-    Tuber.on("data", data => res.json(data));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/SearchMultiplePlaylists`, { params: { playlistLink: "sample playlist link" } });
+    console.log("/SearchMultiplePlaylists Response:", response.data);
+  } catch (error: any) {
+    console.error("/SearchMultiplePlaylists Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/SearchMultiplePlaylists", async (req: any, res: any) => {
-  const playlistLink = req.query.playlistLink as string;
-  if (!playlistLink) return res.status(400).json({ error: "Missing playlistLink parameter." });
+}
+async function SearchSinglePlaylist() {
+  console.log("Testing /SearchSinglePlaylist");
   try {
-    const Tuber = ytdlx.Search.Playlist.Multiple({ playlistLink });
-    Tuber.on("data", data => res.json(data));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/SearchSinglePlaylist`, { params: { playlistLink: "sample playlist link" } });
+    console.log("/SearchSinglePlaylist Response:", response.data);
+  } catch (error: any) {
+    console.error("/SearchSinglePlaylist Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/SearchSinglePlaylist", async (req: any, res: any) => {
-  const playlistLink = req.query.playlistLink as string;
-  if (!playlistLink) return res.status(400).json({ error: "Missing playlistLink parameter." });
+}
+async function SearchVideoTranscript() {
+  console.log("Testing /SearchVideoTranscript");
   try {
-    const Tuber = ytdlx.Search.Playlist.Single({ playlistLink });
-    Tuber.on("data", data => res.json(data));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/SearchVideoTranscript`, { params: { videoLink: "https://www.youtube.com/watch?v=sample" } });
+    console.log("/SearchVideoTranscript Response:", response.data);
+  } catch (error: any) {
+    console.error("/SearchVideoTranscript Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/ExtractVideoData", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+}
+async function ExtractVideoData() {
+  console.log("Testing /ExtractVideoData");
   try {
-    const Tuber = ytdlx.Info.extract({ query });
-    Tuber.on("data", data => res.json(data));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/ExtractVideoData`, { params: { query: "sample extract video query" } });
+    console.log("/ExtractVideoData Response:", response.data);
+  } catch (error: any) {
+    console.error("/ExtractVideoData Error:", error.message || error);
   }
-});
-// ====================================================================================
-server.get("/ListVideoFormats", async (req: any, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+}
+async function ListVideoFormats() {
+  console.log("Testing /ListVideoFormats");
   try {
-    const Tuber = ytdlx.Info.list_formats({ query });
-    Tuber.on("data", data => res.json(data));
-    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
-  } catch (err) {
-    console.error(colors.red("❌ Unexpected error:"), err);
-    res.status(500).json({ error: err instanceof Error ? err.message : String(err) });
+    const response = await axios.get(`${baseUrl}/ListVideoFormats`, { params: { query: "sample list video formats query" } });
+    console.log("/ListVideoFormats Response:", response.data);
+  } catch (error: any) {
+    console.error("/ListVideoFormats Error:", error.message || error);
   }
-});
-// ====================================================================================
+}
+async function runTests() {
+  await AudioCustomData();
+  await AudioHighestData();
+  await AudioLowestData();
+  await VideoCustomData();
+  await VideoHighestData();
+  await VideoLowestData();
+  await AudioVideoHighestData();
+  await AudioVideoCustomData();
+  await AudioVideoLowestData();
+  await SearchMultipleVideos();
+  await SearchSingleVideo();
+  await SearchRelatedVideos();
+  await SearchMultiplePlaylists();
+  await SearchSinglePlaylist();
+  await SearchVideoTranscript();
+  await ExtractVideoData();
+  await ListVideoFormats();
+}
+runTests();

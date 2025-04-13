@@ -24,6 +24,6 @@ var ytdlx = {
   Video: { Lowest: VideoLowest, Highest: VideoHighest, Custom: VideoCustom },
   Info: { help, extract, list_formats, video_transcript, get_videoId: YouTubeID },
   Audio_Video: { Lowest: AudioVideoLowest, Highest: AudioVideoHighest, Custom: AudioVideoCustom },
-  Search: { Video: { Single: video_data, Multiple: search_videos, Related: related_videos }, Playlist: { Single: playlist_data, Multiple: search_playlists } },
+  Search: { Video: { Single: video_data, Multiple: search_videos, Related: related_videos, Transcript: video_transcript }, Playlist: { Single: playlist_data, Multiple: search_playlists } },
 };
 export default ytdlx;
