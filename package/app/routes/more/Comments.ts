@@ -1,11 +1,26 @@
 import colors from "colors";
 import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
-import { TubeType } from "../../utils/TubeLogin";
 import extractText from "../../utils/extractText";
 import TubeResponse from "../../interfaces/TubeResponse";
 import sanitizeRenderer from "../../utils/sanitizeRenderer";
-const ZodSchema = z.object({ videoId: z.string().min(1), verbose: z.boolean().optional() });
+import TubeLogin, { TubeType } from "../../utils/TubeLogin";
+/**
+ * Zod schema for validating input parameters for fetching comments.
+ *
+ * @typedef {object} CommentsParams
+ * @property {string} videoId - The ID of the video to fetch comments for (minimum 1 character).
+ * @property {string} [cookiesPath] - path to the cookies file for authentication.
+ * @property {boolean} [verbose] - Optional flag to enable verbose logging.
+ */
+const ZodSchema = z.object({ cookiesPath: z.string(), videoId: z.string().min(1), verbose: z.boolean().optional() });
+/**
+ * Sanitizes a comment thread object to a standardized format.
+ *
+ * @function sanitizeCommentThread
+ * @param {any} thread - The raw comment thread object from YouTube.
+ * @returns {any} The sanitized comment thread object.
+ */
 function sanitizeCommentThread(thread: any): any {
   return {
     type: thread.type,
@@ -21,16 +36,50 @@ function sanitizeCommentThread(thread: any): any {
     hasReplies: thread.has_replies || false,
   };
 }
+/**
+ * Sanitizes a custom emoji object to a standardized format.
+ *
+ * @function sanitizeCustomEmoji
+ * @param {any} emoji - The raw custom emoji object from YouTube.
+ * @returns {any} The sanitized custom emoji object.
+ */
 function sanitizeCustomEmoji(emoji: any): any {
-  return { emojiId: emoji.emojiId || "", shortcuts: emoji.shortcuts || [], image: { thumbnails: emoji.image?.thumbnails?.map((t: any) => ({ url: t.url, width: t.width, height: t.height })) || [] } };
+  return {
+    emojiId: emoji.emojiId || "",
+    shortcuts: emoji.shortcuts || [],
+    image: { thumbnails: emoji.image?.thumbnails?.map((t: any) => ({ url: t.url, width: t.width, height: t.height })) || [] },
+  };
 }
-export default function Comments(client: TubeType, options: z.infer<typeof ZodSchema>): EventEmitter {
+/**
+ * Fetches comments for a specific YouTube video and emits the result.
+ *
+ * This function validates input parameters using a Zod schema, authenticates with YouTube using the provided cookies path,
+ * and emits sanitized comment data via an EventEmitter. It supports verbose logging for debugging.
+ *
+ * @function Comments
+ * @param {object} options - Parameters for fetching comments.
+ * @param {string} options.videoId - The ID of the video to fetch comments for.
+ * @param {boolean} [options.verbose] - Whether to enable verbose logging.
+ * @param {string} [options.cookiesPath] - Path to the cookies file for authentication.
+ * @returns {EventEmitter} The event emitter to handle `data` and `error` events.
+ *
+ * @example
+ * const emitter = Comments({ videoId: "kJi_cNVStMo", verbose: true, cookiesPath: "./cookies.txt" });
+ * emitter.on("data", data => console.log(data));
+ * emitter.on("error", error => console.error(error));
+ */
+export default function Comments(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse(options);
-      const { videoId, verbose } = options;
+      const { videoId, verbose, cookiesPath } = options;
       if (verbose) console.log(colors.green("@info:"), `Fetching comments for video ${videoId}...`);
+      if (!cookiesPath) {
+        emitter.emit("error", `${colors.red("@error:")} incorrect 'cookiesPath' provided!`);
+        return;
+      }
+      const client: TubeType = await TubeLogin(cookiesPath);
       const comments = await client.getComments(videoId);
       const result: TubeResponse<{ header: any; contents: any[] }> = {
         status: "success",

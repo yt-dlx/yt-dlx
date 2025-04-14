@@ -1,10 +1,10 @@
 import colors from "colors";
 import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
-import { TubeType } from "../../utils/TubeLogin";
 import extractText from "../../utils/extractText";
 import TubeResponse from "../../interfaces/TubeResponse";
 import sanitizeRenderer from "../../utils/sanitizeRenderer";
+import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 import sanitizeContentItem from "../../utils/sanitizeContentItem";
 const ZodSchema = z.object({ verbose: z.boolean().optional() });
 export default function Library(client: TubeType, options: z.infer<typeof ZodSchema> = {}): EventEmitter {

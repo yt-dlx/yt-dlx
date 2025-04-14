@@ -7,25 +7,22 @@ import { Innertube, UniversalCache } from "youtubei.js";
  */
 export type TubeType = Innertube;
 /**
- * Path to the cookies file exported from browser using 'Get cookies.txt' extension.
- */
-const cookiesFilePath: string = path.join(process.cwd(), "cookies.txt");
-/**
  * Global variable to store the initialized Innertube client.
  */
 export let Tube: TubeType | null = null;
 /**
- * Initializes the Innertube client using cookies.
+ * Initializes the Innertube client using cookies from the specified file path.
  * Exits the process if the cookies file is missing or corrupt.
  *
  * @async
  * @function TubeLogin
+ * @param {string} cookiesFilePath - Path to the cookies file exported from browser.
  * @returns {Promise<TubeType>} The authenticated Innertube client.
  */
-export default async function TubeLogin(): Promise<TubeType> {
+export default async function TubeLogin(cookiesFilePath: string): Promise<TubeType> {
   if (!fs.existsSync(cookiesFilePath)) {
     console.error(colors.red("@error:"), "Cookies file not found!");
-    console.error(colors.red("@error:"), "Please use the 'Get cookies.txt' extension on Firefox or Chrome to export your YouTube cookies and save it as 'cookies.txt' in the project root.");
+    console.error(colors.red("@error:"), "Please use the 'Get cookies.txt' extension on Firefox or Chrome to export your YouTube cookies and save it at the specified path.");
     process.exit(1);
   }
   const cookiesFromFile: string = fs.readFileSync(cookiesFilePath, "utf8");

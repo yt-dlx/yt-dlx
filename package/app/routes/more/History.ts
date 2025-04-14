@@ -1,9 +1,9 @@
 import colors from "colors";
 import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
-import { TubeType } from "../../utils/TubeLogin";
 import TubeResponse from "../../interfaces/TubeResponse";
 import sanitizeRenderer from "../../utils/sanitizeRenderer";
+import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 import sanitizeContentItem from "../../utils/sanitizeContentItem";
 const ZodSchema = z.object({ verbose: z.boolean().optional() });
 export default function History(client: TubeType, options: z.infer<typeof ZodSchema> = {}): EventEmitter {
@@ -17,7 +17,7 @@ export default function History(client: TubeType, options: z.infer<typeof ZodSch
       const result: TubeResponse<{ sections: any[]; feedActions: any }> = {
         status: "success",
         data: {
-          sections: history.sections?.map((section: any) => ({ type: section.type, header: sanitizeRenderer(section.header?.[0]), contents: section.contents?.map(sanitizeContentItem) || [] })) || [],
+          sections: history.sections?.map(section => ({ type: section.type, header: sanitizeRenderer(section.header?.[0]), contents: section.contents?.map(sanitizeContentItem) || [] })) || [],
           feedActions: { type: history.feed_actions?.type || "", contents: history.feed_actions?.contents?.map((action: any) => sanitizeRenderer(action)) || [] },
         },
       };

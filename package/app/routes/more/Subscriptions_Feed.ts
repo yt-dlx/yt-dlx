@@ -1,8 +1,8 @@
 import colors from "colors";
 import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
-import { TubeType } from "../../utils/TubeLogin";
 import TubeResponse from "../../interfaces/TubeResponse";
+import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 import sanitizeContentItem from "../../utils/sanitizeContentItem";
 const ZodSchema = z.object({ verbose: z.boolean().optional() });
 export default function Subscriptions_Feed(client: TubeType, options: z.infer<typeof ZodSchema> = {}): EventEmitter {
