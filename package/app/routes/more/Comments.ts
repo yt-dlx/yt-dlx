@@ -2,22 +2,10 @@ import colors from "colors";
 import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
 import { TubeType } from "../../utils/TubeLogin";
+import extractText from "../../utils/extractText";
 import TubeResponse from "../../interfaces/TubeResponse";
+import sanitizeRenderer from "../../utils/sanitizeRenderer";
 const ZodSchema = z.object({ videoId: z.string().min(1), verbose: z.boolean().optional() });
-function extractText(textObj: any): { runs?: any[]; text: string } {
-  return { runs: textObj?.runs || undefined, text: textObj?.text || textObj?.runs?.[0]?.text || "" };
-}
-function sanitizeRenderer(renderer: any): any {
-  if (!renderer) return null;
-  const result: any = { type: renderer.type };
-  for (const key in renderer) {
-    if (key === "type") continue;
-    if (Array.isArray(renderer[key])) result[key] = renderer[key].map((item: any) => (typeof item === "object" ? sanitizeRenderer(item) : item));
-    else if (typeof renderer[key] === "object") result[key] = sanitizeRenderer(renderer[key]);
-    else result[key] = renderer[key];
-  }
-  return result;
-}
 function sanitizeCommentThread(thread: any): any {
   return {
     type: thread.type,

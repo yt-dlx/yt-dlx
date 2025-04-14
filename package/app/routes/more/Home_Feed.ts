@@ -2,37 +2,10 @@ import colors from "colors";
 import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
 import { TubeType } from "../../utils/TubeLogin";
+import extractText from "../../utils/extractText";
 import TubeResponse from "../../interfaces/TubeResponse";
+import sanitizeContentItem from "../../utils/sanitizeContentItem";
 const ZodSchema = z.object({ verbose: z.boolean().optional() });
-function extractText(textObj: any): { runs?: any[]; text: string } {
-  return { runs: textObj?.runs || undefined, text: textObj?.text || textObj?.runs?.[0]?.text || "" };
-}
-function sanitizeRenderer(renderer: any): any {
-  if (!renderer) return null;
-  const result: any = { type: renderer.type };
-  for (const key in renderer) {
-    if (key === "type") continue;
-    if (Array.isArray(renderer[key])) result[key] = renderer[key].map((item: any) => (typeof item === "object" ? sanitizeRenderer(item) : item));
-    else if (typeof renderer[key] === "object") result[key] = sanitizeRenderer(renderer[key]);
-    else result[key] = renderer[key];
-  }
-  return result;
-}
-function sanitizeContentItem(item: any): any {
-  if (!item) return null;
-  if (item.type === "RichItem" && item.content?.videoRenderer) {
-    return {
-      type: "RichItem",
-      content: {
-        videoId: item.content.videoRenderer.videoId || "",
-        title: extractText(item.content.videoRenderer.title),
-        thumbnail: item.content.videoRenderer.thumbnail?.thumbnails?.map((t: any) => ({ url: t.url, width: t.width, height: t.height })) || [],
-      },
-    };
-  } else if (item.type === "RichSection") return { type: "RichSection", content: item.content ? sanitizeRenderer(item.content) : null };
-  else if (item.type === "ContinuationItem") return { type: "ContinuationItem" };
-  return item;
-}
 function sanitizeFeedFilterChipBar(chipBar: any): any {
   return { type: chipBar?.type || "", contents: chipBar?.contents?.map((chip: any) => ({ text: extractText(chip.text), isSelected: chip.isSelected || false })) || [] };
 }
