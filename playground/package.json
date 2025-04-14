@@ -1,7 +1,0 @@
-{
-  "type": "module",
-  "dependencies": {
-    "puppeteer": "^24.6.1",
-    "youtubei.js": "^13.3.0"
-  }
-}
