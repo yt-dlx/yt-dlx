@@ -27,8 +27,8 @@ function sanitizeCommentThread(thread: any): any {
     comment:
       thread.comment?.map((c: any) => ({
         commentId: c.commentId || "",
-        contentText: extractText(c.contentText),
         authorText: extractText(c.authorText),
+        contentText: extractText(c.contentText),
         authorThumbnail: c.authorThumbnail?.thumbnails?.map((t: any) => ({ url: t.url, width: t.width, height: t.height })) || [],
       })) || [],
     commentRepliesData: thread.comment_replies_data ? { replies: thread.comment_replies_data.replies?.map(sanitizeCommentThread) || [] } : null,

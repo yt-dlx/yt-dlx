@@ -4,14 +4,43 @@ import { EventEmitter } from "events";
 import TubeResponse from "../../interfaces/TubeResponse";
 import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 import sanitizeContentItem from "../../utils/sanitizeContentItem";
-const ZodSchema = z.object({ verbose: z.boolean().optional() });
-export default function Subscriptions_Feed(client: TubeType, options: z.infer<typeof ZodSchema> = {}): EventEmitter {
+/**
+ * Zod schema for validating input parameters for fetching the subscriptions feed.
+ *
+ * @typedef {object} SubscriptionsFeedParams
+ * @property {string} cookiesPath - Path to the cookies file for authentication.
+ * @property {boolean} [verbose] - Optional flag to enable verbose logging.
+ */
+const ZodSchema = z.object({ cookiesPath: z.string(), verbose: z.boolean().optional() });
+/**
+ * Fetches the user's subscriptions feed from YouTube and emits the result.
+ *
+ * This function validates input parameters using a Zod schema, authenticates with YouTube using the provided cookies path,
+ * and emits sanitized subscriptions feed data via an EventEmitter. It supports verbose logging for debugging.
+ *
+ * @function Subscriptions_Feed
+ * @param {object} options - Parameters for fetching the subscriptions feed.
+ * @param {string} options.cookiesPath - Path to the cookies file for authentication.
+ * @param {boolean} [options.verbose] - Whether to enable verbose logging.
+ * @returns {EventEmitter} The event emitter to handle `data` and `error` events.
+ *
+ * @example
+ * const emitter = Subscriptions_Feed({ cookiesPath: "./cookies.txt", verbose: true });
+ * emitter.on("data", data => console.log(data));
+ * emitter.on("error", error => console.error(error));
+ */
+export default function Subscriptions_Feed(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse(options);
-      const { verbose } = options;
+      const { verbose, cookiesPath } = options;
       if (verbose) console.log(colors.green("@info:"), "Fetching subscriptions feed...");
+      if (!cookiesPath) {
+        emitter.emit("error", `${colors.red("@error:")} incorrect 'cookiesPath' provided!`);
+        return;
+      }
+      const client: TubeType = await TubeLogin(cookiesPath);
       const feed = await client.getSubscriptionsFeed();
       const contents = (feed as any).contents?.map(sanitizeContentItem) || [];
       const result: TubeResponse<{ contents: any[] }> = { status: "success", data: { contents } };

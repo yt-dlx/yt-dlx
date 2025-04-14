@@ -5,14 +5,43 @@ import TubeResponse from "../../interfaces/TubeResponse";
 import sanitizeRenderer from "../../utils/sanitizeRenderer";
 import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 import sanitizeContentItem from "../../utils/sanitizeContentItem";
-const ZodSchema = z.object({ verbose: z.boolean().optional() });
-export default function History(client: TubeType, options: z.infer<typeof ZodSchema> = {}): EventEmitter {
+/**
+ * Zod schema for validating input parameters for fetching watch history.
+ *
+ * @typedef {object} HistoryParams
+ * @property {string} cookiesPath - Path to the cookies file for authentication.
+ * @property {boolean} [verbose] - Optional flag to enable verbose logging.
+ */
+const ZodSchema = z.object({ cookiesPath: z.string(), verbose: z.boolean().optional() });
+/**
+ * Fetches the user's watch history from YouTube and emits the result.
+ *
+ * This function validates input parameters using a Zod schema, authenticates with YouTube using the provided cookies path,
+ * and emits sanitized history data via an EventEmitter. It supports verbose logging for debugging.
+ *
+ * @function History
+ * @param {object} options - Parameters for fetching watch history.
+ * @param {string} options.cookiesPath - Path to the cookies file for authentication.
+ * @param {boolean} [options.verbose] - Whether to enable verbose logging.
+ * @returns {EventEmitter} The event emitter to handle `data` and `error` events.
+ *
+ * @example
+ * const emitter = History({ cookiesPath: "./cookies.txt", verbose: true });
+ * emitter.on("data", data => console.log(data));
+ * emitter.on("error", error => console.error(error));
+ */
+export default function History(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse(options);
-      const { verbose } = options;
+      const { verbose, cookiesPath } = options;
       if (verbose) console.log(colors.green("@info:"), "Fetching watch history...");
+      if (!cookiesPath) {
+        emitter.emit("error", `${colors.red("@error:")} incorrect 'cookiesPath' provided!`);
+        return;
+      }
+      const client: TubeType = await TubeLogin(cookiesPath);
       const history = await client.getHistory();
       const result: TubeResponse<{ sections: any[]; feedActions: any }> = {
         status: "success",
