@@ -31,16 +31,16 @@ export interface playlistVideosType {
  * @function playlistVideos
  * @param {object} options - The options object containing the playlist ID.
  * @param {string} options.playlistId - The ID of the playlist.
- * @returns {Promise<playlistVideosType>} A promise that resolves with the playlist details and its videos.
+ * @returns {Promise<playlistVideosType | null>} A promise that resolves with the playlist details and its videos, or null on error.
  *
  * @example
  * const playlist = await playlistVideos({ playlistId: "PL1O3R10uGQ2jpXwhQID8IhX3" });
  */
-async function playlistVideos({ playlistId }: { playlistId: string }) {
+async function playlistVideos({ playlistId }: { playlistId: string }): Promise<playlistVideosType | null> {
   try {
-    var youtube = new Client();
-    var playlistVideos: any = await youtube.getPlaylist(playlistId);
-    var result = playlistVideos.videos.items.map((item: any) => ({
+    const youtube = new Client();
+    const playlistVideos: any = await youtube.getPlaylist(playlistId);
+    const result = playlistVideos.videos.items.map((item: any) => ({
       id: item.id,
       title: item.title,
       isLive: item.isLive,
@@ -49,7 +49,8 @@ async function playlistVideos({ playlistId }: { playlistId: string }) {
     }));
     return { id: playlistVideos.id, title: playlistVideos.title, videoCount: playlistVideos.videoCount, result };
   } catch (error: any) {
-    throw new Error(colors.red("@error: ") + error.message);
+    console.error(colors.red("@error: ") + error.message);
+    return null;
   }
 }
 /**
@@ -57,7 +58,7 @@ async function playlistVideos({ playlistId }: { playlistId: string }) {
  *
  * @function playlist_data
  * @param {PlaylistDataOptions} options - The options object containing the playlist URL.
- * @returns {EventEmitter} The event emitter to handle `data`, `error` events.
+ * @returns {EventEmitter} The event emitter to handle `data` and `error` events.
  *
  * @example
  * const emitter = playlist_data({ playlistLink: "https://www.youtube.com/playlist?list=..." });
@@ -74,20 +75,17 @@ export default function playlist_data({ playlistLink }: z.infer<typeof ZodSchema
         emitter.emit("error", colors.red("@error: ") + "incorrect playlist link");
         return;
       }
-      const metaData: playlistVideosType = await playlistVideos({ playlistId });
+      const metaData: playlistVideosType | null = await playlistVideos({ playlistId });
       if (!metaData) {
         emitter.emit("error", colors.red("@error: ") + "Unable to get response!");
         return;
       }
       emitter.emit("data", metaData);
     } catch (error: unknown) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", (error as Error).message);
-          break;
+      if (error instanceof ZodError) {
+        emitter.emit("error", error.errors);
+      } else {
+        emitter.emit("error", (error as Error).message);
       }
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");

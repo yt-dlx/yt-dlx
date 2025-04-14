@@ -38,9 +38,9 @@ export interface searchPlaylistsType {
  */
 async function searchPlaylists({ query }: { query: string }): Promise<searchPlaylistsType[]> {
   try {
-    var youtube = new Client();
-    var searchPlaylists = await youtube.search(query, { type: "playlist" });
-    var result: searchPlaylistsType[] = searchPlaylists.items.map((item: any) => ({
+    const youtube = new Client();
+    const searchPlaylists = await youtube.search(query, { type: "playlist" });
+    const result: searchPlaylistsType[] = searchPlaylists.items.map((item: any) => ({
       id: item.id,
       title: item.title,
       videoCount: item.videoCount,
@@ -48,7 +48,8 @@ async function searchPlaylists({ query }: { query: string }): Promise<searchPlay
     }));
     return result;
   } catch (error: any) {
-    throw new Error(colors.red("@error: ") + error.message);
+    console.error(colors.red("@error: ") + error.message);
+    return [];
   }
 }
 /**
@@ -56,7 +57,7 @@ async function searchPlaylists({ query }: { query: string }): Promise<searchPlay
  *
  * @function search_playlists
  * @param {SearchPlaylistsOptions} options - The options object containing the playlist link to search for.
- * @returns {EventEmitter} The event emitter to handle `data`, `error` events.
+ * @returns {EventEmitter} The event emitter to handle `data` and `error` events.
  *
  * @example
  * const emitter = search_playlists({ playlistLink: "JavaScript tutorials" });
@@ -97,5 +98,6 @@ export default function search_playlists({ playlistLink }: z.infer<typeof ZodSch
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
   })().catch(error => emitter.emit("error", error.message));
+
   return emitter;
 }

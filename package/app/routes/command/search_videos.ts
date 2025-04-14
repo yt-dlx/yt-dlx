@@ -66,7 +66,8 @@ export async function searchVideos({ query }: { query: string }): Promise<search
     }));
     return result;
   } catch (error: any) {
-    throw new Error(colors.red("@error: ") + error.message);
+    console.error(colors.red("@error: ") + error.message);
+    return [];
   }
 }
 /**

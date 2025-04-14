@@ -47,12 +47,12 @@ export interface singleVideoType {
  * @function singleVideo
  * @param {object} options - The options object containing the video ID.
  * @param {string} options.videoId - The ID of the video.
- * @returns {Promise<singleVideoType>} A promise that resolves with the video details.
+ * @returns {Promise<singleVideoType | null>} A promise that resolves with the video details or null on failure.
  *
  * @example
  * const video = await singleVideo({ videoId: "dQw4w9WgXcQ" });
  */
-export async function singleVideo({ videoId }: { videoId: string }): Promise<singleVideoType> {
+export async function singleVideo({ videoId }: { videoId: string }): Promise<singleVideoType | null> {
   try {
     const youtube = new Client();
     const singleVideo: any = await youtube.getVideo(videoId);
@@ -71,7 +71,8 @@ export async function singleVideo({ videoId }: { videoId: string }): Promise<sin
       likeCount: singleVideo.likeCount,
     };
   } catch (error: any) {
-    throw new Error(colors.red("@error: ") + error.message);
+    console.error(colors.red("@error: ") + error.message);
+    return null;
   }
 }
 /**
@@ -96,7 +97,7 @@ export default function video_data({ videoLink }: z.infer<typeof ZodSchema>): Ev
         emitter.emit("error", colors.red("@error: ") + "incorrect video link");
         return;
       }
-      const metaData: singleVideoType = await singleVideo({ videoId: vId });
+      const metaData: singleVideoType | null = await singleVideo({ videoId: vId });
       if (!metaData) {
         emitter.emit("error", colors.red("@error: ") + "Unable to get response!");
         return;
