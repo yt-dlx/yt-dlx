@@ -1,13 +1,9 @@
+import YouLogin from "./index";
 import { Innertube, UniversalCache } from "youtubei.js";
 
 async function searchWithInnerTube(query) {
   try {
-    const InnerTubeClient = await Innertube.create({
-      user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      cache: new UniversalCache(true, "./cache"),
-      debug: false,
-    });
-    const InnerTubeClientResults = await InnerTubeClient.search(query, { filters: { type: "video" } });
+    const InnerTubeClientResults = await YouLogin.search(query, { filters: { type: "video" } });
     if (!InnerTubeClientResults || !InnerTubeClientResults.results || !InnerTubeClientResults.results.length) {
       console.error("Innertube: No results found");
       return [];

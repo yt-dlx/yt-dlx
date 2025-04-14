@@ -3,9 +3,9 @@ import colors from "colors";
 import * as path from "path";
 import { z, ZodError } from "zod";
 import ffmpeg from "fluent-ffmpeg";
-import Tuber from "../../base/Agent";
+import Tuber from "../../utils/Agent";
 import { EventEmitter } from "events";
-import { locator } from "../../base/locator";
+import { locator } from "../../utils/locator";
 /**
  * Defines the schema for the input parameters used in the `VideoLowest` function.
  *

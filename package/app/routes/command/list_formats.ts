@@ -1,6 +1,6 @@
 import colors from "colors";
 import { z, ZodError } from "zod";
-import Tuber from "../../base/Agent";
+import Tuber from "../../utils/Agent";
 import { EventEmitter } from "events";
 import type EngineOutput from "../../interfaces/EngineOutput";
 /**

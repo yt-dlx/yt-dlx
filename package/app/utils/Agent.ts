@@ -1,6 +1,6 @@
 import colors from "colors";
 import Engine from "./Engine";
-import YouTubeID from "../YouTubeId";
+import YouTubeID from "../utils/YouTubeId";
 import { execSync } from "child_process";
 import type EngineOutput from "../interfaces/EngineOutput";
 import { singleVideo } from "../routes/command/video_data";

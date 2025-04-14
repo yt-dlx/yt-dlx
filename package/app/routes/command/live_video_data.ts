@@ -2,7 +2,7 @@ import colors from "colors";
 import { z, ZodError } from "zod";
 import { Client } from "youtubei";
 import { EventEmitter } from "events";
-import YouTubeID from "../../YouTubeId";
+import YouTubeID from "../../utils/YouTubeId";
 /**
  * Zod schema for validating live video data input parameters.
  *

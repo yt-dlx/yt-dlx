@@ -2,7 +2,7 @@ import colors from "colors";
 import { Client } from "youtubei";
 import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
-import YouTubeID from "../../YouTubeId";
+import YouTubeID from "../../utils/YouTubeId";
 /**
  * Defines the schema for the input parameters used in the `search_playlists` function.
  *
