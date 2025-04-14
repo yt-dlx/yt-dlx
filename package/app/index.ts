@@ -1,6 +1,7 @@
 import progbar from "./utils/progbar";
 import help from "./routes/command/help";
 import YouTubeID from "./utils/YouTubeId";
+import TubeLogin from "./utils/TubeLogin";
 import extract from "./routes/command/extract";
 import video_data from "./routes/command/video_data";
 import AudioLowest from "./routes/Audio/AudioLowest";
@@ -28,6 +29,7 @@ import AudioVideoHighest from "./routes/AudioVideo/AudioVideoHighest";
  * @description Main module for ytdlx library.
  */
 var ytdlx = {
+  TubeLogin,
   Progress_Bar: progbar,
   Audio: { Lowest: AudioLowest, Highest: AudioHighest, Custom: AudioCustom },
   Video: { Lowest: VideoLowest, Highest: VideoHighest, Custom: VideoCustom },

@@ -5,6 +5,7 @@ ffmpeg.**
 ffprobe_**
 cprobe_**
 ffmpeg_**
+yt-dlx
 dist
 temp
 out
