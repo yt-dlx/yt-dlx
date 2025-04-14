@@ -55,3 +55,7 @@ if [ "$IP" != "$TOR_IP" ] && [ "$TOR_IP" != "Unavailable" ]; then
 else
   warn "Tor may not be working. Please double-check torrc configuration or test manually."
 fi
+# .\out\cprobe.exe --dump-single-json "https://www.youtube.com/watch?v=0rr45yQlVng" --no-check-certificate --prefer-insecure --no-call-home --skip-download --no-warnings --geo-bypass --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36" > YouTube.json
+
+
+# ./out/cprobe.exe --write-comments --dump-single-json "https://www.youtube.com/watch?v=0rr45yQlVng" > YouTube_Comments.json

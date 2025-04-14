@@ -1,5 +1,6 @@
 console.clear();
 import colors from "colors";
+import * as path from "path";
 import express from "express";
 import History from "../routes/more/History";
 import Library from "../routes/more/Library";
@@ -117,42 +118,54 @@ export default server;
 import request from "supertest";
 async function runTests(): Promise<void> {
   console.log(colors.yellow("Running tests against the embedded Express server using Supertest..."));
+  // try {
+  // const unseenNotifications = await request(server)
+  // .get("/UnseenNotifications")
+  // .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
+  // console.log(colors.green("/UnseenNotifications Response:"), unseenNotifications.body);
+  // } catch (error: any) {
+  // console.error(colors.red("/UnseenNotifications Error:"), error.message || error);
+  // }
+  // try {
+  // const subscriptionsFeed = await request(server)
+  // .get("/SubscriptionsFeed")
+  // .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
+  // console.log(colors.green("/SubscriptionsFeed Response:"), subscriptionsFeed.body);
+  // } catch (error: any) {
+  // console.error(colors.red("/SubscriptionsFeed Error:"), error.message || error);
+  // }
+  // try {
+  // const homeFeed = await request(server)
+  // .get("/HomeFeed")
+  // .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
+  // console.log(colors.green("/HomeFeed Response:"), homeFeed.body);
+  // } catch (error: any) {
+  // console.error(colors.red("/HomeFeed Error:"), error.message || error);
+  // }
   try {
-    const unseenNotifications = await request(server).get("/UnseenNotifications").query({ cookiesPath: "./cookies.txt", verbose: true });
-    console.log(colors.green("/UnseenNotifications Response:"), unseenNotifications.body);
-  } catch (error: any) {
-    console.error(colors.red("/UnseenNotifications Error:"), error.message || error);
-  }
-  try {
-    const subscriptionsFeed = await request(server).get("/SubscriptionsFeed").query({ cookiesPath: "./cookies.txt", verbose: true });
-    console.log(colors.green("/SubscriptionsFeed Response:"), subscriptionsFeed.body);
-  } catch (error: any) {
-    console.error(colors.red("/SubscriptionsFeed Error:"), error.message || error);
-  }
-  try {
-    const homeFeed = await request(server).get("/HomeFeed").query({ cookiesPath: "./cookies.txt", verbose: true });
-    console.log(colors.green("/HomeFeed Response:"), homeFeed.body);
-  } catch (error: any) {
-    console.error(colors.red("/HomeFeed Error:"), error.message || error);
-  }
-  try {
-    const comments = await request(server).get("/Comments").query({ cookiesPath: "./cookies.txt", videoId: "dQw4w9WgXcQ", verbose: true });
+    const comments = await request(server)
+      .get("/Comments")
+      .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), videoId: "dQw4w9WgXcQ", verbose: true });
     console.log(colors.green("/Comments Response:"), comments.body);
   } catch (error: any) {
     console.error(colors.red("/Comments Error:"), error.message || error);
   }
-  try {
-    const history = await request(server).get("/History").query({ cookiesPath: "./cookies.txt", verbose: true });
-    console.log(colors.green("/History Response:"), history.body);
-  } catch (error: any) {
-    console.error(colors.red("/History Error:"), error.message || error);
-  }
-  try {
-    const library = await request(server).get("/Library").query({ cookiesPath: "./cookies.txt", verbose: true });
-    console.log(colors.green("/Library Response:"), library.body);
-  } catch (error: any) {
-    console.error(colors.red("/Library Error:"), error.message || error);
-  }
+  // try {
+  // const history = await request(server)
+  // .get("/History")
+  // .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
+  // console.log(colors.green("/History Response:"), history.body);
+  // } catch (error: any) {
+  // console.error(colors.red("/History Error:"), error.message || error);
+  // }
+  // try {
+  // const library = await request(server)
+  // .get("/Library")
+  // .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
+  // console.log(colors.green("/Library Response:"), library.body);
+  // } catch (error: any) {
+  // console.error(colors.red("/Library Error:"), error.message || error);
+  // }
 }
 runTests();
 // ========================================================================================================

@@ -5,6 +5,7 @@ import extractText from "../../utils/extractText";
 import TubeResponse from "../../interfaces/TubeResponse";
 import sanitizeRenderer from "../../utils/sanitizeRenderer";
 import TubeLogin, { TubeType } from "../../utils/TubeLogin";
+
 /**
  * Zod schema for validating input parameters for fetching comments.
  *
@@ -13,7 +14,12 @@ import TubeLogin, { TubeType } from "../../utils/TubeLogin";
  * @property {string} [cookiesPath] - path to the cookies file for authentication.
  * @property {boolean} [verbose] - Optional flag to enable verbose logging.
  */
-const ZodSchema = z.object({ cookiesPath: z.string(), videoId: z.string().min(1), verbose: z.boolean().optional() });
+const ZodSchema = z.object({
+  cookiesPath: z.string(),
+  videoId: z.string().min(1),
+  verbose: z.boolean().optional(),
+});
+
 /**
  * Sanitizes a comment thread object to a standardized format.
  *
@@ -24,18 +30,25 @@ const ZodSchema = z.object({ cookiesPath: z.string(), videoId: z.string().min(1)
 function sanitizeCommentThread(thread: any): any {
   return {
     type: thread.type,
-    comment:
-      thread.comment?.map((c: any) => ({
-        commentId: c.commentId || "",
-        authorText: extractText(c.authorText),
-        contentText: extractText(c.contentText),
-        authorThumbnail: c.authorThumbnail?.thumbnails?.map((t: any) => ({ url: t.url, width: t.width, height: t.height })) || [],
-      })) || [],
-    commentRepliesData: thread.comment_replies_data ? { replies: thread.comment_replies_data.replies?.map(sanitizeCommentThread) || [] } : null,
+    comment: Array.isArray(thread.comment)
+      ? thread.comment.map((c: any) => ({
+          commentId: c.commentId || "",
+          authorText: extractText(c.authorText),
+          contentText: extractText(c.contentText),
+          authorThumbnail:
+            c.authorThumbnail?.thumbnails?.map((t: any) => ({
+              url: t.url,
+              width: t.width,
+              height: t.height,
+            })) || [],
+        }))
+      : [],
+    commentRepliesData: thread.comment_replies_data ? { replies: Array.isArray(thread.comment_replies_data.replies) ? thread.comment_replies_data.replies.map(sanitizeCommentThread) : [] } : null,
     isModeratedElqComment: thread.is_moderated_elq_comment || false,
     hasReplies: thread.has_replies || false,
   };
 }
+
 /**
  * Sanitizes a custom emoji object to a standardized format.
  *
@@ -47,9 +60,17 @@ function sanitizeCustomEmoji(emoji: any): any {
   return {
     emojiId: emoji.emojiId || "",
     shortcuts: emoji.shortcuts || [],
-    image: { thumbnails: emoji.image?.thumbnails?.map((t: any) => ({ url: t.url, width: t.width, height: t.height })) || [] },
+    image: {
+      thumbnails:
+        emoji.image?.thumbnails?.map((t: any) => ({
+          url: t.url,
+          width: t.width,
+          height: t.height,
+        })) || [],
+    },
   };
 }
+
 /**
  * Fetches comments for a specific YouTube video and emits the result.
  *
@@ -95,7 +116,12 @@ export default function Comments(options: z.infer<typeof ZodSchema>): EventEmitt
               placeholder: extractText((comments.header?.create_renderer as any)?.placeholder),
               submitButton: sanitizeRenderer((comments.header?.create_renderer as any)?.submit_button?.[0]),
               cancelButton: sanitizeRenderer((comments.header?.create_renderer as any)?.cancel_button?.[0]),
-              authorThumbnail: (comments.header?.create_renderer as any)?.author_thumbnail?.map((t: any) => ({ url: t.url, width: t.width, height: t.height })) || [],
+              authorThumbnail:
+                (comments.header?.create_renderer as any)?.author_thumbnail?.map((t: any) => ({
+                  url: t.url,
+                  width: t.width,
+                  height: t.height,
+                })) || [],
             },
             sortMenu: {
               type: comments.header?.sort_menu?.type || "",
@@ -103,7 +129,11 @@ export default function Comments(options: z.infer<typeof ZodSchema>): EventEmitt
               title: comments.header?.sort_menu?.title || "",
               tooltip: comments.header?.sort_menu?.tooltip || "",
               iconType: comments.header?.sort_menu?.icon_type || "",
-              subMenuItems: comments.header?.sort_menu?.sub_menu_items?.map((item: any) => ({ title: item.title, selected: item.selected })) || [],
+              subMenuItems:
+                comments.header?.sort_menu?.sub_menu_items?.map((item: any) => ({
+                  title: item.title,
+                  selected: item.selected,
+                })) || [],
             },
             customEmojis: comments.header?.custom_emojis?.map(sanitizeCustomEmoji) || [],
           },

@@ -15,7 +15,6 @@ import channel_data from "./routes/command/channel_data";
 import search_videos from "./routes/command/search_videos";
 import playlist_data from "./routes/command/playlist_data";
 import related_videos from "./routes/command/related_videos";
-import video_comments from "./routes/command/video_comments";
 import live_video_data from "./routes/command/live_video_data";
 import advanced_search from "./routes/command/advanced_search";
 import search_channels from "./routes/command/search_channels";
@@ -42,7 +41,6 @@ var ytdlx = {
       Live: live_video_data,
       Multiple: search_videos,
       Related: related_videos,
-      Comments: video_comments,
       Channel: search_channels,
       Channel_Data: channel_data,
       Transcript: video_transcript,
