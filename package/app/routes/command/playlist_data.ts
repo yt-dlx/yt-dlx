@@ -82,10 +82,13 @@ export default function playlist_data({ playlistLink }: z.infer<typeof ZodSchema
       }
       emitter.emit("data", metaData);
     } catch (error: unknown) {
-      if (error instanceof ZodError) {
-        emitter.emit("error", error.errors);
-      } else {
-        emitter.emit("error", (error as Error).message);
+      switch (true) {
+        case error instanceof ZodError:
+          emitter.emit("error", error.errors);
+          break;
+        default:
+          emitter.emit("error", (error as Error).message);
+          break;
       }
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
