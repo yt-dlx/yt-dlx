@@ -31,7 +31,7 @@ export default function AudioVideoHighest({ query, stream, verbose, metadata, ou
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
       instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
       instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
-      instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+      /* instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`); */
       instance.addInput(engineData.ManifestHigh[engineData.ManifestHigh.length - 1].url);
       instance.addInput(engineData.AudioHighF.url);
       instance.withOutputFormat("matroska");

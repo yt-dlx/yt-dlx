@@ -34,7 +34,7 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
       instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
       instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
-      instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+      /* instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`); */
       instance.addInput(engineData.metaData.thumbnail);
       instance.addInput(engineData.AudioHighF.url);
       instance.withOutputFormat("avi");

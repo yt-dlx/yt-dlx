@@ -34,7 +34,7 @@ export default function AudioLowest({ query, output, useTor, stream, filter, met
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
       instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
       instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
-      instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+      /* instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`); */
       instance.addInput(engineData.metaData.thumbnail);
       instance.addInput(engineData.AudioLowF.url);
       instance.withOutputFormat("avi");

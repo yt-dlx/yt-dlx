@@ -35,7 +35,7 @@ export default function AudioVideoCustom({ query, stream, output, useTor, filter
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
       instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
       instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
-      instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+      /* instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`); */
       instance.addInput(engineData.AudioHighF.url);
       instance.withOutputFormat("matroska");
       const filenameBase = `yt-dlx_AudioVideoCustom_${resolution}_`;

@@ -31,7 +31,7 @@ export default function VideoHighest({ query, stream, verbose, output, metadata,
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
       instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
       instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
-      instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+      /* instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`); */
       instance.addInput(engineData.VideoHighF.url);
       instance.withOutputFormat("matroska");
       instance.videoCodec("copy");

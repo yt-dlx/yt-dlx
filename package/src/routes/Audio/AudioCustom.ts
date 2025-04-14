@@ -32,7 +32,7 @@ export default function AudioCustom({ query, output, useTor, stream, filter, ver
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
       instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
       instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
-      instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+      /* instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`); */
       const resolutionFilter = resolution.replace("p", "");
       const adata = engineData.AudioHigh.find((i: { format: string | string[] }) => i.format.includes(resolutionFilter));
       if (!adata) {

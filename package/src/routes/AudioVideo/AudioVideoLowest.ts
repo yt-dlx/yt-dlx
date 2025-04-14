@@ -31,7 +31,7 @@ export default function AudioVideoLowest({ query, stream, verbose, output, metad
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
       instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
       instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
-      instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`);
+      /* instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`); */
       instance.addInput(engineData.ManifestLow[0]?.url);
       instance.addInput(engineData.AudioLowF.url);
       instance.withOutputFormat("matroska");

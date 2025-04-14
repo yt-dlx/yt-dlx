@@ -28,13 +28,13 @@ function formatCount(count: number) {
   }
   return `${count}`;
 }
-const ZodSchema = z.object({ query: z.string().min(2), verbose: z.boolean().optional() });
-export default function extract({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
+const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optional(), verbose: z.boolean().optional() });
+export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse({ query, verbose });
-      const metaBody: EngineOutput = await Tuber({ query, verbose });
+      const metaBody: EngineOutput = await Tuber({ query, verbose, useTor });
       if (!metaBody) {
         emitter.emit("error", "Unable to get response!");
         return;
