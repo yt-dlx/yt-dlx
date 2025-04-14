@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "esnext"
   },
-  "include": ["app/**/*.ts"],
-  "extends": "./config/base.json",
-  "exclude": ["out", "node_modules"]
+  "include": ["src/**/*.ts", "src/routes/Account/subscriptions_feed.ts"],
+  "exclude": ["pkg", "node_modules"],
+  "extends": "./src/config/root.json"
 }
