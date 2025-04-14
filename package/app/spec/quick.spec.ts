@@ -1,5 +1,6 @@
 import colors from "colors";
 import TubeLogin, { TubeType } from "../utils/TubeLogin";
+import path from "path";
 interface ApiResponse<T> {
   data?: T;
   message?: string;
@@ -173,7 +174,7 @@ async function fetchLibrary(client: TubeType): Promise<ApiResponse<{ header: any
 async function main(): Promise<void> {
   try {
     console.log(colors.green("@info:"), "Connecting to YouTube...");
-    const Tubed = await TubeLogin();
+    const Tubed = await TubeLogin(path.resolve(process.cwd(), "cookies.txt"));
     console.log(colors.green("@info:"), "Connected to YouTube.");
     const results = await Promise.all([
       fetchComments(Tubed, "kJi_cNVStMo"),
