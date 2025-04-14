@@ -1,7 +1,7 @@
 import colors from "colors";
 import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
-import comEngine from "../../utils/comEngine";
+import Tuber from "../../utils/Agent";
 /**
  * Defines the schema for the input parameters used in the `video_comments` function.
  *
@@ -36,39 +36,40 @@ export default function video_comments({ query, useTor, verbose, filter }: z.inf
   (async () => {
     try {
       ZodSchema.parse({ query, useTor, verbose, filter });
-      const { comments } = await comEngine({ query, useTor: useTor || false });
-      let processed = comments;
+      const response = await Tuber({ query, useTor, mode: "comments" });
+      const comments = response.comments;
+      let processed = response.comments;
       switch (filter) {
         case "newest":
-          processed = comments.sort((a, b) => b.timestamp - a.timestamp);
+          processed = comments.sort((a: { timestamp: number }, b: { timestamp: number }) => b.timestamp - a.timestamp);
           break;
         case "oldest":
-          processed = comments.sort((a, b) => a.timestamp - b.timestamp);
+          processed = comments.sort((a: { timestamp: number }, b: { timestamp: number }) => a.timestamp - b.timestamp);
           break;
         case "top":
         case "most_liked":
-          processed = comments.sort((a, b) => b.like_count - a.like_count);
+          processed = comments.sort((a: { like_count: number }, b: { like_count: number }) => b.like_count - a.like_count);
           break;
         case "pinned":
-          processed = comments.filter(c => c.is_pinned);
+          processed = comments.filter((c: { is_pinned: any }) => c.is_pinned);
           break;
         case "verified":
-          processed = comments.filter(c => c.author_is_verified);
+          processed = comments.filter((c: { author_is_verified: any }) => c.author_is_verified);
           break;
         case "replies":
-          processed = comments.filter(c => c.parent !== "");
+          processed = comments.filter((c: { parent: string }) => c.parent !== "");
           break;
         case "uploader":
-          processed = comments.filter(c => c.author_is_uploader);
+          processed = comments.filter((c: { author_is_uploader: any }) => c.author_is_uploader);
           break;
         case "favorited":
-          processed = comments.filter(c => c.is_favorited);
+          processed = comments.filter((c: { is_favorited: any }) => c.is_favorited);
           break;
         case "longest":
-          processed = comments.sort((a, b) => b.text.length - a.text.length);
+          processed = comments.sort((a: { text: string | any[] }, b: { text: string | any[] }) => b.text.length - a.text.length);
           break;
         case "shortest":
-          processed = comments.sort((a, b) => a.text.length - b.text.length);
+          processed = comments.sort((a: { text: string | any[] }, b: { text: string | any[] }) => a.text.length - b.text.length);
           break;
       }
       emitter.emit("data", processed);

@@ -1,8 +1,8 @@
 import colors from "colors";
 import Engine from "./Engine";
-import YouTubeID from "../utils/YouTubeId";
+import comEngine from "./comEngine";
 import { execSync } from "child_process";
-import type EngineOutput from "../interfaces/EngineOutput";
+import YouTubeID from "../utils/YouTubeId";
 import { singleVideo } from "../routes/command/video_data";
 import { searchVideos } from "../routes/command/search_videos";
 /**
@@ -25,7 +25,6 @@ async function systemctlAvailable(): Promise<boolean> {
     return false;
   }
 }
-
 /**
  * Checks if the "service" command is available on the host system.
  *
@@ -46,7 +45,6 @@ async function serviceAvailable(): Promise<boolean> {
     return false;
   }
 }
-
 /**
  * Attempts to restart the Tor service using available system commands.
  *
@@ -87,7 +85,6 @@ async function restartTor(): Promise<boolean> {
   console.log(colors.red("@error:"), "Unable to restart Tor with either service or systemctl");
   return false;
 }
-
 /**
  * Processes a YouTube video query by searching for a video and passing it to the Engine.
  *
@@ -102,6 +99,7 @@ async function restartTor(): Promise<boolean> {
  * @param {string} options.query - The search query or potential YouTube video identifier.
  * @param {boolean} [options.useTor=false] - When true, routes the request through Tor (not supported on Windows).
  * @param {boolean} [options.verbose=false] - Enables verbose logging.
+ * @param {string} [options.mode="video"] - The mode for processing the query, either "video" or "comments". Defaults to "video".
  * @returns {Promise<any>} Resolves with the output from the Engine based on the processed YouTube video.
  * @throws {Error} Throws an error if no video can be found or if video details cannot be retrieved.
  *
@@ -110,31 +108,26 @@ async function restartTor(): Promise<boolean> {
  *   .then(response => console.log(response))
  *   .catch(error => console.error(error));
  */
-export default async function Agent({ query, useTor, verbose }: { query: string; useTor?: boolean; verbose?: boolean }): Promise<any> {
+export default async function Agent({ query, useTor, verbose, mode = "video" }: { query: string; useTor?: boolean; verbose?: boolean; mode?: "video" | "comments" }): Promise<any> {
   if (useTor && process.platform === "win32") {
     console.log(colors.red("@error:"), "TOR can't be used on your system!");
     useTor = false;
-  } else if (useTor) {
-    await restartTor();
-  }
-  if (verbose && useTor) {
-    console.log(colors.green("@info:"), "Using Tor for request anonymization");
-  }
-  let TubeBody: any;
-  let respEngine: EngineOutput | undefined = undefined;
+  } else if (useTor) await restartTor();
+  if (verbose && useTor) console.log(colors.green("@info:"), "Using Tor for request anonymization");
+  let url: string;
   const videoId: string | undefined = await YouTubeID(query);
   if (!videoId) {
     const searchResult = await searchVideos({ query });
     const video = searchResult[0];
     if (!video) throw new Error("Unable to find a video!");
     console.log(colors.green("@info:"), "preparing payload for", video.title);
-    respEngine = await Engine({ query: `https://www.youtube.com/watch?v=${video.id}`, useTor });
-    return respEngine;
+    url = `https://www.youtube.com/watch?v=${video.id}`;
   } else {
-    TubeBody = await singleVideo({ videoId });
+    const TubeBody = await singleVideo({ videoId });
     if (!TubeBody) throw new Error("Unable to get response!");
     console.log(colors.green("@info:"), "preparing payload for", TubeBody.title);
-    respEngine = await Engine({ query: `https://www.youtube.com/watch?v=${TubeBody.id}`, useTor });
-    return respEngine;
+    url = `https://www.youtube.com/watch?v=${TubeBody.id}`;
   }
+  if (mode === "comments") return await comEngine({ query: url, useTor });
+  else return await Engine({ query: url, useTor });
 }
