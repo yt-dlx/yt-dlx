@@ -3,7 +3,6 @@ import { z, ZodError } from "zod";
 import { Client } from "youtubei";
 import { EventEmitter } from "events";
 import YouTubeID from "../../YouTubeId";
-
 /**
  * Defines the schema for the input parameters used in the `playlist_data` function.
  *
@@ -11,7 +10,6 @@ import YouTubeID from "../../YouTubeId";
  * @property {string} playlistLink - The URL of the YouTube playlist.
  */
 const ZodSchema = z.object({ playlistLink: z.string().min(2) });
-
 /**
  * Represents the structure of a playlist with its videos.
  *
@@ -27,7 +25,6 @@ export interface playlistVideosType {
   videoCount: number;
   result: { id: string; title: string; isLive: boolean; duration: number; thumbnails: string[] };
 }
-
 /**
  * Fetches the details of all videos in a YouTube playlist.
  *
@@ -43,13 +40,18 @@ async function playlistVideos({ playlistId }: { playlistId: string }) {
   try {
     var youtube = new Client();
     var playlistVideos: any = await youtube.getPlaylist(playlistId);
-    var result = playlistVideos.videos.items.map((item: any) => ({ id: item.id, title: item.title, isLive: item.isLive, duration: item.duration, thumbnails: item.thumbnails }));
+    var result = playlistVideos.videos.items.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      isLive: item.isLive,
+      duration: item.duration,
+      thumbnails: item.thumbnails,
+    }));
     return { id: playlistVideos.id, title: playlistVideos.title, videoCount: playlistVideos.videoCount, result };
   } catch (error: any) {
     throw new Error(colors.red("@error: ") + error.message);
   }
 }
-
 /**
  * Fetches playlist data from YouTube based on the playlist URL and emits the formatted data.
  *
@@ -68,11 +70,15 @@ export default function playlist_data({ playlistLink }: z.infer<typeof ZodSchema
     try {
       ZodSchema.parse({ playlistLink });
       const playlistId = await YouTubeID(playlistLink);
-      if (!playlistId) throw new Error(colors.red("@error: ") + "incorrect playlist link");
-
+      if (!playlistId) {
+        emitter.emit("error", colors.red("@error: ") + "incorrect playlist link");
+        return;
+      }
       const metaData: playlistVideosType = await playlistVideos({ playlistId });
-      if (!metaData) throw new Error(colors.red("@error: ") + "Unable to get response!");
-
+      if (!metaData) {
+        emitter.emit("error", colors.red("@error: ") + "Unable to get response!");
+        return;
+      }
       emitter.emit("data", metaData);
     } catch (error: unknown) {
       switch (true) {
@@ -87,6 +93,5 @@ export default function playlist_data({ playlistLink }: z.infer<typeof ZodSchema
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
   })().catch(error => emitter.emit("error", error.message));
-
   return emitter;
 }

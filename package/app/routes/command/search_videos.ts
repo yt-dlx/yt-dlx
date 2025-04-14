@@ -3,7 +3,6 @@ import { z, ZodError } from "zod";
 import { Client } from "youtubei";
 import { EventEmitter } from "events";
 import YouTubeID from "../../YouTubeId";
-
 /**
  * Defines the schema for the input parameters used in the `search_videos` function.
  *
@@ -11,7 +10,6 @@ import YouTubeID from "../../YouTubeId";
  * @property {string} query - The search query to find videos on YouTube.
  */
 const ZodSchema = z.object({ query: z.string().min(2) });
-
 /**
  * Represents the structure of a YouTube video search result.
  *
@@ -39,7 +37,6 @@ export interface searchVideosType {
   description: string;
   thumbnails: string[];
 }
-
 /**
  * Searches for videos on YouTube based on the provided query.
  *
@@ -51,11 +48,11 @@ export interface searchVideosType {
  * @example
  * const videos = await searchVideos({ query: "JavaScript tutorials" });
  */
-export async function searchVideos({ query }: { query: string }) {
+export async function searchVideos({ query }: { query: string }): Promise<searchVideosType[]> {
   try {
-    var youtube = new Client();
-    var searchVideos = await youtube.search(query, { type: "video" });
-    var result: searchVideosType[] = searchVideos.items.map((item: any) => ({
+    const youtube = new Client();
+    const searchResults = await youtube.search(query, { type: "video" });
+    const result: searchVideosType[] = searchResults.items.map((item: any) => ({
       id: item.id,
       title: item.title,
       isLive: item.isLive,
@@ -72,13 +69,12 @@ export async function searchVideos({ query }: { query: string }) {
     throw new Error(colors.red("@error: ") + error.message);
   }
 }
-
 /**
  * Searches for YouTube videos based on a given query string and emits the video data.
  *
  * @function search_videos
  * @param {SearchVideosOptions} options - The options object containing the search query.
- * @returns {EventEmitter} The event emitter to handle `data`, `error` events.
+ * @returns {EventEmitter} The event emitter to handle `data` and `error` events.
  *
  * @example
  * const emitter = search_videos({ query: "JavaScript tutorials" });
@@ -90,13 +86,16 @@ export default function search_videos({ query }: z.infer<typeof ZodSchema>): Eve
   (async () => {
     try {
       ZodSchema.parse({ query });
-
       const isID = await YouTubeID(query);
-      if (isID) throw new Error(colors.red("@error: ") + "use video_data() for video link!");
-
+      if (isID) {
+        emitter.emit("error", colors.red("@error: ") + "use video_data() for video link!");
+        return;
+      }
       const metaData: searchVideosType[] = await searchVideos({ query });
-      if (!metaData) throw new Error(colors.red("@error: ") + "Unable to get response!");
-
+      if (!metaData || metaData.length === 0) {
+        emitter.emit("error", colors.red("@error: ") + "Unable to get response!");
+        return;
+      }
       emitter.emit("data", metaData);
     } catch (error: unknown) {
       switch (true) {

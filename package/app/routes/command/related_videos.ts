@@ -1,8 +1,7 @@
 import colors from "colors";
 import { z, ZodError } from "zod";
-import { EventEmitter } from "events";
 import { Client } from "youtubei";
-
+import { EventEmitter } from "events";
 /**
  * Defines the schema for the input parameters used in the `related_videos` function.
  *
@@ -10,7 +9,6 @@ import { Client } from "youtubei";
  * @property {string} videoId - The ID of the YouTube video.
  */
 const ZodSchema = z.object({ videoId: z.string().min(2) });
-
 /**
  * Represents the structure of a related video with its details.
  *
@@ -30,23 +28,22 @@ export interface relatedVideosType {
   uploadDate: string;
   thumbnails: string[];
 }
-
 /**
  * Fetches the related videos for a given YouTube video ID.
  *
  * @function relatedVideos
  * @param {object} options - The options object containing the video ID.
  * @param {string} options.videoId - The ID of the YouTube video.
- * @returns {Promise<relatedVideosType[]>} A promise that resolves with a list of related videos.
+ * @returns {Promise<relatedVideosType[] | null>} A promise that resolves with a list of related videos or null if an error occurs.
  *
  * @example
  * const videos = await relatedVideos({ videoId: "dQw4w9WgXcQ" });
  */
-async function relatedVideos({ videoId }: { videoId: string }) {
+async function relatedVideos({ videoId }: { videoId: string }): Promise<relatedVideosType[] | null> {
   try {
-    var youtube = new Client();
-    var relatedVideos: any = await youtube.getVideo(videoId);
-    var result: relatedVideosType[] = relatedVideos.related.items.map((item: any) => ({
+    const youtube = new Client();
+    const relatedVideos: any = await youtube.getVideo(videoId);
+    const result: relatedVideosType[] = relatedVideos.related.items.map((item: any) => ({
       id: item.id,
       title: item.title,
       isLive: item.isLive,
@@ -56,16 +53,15 @@ async function relatedVideos({ videoId }: { videoId: string }) {
     }));
     return result;
   } catch (error: any) {
-    throw new Error(colors.red("@error: ") + error.message);
+    return null;
   }
 }
-
 /**
  * Fetches the related videos for a given YouTube video ID and emits the data.
  *
  * @function related_videos
  * @param {RelatedVideosOptions} options - The options object containing the video ID.
- * @returns {EventEmitter} The event emitter to handle `data`, `error` events.
+ * @returns {EventEmitter} The event emitter to handle `data` and `error` events.
  *
  * @example
  * const emitter = related_videos({ videoId: "dQw4w9WgXcQ" });
@@ -77,10 +73,11 @@ export default function related_videos({ videoId }: z.infer<typeof ZodSchema>): 
   (async () => {
     try {
       ZodSchema.parse({ videoId });
-
       const videos = await relatedVideos({ videoId });
-      if (!videos || videos.length === 0) throw new Error("No related videos found");
-
+      if (!videos || videos.length === 0) {
+        emitter.emit("error", "No related videos found");
+        return;
+      }
       emitter.emit("data", videos);
     } catch (error: unknown) {
       switch (true) {

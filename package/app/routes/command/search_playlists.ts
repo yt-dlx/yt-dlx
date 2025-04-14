@@ -1,9 +1,8 @@
 import colors from "colors";
-import { z, ZodError } from "zod";
 import { Client } from "youtubei";
+import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
 import YouTubeID from "../../YouTubeId";
-
 /**
  * Defines the schema for the input parameters used in the `search_playlists` function.
  *
@@ -11,7 +10,6 @@ import YouTubeID from "../../YouTubeId";
  * @property {string} playlistLink - The link to search for playlists.
  */
 const ZodSchema = z.object({ playlistLink: z.string().min(2) });
-
 /**
  * Represents the structure of a YouTube playlist search result.
  *
@@ -27,7 +25,6 @@ export interface searchPlaylistsType {
   videoCount: number;
   thumbnails: string[];
 }
-
 /**
  * Searches for YouTube playlists based on a query string.
  *
@@ -39,17 +36,21 @@ export interface searchPlaylistsType {
  * @example
  * const playlists = await searchPlaylists({ query: "JavaScript tutorials" });
  */
-async function searchPlaylists({ query }: { query: string }) {
+async function searchPlaylists({ query }: { query: string }): Promise<searchPlaylistsType[]> {
   try {
     var youtube = new Client();
     var searchPlaylists = await youtube.search(query, { type: "playlist" });
-    var result: searchPlaylistsType[] = searchPlaylists.items.map((item: any) => ({ id: item.id, title: item.title, videoCount: item.videoCount, thumbnails: item.thumbnails }));
+    var result: searchPlaylistsType[] = searchPlaylists.items.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      videoCount: item.videoCount,
+      thumbnails: item.thumbnails,
+    }));
     return result;
   } catch (error: any) {
     throw new Error(colors.red("@error: ") + error.message);
   }
 }
-
 /**
  * Searches for playlists using a given query string, validates the input, and emits the first playlist found.
  *
@@ -67,15 +68,21 @@ export default function search_playlists({ playlistLink }: z.infer<typeof ZodSch
   (async () => {
     try {
       ZodSchema.parse({ playlistLink });
-
       const isID = await YouTubeID(playlistLink);
-      if (isID) throw new Error(colors.red("@error: ") + "use playlist_data() for playlist link!");
-
+      if (isID) {
+        emitter.emit("error", colors.red("@error: ") + "use playlist_data() for playlist link!");
+        return;
+      }
       const metaDataArray: searchPlaylistsType[] = await searchPlaylists({ query: playlistLink });
-      if (!metaDataArray.length) throw new Error(colors.red("@error: ") + "No playlists found!");
+      if (!metaDataArray.length) {
+        emitter.emit("error", colors.red("@error: ") + "No playlists found!");
+        return;
+      }
       const metaData: searchPlaylistsType = metaDataArray[0];
-      if (!metaData) throw new Error(colors.red("@error: ") + "Unable to get response!");
-
+      if (!metaData) {
+        emitter.emit("error", colors.red("@error: ") + "Unable to get response!");
+        return;
+      }
       emitter.emit("data", metaData);
     } catch (error: unknown) {
       switch (true) {

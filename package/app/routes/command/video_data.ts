@@ -1,9 +1,8 @@
 import colors from "colors";
-import { Client } from "youtubei";
 import { z, ZodError } from "zod";
+import { Client } from "youtubei";
 import { EventEmitter } from "events";
 import YouTubeID from "../../YouTubeId";
-
 /**
  * Defines the schema for the input parameters used in the `video_data` function.
  *
@@ -11,7 +10,6 @@ import YouTubeID from "../../YouTubeId";
  * @property {string} videoLink - The URL of the video.
  */
 const ZodSchema = z.object({ videoLink: z.string().min(2) });
-
 /**
  * Represents the structure of a YouTube video with its details.
  *
@@ -43,7 +41,6 @@ export interface singleVideoType {
   tags: string;
   likeCount: number;
 }
-
 /**
  * Fetches the details of a single YouTube video based on its video ID.
  *
@@ -55,10 +52,10 @@ export interface singleVideoType {
  * @example
  * const video = await singleVideo({ videoId: "dQw4w9WgXcQ" });
  */
-export async function singleVideo({ videoId }: { videoId: string }) {
+export async function singleVideo({ videoId }: { videoId: string }): Promise<singleVideoType> {
   try {
-    var youtube = new Client();
-    var singleVideo: any = await youtube.getVideo(videoId);
+    const youtube = new Client();
+    const singleVideo: any = await youtube.getVideo(videoId);
     return {
       id: singleVideo.id,
       title: singleVideo.title,
@@ -77,13 +74,12 @@ export async function singleVideo({ videoId }: { videoId: string }) {
     throw new Error(colors.red("@error: ") + error.message);
   }
 }
-
 /**
  * Fetches the details of a YouTube video using its URL, validates the input, and emits the video data.
  *
  * @function video_data
  * @param {VideoDataOptions} options - The options object containing the video URL.
- * @returns {EventEmitter} The event emitter to handle `data`, `error` events.
+ * @returns {EventEmitter} The event emitter to handle `data` and `error` events.
  *
  * @example
  * const emitter = video_data({ videoLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" });
@@ -96,11 +92,15 @@ export default function video_data({ videoLink }: z.infer<typeof ZodSchema>): Ev
     try {
       ZodSchema.parse({ videoLink });
       const vId = await YouTubeID(videoLink);
-      if (!vId) throw new Error(colors.red("@error: ") + "incorrect video link");
-
+      if (!vId) {
+        emitter.emit("error", colors.red("@error: ") + "incorrect video link");
+        return;
+      }
       const metaData: singleVideoType = await singleVideo({ videoId: vId });
-      if (!metaData) throw new Error(colors.red("@error: ") + "Unable to get response!");
-
+      if (!metaData) {
+        emitter.emit("error", colors.red("@error: ") + "Unable to get response!");
+        return;
+      }
       emitter.emit("data", metaData);
     } catch (error: unknown) {
       switch (true) {

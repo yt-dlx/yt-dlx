@@ -3,7 +3,6 @@ import { z, ZodError } from "zod";
 import Tuber from "../../base/Agent";
 import { EventEmitter } from "events";
 import type EngineOutput from "../../interfaces/EngineOutput";
-
 /**
  * Defines the schema for the input parameters used in the `list_formats` function.
  *
@@ -12,7 +11,6 @@ import type EngineOutput from "../../interfaces/EngineOutput";
  * @property {boolean} [verbose] - Whether to enable verbose logging.
  */
 const ZodSchema = z.object({ query: z.string().min(2), verbose: z.boolean().optional() });
-
 /**
  * Fetches the available formats for a YouTube video, including audio and video options,
  * and emits the data in a structured format.
@@ -30,10 +28,11 @@ export default function list_formats({ query, verbose }: z.infer<typeof ZodSchem
   (async () => {
     try {
       ZodSchema.parse({ query, verbose });
-
       const metaBody: EngineOutput = await Tuber({ query, verbose });
-      if (!metaBody) throw new Error("@error: Unable to get response from YouTube.");
-
+      if (!metaBody) {
+        emitter.emit("error", "@error: Unable to get response from YouTube.");
+        return;
+      }
       emitter.emit("data", {
         ManifestLow: metaBody.ManifestLow.map(item => ({ format: item.format, tbr: item.tbr })),
         ManifestHigh: metaBody.ManifestHigh.map(item => ({ format: item.format, tbr: item.tbr })),

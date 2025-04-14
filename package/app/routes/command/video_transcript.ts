@@ -23,7 +23,6 @@ export interface CaptionSegment {
   tOffsetMs?: number;
   acAsrConf: number;
 }
-
 /**
  * Represents the structure of a video transcript, including its text, start time, duration, and caption segments.
  *
@@ -39,7 +38,6 @@ export interface VideoTranscriptType {
   duration: number;
   segments: CaptionSegment[];
 }
-
 /**
  * Fetches the transcript of a YouTube video based on its video ID.
  *
@@ -60,20 +58,24 @@ async function getVideoTranscript({ videoId }: { videoId: string }): Promise<Vid
       text: caption.text,
       start: caption.start,
       duration: caption.duration,
-      segments: caption.segments.map(segment => ({ utf8: segment.utf8, tOffsetMs: segment.tOffsetMs, acAsrConf: segment.acAsrConf })),
+      segments: caption.segments.map(segment => ({
+        utf8: segment.utf8,
+        tOffsetMs: segment.tOffsetMs,
+        acAsrConf: segment.acAsrConf,
+      })),
     }));
   } catch (error: any) {
-    throw new Error(colors.red("@error: ") + error.message);
+    console.error(colors.red("@error: ") + error.message);
+    return [];
   }
 }
-
 /**
  * Fetches the transcript data for a given YouTube video link and emits the data.
  *
  * @function video_transcript
  * @param {object} options - The options object containing the video URL.
  * @param {string} options.videoLink - The YouTube video URL to fetch the transcript for.
- * @returns {EventEmitter} The event emitter to handle `data`, `error` events.
+ * @returns {EventEmitter} The event emitter to handle `data` and `error` events.
  *
  * @example
  * const emitter = video_transcript({ videoLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" });
@@ -86,11 +88,15 @@ export default function video_transcript({ videoLink }: z.infer<typeof ZodSchema
     try {
       ZodSchema.parse({ videoLink });
       const vId = await YouTubeID(videoLink);
-      if (!vId) throw new Error(colors.red("@error: ") + "incorrect video link");
-
+      if (!vId) {
+        emitter.emit("error", colors.red("@error: ") + "incorrect video link");
+        return;
+      }
       const transcriptData: VideoTranscriptType[] = await getVideoTranscript({ videoId: vId });
-      if (!transcriptData) throw new Error(colors.red("@error: ") + "Unable to get response!");
-
+      if (!transcriptData || transcriptData.length === 0) {
+        emitter.emit("error", colors.red("@error: ") + "Unable to get response!");
+        return;
+      }
       emitter.emit("data", transcriptData);
     } catch (error: unknown) {
       switch (true) {

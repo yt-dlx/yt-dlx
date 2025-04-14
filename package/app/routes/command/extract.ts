@@ -3,7 +3,6 @@ import { z, ZodError } from "zod";
 import Tuber from "../../base/Agent";
 import { EventEmitter } from "events";
 import type EngineOutput from "../../interfaces/EngineOutput";
-
 /**
  * Calculates the time ago from a given number of days and returns the formatted string.
  *
@@ -20,7 +19,6 @@ function calculateUploadAgo(days: number) {
   const formattedString = `${years > 0 ? years + " years, " : ""}${months > 0 ? months + " months, " : ""}${remainingDays} days`;
   return { years, months, days: remainingDays, formatted: formattedString };
 }
-
 /**
  * Calculates the video duration from seconds and returns the formatted string.
  *
@@ -37,7 +35,6 @@ function calculateVideoDuration(seconds: number) {
   const formattedString = `${hours > 0 ? hours + " hours, " : ""}${minutes > 0 ? minutes + " minutes, " : ""}${remainingSeconds} seconds`;
   return { hours, minutes, seconds: remainingSeconds, formatted: formattedString };
 }
-
 /**
  * Formats a large number (e.g., view count) with appropriate abbreviations (e.g., "K", "M", "B").
  *
@@ -58,7 +55,6 @@ function formatCount(count: number) {
   }
   return `${count}`;
 }
-
 /**
  * Extracts the metadata of a YouTube video and returns the details in a formatted structure.
  *
@@ -73,27 +69,25 @@ function formatCount(count: number) {
  * emitter.on("data", data => console.log(data));
  */
 const ZodSchema = z.object({ query: z.string().min(2), verbose: z.boolean().optional() });
-
 export default function extract({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
       ZodSchema.parse({ query, verbose });
-
       const metaBody: EngineOutput = await Tuber({ query, verbose });
-      if (!metaBody) throw new Error("Unable to get response!");
-
+      if (!metaBody) {
+        emitter.emit("error", "Unable to get response!");
+        return;
+      }
       const uploadDate = new Date(metaBody.metaData.upload_date.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"));
       const currentDate = new Date();
       const daysAgo = Math.floor((currentDate.getTime() - uploadDate.getTime()) / (1000 * 60 * 60 * 24));
       const prettyDate = uploadDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-
       const uploadAgoObject = calculateUploadAgo(daysAgo);
       const videoTimeInSeconds = metaBody.metaData.duration;
       const videoDuration = calculateVideoDuration(videoTimeInSeconds);
       const viewCountFormatted = formatCount(metaBody.metaData.view_count);
       const likeCountFormatted = formatCount(metaBody.metaData.like_count);
-
       const payload = {
         AudioLowF: metaBody.AudioLowF,
         AudioHighF: metaBody.AudioHighF,
@@ -141,7 +135,6 @@ export default function extract({ query, verbose }: z.infer<typeof ZodSchema>): 
           channel_follower_count_formatted: formatCount(metaBody.metaData.channel_follower_count),
         },
       };
-
       emitter.emit("data", payload);
     } catch (error: unknown) {
       switch (true) {
