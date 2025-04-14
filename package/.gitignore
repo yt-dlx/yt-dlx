@@ -1,4 +1,5 @@
 node_modules
+cookies.txt
 ffprobe.**
 cprobe.**
 ffmpeg.**
