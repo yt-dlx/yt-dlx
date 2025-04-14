@@ -1,10 +1,10 @@
 import colors from "colors";
 import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
-import TubeResponse from "../../interfaces/TubeResponse";
-import sanitizeRenderer from "../../utils/sanitizeRenderer";
-import TubeLogin, { TubeType } from "../../utils/TubeLogin";
-import sanitizeContentItem from "../../utils/sanitizeContentItem";
+import TubeResponse from "../../../interfaces/TubeResponse";
+import sanitizeRenderer from "../../../utils/sanitizeRenderer";
+import TubeLogin, { TubeType } from "../../../utils/TubeLogin";
+import sanitizeContentItem from "../../../utils/sanitizeContentItem";
 /**
  * Zod schema for validating input parameters for fetching watch history.
  *

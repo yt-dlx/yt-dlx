@@ -1,11 +1,11 @@
 import colors from "colors";
 import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
-import extractText from "../../utils/extractText";
-import TubeResponse from "../../interfaces/TubeResponse";
-import sanitizeRenderer from "../../utils/sanitizeRenderer";
-import TubeLogin, { TubeType } from "../../utils/TubeLogin";
-import sanitizeContentItem from "../../utils/sanitizeContentItem";
+import extractText from "../../../utils/extractText";
+import TubeResponse from "../../../interfaces/TubeResponse";
+import sanitizeRenderer from "../../../utils/sanitizeRenderer";
+import TubeLogin, { TubeType } from "../../../utils/TubeLogin";
+import sanitizeContentItem from "../../../utils/sanitizeContentItem";
 /**
  * Zod schema for validating input parameters for fetching the library.
  *

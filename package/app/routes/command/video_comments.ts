@@ -1,56 +1,77 @@
 import colors from "colors";
 import { z, ZodError } from "zod";
-import { Client } from "youtubei";
 import { EventEmitter } from "events";
-import YouTubeID from "../../utils/YouTubeId";
+import comEngine from "../../utils/comEngine";
 /**
- * Zod schema for validating the input parameters for the video_comments function.
+ * Defines the schema for the input parameters used in the `video_comments` function.
  *
  * @typedef {object} VideoCommentsOptions
- * @property {string} videoLink - The URL of the video (must be at least 2 characters long).
- * @property {boolean} [verbose] - Optional flag to enable verbose logging.
+ * @property {string} query - The YouTube video URL or query string
+ * @property {boolean} [useTor] - Whether to use Tor for anonymization
+ * @property {boolean} [verbose] - Whether to enable verbose logging
+ * @property {'newest'|'oldest'|'top'|'most_liked'|'pinned'|'verified'|'replies'|'uploader'|'favorited'|'longest'|'shortest'} [filter] - Filter/sort mode
  */
-const ZodSchema = z.object({ videoLink: z.string().min(2), verbose: z.boolean().optional() });
+const ZodSchema = z.object({
+  query: z.string().min(2),
+  useTor: z.boolean().optional(),
+  verbose: z.boolean().optional(),
+  filter: z.enum(["newest", "oldest", "top", "most_liked", "pinned", "verified", "replies", "uploader", "favorited", "longest", "shortest"]).optional(),
+});
 /**
- * Fetches comments for a given YouTube video and emits them.
- *
- * Since the youtubei Client does not provide a dedicated method such as `getVideoComments`,
- * this function retrieves the video data using `getVideo` and checks for a hypothetical
- * `comments` property. If the property is not present, it emits an error indicating that
- * video comments functionality is not supported.
+ * Fetches and filters YouTube video comments with various sorting options
  *
  * @function video_comments
- * @param {VideoCommentsOptions} options - The options object containing video parameters.
- * @param {string} options.videoLink - The URL of the video.
- * @param {boolean} [options.verbose] - Optional flag to enable verbose logging.
- * @returns {EventEmitter} The event emitter to handle `data` and `error` events.
+ * @param {VideoCommentsOptions} options - Configuration options
+ * @returns {EventEmitter} Event emitter for handling data/error events
  *
  * @example
- * const emitter = video_comments({ videoLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", verbose: true });
- * emitter.on("data", data => console.log(data));
- * emitter.on("error", error => console.error(error));
+ * const emitter = video_comments({
+ *   query: "https://youtu.be/VIDEO_ID",
+ *   filter: 'top'
+ * });
+ * emitter.on('data', comments => console.log(comments));
  */
-export default function video_comments({ videoLink, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
+export default function video_comments({ query, useTor, verbose, filter }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
-      ZodSchema.parse({ videoLink, verbose });
-      const vId = await YouTubeID(videoLink);
-      if (!vId) {
-        emitter.emit("error", colors.red("@error: ") + "incorrect video link");
-        return;
+      ZodSchema.parse({ query, useTor, verbose, filter });
+      const { comments } = await comEngine({ query, useTor: useTor || false });
+      let processed = comments;
+      switch (filter) {
+        case "newest":
+          processed = comments.sort((a, b) => b.timestamp - a.timestamp);
+          break;
+        case "oldest":
+          processed = comments.sort((a, b) => a.timestamp - b.timestamp);
+          break;
+        case "top":
+        case "most_liked":
+          processed = comments.sort((a, b) => b.like_count - a.like_count);
+          break;
+        case "pinned":
+          processed = comments.filter(c => c.is_pinned);
+          break;
+        case "verified":
+          processed = comments.filter(c => c.author_is_verified);
+          break;
+        case "replies":
+          processed = comments.filter(c => c.parent !== "");
+          break;
+        case "uploader":
+          processed = comments.filter(c => c.author_is_uploader);
+          break;
+        case "favorited":
+          processed = comments.filter(c => c.is_favorited);
+          break;
+        case "longest":
+          processed = comments.sort((a, b) => b.text.length - a.text.length);
+          break;
+        case "shortest":
+          processed = comments.sort((a, b) => a.text.length - b.text.length);
+          break;
       }
-      const youtube = new Client();
-      const videoData: any = await youtube.getVideo(vId);
-      if (!videoData) {
-        emitter.emit("error", colors.red("@error: ") + "Unable to fetch video data");
-        return;
-      }
-      if (!videoData.comments) {
-        emitter.emit("error", colors.red("@error: ") + "Video comments functionality is not supported by youtubei");
-        return;
-      }
-      emitter.emit("data", videoData.comments);
+      emitter.emit("data", processed);
     } catch (error: unknown) {
       switch (true) {
         case error instanceof ZodError:
@@ -61,8 +82,8 @@ export default function video_comments({ videoLink, verbose }: z.infer<typeof Zo
           break;
       }
     } finally {
-      console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider starring our GitHub repo https://github.com/yt-dlx.");
+      console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  })().catch(err => emitter.emit("error", err.message));
+  })().catch(error => emitter.emit("error", error.message));
   return emitter;
 }

@@ -5,7 +5,6 @@ import express from "express";
 import TubeResponse from "../interfaces/TubeResponse";
 import History from "../routes/command/future/History";
 import Library from "../routes/command/future/Library";
-import Comments from "../routes/command/future/Comments";
 import Home_Feed from "../routes/command/future/Home_Feed";
 import Subscriptions_Feed from "../routes/command/future/Subscriptions_Feed";
 import Unseen_Notifications from "../routes/command/future/Unseen_Notifications";
@@ -62,25 +61,6 @@ server.get("/HomeFeed", async (req, res: any) => {
     });
   }
 });
-server.get("/Comments", async (req, res: any) => {
-  const { cookiesPath, videoId, verbose } = req.query;
-  if (!cookiesPath || typeof cookiesPath !== "string") {
-    return res.status(400).json({ error: "Missing or invalid cookiesPath parameter." });
-  }
-  if (!videoId || typeof videoId !== "string") {
-    return res.status(400).json({ error: "Missing or invalid videoId parameter." });
-  }
-  try {
-    const Tuber = Comments({ cookiesPath, videoId, verbose: verbose === "true" });
-    Tuber.on("data", (data: TubeResponse<{ header: any; contents: any[] }>) => res.json(data));
-    Tuber.on("error", (error: any) => res.status(500).json({ error: error.message || error }));
-  } catch (error) {
-    console.error(colors.red("❌ Unexpected error:"), error);
-    res.status(500).json({
-      error: error instanceof Error ? error.message : String(error),
-    });
-  }
-});
 server.get("/History", async (req, res: any) => {
   const { cookiesPath, verbose } = req.query;
   if (!cookiesPath || typeof cookiesPath !== "string") {
@@ -118,54 +98,46 @@ export default server;
 import request from "supertest";
 async function runTests(): Promise<void> {
   console.log(colors.yellow("Running tests against the embedded Express server using Supertest..."));
-  // try {
-  // const unseenNotifications = await request(server)
-  // .get("/UnseenNotifications")
-  // .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
-  // console.log(colors.green("/UnseenNotifications Response:"), unseenNotifications.body);
-  // } catch (error: any) {
-  // console.error(colors.red("/UnseenNotifications Error:"), error.message || error);
-  // }
-  // try {
-  // const subscriptionsFeed = await request(server)
-  // .get("/SubscriptionsFeed")
-  // .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
-  // console.log(colors.green("/SubscriptionsFeed Response:"), subscriptionsFeed.body);
-  // } catch (error: any) {
-  // console.error(colors.red("/SubscriptionsFeed Error:"), error.message || error);
-  // }
-  // try {
-  // const homeFeed = await request(server)
-  // .get("/HomeFeed")
-  // .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
-  // console.log(colors.green("/HomeFeed Response:"), homeFeed.body);
-  // } catch (error: any) {
-  // console.error(colors.red("/HomeFeed Error:"), error.message || error);
-  // }
   try {
-    const comments = await request(server)
-      .get("/Comments")
-      .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), videoId: "dQw4w9WgXcQ", verbose: true });
-    console.log(colors.green("/Comments Response:"), comments.body);
+    const unseenNotifications = await request(server)
+      .get("/UnseenNotifications")
+      .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
+    console.log(colors.green("/UnseenNotifications Response:"), unseenNotifications.body);
   } catch (error: any) {
-    console.error(colors.red("/Comments Error:"), error.message || error);
+    console.error(colors.red("/UnseenNotifications Error:"), error.message || error);
   }
-  // try {
-  // const history = await request(server)
-  // .get("/History")
-  // .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
-  // console.log(colors.green("/History Response:"), history.body);
-  // } catch (error: any) {
-  // console.error(colors.red("/History Error:"), error.message || error);
-  // }
-  // try {
-  // const library = await request(server)
-  // .get("/Library")
-  // .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
-  // console.log(colors.green("/Library Response:"), library.body);
-  // } catch (error: any) {
-  // console.error(colors.red("/Library Error:"), error.message || error);
-  // }
+  try {
+    const subscriptionsFeed = await request(server)
+      .get("/SubscriptionsFeed")
+      .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
+    console.log(colors.green("/SubscriptionsFeed Response:"), subscriptionsFeed.body);
+  } catch (error: any) {
+    console.error(colors.red("/SubscriptionsFeed Error:"), error.message || error);
+  }
+  try {
+    const homeFeed = await request(server)
+      .get("/HomeFeed")
+      .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
+    console.log(colors.green("/HomeFeed Response:"), homeFeed.body);
+  } catch (error: any) {
+    console.error(colors.red("/HomeFeed Error:"), error.message || error);
+  }
+  try {
+    const history = await request(server)
+      .get("/History")
+      .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
+    console.log(colors.green("/History Response:"), history.body);
+  } catch (error: any) {
+    console.error(colors.red("/History Error:"), error.message || error);
+  }
+  try {
+    const library = await request(server)
+      .get("/Library")
+      .query({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true });
+    console.log(colors.green("/Library Response:"), library.body);
+  } catch (error: any) {
+    console.error(colors.red("/Library Error:"), error.message || error);
+  }
 }
 runTests();
 // ========================================================================================================
