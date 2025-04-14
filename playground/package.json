@@ -1,0 +1,7 @@
+{
+  "type": "module",
+  "dependencies": {
+    "playwright": "^1.51.1",
+    "youtubei.js": "^13.3.0"
+  }
+}
