@@ -1,7 +1,7 @@
 {
   "type": "module",
   "dependencies": {
-    "playwright": "^1.51.1",
+    "puppeteer": "^24.6.1",
     "youtubei.js": "^13.3.0"
   }
 }
