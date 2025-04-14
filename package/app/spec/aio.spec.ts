@@ -1,3 +1,4 @@
+console.clear();
 import request from "supertest";
 import server from "./server.spec";
 /* ============================================================================ Test Runner */

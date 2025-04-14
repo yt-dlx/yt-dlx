@@ -1,6 +1,7 @@
-import express from "express";
-import colors from "colors";
+console.clear();
 import ytdlx from "..";
+import colors from "colors";
+import express from "express";
 const server = express();
 const PORT = process.env.PORT || 4040;
 server.listen(PORT, () => console.log(colors.cyan(`🚀 YT-DLX Server is live at http://localhost:${PORT}`)));
