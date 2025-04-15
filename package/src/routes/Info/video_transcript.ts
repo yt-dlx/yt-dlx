@@ -52,10 +52,6 @@ async function getVideoTranscript({ videoId }: { videoId: string }): Promise<Vid
  * @example
  * // Example 2: Fetch transcript data with an invalid video link
  * YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=INVALID_ID" }).on("data", (transcriptData) => console.log("Transcript data:", transcriptData)).on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // Example 3: Fetch transcript data with verbose output enabled
- * YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID", verbose: true }).on("data", (transcriptData) => console.log("Transcript data:", transcriptData)).on("error", (err) => console.error("Error:", err));
  */
 export default function video_transcript({ videoLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
