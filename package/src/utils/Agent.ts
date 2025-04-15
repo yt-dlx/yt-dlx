@@ -1,10 +1,44 @@
 import colors from "colors";
 import Engine from "./Engine";
+import { Client } from "youtubei";
 import comEngine from "./comEngine";
 import { execSync } from "child_process";
 import YouTubeID from "../utils/YouTubeId";
 import { singleVideo } from "../routes/Search/video_data";
-import { searchVideos } from "../routes/Search/search_videos";
+export interface searchVideosType {
+  id: string;
+  title: string;
+  isLive: boolean;
+  duration: number;
+  viewCount: number;
+  uploadDate: string;
+  channelid: string;
+  channelname: string;
+  description: string;
+  thumbnails: string[];
+}
+export async function searchVideos({ query }: { query: string }): Promise<searchVideosType[]> {
+  try {
+    const youtube = new Client();
+    const searchResults = await youtube.search(query, { type: "video" });
+    const result: searchVideosType[] = searchResults.items.map((item: any) => ({
+      id: item.id,
+      title: item.title,
+      isLive: item.isLive,
+      duration: item.duration,
+      viewCount: item.viewCount,
+      channelid: item.channel.id,
+      thumbnails: item.thumbnails,
+      uploadDate: item.uploadDate,
+      description: item.description,
+      channelname: item.channel.name,
+    }));
+    return result;
+  } catch (error: any) {
+    console.error(colors.red("@error: ") + error.message);
+    return [];
+  }
+}
 async function systemctlAvailable(): Promise<boolean> {
   try {
     execSync("systemctl --version", { stdio: "ignore" });
