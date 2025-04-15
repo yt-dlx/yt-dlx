@@ -1,7 +1,7 @@
 import progbar from "./utils/progbar";
-import help from "./routes/Search/help";
+import help from "./routes/Info/help";
 import YouTubeID from "./utils/YouTubeId";
-import extract from "./routes/Search/extract";
+import extract from "./routes/Info/extract";
 import home_feed from "./routes/Account/home_feed";
 import video_data from "./routes/Search/video_data";
 import AudioLowest from "./routes/Audio/AudioLowest";
@@ -10,17 +10,17 @@ import VideoLowest from "./routes/Video/VideoLowest";
 import VideoCustom from "./routes/Video/VideoCustom";
 import AudioHighest from "./routes/Audio/AudioHighest";
 import VideoHighest from "./routes/Video/VideoHighest";
-import list_formats from "./routes/Search/list_formats";
+import list_formats from "./routes/Info/list_formats";
 import channel_data from "./routes/Search/channel_data";
-import watch_history from "./routes/Account/watch_history";
 import search_videos from "./routes/Search/search_videos";
 import playlist_data from "./routes/Search/playlist_data";
+import video_comments from "./routes/Info/video_comments";
+import watch_history from "./routes/Account/watch_history";
 import related_videos from "./routes/Search/related_videos";
-import video_comments from "./routes/Search/video_comments";
-import live_video_data from "./routes/Search/live_video_data";
+import live_video_data from "./routes/Info/live_video_data";
 import advanced_search from "./routes/Search/advanced_search";
 import search_channels from "./routes/Search/search_channels";
-import video_transcript from "./routes/Search/video_transcript";
+import video_transcript from "./routes/Info/video_transcript";
 import search_playlists from "./routes/Search/search_playlists";
 import AudioVideoLowest from "./routes/AudioVideo/AudioVideoLowest";
 import AudioVideoCustom from "./routes/AudioVideo/AudioVideoCustom";
@@ -33,12 +33,11 @@ var YouTubeDLX = {
   Audio: { Lowest: AudioLowest, Highest: AudioHighest, Custom: AudioCustom },
   Video: { Lowest: VideoLowest, Highest: VideoHighest, Custom: VideoCustom },
   Info: {
-    help,
-    extract,
-    list_formats,
-    video_transcript,
+    Help: help,
+    Extract: extract,
+    Formats: list_formats,
     Live: live_video_data,
-    get_videoId: YouTubeID,
+    GetVideoId: YouTubeID,
     Comments: video_comments,
     Transcript: video_transcript,
   },

@@ -443,4 +443,57 @@ async function Search_Functions() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
+  async function ChannelDataTest() {
+    console.log(colors.blue("@info"), "Test For Channel_Data: (1): Fetch channel data with only the channel link");
+    YouTubeDLX.Search.Video.Channel_Data({ channelLink: "https://www.youtube.com/c/testchannel" })
+      .on("data", data => console.log(colors.green("@data:"), data))
+      .on("error", error => console.error(colors.red("@error:"), error));
+  }
+}
+// ==================================================================================
+// ==================================================================================
+async function Info_Functions() {
+  async function ExtractTest() {
+    console.log(colors.blue("@info"), "Test For Extract: (1): Extract video data with only the query");
+    YouTubeDLX.Info.Extract({ query: "test video" })
+      .on("data", data => console.log(colors.green("@data:"), data))
+      .on("error", error => console.error(colors.red("@error:"), error));
+    console.log(colors.blue("@info"), "Test For Extract: (2): Extract video data with verbose output enabled");
+    YouTubeDLX.Info.Extract({ query: "test video", verbose: true })
+      .on("data", data => console.log(colors.green("@data:"), data))
+      .on("error", error => console.error(colors.red("@error:"), error));
+    console.log(colors.blue("@info"), "Test For Extract: (3): Extract video data with Tor enabled");
+    YouTubeDLX.Info.Extract({ query: "test video", useTor: true })
+      .on("data", data => console.log(colors.green("@data:"), data))
+      .on("error", error => console.error(colors.red("@error:"), error));
+    console.log(colors.blue("@info"), "Test For Extract: (4): Extract video data with all parameters (query, verbose, useTor)");
+    YouTubeDLX.Info.Extract({ query: "test video", verbose: true, useTor: true })
+      .on("data", data => console.log(colors.green("@data:"), data))
+      .on("error", error => console.error(colors.red("@error:"), error));
+  }
+  async function HelpTest() {
+    console.log(colors.blue("@info"), "Test For Help: (1): Display help message and get the help URL");
+    const helpUrl = await YouTubeDLX.Info.Help();
+    console.log(colors.green("@data:"), helpUrl);
+  }
+  async function ListFormatsTest() {
+    console.log(colors.blue("@info"), "Test For list_formats: (1): List formats with only the query");
+    YouTubeDLX.Info.Formats({ query: "test video" })
+      .on("data", data => console.log(colors.green("@data:"), data))
+      .on("error", error => console.error(colors.red("@error:"), error));
+    console.log(colors.blue("@info"), "Test For list_formats: (2): List formats with query and verbose output enabled");
+    YouTubeDLX.Info.Formats({ query: "test video", verbose: true })
+      .on("data", data => console.log(colors.green("@data:"), data))
+      .on("error", error => console.error(colors.red("@error:"), error));
+  }
+  async function LiveVideoDataTest() {
+    console.log(colors.blue("@info"), "Test For Live: (1): Fetch live video data with only the video link");
+    YouTubeDLX.Info.Live({ videoLink: "https://www.youtube.com/watch?v=test_video_id" })
+      .on("data", data => console.log(colors.green("@data:"), data))
+      .on("error", error => console.error(colors.red("@error:"), error));
+    console.log(colors.blue("@info"), "Test For Live: (2): Fetch live video data with verbose output enabled");
+    YouTubeDLX.Info.Live({ videoLink: "https://www.youtube.com/watch?v=test_video_id", verbose: true })
+      .on("data", data => console.log(colors.green("@data:"), data))
+      .on("error", error => console.error(colors.red("@error:"), error));
+  }
 }

@@ -17,11 +17,11 @@ const ZodSchema = z.object({ query: z.string().min(2), verbose: z.boolean().opti
  *
  * @example
  * // Example 1: List formats with only the query
- * YouTubeDLX.Info.list_formats({ query: "Node.js tutorial" }).on("data", (formats) => console.log("Available formats:", formats)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Formats({ query: "Node.js tutorial" }).on("data", (formats) => console.log("Available formats:", formats)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: List formats with query and verbose output enabled
- * YouTubeDLX.Info.list_formats({ query: "Node.js tutorial", verbose: true }).on("data", (formats) => console.log("Available formats:", formats)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Formats({ query: "Node.js tutorial", verbose: true }).on("data", (formats) => console.log("Available formats:", formats)).on("error", (err) => console.error("Error:", err));
  */
 export default function list_formats({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

@@ -43,19 +43,19 @@ const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optio
  *
  * @example
  * // Example 1: Extract video data with only the query
- * YouTubeDLX.Info.extract({ query: "Node.js tutorial" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Extract({ query: "Node.js tutorial" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Extract video data with verbose output enabled
- * YouTubeDLX.Info.extract({ query: "Node.js tutorial", verbose: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Extract video data with Tor enabled
- * YouTubeDLX.Info.extract({ query: "Node.js tutorial", useTor: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", useTor: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Extract video data with all parameters (query, verbose, useTor)
- * YouTubeDLX.Info.extract({ query: "Node.js tutorial", verbose: true, useTor: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true, useTor: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  */
 export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
