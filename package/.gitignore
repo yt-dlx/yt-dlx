@@ -1,0 +1,14 @@
+node_modules
+cookies.txt
+YouTubeDLX
+ffprobe.**
+cprobe.**
+ffmpeg.**
+ffprobe_**
+cprobe_**
+ffmpeg_**
+yt-dlx
+.env
+dist
+temp
+pkg
