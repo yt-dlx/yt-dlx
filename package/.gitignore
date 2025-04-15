@@ -8,6 +8,7 @@ ffprobe_**
 cprobe_**
 ffmpeg_**
 yt-dlx
+.env
 dist
 temp
 pkg
