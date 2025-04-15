@@ -44,13 +44,13 @@ async function playlistVideos({ playlistId }: { playlistId: string }): Promise<p
  * - "error": Emits an error message if the playlist is invalid or if fetching the data fails.
  *
  * @example
- * // Example 1: Fetch playlist data with only the playlist link
+ * // 1: Fetch playlist data with only the playlist link
  * YouTubeDLX.Search.Playlist.Single({ playlistLink: "https://www.youtube.com/playlist?list=PLw-VjHDlEOgs6k8xQ6sB9zAqS6vhJh2tV" })
  *   .on("data", (playlistData) => console.log("Playlist data:", playlistData))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: Fetch playlist data with an invalid playlist link
+ * // 2: Fetch playlist data with an invalid playlist link
  * YouTubeDLX.Search.Playlist.Single({ playlistLink: "https://www.youtube.com/playlist?list=INVALID" })
  *   .on("data", (playlistData) => console.log("Playlist data:", playlistData))
  *   .on("error", (err) => console.error("Error:", err));

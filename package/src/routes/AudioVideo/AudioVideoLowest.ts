@@ -39,43 +39,43 @@ const ZodSchema = z.object({
  * - "metadata": Emits the metadata if the `metadata` option is enabled.
  *
  * @example
- * // Example 1: Download and process lowest quality audio and video with only the query and filter
+ * // 1: Download and process lowest quality audio and video with only the query and filter
  * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale" })
  *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: Download and process lowest quality audio and video with query, filter, and verbose output enabled
+ * // 2: Download and process lowest quality audio and video with query, filter, and verbose output enabled
  * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", verbose: true })
  *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 3: Download and process lowest quality audio and video with query, filter, and custom output folder
+ * // 3: Download and process lowest quality audio and video with query, filter, and custom output folder
  * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", output: "/path/to/folder" })
  *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 4: Stream lowest quality audio and video with query, filter, and stream enabled
+ * // 4: Stream lowest quality audio and video with query, filter, and stream enabled
  * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", stream: true })
  *   .on("stream", (streamData) => console.log("Streaming audio and video:", streamData))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 5: Download and process lowest quality audio and video with query, filter, and metadata output enabled
+ * // 5: Download and process lowest quality audio and video with query, filter, and metadata output enabled
  * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", metadata: true })
  *   .on("metadata", (metadata) => console.log("Metadata:", metadata))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 6: Download and process lowest quality audio and video with query, filter, stream, and metadata
+ * // 6: Download and process lowest quality audio and video with query, filter, stream, and metadata
  * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", stream: true, metadata: true })
  *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 7: Download and process lowest quality audio and video with all parameters (query, output, filter, stream, verbose, metadata)
+ * // 7: Download and process lowest quality audio and video with all parameters (query, output, filter, stream, verbose, metadata)
  * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", output: "/path/to/folder", filter: "grayscale", stream: true, verbose: true, metadata: true })
  *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
  *   .on("error", (err) => console.error("Error:", err));

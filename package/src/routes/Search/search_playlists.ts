@@ -37,15 +37,15 @@ async function searchPlaylists({ query }: { query: string }): Promise<searchPlay
  * - "error": Emits an error message if no playlists are found, if the provided link is a playlist ID, or if fetching the data fails.
  *
  * @example
- * // Example 1: Search for playlists with only the playlist link
+ * // 1: Search for playlists with only the playlist link
  * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "Top 10 Music Playlists" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: Search for playlists with an invalid playlist link
+ * // 2: Search for playlists with an invalid playlist link
  * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "INVALID_PLAYLIST_LINK" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 3: Search for playlists with a playlist link being the ID of an existing playlist
+ * // 3: Search for playlists with a playlist link being the ID of an existing playlist
  * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "https://www.youtube.com/playlist?list=PLAYLIST_ID" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
  */
 export default function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {

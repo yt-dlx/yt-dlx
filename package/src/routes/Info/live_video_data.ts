@@ -16,13 +16,13 @@ const ZodSchema = z.object({ videoLink: z.string().min(2), verbose: z.boolean().
  * - "error": Emits an error message if the process fails.
  *
  * @example
- * // Example 1: List formats with only the videoLink
+ * // 1: List formats with only the videoLink
  * YouTubeDLX.Info.Formats({ videoLink: "Node.js tutorial" })
  *   .on("data", (formats) => console.log("Available formats:", formats))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: List formats with videoLink and verbose output enabled
+ * // 2: List formats with videoLink and verbose output enabled
  * YouTubeDLX.Info.Formats({ videoLink: "Node.js tutorial", verbose: true })
  *   .on("data", (formats) => console.log("Available formats:", formats))
  *   .on("error", (err) => console.error("Error:", err));

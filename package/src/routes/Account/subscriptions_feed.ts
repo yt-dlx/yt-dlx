@@ -22,13 +22,13 @@ const ZodSchema = z.object({
  * - "error": Emits an error message if the fetching fails.
  *
  * @example
- * // Example 1: Fetch subscriptions feed with cookies string
+ * // 1: Fetch subscriptions feed with cookies string
  * YouTubeDLX.Account.SubscriptionsFeed({ cookies: "COOKIE_STRING" })
  *   .on("data", (feed) => console.log("Subscriptions feed:", feed))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: Fetch subscriptions feed with cookies string and verbose output enabled
+ * // 2: Fetch subscriptions feed with cookies string and verbose output enabled
  * YouTubeDLX.Account.SubscriptionsFeed({ cookies: "COOKIE_STRING", verbose: true })
  *   .on("data", (feed) => console.log("Subscriptions feed:", feed))
  *   .on("error", (err) => console.error("Error:", err));

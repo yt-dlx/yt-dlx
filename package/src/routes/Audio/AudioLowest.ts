@@ -37,31 +37,31 @@ var ZodSchema = z.object({
  * - "metadata": Emits the metadata if the `metadata` option is enabled.
  *
  * @example
- * // Example 1: Download and process lowest quality audio with only the query and filter
+ * // 1: Download and process lowest quality audio with only the query and filter
  * YouTubeDLX.Audio.Lowest({ query: "Song title", filter: "bassboost" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: Download and process lowest quality audio with query, filter, and verbose output enabled
+ * // 2: Download and process lowest quality audio with query, filter, and verbose output enabled
  * YouTubeDLX.Audio.Lowest({ query: "Song title", filter: "bassboost", verbose: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 3: Download and process lowest quality audio with query, filter, and custom output folder
+ * // 3: Download and process lowest quality audio with query, filter, and custom output folder
  * YouTubeDLX.Audio.Lowest({ query: "Song title", filter: "bassboost", output: "/path/to/folder" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 4: Stream lowest quality audio with query and stream enabled
+ * // 4: Stream lowest quality audio with query and stream enabled
  * YouTubeDLX.Audio.Lowest({ query: "Song title", stream: true }).on("stream", (streamData) => console.log("Streaming audio:", streamData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 5: Download and process lowest quality audio with query, filter, and metadata output enabled
+ * // 5: Download and process lowest quality audio with query, filter, and metadata output enabled
  * YouTubeDLX.Audio.Lowest({ query: "Song title", filter: "bassboost", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 6: Download and process lowest quality audio with query, filter, stream, and metadata
+ * // 6: Download and process lowest quality audio with query, filter, stream, and metadata
  * YouTubeDLX.Audio.Lowest({ query: "Song title", filter: "bassboost", stream: true, metadata: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 7: Download and process lowest quality audio with all parameters (query, output, filter, stream, verbose, metadata)
+ * // 7: Download and process lowest quality audio with all parameters (query, output, filter, stream, verbose, metadata)
  * YouTubeDLX.Audio.Lowest({ query: "Song title", output: "/path/to/folder", filter: "bassboost", stream: true, verbose: true, metadata: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  */
 export default function AudioLowest({ query, output, useTor, stream, filter, metadata, verbose }: z.infer<typeof ZodSchema>): EventEmitter {

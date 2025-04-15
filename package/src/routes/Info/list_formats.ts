@@ -21,13 +21,13 @@ const ZodSchema = z.object({
  * - "error": Emits an error message if the process fails.
  *
  * @example
- * // Example 1: List formats with only the query
+ * // 1: List formats with only the query
  * YouTubeDLX.Info.Formats({ query: "Node.js tutorial" })
  *   .on("data", (formats) => console.log("Available formats:", formats))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: List formats with query and verbose output enabled
+ * // 2: List formats with query and verbose output enabled
  * YouTubeDLX.Info.Formats({ query: "Node.js tutorial", verbose: true })
  *   .on("data", (formats) => console.log("Available formats:", formats))
  *   .on("error", (err) => console.error("Error:", err));

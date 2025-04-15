@@ -39,23 +39,23 @@ var ZodSchema = z.object({
  * - "metadata": Emits the metadata if metadata option is enabled.
  *
  * @example
- * // Example 1: Process a video with only the query and resolution
+ * // 1: Process a video with only the query and resolution
  * YouTubeDLX.Video.Custom({ query: "Node.js tutorial", resolution: "720p" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: Process a video with the query, resolution, and a filter (grayscale)
+ * // 2: Process a video with the query, resolution, and a filter (grayscale)
  * YouTubeDLX.Video.Custom({ query: "Node.js tutorial", resolution: "1080p", filter: "grayscale" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 3: Stream a video with the query, resolution, and stream option enabled
+ * // 3: Stream a video with the query, resolution, and stream option enabled
  * YouTubeDLX.Video.Custom({ query: "Node.js tutorial", resolution: "480p", stream: true }).on("stream", (streamData) => console.log("Streaming video:", streamData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 4: Process a video with verbose output enabled
+ * // 4: Process a video with verbose output enabled
  * YouTubeDLX.Video.Custom({ query: "Node.js tutorial", resolution: "720p", verbose: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 5: Fetch metadata instead of processing the video
+ * // 5: Fetch metadata instead of processing the video
  * YouTubeDLX.Video.Custom({ query: "Node.js tutorial", resolution: "1080p", metadata: true }).on("metadata", (metadata) => console.log("Video metadata:", metadata)).on("error", (err) => console.error("Error:", err));
  */
 export default function VideoCustom({ query, stream, useTor, filter, output, verbose, metadata, resolution }: z.infer<typeof ZodSchema>): EventEmitter {

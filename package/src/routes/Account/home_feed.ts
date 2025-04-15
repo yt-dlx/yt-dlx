@@ -22,13 +22,13 @@ const ZodSchema = z.object({
  * - "error": Emits an error message if the fetching fails.
  *
  * @example
- * // Example 1: Fetch home feed with cookies string
+ * // 1: Fetch home feed with cookies string
  * YouTubeDLX.Account.HomeFeed({ cookies: "COOKIE_STRING" })
  *   .on("data", (feed) => console.log("Home feed:", feed))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: Fetch home feed with path to cookies file
+ * // 2: Fetch home feed with path to cookies file
  * YouTubeDLX.Account.HomeFeed({ cookies: "path/to/cookies.txt" })
  *   .on("data", (feed) => console.log("Home feed:", feed))
  *   .on("error", (err) => console.error("Error:", err));

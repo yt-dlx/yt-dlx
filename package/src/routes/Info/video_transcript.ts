@@ -53,13 +53,13 @@ async function getVideoTranscript({ videoId }: { videoId: string }): Promise<Vid
  * - "error": Emits an error message if the video link is incorrect, if no transcript is found, or if fetching the data fails.
  *
  * @example
- * // Example 1: Fetch transcript data with only the video link
+ * // 1: Fetch transcript data with only the video link
  * YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID" })
  *   .on("data", (transcriptData) => console.log("Transcript data:", transcriptData))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: Fetch transcript data with an invalid video link
+ * // 2: Fetch transcript data with an invalid video link
  * YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=INVALID_ID" })
  *   .on("data", (transcriptData) => console.log("Transcript data:", transcriptData))
  *   .on("error", (err) => console.error("Error:", err));

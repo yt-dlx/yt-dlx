@@ -24,37 +24,37 @@ const ZodSchema = z.object({
  * - "error": Emits an error message if fetching the comments or processing fails.
  *
  * @example
- * // Example 1: Fetch video comments with only the query
+ * // 1: Fetch video comments with only the query
  * YouTubeDLX.Info.Comments({ query: "Node.js tutorial" })
  *   .on("data", (comments) => console.log("Comments:", comments))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: Fetch video comments with verbose output enabled
+ * // 2: Fetch video comments with verbose output enabled
  * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", verbose: true })
  *   .on("data", (comments) => console.log("Comments:", comments))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 3: Fetch video comments with the filter set to "newest"
+ * // 3: Fetch video comments with the filter set to "newest"
  * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "newest" })
  *   .on("data", (comments) => console.log("Newest comments:", comments))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 4: Fetch video comments with the filter set to "top" (most liked)
+ * // 4: Fetch video comments with the filter set to "top" (most liked)
  * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "most_liked" })
  *   .on("data", (comments) => console.log("Top comments:", comments))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 5: Fetch video comments with the filter set to "pinned"
+ * // 5: Fetch video comments with the filter set to "pinned"
  * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "pinned" })
  *   .on("data", (comments) => console.log("Pinned comments:", comments))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 6: Fetch video comments with the filter set to "longest"
+ * // 6: Fetch video comments with the filter set to "longest"
  * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "longest" })
  *   .on("data", (comments) => console.log("Longest comments:", comments))
  *   .on("error", (err) => console.error("Error:", err));

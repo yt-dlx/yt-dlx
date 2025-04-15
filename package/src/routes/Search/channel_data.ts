@@ -18,7 +18,7 @@ const ZodSchema = z.object({
  * - "error": Emits an error message if the fetching fails.
  *
  * @example
- * // Example 1: Fetch channel data with only the channel link
+ * // 1: Fetch channel data with only the channel link
  * YouTubeDLX.Search.Video.Channel_Data({ channelLink: "https://www.youtube.com/c/ChannelName" })
  *   .on("data", (channelData) => console.log("Channel data:", channelData))
  *   .on("error", (err) => console.error("Error:", err));

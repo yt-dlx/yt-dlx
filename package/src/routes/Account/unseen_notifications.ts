@@ -21,13 +21,13 @@ const ZodSchema = z.object({
  * - "error": Emits an error message if the fetching fails.
  *
  * @example
- * // Example 1: Fetch unseen notifications count with cookies string
+ * // 1: Fetch unseen notifications count with cookies string
  * YouTubeDLX.Account.Unseen_Notifications({ cookies: "COOKIE_STRING" })
  *   .on("data", (notifications) => console.log("Unseen notifications count:", notifications))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: Fetch unseen notifications count with cookies string and verbose output enabled
+ * // 2: Fetch unseen notifications count with cookies string and verbose output enabled
  * YouTubeDLX.Account.Unseen_Notifications({ cookies: "COOKIE_STRING", verbose: true })
  *   .on("data", (notifications) => console.log("Unseen notifications count:", notifications))
  *   .on("error", (err) => console.error("Error:", err));

@@ -38,11 +38,11 @@ async function searchChannels({ query }: { query: string }): Promise<channelSear
  * - "error": Emits an error message if no channels are found or if fetching the data fails.
  *
  * @example
- * // Example 1: Search for channels with only the query
+ * // 1: Search for channels with only the query
  * YouTubeDLX.Search.Video.Channel({ query: "Tech channels" }).on("data", (channels) => console.log("Channels found:", channels)).on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: Search for channels with an invalid query
+ * // 2: Search for channels with an invalid query
  * YouTubeDLX.Search.Video.Channel({ query: "INVALID_QUERY" }).on("data", (channels) => console.log("Channels found:", channels)).on("error", (err) => console.error("Error:", err));
  */
 export default function search_channels({ query }: z.infer<typeof ZodSchema>): EventEmitter {

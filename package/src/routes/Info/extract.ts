@@ -51,25 +51,25 @@ const ZodSchema = z.object({
  * - "error": Emits an error message if the extraction fails.
  *
  * @example
- * // Example 1: Extract video data with only the query
+ * // 1: Extract video data with only the query
  * YouTubeDLX.Info.Extract({ query: "Node.js tutorial" })
  *   .on("data", (videoData) => console.log("Video data:", videoData))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: Extract video data with verbose output enabled
+ * // 2: Extract video data with verbose output enabled
  * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true })
  *   .on("data", (videoData) => console.log("Video data:", videoData))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 3: Extract video data with Tor enabled
+ * // 3: Extract video data with Tor enabled
  * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", useTor: true })
  *   .on("data", (videoData) => console.log("Video data:", videoData))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 4: Extract video data with all parameters (query, verbose, useTor)
+ * // 4: Extract video data with all parameters (query, verbose, useTor)
  * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true, useTor: true })
  *   .on("data", (videoData) => console.log("Video data:", videoData))
  *   .on("error", (err) => console.error("Error:", err));

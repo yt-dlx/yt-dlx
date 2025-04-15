@@ -5,7 +5,7 @@ import colors from "colors";
  * @returns {Promise<string>} A promise that resolves to a help URL.
  *
  * @example
- * // Example: Display help message and get the help URL
+ * // 1: Display help message and get the help URL
  * YouTubeDLX.Info.Help().then(helpUrl => console.log(helpUrl));
  */
 export default async function help(): Promise<string> {
