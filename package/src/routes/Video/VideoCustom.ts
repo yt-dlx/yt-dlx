@@ -58,9 +58,9 @@ var ZodSchema = z.object({
  * // Example 5: Fetch metadata instead of processing the video
  * YouTubeDLX.Video.Custom({ query: "Node.js tutorial", resolution: "1080p", metadata: true }).on("metadata", (metadata) => console.log("Video metadata:", metadata)).on("error", (err) => console.error("Error:", err));
  */
-export default async function VideoCustom({ query, stream, useTor, filter, output, verbose, metadata, resolution }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default function VideoCustom({ query, stream, useTor, filter, output, verbose, metadata, resolution }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse({ query, stream, useTor, filter, output, verbose, metadata, resolution });
       const engineData = await Tuber({ query, verbose, useTor });
@@ -117,14 +117,13 @@ export default async function VideoCustom({ query, stream, useTor, filter, outpu
           ManifestHigh: engineData.ManifestHigh,
         });
       }
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }
