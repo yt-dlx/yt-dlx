@@ -18,19 +18,19 @@ const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(
  *
  * @example
  * // Example 1: Fetch subscriptions feed with cookies string
- * YouTubeDLX.Account.SubscriptionsFeed({ cookies: "COOKIE_STRING" })
+ * await YouTubeDLX.Account.SubscriptionsFeed({ cookies: "COOKIE_STRING" })
  *   .on("data", (feed) => console.log("Subscriptions feed:", feed))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch subscriptions feed with cookies string and verbose output enabled
- * YouTubeDLX.Account.SubscriptionsFeed({ cookies: "COOKIE_STRING", verbose: true })
+ * await YouTubeDLX.Account.SubscriptionsFeed({ cookies: "COOKIE_STRING", verbose: true })
  *   .on("data", (feed) => console.log("Subscriptions feed:", feed))
  *   .on("error", (err) => console.error("Error:", err));
  */
-export default function subscriptions_feed(options: z.infer<typeof ZodSchema>): EventEmitter {
+export default async function subscriptions_feed(options: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();
-  (async () => {
+  return new Promise(async (resolve, reject) => {
     try {
       ZodSchema.parse(options);
       const { verbose, cookies } = options;
@@ -45,18 +45,14 @@ export default function subscriptions_feed(options: z.infer<typeof ZodSchema>): 
       const result: TubeResponse<{ contents: any[] }> = { status: "success", data: { contents } };
       if (verbose) console.log(colors.green("@info:"), "Subscriptions feed fetched:", JSON.stringify(result, null, 2));
       emitter.emit("data", result);
-    } catch (error: unknown) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", (error as Error).message);
-          break;
-      }
+      resolve(emitter);
+    } catch (error) {
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else if (error instanceof Error) emitter.emit("error", error.message);
+      else emitter.emit("error", String(error));
+      reject(error);
     } finally {
-      console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider starring our GitHub repo https://github.com/yt-dlx.");
+      console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  })().catch(err => emitter.emit("error", err.message));
-  return emitter;
+  });
 }

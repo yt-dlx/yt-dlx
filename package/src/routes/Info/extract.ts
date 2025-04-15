@@ -43,23 +43,23 @@ const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optio
  *
  * @example
  * // Example 1: Extract video data with only the query
- * YouTubeDLX.Info.Extract({ query: "Node.js tutorial" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Info.Extract({ query: "Node.js tutorial" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Extract video data with verbose output enabled
- * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Extract video data with Tor enabled
- * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", useTor: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Info.Extract({ query: "Node.js tutorial", useTor: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Extract video data with all parameters (query, verbose, useTor)
- * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true, useTor: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true, useTor: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  */
-export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSchema>): EventEmitter {
+export default async function extract({ query, verbose, useTor }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();
-  (async () => {
+  return new Promise(async (resolve, reject) => {
     try {
       ZodSchema.parse({ query, verbose });
       const metaBody: EngineOutput = await Tuber({ query, verbose, useTor });
@@ -124,18 +124,14 @@ export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSc
         },
       };
       emitter.emit("data", payload);
-    } catch (error: unknown) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", (error as Error).message);
-          break;
-      }
+      resolve(emitter);
+    } catch (error) {
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else if (error instanceof Error) emitter.emit("error", error.message);
+      else emitter.emit("error", String(error));
+      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  })().catch(error => emitter.emit("error", error.message));
-  return emitter;
+  });
 }

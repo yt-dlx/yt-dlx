@@ -38,35 +38,35 @@ var ZodSchema = z.object({
  *
  * @example
  * // Example 1: Download and process highest quality audio with only the query and filter
- * YouTubeDLX.Audio.Highest({ query: "Song title", filter: "bassboost" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio.Highest({ query: "Song title", filter: "bassboost" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Download and process highest quality audio with query, filter, and verbose output enabled
- * YouTubeDLX.Audio.Highest({ query: "Song title", filter: "bassboost", verbose: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio.Highest({ query: "Song title", filter: "bassboost", verbose: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Download and process highest quality audio with query, filter, and custom output folder
- * YouTubeDLX.Audio.Highest({ query: "Song title", filter: "bassboost", output: "/path/to/folder" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio.Highest({ query: "Song title", filter: "bassboost", output: "/path/to/folder" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Stream highest quality audio with query and stream enabled
- * YouTubeDLX.Audio.Highest({ query: "Song title", stream: true }).on("stream", (streamData) => console.log("Streaming audio:", streamData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio.Highest({ query: "Song title", stream: true }).on("stream", (streamData) => console.log("Streaming audio:", streamData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Download and process highest quality audio with query, filter, and metadata output enabled
- * YouTubeDLX.Audio.Highest({ query: "Song title", filter: "bassboost", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio.Highest({ query: "Song title", filter: "bassboost", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 6: Download and process highest quality audio with query, filter, stream, and metadata
- * YouTubeDLX.Audio.Highest({ query: "Song title", filter: "bassboost", stream: true, metadata: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio.Highest({ query: "Song title", filter: "bassboost", stream: true, metadata: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 7: Download and process highest quality audio with all parameters (query, output, filter, stream, verbose, metadata)
- * YouTubeDLX.Audio.Highest({ query: "Song title", output: "/path/to/folder", filter: "bassboost", stream: true, verbose: true, metadata: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio.Highest({ query: "Song title", output: "/path/to/folder", filter: "bassboost", stream: true, verbose: true, metadata: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  */
-export default function AudioHighest({ query, output, useTor, stream, filter, metadata, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
+export default async function AudioHighest({ query, output, useTor, stream, filter, metadata, verbose }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();
-  (async () => {
+  return new Promise(async (resolve, reject) => {
     try {
       ZodSchema.parse({ query, output, useTor, stream, filter, metadata, verbose });
       const engineData = await Tuber({ query, verbose, useTor }).catch(error => {
@@ -83,7 +83,6 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
       instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
       instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
-      /* instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`); */
       instance.addInput(engineData.metaData.thumbnail);
       instance.addInput(engineData.AudioHighF.url);
       instance.withOutputFormat("avi");
@@ -119,18 +118,14 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
       if (!stream && metadata) {
         emitter.emit("metadata", { AudioLowDRC: engineData.AudioLowDRC, AudioLowF: engineData.AudioLowF, ipAddress: engineData.ipAddress, metaData: engineData.metaData, filename });
       }
-    } catch (error: any) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", error.message);
-          break;
-      }
+      resolve(emitter);
+    } catch (error) {
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else if (error instanceof Error) emitter.emit("error", error.message);
+      else emitter.emit("error", String(error));
+      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  })().catch(error => emitter.emit("error", error.message));
-  return emitter;
+  });
 }

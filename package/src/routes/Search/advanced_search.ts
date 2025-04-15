@@ -25,39 +25,39 @@ const ZodSchema = z.object({
  *
  * @example
  * // Example 1: Basic search with only the query
- * YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial" }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial" }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Search with minimum view count
- * YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", minViews: 1000 }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", minViews: 1000 }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Search with maximum view count
- * YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", maxViews: 100000 }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", maxViews: 100000 }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Search with both minViews and maxViews
- * YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", minViews: 500, maxViews: 50000 }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", minViews: 500, maxViews: 50000 }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Search with ordering by view count
- * YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", orderBy: "viewCount" }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", orderBy: "viewCount" }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 6: Search with verbose output enabled
- * YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", verbose: true }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", verbose: true }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 7: Search with order by date
- * YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", orderBy: "date" }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", orderBy: "date" }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 8: Search with all parameters (query, minViews, maxViews, orderBy, verbose)
- * YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", minViews: 1000, maxViews: 100000, orderBy: "viewCount", verbose: true }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Video.Advance_Search({ query: "Node.js tutorial", minViews: 1000, maxViews: 100000, orderBy: "viewCount", verbose: true }).on("data", (videos) => console.log("Search results:", videos)).on("error", (err) => console.error("Error:", err));
  */
-export default function advanced_search({ query, minViews, maxViews, orderBy, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
+export default async function advanced_search({ query, minViews, maxViews, orderBy, verbose }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();
-  (async () => {
+  return new Promise(async (resolve, reject) => {
     try {
       ZodSchema.parse({ query, minViews, maxViews, orderBy, verbose });
       const youtube = new Client();
@@ -85,18 +85,14 @@ export default function advanced_search({ query, minViews, maxViews, orderBy, ve
         return;
       }
       emitter.emit("data", videos);
-    } catch (error: unknown) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", (error as Error).message);
-          break;
-      }
+      resolve(emitter);
+    } catch (error) {
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else if (error instanceof Error) emitter.emit("error", error.message);
+      else emitter.emit("error", String(error));
+      reject(error);
     } finally {
-      console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider starring our GitHub repo https://github.com/yt-dlx.");
+      console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  })().catch(err => emitter.emit("error", err.message));
-  return emitter;
+  });
 }

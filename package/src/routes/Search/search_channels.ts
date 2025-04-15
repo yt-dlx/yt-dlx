@@ -39,15 +39,15 @@ async function searchChannels({ query }: { query: string }): Promise<channelSear
  *
  * @example
  * // Example 1: Search for channels with only the query
- * YouTubeDLX.Search.Video.Channel({ query: "Tech channels" }).on("data", (channels) => console.log("Channels found:", channels)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Video.Channel({ query: "Tech channels" }).on("data", (channels) => console.log("Channels found:", channels)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Search for channels with an invalid query
- * YouTubeDLX.Search.Video.Channel({ query: "INVALID_QUERY" }).on("data", (channels) => console.log("Channels found:", channels)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Video.Channel({ query: "INVALID_QUERY" }).on("data", (channels) => console.log("Channels found:", channels)).on("error", (err) => console.error("Error:", err));
  */
-export default function search_channels({ query }: z.infer<typeof ZodSchema>): EventEmitter {
+export default async function search_channels({ query }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();
-  (async () => {
+  return new Promise(async (resolve, reject) => {
     try {
       ZodSchema.parse({ query });
       const channels = await searchChannels({ query });
@@ -56,18 +56,14 @@ export default function search_channels({ query }: z.infer<typeof ZodSchema>): E
         return;
       }
       emitter.emit("data", channels);
-    } catch (error: unknown) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", (error as Error).message);
-          break;
-      }
+      resolve(emitter);
+    } catch (error) {
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else if (error instanceof Error) emitter.emit("error", error.message);
+      else emitter.emit("error", String(error));
+      reject(error);
     } finally {
-      console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider starring our GitHub repo https://github.com/yt-dlx.");
+      console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  })().catch(err => emitter.emit("error", err.message));
-  return emitter;
+  });
 }

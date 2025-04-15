@@ -17,15 +17,15 @@ const ZodSchema = z.object({ query: z.string().min(2), verbose: z.boolean().opti
  *
  * @example
  * // Example 1: List formats with only the query
- * YouTubeDLX.Info.Formats({ query: "Node.js tutorial" }).on("data", (formats) => console.log("Available formats:", formats)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Info.Formats({ query: "Node.js tutorial" }).on("data", (formats) => console.log("Available formats:", formats)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: List formats with query and verbose output enabled
- * YouTubeDLX.Info.Formats({ query: "Node.js tutorial", verbose: true }).on("data", (formats) => console.log("Available formats:", formats)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Info.Formats({ query: "Node.js tutorial", verbose: true }).on("data", (formats) => console.log("Available formats:", formats)).on("error", (err) => console.error("Error:", err));
  */
-export default function list_formats({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
+export default async function list_formats({ query, verbose }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();
-  (async () => {
+  return new Promise(async (resolve, reject) => {
     try {
       ZodSchema.parse({ query, verbose });
       const metaBody: EngineOutput = await Tuber({ query, verbose });
@@ -45,18 +45,14 @@ export default function list_formats({ query, verbose }: z.infer<typeof ZodSchem
         AudioHighDRC: metaBody.AudioHighDRC.map(item => ({ filesizeP: item.filesizeP, format_note: item.format_note })),
         VideoHighHDR: metaBody.VideoHighHDR.map(item => ({ filesizeP: item.filesizeP, format_note: item.format_note })),
       });
-    } catch (error: unknown) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", (error as Error).message);
-          break;
-      }
+      resolve(emitter);
+    } catch (error) {
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else if (error instanceof Error) emitter.emit("error", error.message);
+      else emitter.emit("error", String(error));
+      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  })().catch(error => emitter.emit("error", error.message));
-  return emitter;
+  });
 }

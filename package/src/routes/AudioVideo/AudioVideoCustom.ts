@@ -40,35 +40,35 @@ var ZodSchema = z.object({
  *
  * @example
  * // Example 1: Download and process audio and video with only the query, resolution, and filter
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale" }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale" }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Download and process audio and video with query, resolution, filter, and verbose output enabled
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", verbose: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", verbose: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Download and process audio and video with query, resolution, and custom output folder
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", output: "/path/to/folder" }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", output: "/path/to/folder" }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Stream audio and video with query, resolution, and stream enabled
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", stream: true }).on("stream", (streamData) => console.log("Streaming audio and video:", streamData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", stream: true }).on("stream", (streamData) => console.log("Streaming audio and video:", streamData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Download and process audio and video with query, resolution, filter, and metadata output enabled
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 6: Download and process audio and video with query, resolution, filter, stream, and metadata
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", stream: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", stream: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 7: Download and process audio and video with all parameters (query, output, filter, stream, verbose, metadata, resolution)
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", output: "/path/to/folder", resolution: "720p", filter: "grayscale", stream: true, verbose: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Audio_Video.Custom({ query: "Song title", output: "/path/to/folder", resolution: "720p", filter: "grayscale", stream: true, verbose: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
  */
-export default function AudioVideoCustom({ query, stream, output, useTor, filter, metadata, verbose, resolution }: z.infer<typeof ZodSchema>): EventEmitter {
+export default async function AudioVideoCustom({ query, stream, output, useTor, filter, metadata, verbose, resolution }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();
-  (async () => {
+  return new Promise(async (resolve, reject) => {
     try {
       ZodSchema.parse({ query, stream, output, useTor, filter, metadata, verbose, resolution });
       const engineData = await ytdlx({ query, verbose, useTor }).catch(error => {
@@ -85,7 +85,6 @@ export default function AudioVideoCustom({ query, stream, output, useTor, filter
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
       instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
       instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
-      /* instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`); */
       instance.addInput(engineData.AudioHighF.url);
       instance.withOutputFormat("matroska");
       const filenameBase = `yt-dlx_AudioVideoCustom_${resolution}_`;
@@ -133,18 +132,14 @@ export default function AudioVideoCustom({ query, stream, output, useTor, filter
           ManifestHigh: engineData.ManifestHigh,
         });
       }
-    } catch (error: unknown) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", (error as Error).message);
-          break;
-      }
+      resolve(emitter);
+    } catch (error) {
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else if (error instanceof Error) emitter.emit("error", error.message);
+      else emitter.emit("error", String(error));
+      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  })().catch(error => emitter.emit("error", error.message));
-  return emitter;
+  });
 }

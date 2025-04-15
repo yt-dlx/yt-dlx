@@ -38,19 +38,19 @@ async function searchPlaylists({ query }: { query: string }): Promise<searchPlay
  *
  * @example
  * // Example 1: Search for playlists with only the playlist link
- * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "Top 10 Music Playlists" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "Top 10 Music Playlists" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Search for playlists with an invalid playlist link
- * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "INVALID_PLAYLIST_LINK" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "INVALID_PLAYLIST_LINK" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Search for playlists with a playlist link being the ID of an existing playlist
- * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "https://www.youtube.com/playlist?list=PLAYLIST_ID" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "https://www.youtube.com/playlist?list=PLAYLIST_ID" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
  */
-export default function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
+export default async function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();
-  (async () => {
+  return new Promise(async (resolve, reject) => {
     try {
       ZodSchema.parse({ playlistLink });
       const isID = await YouTubeID(playlistLink);
@@ -69,19 +69,14 @@ export default function search_playlists({ playlistLink }: z.infer<typeof ZodSch
         return;
       }
       emitter.emit("data", metaData);
-    } catch (error: unknown) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", (error as Error).message);
-          break;
-      }
+      resolve(emitter);
+    } catch (error) {
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else if (error instanceof Error) emitter.emit("error", error.message);
+      else emitter.emit("error", String(error));
+      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  })().catch(error => emitter.emit("error", error.message));
-
-  return emitter;
+  });
 }

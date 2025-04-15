@@ -17,19 +17,19 @@ const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(
  *
  * @example
  * // Example 1: Fetch unseen notifications count with cookies string
- * YouTubeDLX.Account.Unseen_Notifications({ cookies: "COOKIE_STRING" })
+ * await YouTubeDLX.Account.Unseen_Notifications({ cookies: "COOKIE_STRING" })
  *   .on("data", (notifications) => console.log("Unseen notifications count:", notifications))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch unseen notifications count with cookies string and verbose output enabled
- * YouTubeDLX.Account.Unseen_Notifications({ cookies: "COOKIE_STRING", verbose: true })
+ * await YouTubeDLX.Account.Unseen_Notifications({ cookies: "COOKIE_STRING", verbose: true })
  *   .on("data", (notifications) => console.log("Unseen notifications count:", notifications))
  *   .on("error", (err) => console.error("Error:", err));
  */
-export default function unseen_notifications(options: z.infer<typeof ZodSchema>): EventEmitter {
+export default async function unseen_notifications(options: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();
-  (async () => {
+  return new Promise(async (resolve, reject) => {
     try {
       ZodSchema.parse(options);
       const { verbose, cookies } = options;
@@ -43,18 +43,14 @@ export default function unseen_notifications(options: z.infer<typeof ZodSchema>)
       const result: TubeResponse<{ count: number }> = { status: "success", data: { count: Number(count) || 0 } };
       if (verbose) console.log(colors.green("@info:"), "Unseen notifications fetched:", JSON.stringify(result, null, 2));
       emitter.emit("data", result);
-    } catch (error: unknown) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", (error as Error).message);
-          break;
-      }
+      resolve(emitter);
+    } catch (error) {
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else if (error instanceof Error) emitter.emit("error", error.message);
+      else emitter.emit("error", String(error));
+      reject(error);
     } finally {
-      console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider starring our GitHub repo https://github.com/yt-dlx.");
+      console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  })().catch(err => emitter.emit("error", err.message));
-  return emitter;
+  });
 }

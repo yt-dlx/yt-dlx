@@ -38,27 +38,27 @@ var ZodSchema = z.object({
  *
  * @example
  * // Example 1: Process the highest quality video with only the query and resolution
- * YouTubeDLX.Video.Highest({ query: "Node.js tutorial", resolution: "1080p" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Video.Highest({ query: "Node.js tutorial", resolution: "1080p" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Process the highest quality video with the query, resolution, and a filter (grayscale)
- * YouTubeDLX.Video.Highest({ query: "Node.js tutorial", resolution: "1080p", filter: "grayscale" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Video.Highest({ query: "Node.js tutorial", resolution: "1080p", filter: "grayscale" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Stream the highest quality video with the query, resolution, and stream option enabled
- * YouTubeDLX.Video.Highest({ query: "Node.js tutorial", resolution: "720p", stream: true }).on("stream", (streamData) => console.log("Streaming video:", streamData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Video.Highest({ query: "Node.js tutorial", resolution: "720p", stream: true }).on("stream", (streamData) => console.log("Streaming video:", streamData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Process the highest quality video with verbose output enabled
- * YouTubeDLX.Video.Highest({ query: "Node.js tutorial", resolution: "720p", verbose: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Video.Highest({ query: "Node.js tutorial", resolution: "720p", verbose: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Fetch metadata instead of processing the video
- * YouTubeDLX.Video.Highest({ query: "Node.js tutorial", resolution: "1080p", metadata: true }).on("metadata", (metadata) => console.log("Video metadata:", metadata)).on("error", (err) => console.error("Error:", err));
+ * await YouTubeDLX.Video.Highest({ query: "Node.js tutorial", resolution: "1080p", metadata: true }).on("metadata", (metadata) => console.log("Video metadata:", metadata)).on("error", (err) => console.error("Error:", err));
  */
-export default function VideoHighest({ query, stream, verbose, output, metadata, useTor, filter }: z.infer<typeof ZodSchema>): EventEmitter {
+export default async function VideoHighest({ query, stream, verbose, output, metadata, useTor, filter }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();
-  (async () => {
+  return new Promise(async (resolve, reject) => {
     try {
       ZodSchema.parse({ query, stream, verbose, output, metadata, useTor, filter });
       const engineData = await Tuber({ query, verbose, useTor });
@@ -72,7 +72,6 @@ export default function VideoHighest({ query, stream, verbose, output, metadata,
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
       instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
       instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
-      /* instance.addOption("-headers", `X-Forwarded-For: ${engineData.ipAddress}`); */
       instance.addInput(engineData.VideoHighF.url);
       instance.withOutputFormat("matroska");
       instance.videoCodec("copy");
@@ -110,18 +109,14 @@ export default function VideoHighest({ query, stream, verbose, output, metadata,
           ManifestHigh: engineData.ManifestHigh,
         });
       }
-    } catch (error: unknown) {
-      switch (true) {
-        case error instanceof ZodError:
-          emitter.emit("error", error.errors);
-          break;
-        default:
-          emitter.emit("error", (error as Error).message);
-          break;
-      }
+      resolve(emitter);
+    } catch (error) {
+      if (error instanceof ZodError) emitter.emit("error", error.errors);
+      else if (error instanceof Error) emitter.emit("error", error.message);
+      else emitter.emit("error", String(error));
+      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  })().catch(error => emitter.emit("error", error.message));
-  return emitter;
+  });
 }
