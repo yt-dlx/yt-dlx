@@ -1,8 +1,8 @@
 console.clear();
 import ytdlx from "..";
+import path from "path";
 import colors from "colors";
 import express from "express";
-import path from "path";
 const server = express();
 const PORT = process.env.PORT || 4040;
 server.listen(PORT, () => console.log(colors.cyan(`🚀 YT-DLX Server is live at http://localhost:${PORT}`)));
@@ -13,8 +13,8 @@ server.get("/AudioCustomData", async (req, res: any) => {
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   let resolution: "high" | "medium" | "low" | "ultralow";
   switch (req.query.resolution) {
-    case "high":
     case "low":
+    case "high":
     case "medium":
     case "ultralow":
       resolution = req.query.resolution;
@@ -80,7 +80,7 @@ server.get("/VideoCustomData", async (req, res: any) => {
       resolution = req.query.resolution;
       break;
     default:
-      resolution = "720p";
+      resolution = "360p";
   }
   try {
     const Tuber = ytdlx.Video.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
@@ -243,12 +243,60 @@ server.get("/SearchVideoTranscript", async (req, res: any) => {
   const videoLink = req.query.videoLink as string;
   if (!videoLink) return res.status(400).json({ error: "Missing videoLink parameter." });
   try {
-    const Tuber = ytdlx.Search.Video.Transcript({ videoLink });
+    const Tuber = ytdlx.Info.Transcript({ videoLink });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
     console.error(colors.red("❌ Unexpected error:"), error);
     return res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+  }
+});
+server.get("/SearchAdvanced", async (req, res: any) => {
+  const query = req.query.query as string;
+  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  try {
+    const Tuber = ytdlx.Search.Video.Advance_Search({ query });
+    Tuber.on("data", data => res.json(data));
+    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
+  } catch (error) {
+    console.error(colors.red("❌ Unexpected error:"), error);
+    res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+  }
+});
+server.get("/SearchChannelData", async (req, res: any) => {
+  const channelLink = req.query.channelLink as string;
+  if (!channelLink) return res.status(400).json({ error: "Missing channelLink parameter." });
+  try {
+    const Tuber = ytdlx.Search.Video.Channel_Data({ channelLink });
+    Tuber.on("data", data => res.json(data));
+    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
+  } catch (error) {
+    console.error(colors.red("❌ Unexpected error:"), error);
+    res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+  }
+});
+server.get("/SearchRelatedVideos", async (req, res: any) => {
+  const videoId = req.query.videoId as string;
+  if (!videoId) return res.status(400).json({ error: "Missing videoId parameter." });
+  try {
+    const Tuber = ytdlx.Search.Video.Related({ videoId });
+    Tuber.on("data", data => res.json(data));
+    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
+  } catch (error) {
+    console.error(colors.red("❌ Unexpected error:"), error);
+    res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+  }
+});
+server.get("/SearchChannels", async (req, res: any) => {
+  const query = req.query.query as string;
+  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  try {
+    const Tuber = ytdlx.Search.Video.Channel({ query });
+    Tuber.on("data", data => res.json(data));
+    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
+  } catch (error) {
+    console.error(colors.red("❌ Unexpected error:"), error);
+    res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
   }
 });
 /* ============================================================================ INFO Endpoints */
@@ -276,6 +324,42 @@ server.get("/ListVideoFormats", async (req, res: any) => {
   } catch (error) {
     console.error(colors.red("❌ Unexpected error:"), error);
     res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+  }
+});
+server.get("/LiveVideoData", async (req, res: any) => {
+  const videoLink = req.query.videoLink as string;
+  if (!videoLink) return res.status(400).json({ error: "Missing videoLink parameter." });
+  try {
+    const Tuber = ytdlx.Info.Live({ videoLink });
+    Tuber.on("data", data => res.json(data));
+    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
+  } catch (error) {
+    console.error(colors.red("❌ Unexpected error:"), error);
+    res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+  }
+});
+server.get("/VideoComments", async (req, res: any) => {
+  const query = req.query.query as string;
+  if (!query) return res.status(400).json({ error: "Missing videoLink parameter." });
+  try {
+    const Tuber = ytdlx.Info.Comments({ query });
+    Tuber.on("data", data => res.json(data));
+    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
+  } catch (error) {
+    console.error(colors.red("❌ Unexpected error:"), error);
+    res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+  }
+});
+server.get("/VideoTranscript", async (req, res: any) => {
+  const videoLink = req.query.videoLink as string;
+  if (!videoLink) return res.status(400).json({ error: "Missing videoLink parameter." });
+  try {
+    const Tuber = ytdlx.Info.Transcript({ videoLink });
+    Tuber.on("data", data => res.json(data));
+    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
+  } catch (error) {
+    console.error(colors.red("❌ Unexpected error:"), error);
+    return res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
   }
 });
 /* ============================================================================ ACCOUNT Endpoints */
