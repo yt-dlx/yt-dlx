@@ -50,22 +50,6 @@ server.get("/api/Account/History", async (req: any, res) => {
     res.status(500).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
   }
 });
-server.get("/api/Search/VideoAdvanceSearch", async (req: any, res) => {
-  try {
-    const options = {
-      query: req.query.query,
-      minViews: req.query.minViews ? parseInt(req.query.minViews) : undefined,
-      maxViews: req.query.maxViews ? parseInt(req.query.maxViews) : undefined,
-      orderBy: req.query.orderBy,
-      verbose: req.query.verbose,
-    };
-    const emitter = YouTubeDLX.Search.Video.Advance_Search(options);
-    const data = await wrapEmitter(emitter);
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
-  }
-});
 server.get("/api/Search/VideoChannelData", async (req: any, res) => {
   try {
     const options = { channelLink: req.query.channelLink };

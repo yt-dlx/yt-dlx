@@ -66,9 +66,9 @@ var ZodSchema = z.object({
  * // 7: Download and process audio and video with all parameters (query, output, filter, stream, verbose, metadata, resolution)
  * YouTubeDLX.Audio_Video.Custom({ query: "Song title", output: "/path/to/folder", resolution: "720p", filter: "grayscale", stream: true, verbose: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
  */
-export default async function AudioVideoCustom({ query, stream, output, useTor, filter, metadata, verbose, resolution }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default function AudioVideoCustom({ query, stream, output, useTor, filter, metadata, verbose, resolution }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse({ query, stream, output, useTor, filter, metadata, verbose, resolution });
       const engineData = await ytdlx({ query, verbose, useTor }).catch(error => {
@@ -132,14 +132,13 @@ export default async function AudioVideoCustom({ query, stream, output, useTor, 
           ManifestHigh: engineData.ManifestHigh,
         });
       }
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }

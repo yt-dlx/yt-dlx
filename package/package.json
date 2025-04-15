@@ -1,6 +1,6 @@
 {
-  "name": "yt-dlx",
-  "version": "16.0.0",
+  "name": "youtube.js",
+  "version": "1.0.0",
   "license": "Apache-2.0",
   "main": "pkg/cjs/src/index.js",
   "types": "pkg/types/index.d.ts",

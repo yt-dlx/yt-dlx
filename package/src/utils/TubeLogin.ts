@@ -4,7 +4,6 @@ import colors from "colors";
 import { Innertube, UniversalCache } from "youtubei.js";
 export type TubeType = Innertube;
 export let Tube: TubeType | null = null;
-
 export default async function TubeLogin(cookiesFilePathOrString: string): Promise<TubeType> {
   let cookiesData: string;
   if (fs.existsSync(cookiesFilePathOrString)) {
