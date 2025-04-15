@@ -4,24 +4,28 @@ import colors from "colors";
 import { Innertube, UniversalCache } from "youtubei.js";
 export type TubeType = Innertube;
 export let Tube: TubeType | null = null;
-export default async function TubeLogin(cookiesFilePath: string): Promise<TubeType> {
-  if (!fs.existsSync(cookiesFilePath)) {
-    console.error(colors.red("@error:"), "Cookies file not found!");
-    console.error(colors.red("@error:"), "Please use the 'Get cookies.txt' extension on Firefox or Chrome to export your YouTube cookies and save it at the specified path.");
-    process.exit(1);
-  }
-  const cookiesFromFile: string = fs.readFileSync(cookiesFilePath, "utf8");
+
+export default async function TubeLogin(cookiesFilePathOrString: string): Promise<TubeType> {
+  let cookiesData: string;
+  if (fs.existsSync(cookiesFilePathOrString)) {
+    try {
+      cookiesData = fs.readFileSync(cookiesFilePathOrString, "utf8");
+    } catch (error) {
+      console.error(colors.red("@error:"), "Failed to read cookies file.");
+      process.exit(1);
+    }
+  } else cookiesData = cookiesFilePathOrString;
   try {
     Tube = await Innertube.create({
       user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      cache: new UniversalCache(true, path.join(process.cwd(), "yt-dlx", "dlcache")),
-      cookie: cookiesFromFile,
+      cache: new UniversalCache(true, path.join(process.cwd(), "YouTubeDLX", "DLXCache")),
+      cookie: cookiesData,
     });
     console.log(colors.green("@info:"), "Connected to YouTube...");
     return Tube;
   } catch (err) {
-    console.error(colors.red("@error:"), "Failed to authenticate. The cookies file appears to be corrupt or invalid.");
-    console.error(colors.red("@error:"), "Try exporting the cookies again using the 'Get cookies.txt' browser extension.");
+    console.error(colors.red("@error:"), "Failed to authenticate. The cookies appear to be corrupt or invalid.");
+    console.error(colors.red("@error:"), "Try using valid YouTube cookies.");
     process.exit(1);
   }
 }

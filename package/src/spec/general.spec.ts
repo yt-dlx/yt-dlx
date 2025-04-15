@@ -6,84 +6,88 @@ import colors from "colors";
 import * as path from "path";
 // ==================================================================================
 // ==================================================================================
+const cookies =
+  "__Secure-1PSIDCC=AKEyXzVRYJc3OqTMt8Xu7lalSKPEgwIbpRp_gjardM89X5ZEeCqTpRgo_CrUaY4ixbj10QwOYg; ST-3opvp5=session_logininfo=AFmmF2swRAIgQyveDaD9Na9LJOHDnaA1nZYD4OtE9HCHq6BA3ggmGboCIC_zQjx_VdunhtchfVuLVSrtyfjrrAFxI42QoyU9eVcF%3AQUQ3MjNmeHd3X1RnT1RTMEVqcmF2TmxHYVlfVUI2R0xySDZSRU5YR0o1NHVRcWdVTGp3dlNDOHMxUVRXZVNVN3V3eEplaGpzRmFQQjV5dUJseHRwRm5NQnBJNjRqQ1BtQTRYd25UVzBYQzlJWTJGSGs0ZGtEMFRCd0ZzaWtMdVBwVkpJbjZPaUduMzgwUXI0Q3ZqeGVPSDBsZFdWblpuZWpR; SID=g.a000vwiyZLz7Ow4KbgOVJFBIqyDlU9yYyTXrY4vS_kJwpgXsLV54syUq_9BP1s_aLm4mTmaF5AACgYKAZISARESFQHGX2MiEkD36vQo-fcH-YWe2qr9JhoVAUF8yKrA6ar-8a47Xt51XcGKnPRk0076; __Secure-1PAPISID=o5RvenGV-GhesI6Y/A9Xuz2OJ2V58NoWdu; SAPISID=o5RvenGV-GhesI6Y/A9Xuz2OJ2V58NoWdu; SIDCC=AKEyXzU7gcToApuuJBy8b7GM41T0BhTzw8lExN_MdDZWXL0p-e3u6atB7D1TBu6CH4Z-28zhng; __Secure-3PSID=g.a000vwiyZLz7Ow4KbgOVJFBIqyDlU9yYyTXrY4vS_kJwpgXsLV54mhHbR5gI-pcV7Tkj2fqkawACgYKASMSARESFQHGX2MiOmiEBHqhU6uczK7-3cEiFxoVAUF8yKrjRXzTYOh3J-WVTUXdHHVl0076; __Secure-1PSIDTS=sidts-CjIB7pHptYmVQGDDY3_VVKdBgp6P4W6QZL9Iju3udaePzxabaW9tlcoispyK2TAXJxv8YBAA; HSID=A9DOAXv-agrDxz4WJ; __Secure-1PSID=g.a000vwiyZLz7Ow4KbgOVJFBIqyDlU9yYyTXrY4vS_kJwpgXsLV54YMoIZSbtcUwULnzbLMwrEAACgYKAdoSARESFQHGX2MiXjMX6Dg0_3XN7B0CGojkbxoVAUF8yKpAcYMkIVZre438Xd34qt-E0076; __Secure-3PAPISID=o5RvenGV-GhesI6Y/A9Xuz2OJ2V58NoWdu; __Secure-ROLLOUT_TOKEN=CP_09-Ld_o3orgEQ3OOpgsPWjAMYv_SDg8PWjAM%3D; PREF=f6=40000000&tz=America.Los_Angeles; SSID=A9qS62htqqpjofmc9; VISITOR_PRIVACY_METADATA=CgJJThIEGgAgPg%3D%3D; APISID=vXtQYiSgoTDV6460/AW5Z_5ugdQfs1jxen; __Secure-3PSIDTS=sidts-CjIB7pHptYmVQGDDY3_VVKdBgp6P4W6QZL9Iju3udaePzxabaW9tlcoispyK2TAXJxv8YBAA; VISITOR_INFO1_LIVE=C_d2JQ1zSoA; __Secure-3PSIDCC=AKEyXzVMQc3dPpd7DIbj1ffvcSbs3i8xWEOn8PhJ9qmbX08IOMW-T6xkWcPnn0AN4eXfE-E3cg; LOGIN_INFO=AFmmF2swRAIgQyveDaD9Na9LJOHDnaA1nZYD4OtE9HCHq6BA3ggmGboCIC_zQjx_VdunhtchfVuLVSrtyfjrrAFxI42QoyU9eVcF:QUQ3MjNmeHd3X1RnT1RTMEVqcmF2TmxHYVlfVUI2R0xySDZSRU5YR0o1NHVRcWdVTGp3dlNDOHMxUVRXZVNVN3V3eEplaGpzRmFQQjV5dUJseHRwRm5NQnBJNjRqQ1BtQTRYd25UVzBYQzlJWTJGSGs0ZGtEMFRCd0ZzaWtMdVBwVkpJbjZPaUduMzgwUXI0Q3ZqeGVPSDBsZFdWblpuZWpR; YSC=Wc8DF8wLKm8; GPS=1";
+// ==================================================================================
+// ==================================================================================
 async function Account_Tests() {
   async function HomeFeed() {
-    console.log(colors.blue("@info"), "Test For HomeFeed: (1): Fetch home feed with only the cookiesPath");
-    YouTubeDLX.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt") })
+    console.log(colors.blue("@info"), "Test For HomeFeed: (1): Fetch home feed with only the cookies");
+    YouTubeDLX.Account.HomeFeed({ cookies })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For HomeFeed: (2): Fetch home feed with cookiesPath and verbose output enabled");
-    YouTubeDLX.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true })
+    console.log(colors.blue("@info"), "Test For HomeFeed: (2): Fetch home feed with cookies and verbose output enabled");
+    YouTubeDLX.Account.HomeFeed({ cookies, verbose: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For HomeFeed: (3): Fetch home feed with cookiesPath and sorting by 'oldest'");
-    YouTubeDLX.Account.HomeFeed({ cookiesPath: "path/to/cookies", sort: "oldest" })
+    console.log(colors.blue("@info"), "Test For HomeFeed: (3): Fetch home feed with cookies and sorting by 'oldest'");
+    YouTubeDLX.Account.HomeFeed({ cookies: "path/to/cookies", sort: "oldest" })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For HomeFeed: (4): Fetch home feed with cookiesPath and sorting by 'newest'");
-    YouTubeDLX.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), sort: "newest" })
+    console.log(colors.blue("@info"), "Test For HomeFeed: (4): Fetch home feed with cookies and sorting by 'newest'");
+    YouTubeDLX.Account.HomeFeed({ cookies, sort: "newest" })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For HomeFeed: (5): Fetch home feed with cookiesPath and sorting by 'old-to-new'");
-    YouTubeDLX.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), sort: "old-to-new" })
+    console.log(colors.blue("@info"), "Test For HomeFeed: (5): Fetch home feed with cookies and sorting by 'old-to-new'");
+    YouTubeDLX.Account.HomeFeed({ cookies, sort: "old-to-new" })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For HomeFeed: (6): Fetch home feed with cookiesPath and sorting by 'new-to-old'");
-    YouTubeDLX.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), sort: "new-to-old" })
+    console.log(colors.blue("@info"), "Test For HomeFeed: (6): Fetch home feed with cookies and sorting by 'new-to-old'");
+    YouTubeDLX.Account.HomeFeed({ cookies, sort: "new-to-old" })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For HomeFeed: (7): Fetch home feed with all parameters (cookiesPath, verbose, and sort)");
-    YouTubeDLX.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true, sort: "new-to-old" })
+    console.log(colors.blue("@info"), "Test For HomeFeed: (7): Fetch home feed with all parameters (cookies, verbose, and sort)");
+    YouTubeDLX.Account.HomeFeed({ cookies, verbose: true, sort: "new-to-old" })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
   async function SubscriptionsFeed() {
-    console.log(colors.blue("@info"), "Test For HomeFeed: (1): Fetch subscriptions feed with only the cookiesPath");
-    YouTubeDLX.Account.SubscriptionsFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt") })
+    console.log(colors.blue("@info"), "Test For HomeFeed: (1): Fetch subscriptions feed with only the cookies");
+    YouTubeDLX.Account.SubscriptionsFeed({ cookies })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For HomeFeed: (2): Fetch subscriptions feed with cookiesPath and verbose output enabled");
-    YouTubeDLX.Account.SubscriptionsFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true })
+    console.log(colors.blue("@info"), "Test For HomeFeed: (2): Fetch subscriptions feed with cookies and verbose output enabled");
+    YouTubeDLX.Account.SubscriptionsFeed({ cookies, verbose: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
   async function UnseenNotifications() {
-    console.log(colors.blue("@info"), "Test For UnseenNotifications: (1): Fetch unseen notifications count with only the cookiesPath");
-    YouTubeDLX.Account.Unseen_Notifications({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt") })
+    console.log(colors.blue("@info"), "Test For UnseenNotifications: (1): Fetch unseen notifications count with only the cookies");
+    YouTubeDLX.Account.Unseen_Notifications({ cookies })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For UnseenNotifications: (2): Fetch unseen notifications count with cookiesPath and verbose output enabled");
-    YouTubeDLX.Account.Unseen_Notifications({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true })
+    console.log(colors.blue("@info"), "Test For UnseenNotifications: (2): Fetch unseen notifications count with cookies and verbose output enabled");
+    YouTubeDLX.Account.Unseen_Notifications({ cookies, verbose: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
   async function WatchHistory() {
-    console.log(colors.blue("@info"), "Test For WatchHistory: (1): Fetch watch history with only the cookiesPath");
-    YouTubeDLX.Account.History({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt") })
+    console.log(colors.blue("@info"), "Test For WatchHistory: (1): Fetch watch history with only the cookies");
+    YouTubeDLX.Account.History({ cookies })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For WatchHistory: (2): Fetch watch history with cookiesPath and verbose output enabled");
-    YouTubeDLX.Account.History({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true })
+    console.log(colors.blue("@info"), "Test For WatchHistory: (2): Fetch watch history with cookies and verbose output enabled");
+    YouTubeDLX.Account.History({ cookies, verbose: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For WatchHistory: (3): Fetch watch history with cookiesPath and sorting by 'oldest'");
-    YouTubeDLX.Account.History({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), sort: "oldest" })
+    console.log(colors.blue("@info"), "Test For WatchHistory: (3): Fetch watch history with cookies and sorting by 'oldest'");
+    YouTubeDLX.Account.History({ cookies, sort: "oldest" })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For WatchHistory: (4): Fetch watch history with cookiesPath and sorting by 'newest'");
-    YouTubeDLX.Account.History({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), sort: "newest" })
+    console.log(colors.blue("@info"), "Test For WatchHistory: (4): Fetch watch history with cookies and sorting by 'newest'");
+    YouTubeDLX.Account.History({ cookies, sort: "newest" })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For WatchHistory: (5): Fetch watch history with cookiesPath and sorting by 'old-to-new'");
-    YouTubeDLX.Account.History({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), sort: "old-to-new" })
+    console.log(colors.blue("@info"), "Test For WatchHistory: (5): Fetch watch history with cookies and sorting by 'old-to-new'");
+    YouTubeDLX.Account.History({ cookies, sort: "old-to-new" })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For WatchHistory: (6): Fetch watch history with cookiesPath and sorting by 'new-to-old'");
-    YouTubeDLX.Account.History({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), sort: "new-to-old" })
+    console.log(colors.blue("@info"), "Test For WatchHistory: (6): Fetch watch history with cookies and sorting by 'new-to-old'");
+    YouTubeDLX.Account.History({ cookies, sort: "new-to-old" })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
-    console.log(colors.blue("@info"), "Test For WatchHistory: (7): Fetch watch history with all parameters (cookiesPath, verbose, and sort)");
-    YouTubeDLX.Account.History({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true, sort: "new-to-old" })
+    console.log(colors.blue("@info"), "Test For WatchHistory: (7): Fetch watch history with all parameters (cookies, verbose, and sort)");
+    YouTubeDLX.Account.History({ cookies, verbose: true, sort: "new-to-old" })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
@@ -330,7 +334,7 @@ async function Video_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For VideoCustom: (7): Process a video with all parameters (query, output, filter, stream, verbose, metadata, resolution)");
-    YouTubeDLX.Video.Custom({ query: "test video", output: path.resolve(process.cwd(), "./output"), resolution: "720p", filter: "grayscale", stream: true, verbose: true, metadata: true })
+    YouTubeDLX.Video.Custom({ query: "test video", output: path.resolve(process.cwd(), "output"), resolution: "720p", filter: "grayscale", stream: true, verbose: true, metadata: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
@@ -360,7 +364,7 @@ async function Video_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For VideoHighest: (7): Process the highest quality video with all parameters (query, output, filter, stream, verbose, metadata)");
-    YouTubeDLX.Video.Highest({ query: "test video", output: path.resolve(process.cwd(), "./output"), filter: "grayscale", stream: true, verbose: true, metadata: true })
+    YouTubeDLX.Video.Highest({ query: "test video", output: path.resolve(process.cwd(), "output"), filter: "grayscale", stream: true, verbose: true, metadata: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
@@ -390,7 +394,7 @@ async function Video_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For VideoLowest: (7): Process the lowest quality video with all parameters (query, output, filter, stream, verbose, metadata)");
-    YouTubeDLX.Video.Lowest({ query: "test video", output: path.resolve(process.cwd(), "./output"), filter: "grayscale", stream: true, verbose: true, metadata: true })
+    YouTubeDLX.Video.Lowest({ query: "test video", output: path.resolve(process.cwd(), "output"), filter: "grayscale", stream: true, verbose: true, metadata: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
@@ -411,7 +415,7 @@ async function Audio_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioCustom: (3): Download and process audio with query, resolution, and custom output folder");
-    YouTubeDLX.Audio.Custom({ query: "test song", resolution: "high", output: path.resolve(process.cwd(), "./output") })
+    YouTubeDLX.Audio.Custom({ query: "test song", resolution: "high", output: path.resolve(process.cwd(), "output") })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioCustom: (4): Download and stream audio with query, resolution, and stream enabled");
@@ -427,7 +431,7 @@ async function Audio_Tests() {
       .on("metadata", metadata => console.log(colors.green("@metadata:"), metadata))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioCustom: (7): Download and process audio with all parameters (query, resolution, output, stream, filter, verbose, metadata)");
-    YouTubeDLX.Audio.Custom({ query: "test song", resolution: "high", output: path.resolve(process.cwd(), "./output"), stream: true, filter: "echo", verbose: true, metadata: true })
+    YouTubeDLX.Audio.Custom({ query: "test song", resolution: "high", output: path.resolve(process.cwd(), "output"), stream: true, filter: "echo", verbose: true, metadata: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
@@ -441,7 +445,7 @@ async function Audio_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioHighest: (3): Download and process highest quality audio with query, filter, and custom output folder");
-    YouTubeDLX.Audio.Highest({ query: "test song", filter: "bassboost", output: path.resolve(process.cwd(), "./output") })
+    YouTubeDLX.Audio.Highest({ query: "test song", filter: "bassboost", output: path.resolve(process.cwd(), "output") })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioHighest: (4): Stream highest quality audio with query and stream enabled");
@@ -457,7 +461,7 @@ async function Audio_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioHighest: (7): Download and process highest quality audio with all parameters (query, output, filter, stream, verbose, metadata)");
-    YouTubeDLX.Audio.Highest({ query: "test song", output: path.resolve(process.cwd(), "./output"), filter: "bassboost", stream: true, verbose: true, metadata: true })
+    YouTubeDLX.Audio.Highest({ query: "test song", output: path.resolve(process.cwd(), "output"), filter: "bassboost", stream: true, verbose: true, metadata: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
@@ -471,7 +475,7 @@ async function Audio_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioLowest: (3): Download and process lowest quality audio with query, filter, and custom output folder");
-    YouTubeDLX.Audio.Lowest({ query: "test song", filter: "bassboost", output: path.resolve(process.cwd(), "./output") })
+    YouTubeDLX.Audio.Lowest({ query: "test song", filter: "bassboost", output: path.resolve(process.cwd(), "output") })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioLowest: (4): Stream lowest quality audio with query and stream enabled");
@@ -487,7 +491,7 @@ async function Audio_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioLowest: (7): Download and process lowest quality audio with all parameters (query, output, filter, stream, verbose, metadata)");
-    YouTubeDLX.Audio.Lowest({ query: "test song", output: path.resolve(process.cwd(), "./output"), filter: "bassboost", stream: true, verbose: true, metadata: true })
+    YouTubeDLX.Audio.Lowest({ query: "test song", output: path.resolve(process.cwd(), "output"), filter: "bassboost", stream: true, verbose: true, metadata: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
@@ -508,7 +512,7 @@ async function Audio_Video_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioVideoCustom: (3): Download and process audio and video with query, resolution, and custom output folder");
-    YouTubeDLX.Audio_Video.Custom({ query: "test song", resolution: "720p", filter: "grayscale", output: path.resolve(process.cwd(), "./output") })
+    YouTubeDLX.Audio_Video.Custom({ query: "test song", resolution: "720p", filter: "grayscale", output: path.resolve(process.cwd(), "output") })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioVideoCustom: (4): Stream audio and video with query, resolution, and stream enabled");
@@ -524,7 +528,7 @@ async function Audio_Video_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioVideoCustom: (7): Download and process audio and video with all parameters (query, output, filter, stream, verbose, metadata, resolution)");
-    YouTubeDLX.Audio_Video.Custom({ query: "test song", output: path.resolve(process.cwd(), "./output"), resolution: "720p", filter: "grayscale", stream: true, verbose: true, metadata: true })
+    YouTubeDLX.Audio_Video.Custom({ query: "test song", output: path.resolve(process.cwd(), "output"), resolution: "720p", filter: "grayscale", stream: true, verbose: true, metadata: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
@@ -538,7 +542,7 @@ async function Audio_Video_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioVideoHighest: (3): Download and process highest quality audio and video with query, filter, and custom output folder");
-    YouTubeDLX.Audio_Video.Highest({ query: "test song", filter: "grayscale", output: path.resolve(process.cwd(), "./output") })
+    YouTubeDLX.Audio_Video.Highest({ query: "test song", filter: "grayscale", output: path.resolve(process.cwd(), "output") })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioVideoHighest: (4): Stream highest quality audio and video with query, filter, and stream enabled");
@@ -554,7 +558,7 @@ async function Audio_Video_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioVideoHighest: (7): Download and process highest quality audio and video with all parameters (query, output, filter, stream, verbose, metadata)");
-    YouTubeDLX.Audio_Video.Highest({ query: "test song", output: path.resolve(process.cwd(), "./output"), filter: "grayscale", stream: true, verbose: true, metadata: true })
+    YouTubeDLX.Audio_Video.Highest({ query: "test song", output: path.resolve(process.cwd(), "output"), filter: "grayscale", stream: true, verbose: true, metadata: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
@@ -568,7 +572,7 @@ async function Audio_Video_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioVideoLowest: (3): Download and process lowest quality audio and video with query, filter, and custom output folder");
-    YouTubeDLX.Audio_Video.Lowest({ query: "test song", filter: "grayscale", output: path.resolve(process.cwd(), "./output") })
+    YouTubeDLX.Audio_Video.Lowest({ query: "test song", filter: "grayscale", output: path.resolve(process.cwd(), "output") })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioVideoLowest: (4): Stream lowest quality audio and video with query, filter, and stream enabled");
@@ -584,7 +588,7 @@ async function Audio_Video_Tests() {
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
     console.log(colors.blue("@info"), "Test For AudioVideoLowest: (7): Download and process lowest quality audio and video with all parameters (query, output, filter, stream, verbose, metadata)");
-    YouTubeDLX.Audio_Video.Lowest({ query: "test song", output: path.resolve(process.cwd(), "./output"), filter: "grayscale", stream: true, verbose: true, metadata: true })
+    YouTubeDLX.Audio_Video.Lowest({ query: "test song", output: path.resolve(process.cwd(), "output"), filter: "grayscale", stream: true, verbose: true, metadata: true })
       .on("data", data => console.log(colors.green("@data:"), data))
       .on("error", error => console.error(colors.red("@error:"), error));
   }
