@@ -103,7 +103,7 @@ export default async function watch_history(options: z.infer<typeof ZodSchema>):
           result.data?.Videos.sort((a, b) => b.videoId.localeCompare(a.videoId));
           break;
       }
-      if (verbose) console.log(colors.green("@info:"), "Watch history fetched:", JSON.stringify(result, null, 2));
+      if (verbose) console.log(colors.green("@info:"), "Watch history fetched!");
       emitter.emit("data", result);
       resolve(emitter);
     } catch (error) {

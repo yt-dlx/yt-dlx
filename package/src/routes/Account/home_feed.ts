@@ -91,7 +91,7 @@ export default async function home_feed(options: z.infer<typeof ZodSchema>): Pro
           result.data?.Videos.sort((a, b) => b.videoId.localeCompare(b.videoId));
           break;
       }
-      if (verbose) console.log(colors.green("@info:"), "Home feed fetched:", JSON.stringify(result, null, 2));
+      if (verbose) console.log(colors.green("@info:"), "Home feed fetched!");
       emitter.emit("data", result);
       resolve(emitter);
     } catch (error) {

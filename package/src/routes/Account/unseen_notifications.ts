@@ -41,7 +41,7 @@ export default async function unseen_notifications(options: z.infer<typeof ZodSc
       const client: TubeType = await TubeLogin(cookies);
       const count = await client.getUnseenNotificationsCount();
       const result: TubeResponse<{ count: number }> = { status: "success", data: { count: Number(count) || 0 } };
-      if (verbose) console.log(colors.green("@info:"), "Unseen notifications fetched:", JSON.stringify(result, null, 2));
+      if (verbose) console.log(colors.green("@info:"), "Unseen notifications fetched!");
       emitter.emit("data", result);
       resolve(emitter);
     } catch (error) {

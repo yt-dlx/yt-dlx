@@ -43,7 +43,7 @@ export default async function subscriptions_feed(options: z.infer<typeof ZodSche
       const feed = await client.getSubscriptionsFeed();
       const contents = (feed as any).contents?.map(sanitizeContentItem) || [];
       const result: TubeResponse<{ contents: any[] }> = { status: "success", data: { contents } };
-      if (verbose) console.log(colors.green("@info:"), "Subscriptions feed fetched:", JSON.stringify(result, null, 2));
+      if (verbose) console.log(colors.green("@info:"), "Subscriptions feed fetched!");
       emitter.emit("data", result);
       resolve(emitter);
     } catch (error) {
