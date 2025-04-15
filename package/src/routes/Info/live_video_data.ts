@@ -3,17 +3,12 @@ import { z, ZodError } from "zod";
 import Tuber from "../../utils/Agent";
 import { EventEmitter } from "events";
 import type EngineOutput from "../../interfaces/EngineOutput";
-
-const ZodSchema = z.object({
-  query: z.string().min(2),
-  verbose: z.boolean().optional(),
-});
-
+const ZodSchema = z.object({ videoLink: z.string().min(2), verbose: z.boolean().optional() });
 /**
- * Lists the available formats for the specified video on YouTube based on the provided search query.
+ * Lists the available formats for the specified video on YouTube based on the provided search videoLink.
  *
  * @param {Object} options - The parameters for listing formats.
- * @param {string} options.query - The search query string for the video.
+ * @param {string} options.videoLink - The search videoLink string for the video.
  * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
  *
  * @returns {EventEmitter} An EventEmitter object that emits the following events:
@@ -21,23 +16,23 @@ const ZodSchema = z.object({
  * - "error": Emits an error message if the process fails.
  *
  * @example
- * // Example 1: List formats with only the query
- * YouTubeDLX.Info.Formats({ query: "Node.js tutorial" })
+ * // Example 1: List formats with only the videoLink
+ * YouTubeDLX.Info.Formats({ videoLink: "Node.js tutorial" })
  *   .on("data", (formats) => console.log("Available formats:", formats))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // Example 2: List formats with query and verbose output enabled
- * YouTubeDLX.Info.Formats({ query: "Node.js tutorial", verbose: true })
+ * // Example 2: List formats with videoLink and verbose output enabled
+ * YouTubeDLX.Info.Formats({ videoLink: "Node.js tutorial", verbose: true })
  *   .on("data", (formats) => console.log("Available formats:", formats))
  *   .on("error", (err) => console.error("Error:", err));
  */
-export default function list_formats({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
+export default function list_formats({ videoLink, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
-      ZodSchema.parse({ query, verbose });
-      const metaBody: EngineOutput = await Tuber({ query, verbose });
+      ZodSchema.parse({ videoLink, verbose });
+      const metaBody: EngineOutput = await Tuber({ query: videoLink, verbose });
       if (!metaBody) {
         emitter.emit("error", "@error: Unable to get response from YouTube.");
         return;

@@ -14,7 +14,7 @@ const ZodSchema = z.object({
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
   metadata: z.boolean().optional(),
-  filter: z.enum(["echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed"]).optional(),
+  filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
 
 /**
