@@ -3,8 +3,8 @@ import Engine from "./Engine";
 import comEngine from "./comEngine";
 import { execSync } from "child_process";
 import YouTubeID from "../utils/YouTubeId";
-import { singleVideo } from "../routes/Command/video_data";
-import { searchVideos } from "../routes/Command/search_videos";
+import { singleVideo } from "../routes/Search/video_data";
+import { searchVideos } from "../routes/Search/search_videos";
 async function systemctlAvailable(): Promise<boolean> {
   try {
     execSync("systemctl --version", { stdio: "ignore" });
