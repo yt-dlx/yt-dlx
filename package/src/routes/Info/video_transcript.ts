@@ -47,11 +47,11 @@ async function getVideoTranscript({ videoId }: { videoId: string }): Promise<Vid
  *
  * @example
  * // Example 1: Fetch transcript data with only the video link
- * await YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID" }).on("data", (transcriptData) => console.log("Transcript data:", transcriptData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID" }).on("data", (transcriptData) => console.log("Transcript data:", transcriptData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch transcript data with an invalid video link
- * await YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=INVALID_ID" }).on("data", (transcriptData) => console.log("Transcript data:", transcriptData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=INVALID_ID" }).on("data", (transcriptData) => console.log("Transcript data:", transcriptData)).on("error", (err) => console.error("Error:", err));
  */
 export default async function video_transcript({ videoLink }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();

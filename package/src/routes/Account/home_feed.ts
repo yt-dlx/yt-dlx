@@ -23,19 +23,19 @@ const ZodSchema = z.object({
  *
  * @example
  * // Example 1: Fetch home feed with cookies string
- * await YouTubeDLX.Account.HomeFeed({ cookies: "COOKIE_STRING" })
+ * YouTubeDLX.Account.HomeFeed({ cookies: "COOKIE_STRING" })
  *   .on("data", (feed) => console.log("Home feed:", feed))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch home feed with path to cookies file
- * await YouTubeDLX.Account.HomeFeed({ cookies: "path/to/cookies.txt" })
+ * YouTubeDLX.Account.HomeFeed({ cookies: "path/to/cookies.txt" })
  *   .on("data", (feed) => console.log("Home feed:", feed))
  *   .on("error", (err) => console.error("Error:", err));
  */
-export default async function home_feed(options: z.infer<typeof ZodSchema>): Promise<EventEmitter> {
+export default function home_feed(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse(options);
       const { verbose, cookies, sort } = options;
@@ -93,14 +93,13 @@ export default async function home_feed(options: z.infer<typeof ZodSchema>): Pro
       }
       if (verbose) console.log(colors.green("@info:"), "Home feed fetched!");
       emitter.emit("data", result);
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }

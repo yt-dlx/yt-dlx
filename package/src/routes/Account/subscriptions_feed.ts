@@ -4,7 +4,12 @@ import { EventEmitter } from "events";
 import TubeResponse from "../../interfaces/TubeResponse";
 import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 import sanitizeContentItem from "../../utils/sanitizeContentItem";
-const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional() });
+
+const ZodSchema = z.object({
+  cookies: z.string(),
+  verbose: z.boolean().optional(),
+});
+
 /**
  * Fetches the subscriptions feed for the user based on the provided parameters.
  *
@@ -18,19 +23,19 @@ const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(
  *
  * @example
  * // Example 1: Fetch subscriptions feed with cookies string
- * await YouTubeDLX.Account.SubscriptionsFeed({ cookies: "COOKIE_STRING" })
+ * YouTubeDLX.Account.SubscriptionsFeed({ cookies: "COOKIE_STRING" })
  *   .on("data", (feed) => console.log("Subscriptions feed:", feed))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch subscriptions feed with cookies string and verbose output enabled
- * await YouTubeDLX.Account.SubscriptionsFeed({ cookies: "COOKIE_STRING", verbose: true })
+ * YouTubeDLX.Account.SubscriptionsFeed({ cookies: "COOKIE_STRING", verbose: true })
  *   .on("data", (feed) => console.log("Subscriptions feed:", feed))
  *   .on("error", (err) => console.error("Error:", err));
  */
-export default async function subscriptions_feed(options: z.infer<typeof ZodSchema>): Promise<EventEmitter> {
+export default function subscriptions_feed(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse(options);
       const { verbose, cookies } = options;
@@ -45,14 +50,13 @@ export default async function subscriptions_feed(options: z.infer<typeof ZodSche
       const result: TubeResponse<{ contents: any[] }> = { status: "success", data: { contents } };
       if (verbose) console.log(colors.green("@info:"), "Subscriptions feed fetched!");
       emitter.emit("data", result);
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }

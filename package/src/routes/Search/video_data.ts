@@ -53,11 +53,11 @@ export async function singleVideo({ videoId }: { videoId: string }): Promise<sin
  *
  * @example
  * // Example 1: Fetch video data with only the video link
- * await YouTubeDLX.Search.Video.Single({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Video.Single({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch video data with an invalid video link
- * await YouTubeDLX.Search.Video.Single({ videoLink: "https://www.youtube.com/watch?v=INVALID_ID" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Video.Single({ videoLink: "https://www.youtube.com/watch?v=INVALID_ID" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  */
 export default async function video_data({ videoLink }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();

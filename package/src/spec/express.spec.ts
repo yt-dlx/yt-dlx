@@ -13,7 +13,7 @@ function wrapEmitter(emitter, eventType = "data") {
 server.get("/api/Account/HomeFeed", async (req: any, res) => {
   try {
     const options = { cookies: req.query.cookies, verbose: req.query.verbose, sort: req.query.sort };
-    const emitter = await YouTubeDLX.Account.HomeFeed(options);
+    const emitter = YouTubeDLX.Account.HomeFeed(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -23,7 +23,7 @@ server.get("/api/Account/HomeFeed", async (req: any, res) => {
 server.get("/api/Account/SubscriptionsFeed", async (req: any, res) => {
   try {
     const options = { cookies: req.query.cookies, verbose: req.query.verbose };
-    const emitter = await YouTubeDLX.Account.SubscriptionsFeed(options);
+    const emitter = YouTubeDLX.Account.SubscriptionsFeed(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -33,7 +33,7 @@ server.get("/api/Account/SubscriptionsFeed", async (req: any, res) => {
 server.get("/api/Account/UnseenNotifications", async (req: any, res) => {
   try {
     const options = { cookies: req.query.cookies, verbose: req.query.verbose };
-    const emitter = await YouTubeDLX.Account.Unseen_Notifications(options);
+    const emitter = YouTubeDLX.Account.Unseen_Notifications(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -43,7 +43,7 @@ server.get("/api/Account/UnseenNotifications", async (req: any, res) => {
 server.get("/api/Account/History", async (req: any, res) => {
   try {
     const options = { cookies: req.query.cookies, verbose: req.query.verbose, sort: req.query.sort };
-    const emitter = await YouTubeDLX.Account.History(options);
+    const emitter = YouTubeDLX.Account.History(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -59,7 +59,7 @@ server.get("/api/Search/VideoAdvanceSearch", async (req: any, res) => {
       orderBy: req.query.orderBy,
       verbose: req.query.verbose,
     };
-    const emitter = await YouTubeDLX.Search.Video.Advance_Search(options);
+    const emitter = YouTubeDLX.Search.Video.Advance_Search(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -69,7 +69,7 @@ server.get("/api/Search/VideoAdvanceSearch", async (req: any, res) => {
 server.get("/api/Search/VideoChannelData", async (req: any, res) => {
   try {
     const options = { channelLink: req.query.channelLink };
-    const emitter = await YouTubeDLX.Search.Video.Channel_Data(options);
+    const emitter = YouTubeDLX.Search.Video.Channel_Data(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -79,7 +79,7 @@ server.get("/api/Search/VideoChannelData", async (req: any, res) => {
 server.get("/api/Search/VideoRelated", async (req: any, res) => {
   try {
     const options = { videoId: req.query.videoId };
-    const emitter = await YouTubeDLX.Search.Video.Related(options);
+    const emitter = YouTubeDLX.Search.Video.Related(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -89,7 +89,7 @@ server.get("/api/Search/VideoRelated", async (req: any, res) => {
 server.get("/api/Search/VideoChannel", async (req: any, res) => {
   try {
     const options = { query: req.query.query };
-    const emitter = await YouTubeDLX.Search.Video.Channel(options);
+    const emitter = YouTubeDLX.Search.Video.Channel(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -99,7 +99,7 @@ server.get("/api/Search/VideoChannel", async (req: any, res) => {
 server.get("/api/Search/VideoMultiple", async (req: any, res) => {
   try {
     const options = { query: req.query.query };
-    const emitter = await YouTubeDLX.Search.Video.Multiple(options);
+    const emitter = YouTubeDLX.Search.Video.Multiple(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -109,7 +109,7 @@ server.get("/api/Search/VideoMultiple", async (req: any, res) => {
 server.get("/api/Search/VideoSingle", async (req: any, res) => {
   try {
     const options = { videoLink: req.query.videoLink };
-    const emitter = await YouTubeDLX.Search.Video.Single(options);
+    const emitter = YouTubeDLX.Search.Video.Single(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -119,7 +119,7 @@ server.get("/api/Search/VideoSingle", async (req: any, res) => {
 server.get("/api/Search/PlaylistSingle", async (req: any, res) => {
   try {
     const options = { playlistLink: req.query.playlistLink };
-    const emitter = await YouTubeDLX.Search.Playlist.Single(options);
+    const emitter = YouTubeDLX.Search.Playlist.Single(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -129,7 +129,7 @@ server.get("/api/Search/PlaylistSingle", async (req: any, res) => {
 server.get("/api/Search/PlaylistMultiple", async (req: any, res) => {
   try {
     const options = { playlistLink: req.query.playlistLink };
-    const emitter = await YouTubeDLX.Search.Playlist.Multiple(options);
+    const emitter = YouTubeDLX.Search.Playlist.Multiple(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -139,7 +139,7 @@ server.get("/api/Search/PlaylistMultiple", async (req: any, res) => {
 server.get("/api/Info/Extract", async (req: any, res) => {
   try {
     const options = { query: req.query.query, verbose: req.query.verbose, useTor: req.query.useTor };
-    const emitter = await YouTubeDLX.Info.Extract(options);
+    const emitter = YouTubeDLX.Info.Extract(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -148,7 +148,7 @@ server.get("/api/Info/Extract", async (req: any, res) => {
 });
 server.get("/api/Info/Help", async (req: any, res) => {
   try {
-    const helpUrl = await await YouTubeDLX.Info.Help();
+    const helpUrl = await YouTubeDLX.Info.Help();
     res.json({ helpUrl });
   } catch (error) {
     res.status(500).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
@@ -157,7 +157,7 @@ server.get("/api/Info/Help", async (req: any, res) => {
 server.get("/api/Info/Formats", async (req: any, res) => {
   try {
     const options = { query: req.query.query, verbose: req.query.verbose };
-    const emitter = await YouTubeDLX.Info.Formats(options);
+    const emitter = YouTubeDLX.Info.Formats(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -167,7 +167,7 @@ server.get("/api/Info/Formats", async (req: any, res) => {
 server.get("/api/Info/Live", async (req: any, res) => {
   try {
     const options = { videoLink: req.query.videoLink, verbose: req.query.verbose };
-    const emitter = await YouTubeDLX.Info.Live(options);
+    const emitter = YouTubeDLX.Info.Live(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -177,7 +177,7 @@ server.get("/api/Info/Live", async (req: any, res) => {
 server.get("/api/Info/Comments", async (req: any, res) => {
   try {
     const options = { query: req.query.query, verbose: req.query.verbose, filter: req.query.filter };
-    const emitter = await YouTubeDLX.Info.Comments(options);
+    const emitter = YouTubeDLX.Info.Comments(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -187,7 +187,7 @@ server.get("/api/Info/Comments", async (req: any, res) => {
 server.get("/api/Info/Transcript", async (req: any, res) => {
   try {
     const options = { videoLink: req.query.videoLink, verbose: req.query.verbose };
-    const emitter = await YouTubeDLX.Info.Transcript(options);
+    const emitter = YouTubeDLX.Info.Transcript(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
@@ -205,7 +205,7 @@ server.get("/api/Video/Custom", async (req: any, res) => {
       verbose: req.query.verbose,
       metadata: req.query.metadata,
     };
-    const emitter = await YouTubeDLX.Video.Custom(options);
+    const emitter = YouTubeDLX.Video.Custom(options);
     if (options.stream) {
       emitter.on("stream", streamData => streamData.pipe(res));
       emitter.on("error", error => res.status(500).send(error.message));
@@ -230,7 +230,7 @@ server.get("/api/Video/Highest", async (req: any, res) => {
       verbose: req.query.verbose,
       metadata: req.query.metadata,
     };
-    const emitter = await YouTubeDLX.Video.Highest(options);
+    const emitter = YouTubeDLX.Video.Highest(options);
     if (options.stream) {
       emitter.on("stream", streamData => streamData.pipe(res));
       emitter.on("error", error => res.status(500).send(error.message));
@@ -255,7 +255,7 @@ server.get("/api/Video/Lowest", async (req: any, res) => {
       verbose: req.query.verbose,
       metadata: req.query.metadata,
     };
-    const emitter = await YouTubeDLX.Video.Lowest(options);
+    const emitter = YouTubeDLX.Video.Lowest(options);
     if (options.stream) {
       emitter.on("stream", streamData => streamData.pipe(res));
       emitter.on("error", error => res.status(500).send(error.message));
@@ -281,7 +281,7 @@ server.get("/api/Audio/Custom", async (req: any, res) => {
       verbose: req.query.verbose,
       metadata: req.query.metadata,
     };
-    const emitter = await YouTubeDLX.Audio.Custom(options);
+    const emitter = YouTubeDLX.Audio.Custom(options);
     if (options.stream) {
       emitter.on("stream", streamData => streamData.pipe(res));
       emitter.on("error", error => res.status(500).send(error.message));
@@ -306,7 +306,7 @@ server.get("/api/Audio/Highest", async (req: any, res) => {
       verbose: req.query.verbose,
       metadata: req.query.metadata,
     };
-    const emitter = await YouTubeDLX.Audio.Highest(options);
+    const emitter = YouTubeDLX.Audio.Highest(options);
     if (options.stream) {
       emitter.on("stream", streamData => streamData.pipe(res));
       emitter.on("error", error => res.status(500).send(error.message));
@@ -331,7 +331,7 @@ server.get("/api/Audio/Lowest", async (req: any, res) => {
       verbose: req.query.verbose,
       metadata: req.query.metadata,
     };
-    const emitter = await YouTubeDLX.Audio.Lowest(options);
+    const emitter = YouTubeDLX.Audio.Lowest(options);
     if (options.stream) {
       emitter.on("stream", streamData => streamData.pipe(res));
       emitter.on("error", error => res.status(500).send(error.message));
@@ -357,7 +357,7 @@ server.get("/api/Audio/Video/Custom", async (req: any, res) => {
       verbose: req.query.verbose,
       metadata: req.query.metadata,
     };
-    const emitter = await YouTubeDLX.Audio_Video.Custom(options);
+    const emitter = YouTubeDLX.Audio_Video.Custom(options);
     if (options.stream) {
       emitter.on("stream", streamData => streamData.pipe(res));
       emitter.on("error", error => res.status(500).send(error.message));
@@ -382,7 +382,7 @@ server.get("/api/Audio/Video/Highest", async (req: any, res) => {
       verbose: req.query.verbose,
       metadata: req.query.metadata,
     };
-    const emitter = await YouTubeDLX.Audio_Video.Highest(options);
+    const emitter = YouTubeDLX.Audio_Video.Highest(options);
     if (options.stream) {
       emitter.on("stream", streamData => streamData.pipe(res));
       emitter.on("error", error => res.status(500).send(error.message));
@@ -407,7 +407,7 @@ server.get("/api/Audio/Video/Lowest", async (req: any, res) => {
       verbose: req.query.verbose,
       metadata: req.query.metadata,
     };
-    const emitter = await YouTubeDLX.Audio_Video.Lowest(options);
+    const emitter = YouTubeDLX.Audio_Video.Lowest(options);
     if (options.stream) {
       emitter.on("stream", streamData => streamData.pipe(res));
       emitter.on("error", error => res.status(500).send(error.message));

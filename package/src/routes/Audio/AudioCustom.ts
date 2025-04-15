@@ -6,6 +6,7 @@ import ffmpeg from "fluent-ffmpeg";
 import Tuber from "../../utils/Agent";
 import { EventEmitter } from "events";
 import { locator } from "../../utils/locator";
+
 const ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
@@ -16,6 +17,7 @@ const ZodSchema = z.object({
   resolution: z.enum(["high", "medium", "low", "ultralow"]),
   filter: z.enum(["echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed"]).optional(),
 });
+
 /**
  * Downloads and processes a custom audio file based on the provided parameters.
  *
@@ -40,41 +42,54 @@ const ZodSchema = z.object({
  *
  * @example
  * // Example 1: Download and process audio with only the query and resolution
- * await YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high" })
+ *   .on("data", (audioData) => console.log("Audio data:", audioData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Download and process audio with query, resolution, and verbose output enabled
- * await YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", verbose: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", verbose: true })
+ *   .on("data", (audioData) => console.log("Audio data:", audioData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Download and process audio with query, resolution, and custom output folder
- * await YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", output: "/path/to/folder" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", output: "/path/to/folder" })
+ *   .on("data", (audioData) => console.log("Audio data:", audioData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Download and stream audio with query, resolution, and stream enabled
- * await YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", stream: true }).on("stream", (streamData) => console.log("Streaming audio:", streamData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", stream: true })
+ *   .on("stream", (streamData) => console.log("Streaming audio:", streamData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Download and process audio with query, resolution, and audio filter applied
- * await YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", filter: "bassboost" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", filter: "bassboost" })
+ *   .on("data", (audioData) => console.log("Audio data:", audioData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 6: Download and process audio with metadata instead of downloading the audio
- * await YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", metadata: true })
+ *   .on("metadata", (metadata) => console.log("Metadata:", metadata))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 7: Download and process audio with all parameters (query, resolution, output, stream, filter, verbose, metadata)
- * await YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", output: "/path/to/folder", stream: true, filter: "echo", verbose: true, metadata: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", output: "/path/to/folder", stream: true, filter: "echo", verbose: true, metadata: true })
+ *   .on("data", (audioData) => console.log("Audio data:", audioData))
+ *   .on("error", (err) => console.error("Error:", err));
  */
-export default async function AudioCustom({ query, output, useTor, stream, filter, verbose, metadata, resolution }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default function AudioCustom({ query, output, useTor, stream, filter, verbose, metadata, resolution }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse({ query, output, useTor, stream, filter, verbose, metadata, resolution });
       const engineData = await Tuber({ query, verbose, useTor });
       if (!engineData) {
         emitter.emit("error", `${colors.red("@error:")} unable to get response!`);
-        reject(new Error("Unable to get response!"));
         return;
       }
       const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
@@ -87,7 +102,6 @@ export default async function AudioCustom({ query, output, useTor, stream, filte
       const adata = engineData.AudioHigh.find((i: { format: string | string[] }) => i.format.includes(resolutionFilter));
       if (!adata) {
         emitter.emit("error", `${colors.red("@error:")} no audio data found. use list_formats() maybe?`);
-        reject(new Error("No audio data found"));
         return;
       }
       instance.addInput(engineData.metaData.thumbnail);
@@ -131,14 +145,13 @@ export default async function AudioCustom({ query, output, useTor, stream, filte
           filename,
         });
       }
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }

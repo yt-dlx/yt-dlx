@@ -50,15 +50,15 @@ export async function searchVideos({ query }: { query: string }): Promise<search
  *
  * @example
  * // Example 1: Search for videos with only the query
- * await YouTubeDLX.Search.Video.Multiple({ query: "Node.js tutorial" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Video.Multiple({ query: "Node.js tutorial" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Search for videos with an invalid query
- * await YouTubeDLX.Search.Video.Multiple({ query: "INVALID_QUERY" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Video.Multiple({ query: "INVALID_QUERY" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Search for videos with a video link (which is not supported)
- * await YouTubeDLX.Search.Video.Multiple({ query: "https://www.youtube.com/watch?v=VIDEO_ID" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Video.Multiple({ query: "https://www.youtube.com/watch?v=VIDEO_ID" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  */
 export default async function search_videos({ query }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();

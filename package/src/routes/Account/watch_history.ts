@@ -4,7 +4,13 @@ import { EventEmitter } from "events";
 import TubeResponse from "../../interfaces/TubeResponse";
 import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 import sanitizeContentItem from "../../utils/sanitizeContentItem";
-const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(), sort: z.enum(["oldest", "newest", "old-to-new", "new-to-old"]).optional() });
+
+const ZodSchema = z.object({
+  cookies: z.string(),
+  verbose: z.boolean().optional(),
+  sort: z.enum(["oldest", "newest", "old-to-new", "new-to-old"]).optional(),
+});
+
 /**
  * Fetches the watch history for the user based on the provided parameters.
  *
@@ -19,49 +25,49 @@ const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(
  *
  * @example
  * // Example 1: Fetch watch history with cookies string
- * await YouTubeDLX.Account.History({ cookies: "COOKIE_STRING" })
+ * YouTubeDLX.Account.History({ cookies: "COOKIE_STRING" })
  *   .on("data", (history) => console.log("Watch history:", history))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch watch history with cookies string and verbose output enabled
- * await YouTubeDLX.Account.History({ cookies: "COOKIE_STRING", verbose: true })
+ * YouTubeDLX.Account.History({ cookies: "COOKIE_STRING", verbose: true })
  *   .on("data", (history) => console.log("Watch history:", history))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Fetch watch history with cookies string and sorting by "oldest"
- * await YouTubeDLX.Account.History({ cookies: "COOKIE_STRING", sort: "oldest" })
+ * YouTubeDLX.Account.History({ cookies: "COOKIE_STRING", sort: "oldest" })
  *   .on("data", (history) => console.log("Watch history:", history))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Fetch watch history with cookies string and sorting by "newest"
- * await YouTubeDLX.Account.History({ cookies: "COOKIE_STRING", sort: "newest" })
+ * YouTubeDLX.Account.History({ cookies: "COOKIE_STRING", sort: "newest" })
  *   .on("data", (history) => console.log("Watch history:", history))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Fetch watch history with cookies string and sorting by "old-to-new"
- * await YouTubeDLX.Account.History({ cookies: "COOKIE_STRING", sort: "old-to-new" })
+ * YouTubeDLX.Account.History({ cookies: "COOKIE_STRING", sort: "old-to-new" })
  *   .on("data", (history) => console.log("Watch history:", history))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 6: Fetch watch history with cookies string and sorting by "new-to-old"
- * await YouTubeDLX.Account.History({ cookies: "COOKIE_STRING", sort: "new-to-old" })
+ * YouTubeDLX.Account.History({ cookies: "COOKIE_STRING", sort: "new-to-old" })
  *   .on("data", (history) => console.log("Watch history:", history))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 7: Fetch watch history with all parameters (cookies, verbose, and sort)
- * await YouTubeDLX.Account.History({ cookies: "COOKIE_STRING", verbose: true, sort: "new-to-old" })
+ * YouTubeDLX.Account.History({ cookies: "COOKIE_STRING", verbose: true, sort: "new-to-old" })
  *   .on("data", (history) => console.log("Watch history:", history))
  *   .on("error", (err) => console.error("Error:", err));
  */
-export default async function watch_history(options: z.infer<typeof ZodSchema>): Promise<EventEmitter> {
+export default function watch_history(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse(options);
       const { verbose, cookies, sort } = options;
@@ -105,14 +111,13 @@ export default async function watch_history(options: z.infer<typeof ZodSchema>):
       }
       if (verbose) console.log(colors.green("@info:"), "Watch history fetched!");
       emitter.emit("data", result);
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }

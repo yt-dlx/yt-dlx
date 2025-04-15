@@ -38,23 +38,23 @@ var ZodSchema = z.object({
  *
  * @example
  * // Example 1: Process the lowest quality video with only the query and resolution
- * await YouTubeDLX.Video.Lowest({ query: "Node.js tutorial", resolution: "144p" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Video.Lowest({ query: "Node.js tutorial", resolution: "144p" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Process the lowest quality video with the query, resolution, and a filter (grayscale)
- * await YouTubeDLX.Video.Lowest({ query: "Node.js tutorial", resolution: "144p", filter: "grayscale" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Video.Lowest({ query: "Node.js tutorial", resolution: "144p", filter: "grayscale" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Stream the lowest quality video with the query, resolution, and stream option enabled
- * await YouTubeDLX.Video.Lowest({ query: "Node.js tutorial", resolution: "144p", stream: true }).on("stream", (streamData) => console.log("Streaming video:", streamData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Video.Lowest({ query: "Node.js tutorial", resolution: "144p", stream: true }).on("stream", (streamData) => console.log("Streaming video:", streamData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Process the lowest quality video with verbose output enabled
- * await YouTubeDLX.Video.Lowest({ query: "Node.js tutorial", resolution: "144p", verbose: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Video.Lowest({ query: "Node.js tutorial", resolution: "144p", verbose: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Fetch metadata instead of processing the video
- * await YouTubeDLX.Video.Lowest({ query: "Node.js tutorial", resolution: "144p", metadata: true }).on("metadata", (metadata) => console.log("Video metadata:", metadata)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Video.Lowest({ query: "Node.js tutorial", resolution: "144p", metadata: true }).on("metadata", (metadata) => console.log("Video metadata:", metadata)).on("error", (err) => console.error("Error:", err));
  */
 export default async function VideoLowest({ query, stream, verbose, output, metadata, useTor, filter }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
   const emitter = new EventEmitter();

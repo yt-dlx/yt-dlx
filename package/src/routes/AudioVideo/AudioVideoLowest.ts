@@ -6,7 +6,8 @@ import ffmpeg from "fluent-ffmpeg";
 import Tuber from "../../utils/Agent";
 import { EventEmitter } from "events";
 import { locator } from "../../utils/locator";
-var ZodSchema = z.object({
+
+const ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
   useTor: z.boolean().optional(),
@@ -15,6 +16,7 @@ var ZodSchema = z.object({
   metadata: z.boolean().optional(),
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
+
 /**
  * Downloads and processes the lowest quality audio and video file with the provided parameters.
  *
@@ -38,35 +40,49 @@ var ZodSchema = z.object({
  *
  * @example
  * // Example 1: Download and process lowest quality audio and video with only the query and filter
- * await YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale" }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale" })
+ *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Download and process lowest quality audio and video with query, filter, and verbose output enabled
- * await YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", verbose: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", verbose: true })
+ *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Download and process lowest quality audio and video with query, filter, and custom output folder
- * await YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", output: "/path/to/folder" }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", output: "/path/to/folder" })
+ *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Stream lowest quality audio and video with query, filter, and stream enabled
- * await YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", stream: true }).on("stream", (streamData) => console.log("Streaming audio and video:", streamData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", stream: true })
+ *   .on("stream", (streamData) => console.log("Streaming audio and video:", streamData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Download and process lowest quality audio and video with query, filter, and metadata output enabled
- * await YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", metadata: true })
+ *   .on("metadata", (metadata) => console.log("Metadata:", metadata))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 6: Download and process lowest quality audio and video with query, filter, stream, and metadata
- * await YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", stream: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", stream: true, metadata: true })
+ *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 7: Download and process lowest quality audio and video with all parameters (query, output, filter, stream, verbose, metadata)
- * await YouTubeDLX.Audio_Video.Lowest({ query: "Song title", output: "/path/to/folder", filter: "grayscale", stream: true, verbose: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", output: "/path/to/folder", filter: "grayscale", stream: true, verbose: true, metadata: true })
+ *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
+ *   .on("error", (err) => console.error("Error:", err));
  */
-export default async function AudioVideoLowest({ query, stream, verbose, output, metadata, useTor, filter }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default function AudioVideoLowest({ query, stream, verbose, output, metadata, useTor, filter }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse({ query, stream, verbose, output, metadata, useTor, filter });
       const engineData = await Tuber({ query, verbose, useTor });
@@ -117,14 +133,13 @@ export default async function AudioVideoLowest({ query, stream, verbose, output,
           ManifestLow: engineData.ManifestLow,
         });
       }
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }

@@ -3,6 +3,7 @@ import { z, ZodError } from "zod";
 import Tuber from "../../utils/Agent";
 import { EventEmitter } from "events";
 import type EngineOutput from "../../interfaces/EngineOutput";
+
 function calculateUploadAgo(days: number) {
   const years = Math.floor(days / 365);
   const months = Math.floor((days % 365) / 30);
@@ -10,6 +11,7 @@ function calculateUploadAgo(days: number) {
   const formattedString = `${years > 0 ? years + " years, " : ""}${months > 0 ? months + " months, " : ""}${remainingDays} days`;
   return { years, months, days: remainingDays, formatted: formattedString };
 }
+
 function calculateVideoDuration(seconds: number) {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
@@ -17,6 +19,7 @@ function calculateVideoDuration(seconds: number) {
   const formattedString = `${hours > 0 ? hours + " hours, " : ""}${minutes > 0 ? minutes + " minutes, " : ""}${remainingSeconds} seconds`;
   return { hours, minutes, seconds: remainingSeconds, formatted: formattedString };
 }
+
 function formatCount(count: number) {
   const abbreviations = ["K", "M", "B", "T"];
   for (let i = abbreviations.length - 1; i >= 0; i--) {
@@ -28,7 +31,13 @@ function formatCount(count: number) {
   }
   return `${count}`;
 }
-const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optional(), verbose: z.boolean().optional() });
+
+const ZodSchema = z.object({
+  query: z.string().min(2),
+  useTor: z.boolean().optional(),
+  verbose: z.boolean().optional(),
+});
+
 /**
  * Extracts detailed information about a video from YouTube based on the provided search query.
  *
@@ -43,23 +52,31 @@ const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optio
  *
  * @example
  * // Example 1: Extract video data with only the query
- * await YouTubeDLX.Info.Extract({ query: "Node.js tutorial" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Extract({ query: "Node.js tutorial" })
+ *   .on("data", (videoData) => console.log("Video data:", videoData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Extract video data with verbose output enabled
- * await YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true })
+ *   .on("data", (videoData) => console.log("Video data:", videoData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Extract video data with Tor enabled
- * await YouTubeDLX.Info.Extract({ query: "Node.js tutorial", useTor: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", useTor: true })
+ *   .on("data", (videoData) => console.log("Video data:", videoData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Extract video data with all parameters (query, verbose, useTor)
- * await YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true, useTor: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true, useTor: true })
+ *   .on("data", (videoData) => console.log("Video data:", videoData))
+ *   .on("error", (err) => console.error("Error:", err));
  */
-export default async function extract({ query, verbose, useTor }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse({ query, verbose });
       const metaBody: EngineOutput = await Tuber({ query, verbose, useTor });
@@ -67,7 +84,7 @@ export default async function extract({ query, verbose, useTor }: z.infer<typeof
         emitter.emit("error", "Unable to get response!");
         return;
       }
-      const uploadDate = new Date(metaBody.metaData.upload_date.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"));
+      const uploadDate = new Date(metaBody.metaData.upload_date.replace(/(\d{4})(\d{2})(\d{2})/, "\\$1-\\$2-\\$3"));
       const currentDate = new Date();
       const daysAgo = Math.floor((currentDate.getTime() - uploadDate.getTime()) / (1000 * 60 * 60 * 24));
       const prettyDate = uploadDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
@@ -124,14 +141,13 @@ export default async function extract({ query, verbose, useTor }: z.infer<typeof
         },
       };
       emitter.emit("data", payload);
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }
