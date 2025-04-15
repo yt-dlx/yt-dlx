@@ -40,31 +40,31 @@ var ZodSchema = z.object({
  *
  * @example
  * // Example 1: Download and process audio and video with only the query, resolution, and filter
- * AudioVideoCustom({ query: "Song title", resolution: "720p", filter: "grayscale" }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale" }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Download and process audio and video with query, resolution, filter, and verbose output enabled
- * AudioVideoCustom({ query: "Song title", resolution: "720p", filter: "grayscale", verbose: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", verbose: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Download and process audio and video with query, resolution, and custom output folder
- * AudioVideoCustom({ query: "Song title", resolution: "720p", filter: "grayscale", output: "/path/to/folder" }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", output: "/path/to/folder" }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Stream audio and video with query, resolution, and stream enabled
- * AudioVideoCustom({ query: "Song title", resolution: "720p", stream: true }).on("stream", (streamData) => console.log("Streaming audio and video:", streamData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", stream: true }).on("stream", (streamData) => console.log("Streaming audio and video:", streamData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Download and process audio and video with query, resolution, filter, and metadata output enabled
- * AudioVideoCustom({ query: "Song title", resolution: "720p", filter: "grayscale", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 6: Download and process audio and video with query, resolution, filter, stream, and metadata
- * AudioVideoCustom({ query: "Song title", resolution: "720p", filter: "grayscale", stream: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", stream: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 7: Download and process audio and video with all parameters (query, output, filter, stream, verbose, metadata, resolution)
- * AudioVideoCustom({ query: "Song title", output: "/path/to/folder", resolution: "720p", filter: "grayscale", stream: true, verbose: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio_Video.Custom({ query: "Song title", output: "/path/to/folder", resolution: "720p", filter: "grayscale", stream: true, verbose: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
  */
 export default function AudioVideoCustom({ query, stream, output, useTor, filter, metadata, verbose, resolution }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

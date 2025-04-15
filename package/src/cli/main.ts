@@ -1,5 +1,5 @@
 // #!/usr/bin/env node
-// import ytdlx from "..";
+// import YouTubeDLX from "..";
 // import * as fs from "fs";
 // import colors from "colors";
 // import * as path from "path";
@@ -122,7 +122,7 @@
 // if (!proTube || !proTube.query || proTube.query.length === 0) {
 // console.error(colors.red("error: no query"));
 // } else
-// await ytdlx.info
+// await YouTubeDLX.info
 // .extract({
 // query: proTube.query,
 // })
@@ -140,7 +140,7 @@
 // // if (!proTube || !proTube.query || proTube.query.length === 0) {
 // // console.error(colors.red("error: no query"));
 // // } else
-// // await ytdlx.info
+// // await YouTubeDLX.info
 // // .list_formats({
 // // query: proTube.query,
 // // })
@@ -158,7 +158,7 @@
 // if (!proTube || !proTube.query || proTube.query.length === 0) {
 // console.error(colors.red("error: no query"));
 // } else
-// await ytdlx.AudioOnly.Single.Highest({
+// await YouTubeDLX.AudioOnly.Single.Highest({
 // query: proTube.query,
 // })
 // .then((data: any) => {
@@ -175,7 +175,7 @@
 // if (!proTube || !proTube.query || proTube.query.length === 0) {
 // console.error(colors.red("error: no query"));
 // } else
-// await ytdlx.AudioOnly.Single.Lowest({
+// await YouTubeDLX.AudioOnly.Single.Lowest({
 // query: proTube.query,
 // })
 // .then((data: any) => {
@@ -192,7 +192,7 @@
 // if (!proTube || !proTube.query || proTube.query.length === 0) {
 // console.error(colors.red("error: no query"));
 // } else
-// await ytdlx.VideoOnly.Single.Highest({
+// await YouTubeDLX.VideoOnly.Single.Highest({
 // query: proTube.query,
 // })
 // .then((data: any) => {
@@ -209,7 +209,7 @@
 // if (!proTube || !proTube.query || proTube.query.length === 0) {
 // console.error(colors.red("error: no query"));
 // } else
-// await ytdlx.VideoOnly.Single.Lowest({
+// await YouTubeDLX.VideoOnly.Single.Lowest({
 // query: proTube.query,
 // })
 // .then((data: any) => {

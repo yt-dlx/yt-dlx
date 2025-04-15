@@ -27,7 +27,7 @@ import AudioVideoCustom from "./routes/AudioVideo/AudioVideoCustom";
 import subscriptions_feed from "./routes/Account/subscriptions_feed";
 import AudioVideoHighest from "./routes/AudioVideo/AudioVideoHighest";
 import unseen_notifications from "./routes/Account/unseen_notifications";
-var ytdlx = {
+var YouTubeDLX = {
   Progress_Bar: progbar,
   Account: { History: watch_history, HomeFeed: home_feed, SubscriptionsFeed: subscriptions_feed, Unseen_Notifications: unseen_notifications },
   Audio: { Lowest: AudioLowest, Highest: AudioHighest, Custom: AudioCustom },
@@ -37,8 +37,8 @@ var ytdlx = {
     extract,
     list_formats,
     video_transcript,
-    get_videoId: YouTubeID,
     Live: live_video_data,
+    get_videoId: YouTubeID,
     Comments: video_comments,
     Transcript: video_transcript,
   },
@@ -55,4 +55,4 @@ var ytdlx = {
     },
   },
 };
-export default ytdlx;
+export default YouTubeDLX;

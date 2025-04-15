@@ -18,11 +18,11 @@ const ZodSchema = z.object({ cookiesPath: z.string(), verbose: z.boolean().optio
  *
  * @example
  * // Example 1: Fetch subscriptions feed with only the cookiesPath
- * subscriptions_feed({ cookiesPath: "path/to/cookies" }).on("data", (feed) => console.log("Subscriptions feed:", feed)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.SubscriptionsFeed({ cookiesPath: "path/to/cookies" }).on("data", (feed) => console.log("Subscriptions feed:", feed)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch subscriptions feed with cookiesPath and verbose output enabled
- * subscriptions_feed({ cookiesPath: "path/to/cookies", verbose: true }).on("data", (feed) => console.log("Subscriptions feed:", feed)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.SubscriptionsFeed({ cookiesPath: "path/to/cookies", verbose: true }).on("data", (feed) => console.log("Subscriptions feed:", feed)).on("error", (err) => console.error("Error:", err));
  */
 export default function subscriptions_feed(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

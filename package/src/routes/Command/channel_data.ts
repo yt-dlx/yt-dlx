@@ -15,7 +15,7 @@ const ZodSchema = z.object({ channelLink: z.string().min(2) });
  *
  * @example
  * // Example 1: Fetch channel data with only the channel link
- * channel_data({ channelLink: "https://www.youtube.com/c/ChannelName" }).on("data", (channelData) => console.log("Channel data:", channelData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Video.Channel_Data({ channelLink: "https://www.youtube.com/c/ChannelName" }).on("data", (channelData) => console.log("Channel data:", channelData)).on("error", (err) => console.error("Error:", err));
  */
 export default function channel_data({ channelLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

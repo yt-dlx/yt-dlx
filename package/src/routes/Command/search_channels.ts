@@ -39,11 +39,11 @@ async function searchChannels({ query }: { query: string }): Promise<channelSear
  *
  * @example
  * // Example 1: Search for channels with only the query
- * search_channels({ query: "Tech channels" }).on("data", (channels) => console.log("Channels found:", channels)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Video.Channel({ query: "Tech channels" }).on("data", (channels) => console.log("Channels found:", channels)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Search for channels with an invalid query
- * search_channels({ query: "INVALID_QUERY" }).on("data", (channels) => console.log("Channels found:", channels)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Video.Channel({ query: "INVALID_QUERY" }).on("data", (channels) => console.log("Channels found:", channels)).on("error", (err) => console.error("Error:", err));
  */
 export default function search_channels({ query }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

@@ -40,31 +40,31 @@ const ZodSchema = z.object({
  *
  * @example
  * // Example 1: Download and process audio with only the query and resolution
- * AudioCustom({ query: "Song title", resolution: "high" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Download and process audio with query, resolution, and verbose output enabled
- * AudioCustom({ query: "Song title", resolution: "high", verbose: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", verbose: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Download and process audio with query, resolution, and custom output folder
- * AudioCustom({ query: "Song title", resolution: "high", output: "/path/to/folder" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", output: "/path/to/folder" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Download and stream audio with query, resolution, and stream enabled
- * AudioCustom({ query: "Song title", resolution: "high", stream: true }).on("stream", (streamData) => console.log("Streaming audio:", streamData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", stream: true }).on("stream", (streamData) => console.log("Streaming audio:", streamData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Download and process audio with query, resolution, and audio filter applied
- * AudioCustom({ query: "Song title", resolution: "high", filter: "bassboost" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", filter: "bassboost" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 6: Download and process audio with metadata instead of downloading the audio
- * AudioCustom({ query: "Song title", resolution: "high", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 7: Download and process audio with all parameters (query, resolution, output, stream, filter, verbose, metadata)
- * AudioCustom({ query: "Song title", resolution: "high", output: "/path/to/folder", stream: true, filter: "echo", verbose: true, metadata: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Audio.Custom({ query: "Song title", resolution: "high", output: "/path/to/folder", stream: true, filter: "echo", verbose: true, metadata: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
  */
 export default function AudioCustom({ query, output, useTor, stream, filter, verbose, metadata, resolution }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

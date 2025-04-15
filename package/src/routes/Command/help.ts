@@ -6,7 +6,7 @@ import colors from "colors";
  *
  * @example
  * // Example: Display help message and get the help URL
- * help().then(helpUrl => console.log(helpUrl));
+ * YouTubeDLX.Info.help().then(helpUrl => console.log(helpUrl));
  */
 export default function help(): Promise<string> {
   console.log(colors.green("@info:"), "❣️ Thank you for using", colors.green("yt-dlx."), "Consider", colors.green("🌟starring"), "the github repo", colors.green("https://github.com/yt-dlx\n"));

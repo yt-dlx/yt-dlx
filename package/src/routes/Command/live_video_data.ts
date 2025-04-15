@@ -17,11 +17,11 @@ const ZodSchema = z.object({ videoLink: z.string().min(2), verbose: z.boolean().
  *
  * @example
  * // Example 1: Fetch live video data with only the video link
- * live_video_data({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID" }).on("data", (liveData) => console.log("Live video data:", liveData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Live({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID" }).on("data", (liveData) => console.log("Live video data:", liveData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch live video data with verbose output enabled
- * live_video_data({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID", verbose: true }).on("data", (liveData) => console.log("Live video data:", liveData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Live({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID", verbose: true }).on("data", (liveData) => console.log("Live video data:", liveData)).on("error", (err) => console.error("Error:", err));
  */
 export default function live_video_data({ videoLink, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

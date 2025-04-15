@@ -40,11 +40,11 @@ async function relatedVideos({ videoId }: { videoId: string }): Promise<relatedV
  *
  * @example
  * // Example 1: Fetch related videos with only the video ID
- * related_videos({ videoId: "dQw4w9WgXcQ" }).on("data", (relatedVideos) => console.log("Related videos:", relatedVideos)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Video.Related({ videoId: "dQw4w9WgXcQ" }).on("data", (relatedVideos) => console.log("Related videos:", relatedVideos)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch related videos with an invalid video ID
- * related_videos({ videoId: "INVALID_VIDEO_ID" }).on("data", (relatedVideos) => console.log("Related videos:", relatedVideos)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Video.Related({ videoId: "INVALID_VIDEO_ID" }).on("data", (relatedVideos) => console.log("Related videos:", relatedVideos)).on("error", (err) => console.error("Error:", err));
  */
 export default function related_videos({ videoId }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

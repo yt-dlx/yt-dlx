@@ -19,31 +19,31 @@ const ZodSchema = z.object({ cookiesPath: z.string(), verbose: z.boolean().optio
  *
  * @example
  * // Example 1: Fetch home feed with only the cookiesPath
- * home_feed({ cookiesPath: "path/to/cookies" }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.HomeFeed({ cookiesPath: "path/to/cookies" }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch home feed with cookiesPath and verbose output enabled
- * home_feed({ cookiesPath: "path/to/cookies", verbose: true }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.HomeFeed({ cookiesPath: "path/to/cookies", verbose: true }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Fetch home feed with cookiesPath and sorting by "oldest"
- * home_feed({ cookiesPath: "path/to/cookies", sort: "oldest" }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.HomeFeed({ cookiesPath: "path/to/cookies", sort: "oldest" }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Fetch home feed with cookiesPath and sorting by "newest"
- * home_feed({ cookiesPath: "path/to/cookies", sort: "newest" }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.HomeFeed({ cookiesPath: "path/to/cookies", sort: "newest" }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Fetch home feed with cookiesPath and sorting by "old-to-new"
- * home_feed({ cookiesPath: "path/to/cookies", sort: "old-to-new" }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.HomeFeed({ cookiesPath: "path/to/cookies", sort: "old-to-new" }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 6: Fetch home feed with cookiesPath and sorting by "new-to-old"
- * home_feed({ cookiesPath: "path/to/cookies", sort: "new-to-old" }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.HomeFeed({ cookiesPath: "path/to/cookies", sort: "new-to-old" }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 7: Fetch home feed with all parameters (cookiesPath, verbose, and sort)
- * home_feed({ cookiesPath: "path/to/cookies", verbose: true, sort: "new-to-old" }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.HomeFeed({ cookiesPath: "path/to/cookies", verbose: true, sort: "new-to-old" }).on("data", (feed) => console.log("Home feed:", feed)).on("error", (err) => console.error("Error:", err));
  */
 export default function home_feed(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

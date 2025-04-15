@@ -38,15 +38,15 @@ async function searchPlaylists({ query }: { query: string }): Promise<searchPlay
  *
  * @example
  * // Example 1: Search for playlists with only the playlist link
- * search_playlists({ playlistLink: "Top 10 Music Playlists" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "Top 10 Music Playlists" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Search for playlists with an invalid playlist link
- * search_playlists({ playlistLink: "INVALID_PLAYLIST_LINK" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "INVALID_PLAYLIST_LINK" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Search for playlists with a playlist link being the ID of an existing playlist
- * search_playlists({ playlistLink: "https://www.youtube.com/playlist?list=PLAYLIST_ID" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "https://www.youtube.com/playlist?list=PLAYLIST_ID" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
  */
 export default function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

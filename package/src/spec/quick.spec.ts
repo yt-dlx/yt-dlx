@@ -39,3 +39,57 @@
 // runTests();
 // ==================================================================================
 // ==================================================================================
+import YouTubeDLX from "..";
+import colors from "colors";
+import * as path from "path";
+async function HomeFeed() {
+  console.log(colors.blue("@info"), "Test For HomeFeed: (1): Fetch home feed with only the cookiesPath");
+  YouTubeDLX.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt") })
+    .on("data", data => console.log(colors.green("@data:"), data))
+    .on("error", error => console.error(colors.red("@error:"), error));
+  console.log(colors.blue("@info"), "Test For HomeFeed: (2): Fetch home feed with cookiesPath and verbose output enabled");
+  YouTubeDLX.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true })
+    .on("data", data => console.log(colors.green("@data:"), data))
+    .on("error", error => console.error(colors.red("@error:"), error));
+  console.log(colors.blue("@info"), "Test For HomeFeed: (3): Fetch home feed with cookiesPath and sorting by 'oldest'");
+  YouTubeDLX.Account.HomeFeed({ cookiesPath: "path/to/cookies", sort: "oldest" })
+    .on("data", data => console.log(colors.green("@data:"), data))
+    .on("error", error => console.error(colors.red("@error:"), error));
+  console.log(colors.blue("@info"), "Test For HomeFeed: (4): Fetch home feed with cookiesPath and sorting by 'newest'");
+  YouTubeDLX.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), sort: "newest" })
+    .on("data", data => console.log(colors.green("@data:"), data))
+    .on("error", error => console.error(colors.red("@error:"), error));
+  console.log(colors.blue("@info"), "Test For HomeFeed: (5): Fetch home feed with cookiesPath and sorting by 'old-to-new'");
+  YouTubeDLX.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), sort: "old-to-new" })
+    .on("data", data => console.log(colors.green("@data:"), data))
+    .on("error", error => console.error(colors.red("@error:"), error));
+  console.log(colors.blue("@info"), "Test For HomeFeed: (6): Fetch home feed with cookiesPath and sorting by 'new-to-old'");
+  YouTubeDLX.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), sort: "new-to-old" })
+    .on("data", data => console.log(colors.green("@data:"), data))
+    .on("error", error => console.error(colors.red("@error:"), error));
+  console.log(colors.blue("@info"), "Test For HomeFeed: (7): Fetch home feed with all parameters (cookiesPath, verbose, and sort)");
+  YouTubeDLX.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true, sort: "new-to-old" })
+    .on("data", data => console.log(colors.green("@data:"), data))
+    .on("error", error => console.error(colors.red("@error:"), error));
+}
+async function SubscriptionsFeed() {
+  console.log(colors.blue("@info"), "Test For HomeFeed: (1): Fetch subscriptions feed with only the cookiesPath");
+  YouTubeDLX.Account.SubscriptionsFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt") })
+    .on("data", data => console.log(colors.green("@data:"), data))
+    .on("error", error => console.error(colors.red("@error:"), error));
+  console.log(colors.blue("@info"), "Test For HomeFeed: (2): Fetch subscriptions feed with cookiesPath and verbose output enabled");
+  YouTubeDLX.Account.SubscriptionsFeed({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true })
+    .on("data", data => console.log(colors.green("@data:"), data))
+    .on("error", error => console.error(colors.red("@error:"), error));
+}
+async function UnseenNotificationsTest() {
+  console.log(colors.blue("@info"), "Test For UnseenNotifications: (1): Fetch unseen notifications count with only the cookiesPath");
+  YouTubeDLX.Account.Unseen_Notifications({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt") })
+    .on("data", data => console.log(colors.green("@data:"), data))
+    .on("error", error => console.error(colors.red("@error:"), error));
+
+  console.log(colors.blue("@info"), "Test For UnseenNotifications: (2): Fetch unseen notifications count with cookiesPath and verbose output enabled");
+  YouTubeDLX.Account.Unseen_Notifications({ cookiesPath: path.resolve(process.cwd(), "./cookies.txt"), verbose: true })
+    .on("data", data => console.log(colors.green("@data:"), data))
+    .on("error", error => console.error(colors.red("@error:"), error));
+}

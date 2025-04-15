@@ -17,11 +17,11 @@ const ZodSchema = z.object({ cookiesPath: z.string(), verbose: z.boolean().optio
  *
  * @example
  * // Example 1: Fetch unseen notifications count with only the cookiesPath
- * unseen_notifications({ cookiesPath: "path/to/cookies" }).on("data", (notifications) => console.log("Unseen notifications count:", notifications)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.Unseen_Notifications({ cookiesPath: "path/to/cookies" }).on("data", (notifications) => console.log("Unseen notifications count:", notifications)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch unseen notifications count with cookiesPath and verbose output enabled
- * unseen_notifications({ cookiesPath: "path/to/cookies", verbose: true }).on("data", (notifications) => console.log("Unseen notifications count:", notifications)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.Unseen_Notifications({ cookiesPath: "path/to/cookies", verbose: true }).on("data", (notifications) => console.log("Unseen notifications count:", notifications)).on("error", (err) => console.error("Error:", err));
  */
 export default function unseen_notifications(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

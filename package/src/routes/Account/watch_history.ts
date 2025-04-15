@@ -19,31 +19,31 @@ const ZodSchema = z.object({ cookiesPath: z.string(), verbose: z.boolean().optio
  *
  * @example
  * // Example 1: Fetch watch history with only the cookiesPath
- * watch_history({ cookiesPath: "path/to/cookies" }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.History({ cookiesPath: "path/to/cookies" }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch watch history with cookiesPath and verbose output enabled
- * watch_history({ cookiesPath: "path/to/cookies", verbose: true }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.History({ cookiesPath: "path/to/cookies", verbose: true }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Fetch watch history with cookiesPath and sorting by "oldest"
- * watch_history({ cookiesPath: "path/to/cookies", sort: "oldest" }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.History({ cookiesPath: "path/to/cookies", sort: "oldest" }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Fetch watch history with cookiesPath and sorting by "newest"
- * watch_history({ cookiesPath: "path/to/cookies", sort: "newest" }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.History({ cookiesPath: "path/to/cookies", sort: "newest" }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Fetch watch history with cookiesPath and sorting by "old-to-new"
- * watch_history({ cookiesPath: "path/to/cookies", sort: "old-to-new" }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.History({ cookiesPath: "path/to/cookies", sort: "old-to-new" }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 6: Fetch watch history with cookiesPath and sorting by "new-to-old"
- * watch_history({ cookiesPath: "path/to/cookies", sort: "new-to-old" }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.History({ cookiesPath: "path/to/cookies", sort: "new-to-old" }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 7: Fetch watch history with all parameters (cookiesPath, verbose, and sort)
- * watch_history({ cookiesPath: "path/to/cookies", verbose: true, sort: "new-to-old" }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Account.History({ cookiesPath: "path/to/cookies", verbose: true, sort: "new-to-old" }).on("data", (history) => console.log("Watch history:", history)).on("error", (err) => console.error("Error:", err));
  */
 export default function watch_history(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

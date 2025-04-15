@@ -1,6 +1,5 @@
 console.clear();
-import ytdlx from "..";
-import path from "path";
+import YouTubeDLX from "..";
 import colors from "colors";
 import express from "express";
 const server = express();
@@ -8,8 +7,11 @@ const PORT = process.env.PORT || 4040;
 server.listen(PORT, () => console.log(colors.cyan(`🚀 YT-DLX Server is live at http://localhost:${PORT}`)));
 export default server;
 /* ============================================================================ AUDIO Endpoints */
-server.get("/AudioCustomData", async (req, res: any) => {
+server.get("/AudioCustom", async (req, res: any) => {
   const query = req.query.query as string;
+  const useTor = req.query.useTor === "true";
+  const verbose = req.query.verbose === "true";
+  const metadata = req.query.metadata === "true";
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   let resolution: "high" | "medium" | "low" | "ultralow";
   switch (req.query.resolution) {
@@ -23,7 +25,7 @@ server.get("/AudioCustomData", async (req, res: any) => {
       resolution = "medium";
   }
   try {
-    const Tuber = ytdlx.Audio.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
+    const Tuber = YouTubeDLX.Audio.Custom({ useTor, metadata, verbose, query, resolution });
     Tuber.on("metadata", metadata => res.json(metadata));
     Tuber.on("start", command => console.log(colors.gray("start:"), command));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -32,11 +34,14 @@ server.get("/AudioCustomData", async (req, res: any) => {
     res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
   }
 });
-server.get("/AudioHighestData", async (req, res: any) => {
+server.get("/AudioHighest", async (req, res: any) => {
   const query = req.query.query as string;
+  const useTor = req.query.useTor === "true";
+  const verbose = req.query.verbose === "true";
+  const metadata = req.query.metadata === "true";
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const Tuber = ytdlx.Audio.Highest({ useTor: true, metadata: true, verbose: true, query });
+    const Tuber = YouTubeDLX.Audio.Highest({ useTor, metadata, verbose, query });
     Tuber.on("metadata", metadata => res.json(metadata));
     Tuber.on("start", command => console.log(colors.gray("start:"), command));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -45,11 +50,14 @@ server.get("/AudioHighestData", async (req, res: any) => {
     res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
   }
 });
-server.get("/AudioLowestData", async (req, res: any) => {
+server.get("/AudioLowest", async (req, res: any) => {
   const query = req.query.query as string;
+  const useTor = req.query.useTor === "true";
+  const verbose = req.query.verbose === "true";
+  const metadata = req.query.metadata === "true";
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const Tuber = ytdlx.Audio.Lowest({ useTor: true, metadata: true, verbose: true, query });
+    const Tuber = YouTubeDLX.Audio.Lowest({ useTor, metadata, verbose, query });
     Tuber.on("metadata", metadata => res.json(metadata));
     Tuber.on("start", command => console.log(colors.gray("start:"), command));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -59,8 +67,11 @@ server.get("/AudioLowestData", async (req, res: any) => {
   }
 });
 /* ============================================================================ VIDEO Endpoints */
-server.get("/VideoCustomData", async (req, res: any) => {
+server.get("/VideoCustom", async (req, res: any) => {
   const query = req.query.query as string;
+  const useTor = req.query.useTor === "true";
+  const verbose = req.query.verbose === "true";
+  const metadata = req.query.metadata === "true";
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   let resolution: "144p" | "240p" | "360p" | "480p" | "720p" | "1080p" | "1440p" | "2160p" | "3072p" | "4320p" | "6480p" | "8640p" | "12000p";
   switch (req.query.resolution) {
@@ -83,7 +94,7 @@ server.get("/VideoCustomData", async (req, res: any) => {
       resolution = "360p";
   }
   try {
-    const Tuber = ytdlx.Video.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
+    const Tuber = YouTubeDLX.Video.Custom({ useTor, metadata, verbose, query, resolution });
     Tuber.on("metadata", metadata => res.json(metadata));
     Tuber.on("start", command => console.log(colors.gray("start:"), command));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -92,11 +103,14 @@ server.get("/VideoCustomData", async (req, res: any) => {
     res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
   }
 });
-server.get("/VideoHighestData", async (req, res: any) => {
+server.get("/VideoHighest", async (req, res: any) => {
   const query = req.query.query as string;
+  const useTor = req.query.useTor === "true";
+  const verbose = req.query.verbose === "true";
+  const metadata = req.query.metadata === "true";
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const Tuber = ytdlx.Video.Highest({ useTor: true, metadata: true, verbose: true, query });
+    const Tuber = YouTubeDLX.Video.Highest({ useTor, metadata, verbose, query });
     Tuber.on("metadata", metadata => res.json(metadata));
     Tuber.on("start", command => console.log(colors.gray("start:"), command));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -105,11 +119,14 @@ server.get("/VideoHighestData", async (req, res: any) => {
     res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
   }
 });
-server.get("/VideoLowestData", async (req, res: any) => {
+server.get("/VideoLowest", async (req, res: any) => {
   const query = req.query.query as string;
+  const useTor = req.query.useTor === "true";
+  const verbose = req.query.verbose === "true";
+  const metadata = req.query.metadata === "true";
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const Tuber = ytdlx.Video.Lowest({ useTor: true, metadata: true, verbose: true, query });
+    const Tuber = YouTubeDLX.Video.Lowest({ useTor, metadata, verbose, query });
     Tuber.on("metadata", metadata => res.json(metadata));
     Tuber.on("start", command => console.log(colors.gray("start:"), command));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -119,11 +136,14 @@ server.get("/VideoLowestData", async (req, res: any) => {
   }
 });
 /* ============================================================================ AUDIO & VIDEO Endpoints */
-server.get("/AudioVideoHighestData", async (req, res: any) => {
+server.get("/AudioVideoHighest", async (req, res: any) => {
   const query = req.query.query as string;
+  const useTor = req.query.useTor === "true";
+  const verbose = req.query.verbose === "true";
+  const metadata = req.query.metadata === "true";
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const Tuber = ytdlx.Audio_Video.Highest({ useTor: true, metadata: true, verbose: true, query });
+    const Tuber = YouTubeDLX.Audio_Video.Highest({ useTor, metadata, verbose, query });
     Tuber.on("metadata", metadata => res.json(metadata));
     Tuber.on("start", command => console.log(colors.gray("start:"), command));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -132,8 +152,11 @@ server.get("/AudioVideoHighestData", async (req, res: any) => {
     res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
   }
 });
-server.get("/AudioVideoCustomData", async (req, res: any) => {
+server.get("/AudioVideoCustom", async (req, res: any) => {
   const query = req.query.query as string;
+  const useTor = req.query.useTor === "true";
+  const verbose = req.query.verbose === "true";
+  const metadata = req.query.metadata === "true";
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   let resolution: "144p" | "240p" | "360p" | "480p" | "720p" | "1080p" | "1440p" | "2160p" | "3072p" | "4320p" | "6480p" | "8640p" | "12000p";
   switch (req.query.resolution) {
@@ -156,7 +179,7 @@ server.get("/AudioVideoCustomData", async (req, res: any) => {
       resolution = "720p";
   }
   try {
-    const Tuber = ytdlx.Audio_Video.Custom({ useTor: true, metadata: true, verbose: true, query, resolution });
+    const Tuber = YouTubeDLX.Audio_Video.Custom({ useTor, metadata, verbose, query, resolution });
     Tuber.on("metadata", metadata => res.json(metadata));
     Tuber.on("start", command => console.log(colors.gray("start:"), command));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -165,11 +188,14 @@ server.get("/AudioVideoCustomData", async (req, res: any) => {
     res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
   }
 });
-server.get("/AudioVideoLowestData", async (req, res: any) => {
+server.get("/AudioVideoLowest", async (req, res: any) => {
   const query = req.query.query as string;
+  const useTor = req.query.useTor === "true";
+  const verbose = req.query.verbose === "true";
+  const metadata = req.query.metadata === "true";
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const Tuber = ytdlx.Audio_Video.Lowest({ useTor: true, metadata: true, verbose: true, query });
+    const Tuber = YouTubeDLX.Audio_Video.Lowest({ useTor, metadata, verbose, query });
     Tuber.on("metadata", metadata => res.json(metadata));
     Tuber.on("start", command => console.log(colors.gray("start:"), command));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
@@ -183,7 +209,7 @@ server.get("/SearchMultipleVideos", async (req, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const Tuber = ytdlx.Search.Video.Multiple({ query });
+    const Tuber = YouTubeDLX.Search.Video.Multiple({ query });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -195,7 +221,7 @@ server.get("/SearchSingleVideo", async (req, res: any) => {
   const videoLink = req.query.videoLink as string;
   if (!videoLink) return res.status(400).json({ error: "Missing videoLink parameter." });
   try {
-    const Tuber = ytdlx.Search.Video.Single({ videoLink });
+    const Tuber = YouTubeDLX.Search.Video.Single({ videoLink });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -207,7 +233,7 @@ server.get("/SearchRelatedVideos", async (req, res: any) => {
   const videoId = req.query.videoId as string;
   if (!videoId) return res.status(400).json({ error: "Missing videoId parameter." });
   try {
-    const Tuber = ytdlx.Search.Video.Related({ videoId });
+    const Tuber = YouTubeDLX.Search.Video.Related({ videoId });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -219,7 +245,7 @@ server.get("/SearchMultiplePlaylists", async (req, res: any) => {
   const playlistLink = req.query.playlistLink as string;
   if (!playlistLink) return res.status(400).json({ error: "Missing playlistLink parameter." });
   try {
-    const Tuber = ytdlx.Search.Playlist.Multiple({ playlistLink });
+    const Tuber = YouTubeDLX.Search.Playlist.Multiple({ playlistLink });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -231,7 +257,7 @@ server.get("/SearchSinglePlaylist", async (req, res: any) => {
   const playlistLink = req.query.playlistLink as string;
   if (!playlistLink) return res.status(400).json({ error: "Missing playlistLink parameter." });
   try {
-    const Tuber = ytdlx.Search.Playlist.Single({ playlistLink });
+    const Tuber = YouTubeDLX.Search.Playlist.Single({ playlistLink });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -243,7 +269,7 @@ server.get("/SearchVideoTranscript", async (req, res: any) => {
   const videoLink = req.query.videoLink as string;
   if (!videoLink) return res.status(400).json({ error: "Missing videoLink parameter." });
   try {
-    const Tuber = ytdlx.Info.Transcript({ videoLink });
+    const Tuber = YouTubeDLX.Info.Transcript({ videoLink });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -253,9 +279,23 @@ server.get("/SearchVideoTranscript", async (req, res: any) => {
 });
 server.get("/SearchAdvanced", async (req, res: any) => {
   const query = req.query.query as string;
+  const verbose = req.query.verbose === "true";
+  const minViews = req.query.minViews ? parseInt(req.query.minViews as string, 10) : undefined;
+  const maxViews = req.query.maxViews ? parseInt(req.query.maxViews as string, 10) : undefined;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  let orderBy: "relevance" | "viewCount" | "rating" | "date";
+  switch (req.query.orderBy) {
+    case "relevance":
+    case "viewCount":
+    case "rating":
+    case "date":
+      orderBy = req.query.orderBy;
+      break;
+    default:
+      orderBy = "relevance";
+  }
   try {
-    const Tuber = ytdlx.Search.Video.Advance_Search({ query });
+    const Tuber = YouTubeDLX.Search.Video.Advance_Search({ query, orderBy, maxViews, minViews, verbose });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -263,11 +303,11 @@ server.get("/SearchAdvanced", async (req, res: any) => {
     res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
   }
 });
-server.get("/SearchChannelData", async (req, res: any) => {
+server.get("/SearchChannel", async (req, res: any) => {
   const channelLink = req.query.channelLink as string;
   if (!channelLink) return res.status(400).json({ error: "Missing channelLink parameter." });
   try {
-    const Tuber = ytdlx.Search.Video.Channel_Data({ channelLink });
+    const Tuber = YouTubeDLX.Search.Video.Channel_Data({ channelLink });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -279,7 +319,7 @@ server.get("/SearchRelatedVideos", async (req, res: any) => {
   const videoId = req.query.videoId as string;
   if (!videoId) return res.status(400).json({ error: "Missing videoId parameter." });
   try {
-    const Tuber = ytdlx.Search.Video.Related({ videoId });
+    const Tuber = YouTubeDLX.Search.Video.Related({ videoId });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -291,7 +331,7 @@ server.get("/SearchChannels", async (req, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const Tuber = ytdlx.Search.Video.Channel({ query });
+    const Tuber = YouTubeDLX.Search.Video.Channel({ query });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -300,11 +340,11 @@ server.get("/SearchChannels", async (req, res: any) => {
   }
 });
 /* ============================================================================ INFO Endpoints */
-server.get("/ExtractVideoData", async (req, res: any) => {
+server.get("/ExtractVideo", async (req, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing query parameter." });
   try {
-    const Tuber = ytdlx.Info.extract({ query });
+    const Tuber = YouTubeDLX.Info.extract({ query });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -318,7 +358,7 @@ server.get("/ListVideoFormats", async (req, res: any) => {
     return res.status(400).json({ error: "Missing query parameter." });
   }
   try {
-    const Tuber = ytdlx.Info.list_formats({ query });
+    const Tuber = YouTubeDLX.Info.list_formats({ query });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -326,11 +366,11 @@ server.get("/ListVideoFormats", async (req, res: any) => {
     res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
   }
 });
-server.get("/LiveVideoData", async (req, res: any) => {
+server.get("/LiveVideo", async (req, res: any) => {
   const videoLink = req.query.videoLink as string;
   if (!videoLink) return res.status(400).json({ error: "Missing videoLink parameter." });
   try {
-    const Tuber = ytdlx.Info.Live({ videoLink });
+    const Tuber = YouTubeDLX.Info.Live({ videoLink });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -342,7 +382,7 @@ server.get("/VideoComments", async (req, res: any) => {
   const query = req.query.query as string;
   if (!query) return res.status(400).json({ error: "Missing videoLink parameter." });
   try {
-    const Tuber = ytdlx.Info.Comments({ query });
+    const Tuber = YouTubeDLX.Info.Comments({ query });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -354,7 +394,7 @@ server.get("/VideoTranscript", async (req, res: any) => {
   const videoLink = req.query.videoLink as string;
   if (!videoLink) return res.status(400).json({ error: "Missing videoLink parameter." });
   try {
-    const Tuber = ytdlx.Info.Transcript({ videoLink });
+    const Tuber = YouTubeDLX.Info.Transcript({ videoLink });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -364,10 +404,10 @@ server.get("/VideoTranscript", async (req, res: any) => {
 });
 /* ============================================================================ ACCOUNT Endpoints */
 server.get("/HomeFeed", async (req, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  const cookiesPath = req.query.cookiesPath as string;
+  if (!cookiesPath) return res.status(400).json({ error: "Missing cookiesPath parameter." });
   try {
-    const Tuber = ytdlx.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "cookies.txt") });
+    const Tuber = YouTubeDLX.Account.HomeFeed({ cookiesPath });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -376,10 +416,10 @@ server.get("/HomeFeed", async (req, res: any) => {
   }
 });
 server.get("/SubscriptionFeed", async (req, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  const cookiesPath = req.query.cookiesPath as string;
+  if (!cookiesPath) return res.status(400).json({ error: "Missing cookiesPath parameter." });
   try {
-    const Tuber = ytdlx.Account.SubscriptionsFeed({ cookiesPath: path.resolve(process.cwd(), "cookies.txt") });
+    const Tuber = YouTubeDLX.Account.SubscriptionsFeed({ cookiesPath });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -388,10 +428,10 @@ server.get("/SubscriptionFeed", async (req, res: any) => {
   }
 });
 server.get("/UnseenNotifications", async (req, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  const cookiesPath = req.query.cookiesPath as string;
+  if (!cookiesPath) return res.status(400).json({ error: "Missing cookiesPath parameter." });
   try {
-    const Tuber = ytdlx.Account.Unseen_Notifications({ cookiesPath: path.resolve(process.cwd(), "cookies.txt") });
+    const Tuber = YouTubeDLX.Account.Unseen_Notifications({ cookiesPath });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
@@ -400,10 +440,10 @@ server.get("/UnseenNotifications", async (req, res: any) => {
   }
 });
 server.get("/WatchHistory", async (req, res: any) => {
-  const query = req.query.query as string;
-  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  const cookiesPath = req.query.cookiesPath as string;
+  if (!cookiesPath) return res.status(400).json({ error: "Missing cookiesPath parameter." });
   try {
-    const Tuber = ytdlx.Account.History({ cookiesPath: path.resolve(process.cwd(), "cookies.txt") });
+    const Tuber = YouTubeDLX.Account.History({ cookiesPath });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
