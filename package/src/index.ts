@@ -18,7 +18,6 @@ import video_comments from "./routes/Info/video_comments";
 import watch_history from "./routes/Account/watch_history";
 import related_videos from "./routes/Search/related_videos";
 import live_video_data from "./routes/Info/live_video_data";
-import advanced_search from "./routes/Search/advanced_search";
 import search_channels from "./routes/Search/search_channels";
 import video_transcript from "./routes/Info/video_transcript";
 import search_playlists from "./routes/Search/search_playlists";
@@ -50,7 +49,6 @@ var YouTubeDLX = {
       Related: related_videos,
       Channel: search_channels,
       Channel_Data: channel_data,
-      Advance_Search: advanced_search,
     },
   },
 };

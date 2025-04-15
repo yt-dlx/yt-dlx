@@ -2,12 +2,14 @@ import colors from "colors";
 import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
 import Tuber from "../../utils/Agent";
+
 const ZodSchema = z.object({
   query: z.string().min(2),
   useTor: z.boolean().optional(),
   verbose: z.boolean().optional(),
   filter: z.enum(["newest", "oldest", "top", "most_liked", "pinned", "verified", "replies", "uploader", "favorited", "longest", "shortest"]).optional(),
 });
+
 /**
  * Fetches and processes YouTube video comments based on the provided search query and filters.
  *
@@ -23,31 +25,43 @@ const ZodSchema = z.object({
  *
  * @example
  * // Example 1: Fetch video comments with only the query
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial" }).on("data", (comments) => console.log("Comments:", comments)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Comments({ query: "Node.js tutorial" })
+ *   .on("data", (comments) => console.log("Comments:", comments))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch video comments with verbose output enabled
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", verbose: true }).on("data", (comments) => console.log("Comments:", comments)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", verbose: true })
+ *   .on("data", (comments) => console.log("Comments:", comments))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 3: Fetch video comments with the filter set to "newest"
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "newest" }).on("data", (comments) => console.log("Newest comments:", comments)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "newest" })
+ *   .on("data", (comments) => console.log("Newest comments:", comments))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 4: Fetch video comments with the filter set to "top" (most liked)
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "most_liked" }).on("data", (comments) => console.log("Top comments:", comments)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "most_liked" })
+ *   .on("data", (comments) => console.log("Top comments:", comments))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 5: Fetch video comments with the filter set to "pinned"
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "pinned" }).on("data", (comments) => console.log("Pinned comments:", comments)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "pinned" })
+ *   .on("data", (comments) => console.log("Pinned comments:", comments))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 6: Fetch video comments with the filter set to "longest"
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "longest" }).on("data", (comments) => console.log("Longest comments:", comments)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "longest" })
+ *   .on("data", (comments) => console.log("Longest comments:", comments))
+ *   .on("error", (err) => console.error("Error:", err));
  */
-export default async function video_comments({ query, useTor, verbose, filter }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default function video_comments({ query, useTor, verbose, filter }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse({ query, useTor, verbose, filter });
       const response = await Tuber({ query, useTor, mode: "comments" });
@@ -87,14 +101,13 @@ export default async function video_comments({ query, useTor, verbose, filter }:
           break;
       }
       emitter.emit("data", processed);
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }

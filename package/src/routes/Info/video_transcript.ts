@@ -3,18 +3,24 @@ import { z, ZodError } from "zod";
 import { Client } from "youtubei";
 import { EventEmitter } from "events";
 import YouTubeID from "../../utils/YouTubeId";
-const ZodSchema = z.object({ videoLink: z.string().min(2) });
+
+const ZodSchema = z.object({
+  videoLink: z.string().min(2),
+});
+
 export interface CaptionSegment {
   utf8: string;
   tOffsetMs?: number;
   acAsrConf: number;
 }
+
 export interface VideoTranscriptType {
   text: string;
   start: number;
   duration: number;
   segments: CaptionSegment[];
 }
+
 async function getVideoTranscript({ videoId }: { videoId: string }): Promise<VideoTranscriptType[]> {
   try {
     const youtube = new Client();
@@ -35,6 +41,7 @@ async function getVideoTranscript({ videoId }: { videoId: string }): Promise<Vid
     return [];
   }
 }
+
 /**
  * Fetches the transcript (captions) for a given YouTube video based on the provided video link.
  *
@@ -47,15 +54,19 @@ async function getVideoTranscript({ videoId }: { videoId: string }): Promise<Vid
  *
  * @example
  * // Example 1: Fetch transcript data with only the video link
- * YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID" }).on("data", (transcriptData) => console.log("Transcript data:", transcriptData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID" })
+ *   .on("data", (transcriptData) => console.log("Transcript data:", transcriptData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch transcript data with an invalid video link
- * YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=INVALID_ID" }).on("data", (transcriptData) => console.log("Transcript data:", transcriptData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=INVALID_ID" })
+ *   .on("data", (transcriptData) => console.log("Transcript data:", transcriptData))
+ *   .on("error", (err) => console.error("Error:", err));
  */
-export default async function video_transcript({ videoLink }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default function video_transcript({ videoLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse({ videoLink });
       const vId = await YouTubeID(videoLink);
@@ -69,14 +80,13 @@ export default async function video_transcript({ videoLink }: z.infer<typeof Zod
         return;
       }
       emitter.emit("data", transcriptData);
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }

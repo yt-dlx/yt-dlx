@@ -100,40 +100,6 @@ async function Account_Tests() {
 // ==================================================================================
 // ==================================================================================
 async function Search_Tests() {
-  async function AdvanceSearch() {
-    console.log(colors.bold.blue("@info"), "Test For Advance_Search: (1): Basic search with only the query");
-    var emitter = YouTubeDLX.Search.Video.Advance_Search({ query: "test video" });
-    emitter.on("data", data => console.log(colors.italic.green("@data:"), data));
-    emitter.on("error", error => console.error(colors.italic.red("@error:"), error));
-    console.log(colors.bold.blue("@info"), "Test For Advance_Search: (2): Search with minimum view count");
-    var emitter = YouTubeDLX.Search.Video.Advance_Search({ query: "test video", minViews: 1000 });
-    emitter.on("data", data => console.log(colors.italic.green("@data:"), data));
-    emitter.on("error", error => console.error(colors.italic.red("@error:"), error));
-    console.log(colors.bold.blue("@info"), "Test For Advance_Search: (3): Search with maximum view count");
-    var emitter = YouTubeDLX.Search.Video.Advance_Search({ query: "test video", maxViews: 200000 });
-    emitter.on("data", data => console.log(colors.italic.green("@data:"), data));
-    emitter.on("error", error => console.error(colors.italic.red("@error:"), error));
-    console.log(colors.bold.blue("@info"), "Test For Advance_Search: (4): Search with both minViews and maxViews");
-    var emitter = YouTubeDLX.Search.Video.Advance_Search({ query: "test video", minViews: 500, maxViews: 50000 });
-    emitter.on("data", data => console.log(colors.italic.green("@data:"), data));
-    emitter.on("error", error => console.error(colors.italic.red("@error:"), error));
-    console.log(colors.bold.blue("@info"), "Test For Advance_Search: (5): Search with ordering by view count");
-    var emitter = YouTubeDLX.Search.Video.Advance_Search({ query: "test video", orderBy: "viewCount" });
-    emitter.on("data", data => console.log(colors.italic.green("@data:"), data));
-    emitter.on("error", error => console.error(colors.italic.red("@error:"), error));
-    console.log(colors.bold.blue("@info"), "Test For Advance_Search: (6): Search with verbose output enabled");
-    var emitter = YouTubeDLX.Search.Video.Advance_Search({ query: "test video", verbose: true });
-    emitter.on("data", data => console.log(colors.italic.green("@data:"), data));
-    emitter.on("error", error => console.error(colors.italic.red("@error:"), error));
-    console.log(colors.bold.blue("@info"), "Test For Advance_Search: (7): Search with order by date");
-    var emitter = YouTubeDLX.Search.Video.Advance_Search({ query: "test video", orderBy: "date" });
-    emitter.on("data", data => console.log(colors.italic.green("@data:"), data));
-    emitter.on("error", error => console.error(colors.italic.red("@error:"), error));
-    console.log(colors.bold.blue("@info"), "Test For Advance_Search: (8): Search with all parameters (query, minViews, maxViews, orderBy, verbose)");
-    var emitter = YouTubeDLX.Search.Video.Advance_Search({ query: "test video", minViews: 1000, maxViews: 200000, orderBy: "viewCount", verbose: true });
-    emitter.on("data", data => console.log(colors.italic.green("@data:"), data));
-    emitter.on("error", error => console.error(colors.italic.red("@error:"), error));
-  }
   async function ChannelData() {
     console.log(colors.bold.blue("@info"), "Test For Channel_Data: (1): Fetch channel data with only the channel link");
     var emitter = YouTubeDLX.Search.Video.Channel_Data({ channelLink: "https://www.youtube.com/c/testchannel" });
@@ -208,7 +174,6 @@ async function Search_Tests() {
     emitter.on("data", data => console.log(colors.italic.green("@data:"), data));
     emitter.on("error", error => console.error(colors.italic.red("@error:"), error));
   }
-  await AdvanceSearch();
   await ChannelData();
   await PlaylistData();
   await RelatedVideos();

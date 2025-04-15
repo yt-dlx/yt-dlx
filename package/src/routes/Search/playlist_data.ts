@@ -3,13 +3,18 @@ import { z, ZodError } from "zod";
 import { Client } from "youtubei";
 import { EventEmitter } from "events";
 import YouTubeID from "../../utils/YouTubeId";
-const ZodSchema = z.object({ playlistLink: z.string().min(2) });
+
+const ZodSchema = z.object({
+  playlistLink: z.string().min(2),
+});
+
 export interface playlistVideosType {
   id: string;
   title: string;
   videoCount: number;
   result: { id: string; title: string; isLive: boolean; duration: number; thumbnails: string[] };
 }
+
 async function playlistVideos({ playlistId }: { playlistId: string }): Promise<playlistVideosType | null> {
   try {
     const youtube = new Client();
@@ -27,6 +32,7 @@ async function playlistVideos({ playlistId }: { playlistId: string }): Promise<p
     return null;
   }
 }
+
 /**
  * Fetches playlist data from YouTube based on the provided playlist link.
  *
@@ -39,15 +45,19 @@ async function playlistVideos({ playlistId }: { playlistId: string }): Promise<p
  *
  * @example
  * // Example 1: Fetch playlist data with only the playlist link
- * YouTubeDLX.Search.Playlist.Single({ playlistLink: "https://www.youtube.com/playlist?list=PLw-VjHDlEOgs6k8xQ6sB9zAqS6vhJh2tV" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Playlist.Single({ playlistLink: "https://www.youtube.com/playlist?list=PLw-VjHDlEOgs6k8xQ6sB9zAqS6vhJh2tV" })
+ *   .on("data", (playlistData) => console.log("Playlist data:", playlistData))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // Example 2: Fetch playlist data with an invalid playlist link
- * YouTubeDLX.Search.Playlist.Single({ playlistLink: "https://www.youtube.com/playlist?list=INVALID" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
+ * YouTubeDLX.Search.Playlist.Single({ playlistLink: "https://www.youtube.com/playlist?list=INVALID" })
+ *   .on("data", (playlistData) => console.log("Playlist data:", playlistData))
+ *   .on("error", (err) => console.error("Error:", err));
  */
-export default async function playlist_data({ playlistLink }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default function playlist_data({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse({ playlistLink });
       const playlistId = await YouTubeID(playlistLink);
@@ -61,14 +71,13 @@ export default async function playlist_data({ playlistLink }: z.infer<typeof Zod
         return;
       }
       emitter.emit("data", metaData);
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }
