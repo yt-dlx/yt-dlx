@@ -27,6 +27,24 @@ async function playlistVideos({ playlistId }: { playlistId: string }): Promise<p
     return null;
   }
 }
+/**
+ * Fetches playlist data from YouTube based on the provided playlist link.
+ *
+ * @param {Object} options - The parameters for fetching playlist data.
+ * @param {string} options.playlistLink - The URL of the YouTube playlist.
+ *
+ * @returns {EventEmitter} An EventEmitter object that emits the following events:
+ * - "data": Contains the playlist metadata, including video details like ID, title, duration, and more.
+ * - "error": Emits an error message if the playlist is invalid or if fetching the data fails.
+ *
+ * @example
+ * // Example 1: Fetch playlist data with only the playlist link
+ * playlist_data({ playlistLink: "https://www.youtube.com/playlist?list=PLw-VjHDlEOgs6k8xQ6sB9zAqS6vhJh2tV" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 2: Fetch playlist data with an invalid playlist link
+ * playlist_data({ playlistLink: "https://www.youtube.com/playlist?list=INVALID" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
+ */
 export default function playlist_data({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

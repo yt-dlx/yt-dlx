@@ -29,6 +29,34 @@ function formatCount(count: number) {
   return `${count}`;
 }
 const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optional(), verbose: z.boolean().optional() });
+/**
+ * Extracts detailed information about a video from YouTube based on the provided search query.
+ *
+ * @param {Object} options - The parameters for extracting video information.
+ * @param {string} options.query - The search query string for the video.
+ * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
+ * @param {boolean} [options.useTor] - Flag to use Tor for anonymity. Optional.
+ *
+ * @returns {EventEmitter} An EventEmitter object that emits the following events:
+ * - "data": Contains the extracted video data, including metadata and other related information.
+ * - "error": Emits an error message if the extraction fails.
+ *
+ * @example
+ * // Example 1: Extract video data with only the query
+ * extract({ query: "Node.js tutorial" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 2: Extract video data with verbose output enabled
+ * extract({ query: "Node.js tutorial", verbose: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 3: Extract video data with Tor enabled
+ * extract({ query: "Node.js tutorial", useTor: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 4: Extract video data with all parameters (query, verbose, useTor)
+ * extract({ query: "Node.js tutorial", verbose: true, useTor: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ */
 export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

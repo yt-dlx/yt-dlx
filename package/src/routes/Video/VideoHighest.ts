@@ -15,6 +15,47 @@ var ZodSchema = z.object({
   metadata: z.boolean().optional(),
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
+/**
+ * Downloads or streams the highest quality video with various filters based on the provided parameters.
+ *
+ * @param {Object} options - The parameters for processing the highest quality video.
+ * @param {string} options.query - The search query for the video.
+ * @param {string} [options.output] - The output folder where the processed video will be saved. Optional.
+ * @param {boolean} [options.useTor] - Flag to use Tor for anonymity. Optional.
+ * @param {boolean} [options.stream] - Flag to stream the video instead of saving it. Optional.
+ * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
+ * @param {boolean} [options.metadata] - Flag to output metadata instead of processing the video. Optional.
+ * @param {"invert" | "rotate90" | "rotate270" | "grayscale" | "rotate180" | "flipVertical" | "flipHorizontal"} [options.filter] - The video filter to apply. Optional.
+ *
+ * @returns {EventEmitter} An EventEmitter object that emits the following events:
+ * - "data": Contains the processed video or metadata.
+ * - "error": Emits an error message if the video processing fails.
+ * - "progress": Emits the progress of the video processing.
+ * - "start": Emits when the video processing starts.
+ * - "end": Emits when the video processing ends.
+ * - "stream": Emits the stream object if streaming is enabled.
+ * - "metadata": Emits the metadata if metadata option is enabled.
+ *
+ * @example
+ * // Example 1: Process the highest quality video with only the query and resolution
+ * VideoHighest({ query: "Node.js tutorial", resolution: "1080p" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 2: Process the highest quality video with the query, resolution, and a filter (grayscale)
+ * VideoHighest({ query: "Node.js tutorial", resolution: "1080p", filter: "grayscale" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 3: Stream the highest quality video with the query, resolution, and stream option enabled
+ * VideoHighest({ query: "Node.js tutorial", resolution: "720p", stream: true }).on("stream", (streamData) => console.log("Streaming video:", streamData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 4: Process the highest quality video with verbose output enabled
+ * VideoHighest({ query: "Node.js tutorial", resolution: "720p", verbose: true }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 5: Fetch metadata instead of processing the video
+ * VideoHighest({ query: "Node.js tutorial", resolution: "1080p", metadata: true }).on("metadata", (metadata) => console.log("Video metadata:", metadata)).on("error", (err) => console.error("Error:", err));
+ */
 export default function VideoHighest({ query, stream, verbose, output, metadata, useTor, filter }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

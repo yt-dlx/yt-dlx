@@ -28,6 +28,24 @@ async function relatedVideos({ videoId }: { videoId: string }): Promise<relatedV
     return null;
   }
 }
+/**
+ * Fetches related videos for a given video based on the provided video ID.
+ *
+ * @param {Object} options - The parameters for fetching related videos.
+ * @param {string} options.videoId - The ID of the YouTube video to fetch related videos for.
+ *
+ * @returns {EventEmitter} An EventEmitter object that emits the following events:
+ * - "data": Contains the list of related videos with details like video ID, title, duration, upload date, and thumbnails.
+ * - "error": Emits an error message if no related videos are found or if fetching the data fails.
+ *
+ * @example
+ * // Example 1: Fetch related videos with only the video ID
+ * related_videos({ videoId: "dQw4w9WgXcQ" }).on("data", (relatedVideos) => console.log("Related videos:", relatedVideos)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 2: Fetch related videos with an invalid video ID
+ * related_videos({ videoId: "INVALID_VIDEO_ID" }).on("data", (relatedVideos) => console.log("Related videos:", relatedVideos)).on("error", (err) => console.error("Error:", err));
+ */
 export default function related_videos({ videoId }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

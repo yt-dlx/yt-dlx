@@ -4,6 +4,25 @@ import Tuber from "../../utils/Agent";
 import { EventEmitter } from "events";
 import type EngineOutput from "../../interfaces/EngineOutput";
 const ZodSchema = z.object({ query: z.string().min(2), verbose: z.boolean().optional() });
+/**
+ * Lists the available formats for the specified video on YouTube based on the provided search query.
+ *
+ * @param {Object} options - The parameters for listing formats.
+ * @param {string} options.query - The search query string for the video.
+ * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
+ *
+ * @returns {EventEmitter} An EventEmitter object that emits the following events:
+ * - "data": Contains the available formats for the video, including audio and video formats.
+ * - "error": Emits an error message if the process fails.
+ *
+ * @example
+ * // Example 1: List formats with only the query
+ * list_formats({ query: "Node.js tutorial" }).on("data", (formats) => console.log("Available formats:", formats)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 2: List formats with query and verbose output enabled
+ * list_formats({ query: "Node.js tutorial", verbose: true }).on("data", (formats) => console.log("Available formats:", formats)).on("error", (err) => console.error("Error:", err));
+ */
 export default function list_formats({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

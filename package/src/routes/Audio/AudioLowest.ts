@@ -15,6 +15,55 @@ var ZodSchema = z.object({
   metadata: z.boolean().optional(),
   filter: z.enum(["echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed"]).optional(),
 });
+/**
+ * Downloads and processes the lowest quality audio with the provided parameters.
+ *
+ * @param {Object} options - The options for processing the lowest quality audio.
+ * @param {string} options.query - The search query for the audio.
+ * @param {string} [options.output] - The output folder where the audio file will be saved. Optional.
+ * @param {boolean} [options.useTor] - Flag to use Tor for anonymity. Optional.
+ * @param {boolean} [options.stream] - Flag to stream the audio instead of saving it. Optional.
+ * @param {string} [options.filter] - The audio filter to apply to the audio file. Optional.
+ * @param {boolean} [options.metadata] - Flag to output metadata instead of downloading the audio. Optional.
+ * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
+ *
+ * @returns {EventEmitter} An EventEmitter object that emits the following events:
+ * - "data": Contains the processed audio data or metadata.
+ * - "error": Emits an error message if the process fails.
+ * - "progress": Emits the progress of the audio processing.
+ * - "start": Emits the start of the audio processing.
+ * - "end": Emits the end of the audio processing.
+ * - "stream": Emits the stream object if the `stream` option is enabled.
+ * - "metadata": Emits the metadata if the `metadata` option is enabled.
+ *
+ * @example
+ * // Example 1: Download and process lowest quality audio with only the query and filter
+ * AudioLowest({ query: "Song title", filter: "bassboost" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 2: Download and process lowest quality audio with query, filter, and verbose output enabled
+ * AudioLowest({ query: "Song title", filter: "bassboost", verbose: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 3: Download and process lowest quality audio with query, filter, and custom output folder
+ * AudioLowest({ query: "Song title", filter: "bassboost", output: "/path/to/folder" }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 4: Stream lowest quality audio with query and stream enabled
+ * AudioLowest({ query: "Song title", stream: true }).on("stream", (streamData) => console.log("Streaming audio:", streamData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 5: Download and process lowest quality audio with query, filter, and metadata output enabled
+ * AudioLowest({ query: "Song title", filter: "bassboost", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 6: Download and process lowest quality audio with query, filter, stream, and metadata
+ * AudioLowest({ query: "Song title", filter: "bassboost", stream: true, metadata: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 7: Download and process lowest quality audio with all parameters (query, output, filter, stream, verbose, metadata)
+ * AudioLowest({ query: "Song title", output: "/path/to/folder", filter: "bassboost", stream: true, verbose: true, metadata: true }).on("data", (audioData) => console.log("Audio data:", audioData)).on("error", (err) => console.error("Error:", err));
+ */
 export default function AudioLowest({ query, output, useTor, stream, filter, metadata, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

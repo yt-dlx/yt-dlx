@@ -8,6 +8,43 @@ const ZodSchema = z.object({
   verbose: z.boolean().optional(),
   filter: z.enum(["newest", "oldest", "top", "most_liked", "pinned", "verified", "replies", "uploader", "favorited", "longest", "shortest"]).optional(),
 });
+/**
+ * Fetches and processes YouTube video comments based on the provided search query and filters.
+ *
+ * @param {Object} options - The parameters for fetching video comments.
+ * @param {string} options.query - The search query string for the video comments.
+ * @param {boolean} [options.useTor] - Flag to use Tor for anonymity. Optional.
+ * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
+ * @param {"newest" | "oldest" | "top" | "most_liked" | "pinned" | "verified" | "replies" | "uploader" | "favorited" | "longest" | "shortest"} [options.filter] - The filter to apply on the comments. Optional.
+ *
+ * @returns {EventEmitter} An EventEmitter object that emits the following events:
+ * - "data": Contains the processed list of video comments.
+ * - "error": Emits an error message if fetching the comments or processing fails.
+ *
+ * @example
+ * // Example 1: Fetch video comments with only the query
+ * video_comments({ query: "Node.js tutorial" }).on("data", (comments) => console.log("Comments:", comments)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 2: Fetch video comments with verbose output enabled
+ * video_comments({ query: "Node.js tutorial", verbose: true }).on("data", (comments) => console.log("Comments:", comments)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 3: Fetch video comments with the filter set to "newest"
+ * video_comments({ query: "Node.js tutorial", filter: "newest" }).on("data", (comments) => console.log("Newest comments:", comments)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 4: Fetch video comments with the filter set to "top" (most liked)
+ * video_comments({ query: "Node.js tutorial", filter: "most_liked" }).on("data", (comments) => console.log("Top comments:", comments)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 5: Fetch video comments with the filter set to "pinned"
+ * video_comments({ query: "Node.js tutorial", filter: "pinned" }).on("data", (comments) => console.log("Pinned comments:", comments)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 6: Fetch video comments with the filter set to "longest"
+ * video_comments({ query: "Node.js tutorial", filter: "longest" }).on("data", (comments) => console.log("Longest comments:", comments)).on("error", (err) => console.error("Error:", err));
+ */
 export default function video_comments({ query, useTor, verbose, filter }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

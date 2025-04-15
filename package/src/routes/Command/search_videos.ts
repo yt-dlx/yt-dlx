@@ -38,6 +38,28 @@ export async function searchVideos({ query }: { query: string }): Promise<search
     return [];
   }
 }
+/**
+ * Searches for YouTube videos based on the provided query and returns the video details.
+ *
+ * @param {Object} options - The parameters for searching videos.
+ * @param {string} options.query - The search query string for the YouTube videos.
+ *
+ * @returns {EventEmitter} An EventEmitter object that emits the following events:
+ * - "data": Contains the list of videos with details such as ID, title, view count, channel, description, etc.
+ * - "error": Emits an error message if no videos are found or if fetching the data fails.
+ *
+ * @example
+ * // Example 1: Search for videos with only the query
+ * search_videos({ query: "Node.js tutorial" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 2: Search for videos with an invalid query
+ * search_videos({ query: "INVALID_QUERY" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example 3: Search for videos with a video link (which is not supported)
+ * search_videos({ query: "https://www.youtube.com/watch?v=VIDEO_ID" }).on("data", (videoData) => console.log("Video data:", videoData)).on("error", (err) => console.error("Error:", err));
+ */
 export default function search_videos({ query }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
