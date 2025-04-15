@@ -40,7 +40,7 @@ export default function AudioVideoCustom({ query, stream, output, useTor, filter
       instance.withOutputFormat("matroska");
       const filenameBase = `yt-dlx_AudioVideoCustom_${resolution}_`;
       let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.mkv`;
-      const vdata = engineData.ManifestHigh.find(i => i.format.includes(resolution.replace("p", "").toString()));
+      const vdata = engineData.ManifestHigh.find((i: { format: string | string[] }) => i.format.includes(resolution.replace("p", "").toString()));
       if (vdata) {
         instance.addInput(vdata.url.toString());
       } else {

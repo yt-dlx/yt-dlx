@@ -39,9 +39,3 @@
 // runTests();
 // ==================================================================================
 // ==================================================================================
-console.clear();
-import extract from "../routes/Command/extract";
-const Tuber = extract({ useTor: true, verbose: true, query: "Haseen" });
-Tuber.on("metadata", metadata => console.log(metadata));
-Tuber.on("error", error => console.error(error));
-Tuber.on("data", data => console.log(data));

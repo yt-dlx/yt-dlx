@@ -23,21 +23,21 @@ export async function GET(request: NextRequest) {
         if (!["high", "medium", "low", "ultralow"].includes(resolution || "")) {
           return NextResponse.json({ error: "Invalid or missing resolution parameter." }, { status: 400 });
         }
-        const instance = ytdlx.AudioOnly.Custom({ useTor: true, metadata: true, verbose: true, query, resolution: resolution as "high" | "medium" | "low" | "ultralow" });
+        const instance = ytdlx.Audio.Custom({ useTor: true, metadata: true, verbose: true, query, resolution: resolution as "high" | "medium" | "low" | "ultralow" });
         const data = await ytdlxPromise(instance);
         console.log("AudioOnlyCustomData started:", query);
         return NextResponse.json(data);
       }
       case "AudioOnlyHighestData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.AudioOnly.Highest({ useTor: true, metadata: true, verbose: true, query });
+        const instance = ytdlx.Audio.Highest({ useTor: true, metadata: true, verbose: true, query });
         const data = await ytdlxPromise(instance);
         console.log("AudioOnlyHighestData started:", query);
         return NextResponse.json(data);
       }
       case "AudioOnlyLowestData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.AudioOnly.Lowest({ useTor: true, metadata: true, verbose: true, query });
+        const instance = ytdlx.Audio.Lowest({ useTor: true, metadata: true, verbose: true, query });
         const data = await ytdlxPromise(instance);
         console.log("AudioOnlyLowestData started:", query);
         return NextResponse.json(data);
@@ -48,28 +48,28 @@ export async function GET(request: NextRequest) {
         if (!validResolutions.includes(resolution || "")) {
           return NextResponse.json({ error: "Invalid or missing resolution parameter." }, { status: 400 });
         }
-        const instance = ytdlx.VideoOnly.Custom({ useTor: true, metadata: true, verbose: true, query, resolution: resolution as any });
+        const instance = ytdlx.Video.Custom({ useTor: true, metadata: true, verbose: true, query, resolution: resolution as any });
         const data = await ytdlxPromise(instance);
         console.log("VideoOnlyCustomData started:", query);
         return NextResponse.json(data);
       }
       case "VideoOnlyHighestData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.VideoOnly.Highest({ useTor: true, metadata: true, verbose: true, query });
+        const instance = ytdlx.Video.Highest({ useTor: true, metadata: true, verbose: true, query });
         const data = await ytdlxPromise(instance);
         console.log("VideoOnlyHighestData started:", query);
         return NextResponse.json(data);
       }
       case "VideoOnlyLowestData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.VideoOnly.Lowest({ useTor: true, metadata: true, verbose: true, query });
+        const instance = ytdlx.Video.Lowest({ useTor: true, metadata: true, verbose: true, query });
         const data = await ytdlxPromise(instance);
         console.log("VideoOnlyLowestData started:", query);
         return NextResponse.json(data);
       }
       case "AudioVideoHighestData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.AudioVideo.Highest({ useTor: true, metadata: true, verbose: true, query });
+        const instance = ytdlx.Audio_Video.Highest({ useTor: true, metadata: true, verbose: true, query });
         const data = await ytdlxPromise(instance);
         console.log("AudioVideoHighestData started:", query);
         return NextResponse.json(data);
@@ -80,56 +80,56 @@ export async function GET(request: NextRequest) {
         if (!validResolutions.includes(resolution || "")) {
           return NextResponse.json({ error: "Invalid or missing resolution parameter." }, { status: 400 });
         }
-        const instance = ytdlx.AudioVideo.Custom({ useTor: true, metadata: true, verbose: true, query, resolution: resolution as any });
+        const instance = ytdlx.Audio_Video.Custom({ useTor: true, metadata: true, verbose: true, query, resolution: resolution as any });
         const data = await ytdlxPromise(instance);
         console.log("AudioVideoCustomData started:", query);
         return NextResponse.json(data);
       }
       case "AudioVideoLowestData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.AudioVideo.Lowest({ useTor: true, metadata: true, verbose: true, query });
+        const instance = ytdlx.Audio_Video.Lowest({ useTor: true, metadata: true, verbose: true, query });
         const data = await ytdlxPromise(instance);
         console.log("AudioVideoLowestData started:", query);
         return NextResponse.json(data);
       }
       case "SearchMultipleVideos": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.ytSearch.Video.Multiple({ query });
+        const instance = ytdlx.Search.Video.Multiple({ query });
         const data = await ytdlxPromise(instance);
         console.log("SearchMultipleVideos started:", query);
         return NextResponse.json(data);
       }
       case "SearchSingleVideo": {
         if (!videoLink) return NextResponse.json({ error: "Missing videoLink parameter." }, { status: 400 });
-        const instance = ytdlx.ytSearch.Video.Single({ videoLink });
+        const instance = ytdlx.Search.Video.Single({ videoLink });
         const data = await ytdlxPromise(instance);
         console.log("SearchSingleVideo started:", videoLink);
         return NextResponse.json(data);
       }
       case "SearchRelatedVideos": {
         if (!videoId) return NextResponse.json({ error: "Missing videoId parameter." }, { status: 400 });
-        const instance = ytdlx.ytSearch.Video.Related({ videoId });
+        const instance = ytdlx.Search.Video.Related({ videoId });
         const data = await ytdlxPromise(instance);
         console.log("SearchRelatedVideos started:", videoId);
         return NextResponse.json(data);
       }
       case "SearchMultiplePlaylists": {
         if (!playlistLink) return NextResponse.json({ error: "Missing playlistLink parameter." }, { status: 400 });
-        const instance = ytdlx.ytSearch.Playlist.Multiple({ playlistLink });
+        const instance = ytdlx.Search.Playlist.Multiple({ playlistLink });
         const data = await ytdlxPromise(instance);
         console.log("SearchMultiplePlaylists started:", playlistLink);
         return NextResponse.json(data);
       }
       case "SearchSinglePlaylist": {
         if (!playlistLink) return NextResponse.json({ error: "Missing playlistLink parameter." }, { status: 400 });
-        const instance = ytdlx.ytSearch.Playlist.Single({ playlistLink });
+        const instance = ytdlx.Search.Playlist.Single({ playlistLink });
         const data = await ytdlxPromise(instance);
         console.log("SearchSinglePlaylist started:", playlistLink);
         return NextResponse.json(data);
       }
       case "ExtractVideoData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.info.extract({ query, verbose: true });
+        const instance = ytdlx.Info.extract({ query, verbose: true });
         const data = await ytdlxPromise(instance);
         if (!data) throw new Error("Unable to get video data.");
         let videoUrl = null;
@@ -141,7 +141,7 @@ export async function GET(request: NextRequest) {
       }
       case "ListVideoFormats": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.info.list_formats({ query });
+        const instance = ytdlx.Info.list_formats({ query });
         const data = await ytdlxPromise(instance);
         console.log("ListVideoFormats started:", query);
         return NextResponse.json(data);
