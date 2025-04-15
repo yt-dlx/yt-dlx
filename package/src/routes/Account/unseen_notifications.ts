@@ -27,7 +27,7 @@ const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(
  *   .on("data", (notifications) => console.log("Unseen notifications count:", notifications))
  *   .on("error", (err) => console.error("Error:", err));
  */
-export default async function unseen_notifications(options: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default async function unseen_notifications(options: z.infer<typeof ZodSchema>): Promise<EventEmitter> {
   const emitter = new EventEmitter();
   return new Promise(async (resolve, reject) => {
     try {

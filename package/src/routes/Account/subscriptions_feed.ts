@@ -28,7 +28,7 @@ const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(
  *   .on("data", (feed) => console.log("Subscriptions feed:", feed))
  *   .on("error", (err) => console.error("Error:", err));
  */
-export default async function subscriptions_feed(options: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default async function subscriptions_feed(options: z.infer<typeof ZodSchema>): Promise<EventEmitter> {
   const emitter = new EventEmitter();
   return new Promise(async (resolve, reject) => {
     try {

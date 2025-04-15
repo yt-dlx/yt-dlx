@@ -59,7 +59,7 @@ const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(
  *   .on("data", (history) => console.log("Watch history:", history))
  *   .on("error", (err) => console.error("Error:", err));
  */
-export default async function watch_history(options: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default async function watch_history(options: z.infer<typeof ZodSchema>): Promise<EventEmitter> {
   const emitter = new EventEmitter();
   return new Promise(async (resolve, reject) => {
     try {
