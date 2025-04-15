@@ -18,7 +18,7 @@ export default async function TubeLogin(cookiesFilePathOrString: string): Promis
   try {
     Tube = await Innertube.create({
       user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-      cache: new UniversalCache(true, path.join(process.cwd(), "YouTubeDLX", "DLXCache")),
+      cache: new UniversalCache(true, path.join(process.cwd(), "YouTubeDLX")),
       cookie: cookiesData,
     });
     console.log(colors.green("@info:"), "Connected to YouTube...");
