@@ -2,6 +2,7 @@ console.clear();
 import ytdlx from "..";
 import colors from "colors";
 import express from "express";
+import path from "path";
 const server = express();
 const PORT = process.env.PORT || 4040;
 server.listen(PORT, () => console.log(colors.cyan(`🚀 YT-DLX Server is live at http://localhost:${PORT}`)));
@@ -270,6 +271,55 @@ server.get("/ListVideoFormats", async (req, res: any) => {
   }
   try {
     const Tuber = ytdlx.Info.list_formats({ query });
+    Tuber.on("data", data => res.json(data));
+    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
+  } catch (error) {
+    console.error(colors.red("❌ Unexpected error:"), error);
+    res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+  }
+});
+/* ============================================================================ ACCOUNT Endpoints */
+server.get("/HomeFeed", async (req, res: any) => {
+  const query = req.query.query as string;
+  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  try {
+    const Tuber = ytdlx.Account.HomeFeed({ cookiesPath: path.resolve(process.cwd(), "cookies.txt") });
+    Tuber.on("data", data => res.json(data));
+    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
+  } catch (error) {
+    console.error(colors.red("❌ Unexpected error:"), error);
+    res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+  }
+});
+server.get("/SubscriptionFeed", async (req, res: any) => {
+  const query = req.query.query as string;
+  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  try {
+    const Tuber = ytdlx.Account.SubscriptionsFeed({ cookiesPath: path.resolve(process.cwd(), "cookies.txt") });
+    Tuber.on("data", data => res.json(data));
+    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
+  } catch (error) {
+    console.error(colors.red("❌ Unexpected error:"), error);
+    res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+  }
+});
+server.get("/UnseenNotifications", async (req, res: any) => {
+  const query = req.query.query as string;
+  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  try {
+    const Tuber = ytdlx.Account.Unseen_Notifications({ cookiesPath: path.resolve(process.cwd(), "cookies.txt") });
+    Tuber.on("data", data => res.json(data));
+    Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
+  } catch (error) {
+    console.error(colors.red("❌ Unexpected error:"), error);
+    res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+  }
+});
+server.get("/WatchHistory", async (req, res: any) => {
+  const query = req.query.query as string;
+  if (!query) return res.status(400).json({ error: "Missing query parameter." });
+  try {
+    const Tuber = ytdlx.Account.History({ cookiesPath: path.resolve(process.cwd(), "cookies.txt") });
     Tuber.on("data", data => res.json(data));
     Tuber.on("error", error => res.status(500).json({ error: error.message || error }));
   } catch (error) {
