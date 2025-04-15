@@ -45,9 +45,9 @@ async function searchChannels({ query }: { query: string }): Promise<channelSear
  * // Example 2: Search for channels with an invalid query
  * YouTubeDLX.Search.Video.Channel({ query: "INVALID_QUERY" }).on("data", (channels) => console.log("Channels found:", channels)).on("error", (err) => console.error("Error:", err));
  */
-export default async function search_channels({ query }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default function search_channels({ query }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse({ query });
       const channels = await searchChannels({ query });
@@ -56,14 +56,13 @@ export default async function search_channels({ query }: z.infer<typeof ZodSchem
         return;
       }
       emitter.emit("data", channels);
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }

@@ -2,7 +2,6 @@ import colors from "colors";
 import { z, ZodError } from "zod";
 import { Client } from "youtubei";
 import { EventEmitter } from "events";
-
 const ZodSchema = z.object({
   query: z.string().min(2),
   minViews: z.number().optional(),
@@ -10,7 +9,6 @@ const ZodSchema = z.object({
   verbose: z.boolean().optional(),
   orderBy: z.enum(["relevance", "viewCount", "rating", "date"]).optional(),
 });
-
 /**
  * Performs an advanced YouTube search based on the provided parameters.
  *

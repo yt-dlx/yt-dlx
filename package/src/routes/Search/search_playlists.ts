@@ -48,9 +48,9 @@ async function searchPlaylists({ query }: { query: string }): Promise<searchPlay
  * // Example 3: Search for playlists with a playlist link being the ID of an existing playlist
  * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "https://www.youtube.com/playlist?list=PLAYLIST_ID" }).on("data", (playlistData) => console.log("Playlist data:", playlistData)).on("error", (err) => console.error("Error:", err));
  */
-export default async function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse({ playlistLink });
       const isID = await YouTubeID(playlistLink);
@@ -69,14 +69,13 @@ export default async function search_playlists({ playlistLink }: z.infer<typeof 
         return;
       }
       emitter.emit("data", metaData);
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }

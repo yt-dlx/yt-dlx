@@ -46,9 +46,9 @@ async function relatedVideos({ videoId }: { videoId: string }): Promise<relatedV
  * // Example 2: Fetch related videos with an invalid video ID
  * YouTubeDLX.Search.Video.Related({ videoId: "INVALID_VIDEO_ID" }).on("data", (relatedVideos) => console.log("Related videos:", relatedVideos)).on("error", (err) => console.error("Error:", err));
  */
-export default async function related_videos({ videoId }: z.infer<typeof ZodSchema>): Promise<EventEmitter<[never]>> {
+export default function related_videos({ videoId }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
-  return new Promise(async (resolve, reject) => {
+  (async () => {
     try {
       ZodSchema.parse({ videoId });
       const videos = await relatedVideos({ videoId });
@@ -57,14 +57,13 @@ export default async function related_videos({ videoId }: z.infer<typeof ZodSche
         return;
       }
       emitter.emit("data", videos);
-      resolve(emitter);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
       else emitter.emit("error", String(error));
-      reject(error);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
-  });
+  })();
+  return emitter;
 }
