@@ -19,17 +19,52 @@ export default function AudioLowest({ query, output, useTor, stream, filter, met
   const emitter = new EventEmitter();
   (async () => {
     try {
+      if (!query) {
+        emitter.emit("error", `${colors.red("@error:")} The 'query' parameter is always required.`);
+        return;
+      }
+
+      if (metadata) {
+        if (stream) {
+          emitter.emit("error", `${colors.red("@error:")} The 'stream' parameter cannot be used when 'metadata' is true.`);
+          return;
+        }
+        if (output) {
+          emitter.emit("error", `${colors.red("@error:")} The 'output' parameter cannot be used when 'metadata' is true.`);
+          return;
+        }
+        if (filter) {
+          emitter.emit("error", `${colors.red("@error:")} The 'filter' parameter cannot be used when 'metadata' is true.`);
+          return;
+        }
+      }
+
+      if (stream && metadata) {
+        emitter.emit("error", `${colors.red("@error:")} The 'stream' parameter cannot be true when 'metadata' is true.`);
+        return;
+      }
+
+      if (output && (!stream || metadata)) {
+        emitter.emit("error", `${colors.red("@error:")} The 'output' parameter can only be used when 'stream' is true and 'metadata' is false.`);
+        return;
+      }
+
+      if (filter && (!stream || metadata)) {
+        emitter.emit("error", `${colors.red("@error:")} The 'filter' parameter can only be used when 'stream' is true and 'metadata' is false.`);
+        return;
+      }
+
       ZodSchema.parse({ query, output, useTor, stream, filter, metadata, verbose });
       const engineData = await Agent({ query, verbose, useTor }).catch(error => {
         emitter.emit("error", `${colors.red("@error:")} Engine error: ${error?.message}`);
         return undefined;
       });
       if (!engineData) {
-        emitter.emit("error", `${colors.red("@error:")} Unable to get response from the engine.`);
+        emitter.emit("error", `${colors.red("@error:")} Unable to retrieve a response from the engine.`);
         return;
       }
       if (!engineData.metaData) {
-        emitter.emit("error", `${colors.red("@error:")} Metadata not found in the engine response.`);
+        emitter.emit("error", `${colors.red("@error:")} Metadata was not found in the engine response.`);
         return;
       }
       const title = engineData.metaData.title?.replace(/[^a-zA-Z0-9_]+/g, "_");
@@ -38,7 +73,7 @@ export default function AudioLowest({ query, output, useTor, stream, filter, met
         try {
           fs.mkdirSync(folder, { recursive: true });
         } catch (mkdirError: any) {
-          emitter.emit("error", `${colors.red("@error:")} Failed to create output directory: ${mkdirError?.message}`);
+          emitter.emit("error", `${colors.red("@error:")} Failed to create the output directory: ${mkdirError?.message}`);
           return;
         }
       }
@@ -52,13 +87,13 @@ export default function AudioLowest({ query, output, useTor, stream, filter, met
         return;
       }
       if (!engineData.metaData.thumbnail) {
-        emitter.emit("error", `${colors.red("@error:")} Thumbnail URL not found.`);
+        emitter.emit("error", `${colors.red("@error:")} Thumbnail URL was not found.`);
         return;
       }
       instance.addInput(engineData.metaData.thumbnail);
       instance.withOutputFormat("avi");
       if (!engineData.AudioLowF?.url) {
-        emitter.emit("error", `${colors.red("@error:")} Lowest quality audio URL not found.`);
+        emitter.emit("error", `${colors.red("@error:")} Lowest quality audio URL was not found.`);
         return;
       }
       instance.addInput(engineData.AudioLowF.url);
@@ -81,7 +116,7 @@ export default function AudioLowest({ query, output, useTor, stream, filter, met
         vaporwave: ["aresample=48000,asetrate=48000*0.8"],
         vibrato: ["vibrato=f=6.5"],
       };
-      if (filter && filterMap[filter]) instance.withAudioFilter(filterMap[filter]);
+      if (stream && filter && filterMap[filter]) instance.withAudioFilter(filterMap[filter]);
       instance.on("progress", progress => emitter.emit("progress", progress));
       instance.on("error", error => emitter.emit("error", `${colors.red("@error:")} FFmpeg error: ${error?.message}`));
       instance.on("start", start => emitter.emit("start", start));
