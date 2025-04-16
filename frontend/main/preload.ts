@@ -1,5 +1,4 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from "electron";
-
 const handler = {
   send(channel: string, value: unknown) {
     ipcRenderer.send(channel, value);
@@ -18,6 +17,5 @@ const handler = {
     return ipcRenderer.invoke(channel, args);
   },
 };
-
 contextBridge.exposeInMainWorld("ipc", handler);
 export type IpcHandler = typeof handler;
