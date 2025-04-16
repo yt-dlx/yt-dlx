@@ -66,3 +66,23 @@ Upon provision of a TypeScript code snippet originating from the yt-dlx project,
    - CommonJS | (Express)
    - CommonJS | (Node.js)
 ======================================================================================
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+==========[ Requirements ]==========
+Acknowledge receipt and comprehension of these specifications with a concise "Understood."
+Upon provision of a TypeScript code snippet originating from the yt-dlx project, the following actions are mandated:
+
+1. I will provide a code file from my yt-dlx package.
+2. You will have to get rid of all 'verbose' based things and give me entire updated code.
+3. Make sure to not mess with the code logic.  

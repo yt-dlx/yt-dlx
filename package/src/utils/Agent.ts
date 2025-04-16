@@ -1,7 +1,6 @@
 import colors from "colors";
 import Engine from "./Engine";
 import { Client } from "youtubei";
-import comEngine from "./comEngine";
 import { execSync } from "child_process";
 import YouTubeID from "../utils/YouTubeId";
 export async function VideoInfo({ videoId }: { videoId: string }): Promise<VideoInfoType | null> {
@@ -93,7 +92,7 @@ async function restartTor(): Promise<boolean> {
   console.log(colors.red("@error:"), "Unable to restart Tor with either service or systemctl");
   return false;
 }
-export default async function Agent({ query, useTor, verbose, mode = "video" }: { query: string; useTor?: boolean; verbose?: boolean; mode?: "video" | "comments" }): Promise<any> {
+export default async function Agent({ query, useTor, verbose }: { query: string; useTor?: boolean; verbose?: boolean }): Promise<any> {
   if (useTor && process.platform === "win32") {
     console.log(colors.red("@error:"), "TOR can't be used on your system! [URGENT]: Please Contact The Developer!");
     useTor = false;
@@ -118,6 +117,5 @@ export default async function Agent({ query, useTor, verbose, mode = "video" }: 
     console.log(colors.green("@info:"), "preparing payload for", TubeBody.title);
     url = `https://www.youtube.com/watch?v=$${TubeBody.id}`;
   }
-  if (mode === "comments") return await comEngine({ query: url, useTor });
-  else return await Engine({ query: url, useTor });
+  return await Engine({ query: url, useTor });
 }
