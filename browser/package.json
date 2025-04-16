@@ -1,0 +1,42 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "author": {
+    "name": "Shovit Dutta",
+    "email": "shovitdutta1@gmail.com"
+  },
+  "description": "Effortless Audio-Video Downloader And Streamer!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yt-dlx/yt-dlx.git"
+  },
+  "homepage": "https://yt-dlx-shovit.koyeb.src",
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "colors": "^1.4.0",
+    "framer-motion": "^12.7.3",
+    "lucide-react": "^0.488.0",
+    "next": "15.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-player": "^2.16.0",
+    "yt-dlx": "^16.4.3",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4.1.4",
+    "@types/node": "^22.14.1",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.3.0",
+    "tailwindcss": "^4.1.4",
+    "typescript": "^5"
+  }
+}

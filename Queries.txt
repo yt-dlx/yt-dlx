@@ -1,0 +1,8 @@
+==========[ Requirements ]==========
+Acknowledge receipt and comprehension of these specifications with a concise "Understood."
+Upon provision of a TypeScript code snippet originating from the yt-dlx project, the following actions are mandated:
+
+point:  
+point:  
+point:  
+point:   
