@@ -129,7 +129,7 @@ export async function GET(request: NextRequest) {
       }
       case "ExtractVideoData": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.Info.extract({ query, verbose: true });
+        const instance = ytdlx.Info.Extract({ query, verbose: true });
         const data = await ytdlxPromise(instance);
         if (!data) throw new Error("Unable to get video data.");
         let videoUrl = null;
@@ -141,7 +141,7 @@ export async function GET(request: NextRequest) {
       }
       case "ListVideoFormats": {
         if (!query) return NextResponse.json({ error: "Missing query parameter." }, { status: 400 });
-        const instance = ytdlx.Info.list_formats({ query });
+        const instance = ytdlx.Info.Formats({ query });
         const data = await ytdlxPromise(instance);
         console.log("ListVideoFormats started:", query);
         return NextResponse.json(data);
