@@ -15,7 +15,7 @@ export interface VideoTranscriptType {
   duration: number;
   segments: CaptionSegment[];
 }
-async function getVideoTranscript({ videoId }: { videoId: string }): Promise<VideoTranscriptType[]> {
+async function getVideoTranscript({ videoId }: { videoId: string }, emitter: EventEmitter): Promise<VideoTranscriptType[]> {
   try {
     const youtube = new Client();
     const captions = await youtube.getVideoTranscript(videoId);
@@ -31,7 +31,7 @@ async function getVideoTranscript({ videoId }: { videoId: string }): Promise<Vid
       })),
     }));
   } catch (error: any) {
-    console.error(colors.red("@error: ") + error.message);
+    emitter.emit("error", `${colors.red("@error: ")} ${error.message}`);
     return [];
   }
 }
@@ -42,19 +42,19 @@ export default function video_transcript({ videoLink }: z.infer<typeof ZodSchema
       ZodSchema.parse({ videoLink });
       const vId = await YouTubeID(videoLink);
       if (!vId) {
-        emitter.emit("error", colors.red("@error: ") + "incorrect video link");
+        emitter.emit("error", `${colors.red("@error: ")} incorrect video link`);
         return;
       }
-      const transcriptData: VideoTranscriptType[] = await getVideoTranscript({ videoId: vId });
+      const transcriptData: VideoTranscriptType[] = await getVideoTranscript({ videoId: vId }, emitter);
       if (!transcriptData || transcriptData.length === 0) {
-        emitter.emit("error", colors.red("@error: ") + "Unable to get response!");
+        emitter.emit("error", `${colors.red("@error: ")} Unable to get transcript for this video!`);
         return;
       }
       emitter.emit("data", transcriptData);
     } catch (error) {
-      if (error instanceof ZodError) emitter.emit("error", error.errors);
-      else if (error instanceof Error) emitter.emit("error", error.message);
-      else emitter.emit("error", String(error));
+      if (error instanceof ZodError) emitter.emit("error", `${colors.red("@error:")} Argument validation failed: ${error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join(", ")}`);
+      else if (error instanceof Error) emitter.emit("error", `${colors.red("@error:")} ${error.message}`);
+      else emitter.emit("error", `${colors.red("@error:")} An unexpected error occurred: ${String(error)}`);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }

@@ -36,18 +36,31 @@ export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSc
       ZodSchema.parse({ query, verbose });
       const metaBody: EngineOutput = await Tuber({ query, verbose, useTor });
       if (!metaBody) {
-        emitter.emit("error", "Unable to get response!");
+        emitter.emit("error", `${colors.red("@error:")} Unable to get response!`);
         return;
       }
-      const uploadDate = new Date(metaBody.metaData.upload_date.replace(/(\d{4})(\d{2})(\d{2})/, "\\$1-\\$2-\\$3"));
+      if (!metaBody.metaData) {
+        emitter.emit("error", `${colors.red("@error:")} Metadata not found in the response!`);
+        return;
+      }
+      let uploadDate: Date | undefined;
+      try {
+        if (metaBody.metaData.upload_date) {
+          uploadDate = new Date(metaBody.metaData.upload_date.replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3"));
+        }
+      } catch (error) {
+        emitter.emit("error", `${colors.red("@error:")} Failed to parse upload date: ${error instanceof Error ? error.message : String(error)}`);
+      }
       const currentDate = new Date();
-      const daysAgo = Math.floor((currentDate.getTime() - uploadDate.getTime()) / (1000 * 60 * 60 * 24));
-      const prettyDate = uploadDate.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+      const daysAgo = uploadDate ? Math.floor((currentDate.getTime() - uploadDate.getTime()) / (1000 * 60 * 60 * 24)) : 0;
+      const prettyDate = uploadDate?.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) || "N/A";
       const uploadAgoObject = calculateUploadAgo(daysAgo);
       const videoTimeInSeconds = metaBody.metaData.duration;
       const videoDuration = calculateVideoDuration(videoTimeInSeconds);
-      const viewCountFormatted = formatCount(metaBody.metaData.view_count);
-      const likeCountFormatted = formatCount(metaBody.metaData.like_count);
+      const viewCountFormatted = metaBody.metaData.view_count !== undefined ? formatCount(metaBody.metaData.view_count) : "N/A";
+      const likeCountFormatted = metaBody.metaData.like_count !== undefined ? formatCount(metaBody.metaData.like_count) : "N/A";
+      const commentCountFormatted = metaBody.metaData.comment_count !== undefined ? formatCount(metaBody.metaData.comment_count) : "N/A";
+      const channelFollowerCountFormatted = metaBody.metaData.channel_follower_count !== undefined ? formatCount(metaBody.metaData.channel_follower_count) : "N/A";
       const payload = {
         AudioLowF: metaBody.AudioLowF,
         AudioHighF: metaBody.AudioHighF,
@@ -87,19 +100,19 @@ export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSc
           upload_ago: daysAgo,
           upload_ago_formatted: uploadAgoObject,
           comment_count: metaBody.metaData.comment_count,
-          comment_count_formatted: formatCount(metaBody.metaData.comment_count),
+          comment_count_formatted: commentCountFormatted,
           channel_id: metaBody.metaData.channel_id,
           channel_name: metaBody.metaData.channel,
           channel_url: metaBody.metaData.channel_url,
           channel_follower_count: metaBody.metaData.channel_follower_count,
-          channel_follower_count_formatted: formatCount(metaBody.metaData.channel_follower_count),
+          channel_follower_count_formatted: channelFollowerCountFormatted,
         },
       };
       emitter.emit("data", payload);
     } catch (error) {
-      if (error instanceof ZodError) emitter.emit("error", error.errors);
-      else if (error instanceof Error) emitter.emit("error", error.message);
-      else emitter.emit("error", String(error));
+      if (error instanceof ZodError) emitter.emit("error", `${colors.red("@error:")} Argument validation failed: ${error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join(", ")}`);
+      else if (error instanceof Error) emitter.emit("error", `${colors.red("@error:")} ${error.message}`);
+      else emitter.emit("error", `${colors.red("@error:")} An unexpected error occurred: ${String(error)}`);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }

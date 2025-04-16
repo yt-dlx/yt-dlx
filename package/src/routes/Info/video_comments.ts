@@ -32,7 +32,7 @@ async function fetchVideoComments({ query, verbose }: z.infer<typeof ZodSchema>)
       return null;
     }
     const videoId = video.id;
-    if (verbose) console.log(colors.green("@info:"), `Fetching comments for video ID: ${videoId}`);
+    if (verbose) console.log(colors.green("@info:"), `Workspaceing comments for video ID: ${videoId}`);
     const youtubeInnertube = await Innertube.create({
       user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
       cache: new UniversalCache(true, path.join(process.cwd(), "YouTubeDLX")),
@@ -71,29 +71,6 @@ async function fetchVideoComments({ query, verbose }: z.infer<typeof ZodSchema>)
     return null;
   }
 }
-/**
- * Fetches all comments for a YouTube video based on a search query.
- *
- * @param {Object} options - The parameters for fetching comments.
- * @param {string} options.query - The search query to find a video (minimum 2 characters).
- * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
- *
- * @returns {EventEmitter} An EventEmitter object that emits the following events:
- * - "data": Contains the list of all comments with details such as comment ID, text, author, like count, and more.
- * - "error": Emits an error message if no videos or comments are found or if fetching the data fails.
- *
- * @example
- * // 1: Fetch all comments for a video found by query
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial" })
- *   .on("data", (comments) => console.log("All comments:", comments))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 2: Fetch all comments with verbose output
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", verbose: true })
- *   .on("data", (comments) => console.log("All comments:", comments))
- *   .on("error", (err) => console.error("Error:", err));
- */
 export default function video_comments(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
@@ -102,14 +79,14 @@ export default function video_comments(options: z.infer<typeof ZodSchema>): Even
       const { query, verbose } = options;
       const comments = await fetchVideoComments({ query, verbose });
       if (!comments) {
-        emitter.emit("error", colors.red("@error: ") + "No videos or comments found for the query");
+        emitter.emit("error", `${colors.red("@error:")} No videos or comments found for the query`);
         return;
       }
       emitter.emit("data", comments);
     } catch (error) {
-      if (error instanceof ZodError) emitter.emit("error", error.errors);
-      else if (error instanceof Error) emitter.emit("error", error.message);
-      else emitter.emit("error", String(error));
+      if (error instanceof ZodError) emitter.emit("error", `${colors.red("@error:")} Argument validation failed: ${error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join(", ")}`);
+      else if (error instanceof Error) emitter.emit("error", `${colors.red("@error:")} ${error.message}`);
+      else emitter.emit("error", `${colors.red("@error:")} An unexpected error occurred: ${String(error)}`);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }

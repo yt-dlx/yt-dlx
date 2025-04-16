@@ -10,7 +10,7 @@ export interface searchPlaylistsType {
   videoCount: number;
   thumbnails: string[];
 }
-async function searchPlaylists({ query }: { query: string }): Promise<searchPlaylistsType[]> {
+async function searchPlaylists({ query }: { query: string }, emitter: EventEmitter): Promise<searchPlaylistsType[]> {
   try {
     const youtube = new Client();
     const searchPlaylists = await youtube.search(query, { type: "playlist" });
@@ -22,7 +22,7 @@ async function searchPlaylists({ query }: { query: string }): Promise<searchPlay
     }));
     return result;
   } catch (error: any) {
-    console.error(colors.red("@error: ") + error.message);
+    emitter.emit("error", `${colors.red("@error: ")} ${error.message}`);
     return [];
   }
 }
@@ -33,24 +33,24 @@ export default function search_playlists({ playlistLink }: z.infer<typeof ZodSch
       ZodSchema.parse({ playlistLink });
       const isID = await YouTubeID(playlistLink);
       if (isID) {
-        emitter.emit("error", colors.red("@error: ") + "use playlist_data() for playlist link!");
+        emitter.emit("error", `${colors.red("@error: ")} Use playlist_data() for playlist link!`);
         return;
       }
-      const metaDataArray: searchPlaylistsType[] = await searchPlaylists({ query: playlistLink });
+      const metaDataArray: searchPlaylistsType[] = await searchPlaylists({ query: playlistLink }, emitter);
       if (!metaDataArray.length) {
-        emitter.emit("error", colors.red("@error: ") + "No playlists found!");
+        emitter.emit("error", `${colors.red("@error: ")} No playlists found for the provided query.`);
         return;
       }
       const metaData: searchPlaylistsType = metaDataArray[0];
       if (!metaData) {
-        emitter.emit("error", colors.red("@error: ") + "Unable to get response!");
+        emitter.emit("error", `${colors.red("@error: ")} Unable to get playlist data.`);
         return;
       }
       emitter.emit("data", metaData);
     } catch (error) {
-      if (error instanceof ZodError) emitter.emit("error", error.errors);
-      else if (error instanceof Error) emitter.emit("error", error.message);
-      else emitter.emit("error", String(error));
+      if (error instanceof ZodError) emitter.emit("error", `${colors.red("@error:")} Argument validation failed: ${error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join(", ")}`);
+      else if (error instanceof Error) emitter.emit("error", `${colors.red("@error:")} ${error.message}`);
+      else emitter.emit("error", `${colors.red("@error:")} An unexpected error occurred: ${String(error)}`);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }

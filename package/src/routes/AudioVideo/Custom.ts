@@ -22,28 +22,52 @@ export default function AudioVideoCustom({ query, stream, output, useTor, filter
     try {
       ZodSchema.parse({ query, stream, output, useTor, filter, metadata, verbose, resolution });
       const engineData = await ytdlx({ query, verbose, useTor }).catch(error => {
-        emitter.emit("error", `Engine error: ${error.message}`);
-        return;
+        emitter.emit("error", `${colors.red("@error:")} Engine error: ${error?.message}`);
+        return undefined;
       });
       if (!engineData) {
-        emitter.emit("error", `${colors.red("@error:")} unable to get response!`);
+        emitter.emit("error", `${colors.red("@error:")} Unable to get response from the engine.`);
         return;
       }
-      const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
+      if (!engineData.metaData) {
+        emitter.emit("error", `${colors.red("@error:")} Metadata not found in the engine response.`);
+        return;
+      }
+      const title = engineData.metaData.title?.replace(/[^a-zA-Z0-9_]+/g, "_") || "video";
       const folder = output ? output : process.cwd();
-      if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+      if (!fs.existsSync(folder)) {
+        try {
+          fs.mkdirSync(folder, { recursive: true });
+        } catch (mkdirError: any) {
+          emitter.emit("error", `${colors.red("@error:")} Failed to create output directory: ${mkdirError?.message}`);
+          return;
+        }
+      }
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
-      instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
-      instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
+      try {
+        const paths = await locator();
+        instance.setFfmpegPath(paths.ffmpeg);
+        instance.setFfprobePath(paths.ffprobe);
+      } catch (locatorError: any) {
+        emitter.emit("error", `${colors.red("@error:")} Failed to locate ffmpeg or ffprobe: ${locatorError?.message}`);
+        return;
+      }
+      if (!engineData.AudioHighF?.url) {
+        emitter.emit("error", `${colors.red("@error:")} Highest quality audio URL not found.`);
+        return;
+      }
       instance.addInput(engineData.AudioHighF.url);
       instance.withOutputFormat("matroska");
-      const filenameBase = `yt-dlx_AudioVideoCustom_${resolution}_`;
-      let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.mkv`;
-      const vdata = engineData.ManifestHigh.find((i: { format: string | string[] }) => i.format.includes(resolution.replace("p", "").toString()));
+      const resolutionWithoutP = resolution.replace("p", "");
+      const vdata = engineData.ManifestHigh?.find((i: { format: string | string[] }) => i.format?.includes(resolutionWithoutP));
       if (vdata) {
+        if (!vdata.url) {
+          emitter.emit("error", `${colors.red("@error:")} Video URL not found for resolution: ${resolution}.`);
+          return;
+        }
         instance.addInput(vdata.url.toString());
       } else {
-        emitter.emit("error", `${colors.red("@error:")} no video data found. use list_formats() maybe?`);
+        emitter.emit("error", `${colors.red("@error:")} No video data found for resolution: ${resolution}. Use list_formats() maybe?`);
         return;
       }
       const filterMap: Record<string, string[]> = {
@@ -57,8 +81,10 @@ export default function AudioVideoCustom({ query, stream, output, useTor, filter
       };
       if (filter && filterMap[filter]) instance.withVideoFilter(filterMap[filter]);
       instance.on("progress", progress => emitter.emit("progress", progress));
-      instance.on("error", error => emitter.emit("error", error.message));
+      instance.on("error", error => emitter.emit("error", `${colors.red("@error:")} FFmpeg error: ${error?.message}`));
       instance.on("start", start => emitter.emit("start", start));
+      const filenameBase = `yt-dlx_AudioVideoCustom_${resolution}_`;
+      let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.mkv`;
       instance.on("end", () => emitter.emit("end", filename));
       if (stream && !metadata) {
         emitter.emit("stream", { filename: path.join(folder, filename), ffmpeg: instance });
@@ -83,9 +109,9 @@ export default function AudioVideoCustom({ query, stream, output, useTor, filter
         });
       }
     } catch (error) {
-      if (error instanceof ZodError) emitter.emit("error", error.errors);
-      else if (error instanceof Error) emitter.emit("error", error.message);
-      else emitter.emit("error", String(error));
+      if (error instanceof ZodError) emitter.emit("error", `${colors.red("@error:")} Argument validation failed: ${error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join(", ")}`);
+      else if (error instanceof Error) emitter.emit("error", `${colors.red("@error:")} ${error?.message}`);
+      else emitter.emit("error", `${colors.red("@error:")} An unexpected error occurred: ${String(error)}`);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }

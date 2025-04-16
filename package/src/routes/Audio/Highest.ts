@@ -21,22 +21,47 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
     try {
       ZodSchema.parse({ query, output, useTor, stream, filter, metadata, verbose });
       const engineData = await Tuber({ query, verbose, useTor }).catch(error => {
-        emitter.emit("error", `Engine error: ${error.message}`);
-        return;
+        emitter.emit("error", `${colors.red("@error:")} Engine error: ${error?.message}`);
+        return undefined;
       });
       if (!engineData) {
-        emitter.emit("error", `${colors.red("@error:")} unable to get response!`);
+        emitter.emit("error", `${colors.red("@error:")} Unable to get response from the engine.`);
         return;
       }
-      const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
+      if (!engineData.metaData) {
+        emitter.emit("error", `${colors.red("@error:")} Metadata not found in the engine response.`);
+        return;
+      }
+      const title = engineData.metaData.title?.replace(/[^a-zA-Z0-9_]+/g, "_");
       const folder = output ? output : process.cwd();
-      if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+      if (!fs.existsSync(folder)) {
+        try {
+          fs.mkdirSync(folder, { recursive: true });
+        } catch (mkdirError: any) {
+          emitter.emit("error", `${colors.red("@error:")} Failed to create output directory: ${mkdirError?.message}`);
+          return;
+        }
+      }
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
-      instance.setFfmpegPath(await locator().then(fp => fp.ffmpeg));
-      instance.setFfprobePath(await locator().then(fp => fp.ffprobe));
+      try {
+        const paths = await locator();
+        instance.setFfmpegPath(paths.ffmpeg);
+        instance.setFfprobePath(paths.ffprobe);
+      } catch (locatorError: any) {
+        emitter.emit("error", `${colors.red("@error:")} Failed to locate ffmpeg or ffprobe: ${locatorError?.message}`);
+        return;
+      }
+      if (!engineData.metaData.thumbnail) {
+        emitter.emit("error", `${colors.red("@error:")} Thumbnail URL not found.`);
+        return;
+      }
       instance.addInput(engineData.metaData.thumbnail);
-      instance.addInput(engineData.AudioHighF.url);
       instance.withOutputFormat("avi");
+      if (!engineData.AudioHighF?.url) {
+        emitter.emit("error", `${colors.red("@error:")} Highest quality audio URL not found.`);
+        return;
+      }
+      instance.addInput(engineData.AudioHighF.url);
       const filenameBase = `yt-dlx_AudioHighest_`;
       let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.avi`;
       const filterMap: Record<string, string[]> = {
@@ -58,7 +83,7 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
       };
       if (filter && filterMap[filter]) instance.withAudioFilter(filterMap[filter]);
       instance.on("progress", progress => emitter.emit("progress", progress));
-      instance.on("error", error => emitter.emit("error", error.message));
+      instance.on("error", error => emitter.emit("error", `${colors.red("@error:")} FFmpeg error: ${error?.message}`));
       instance.on("start", start => emitter.emit("start", start));
       instance.on("end", () => emitter.emit("end", filename));
       if (stream && !metadata) {
@@ -70,9 +95,9 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
         emitter.emit("metadata", { AudioLowDRC: engineData.AudioLowDRC, AudioLowF: engineData.AudioLowF, ipAddress: engineData.ipAddress, metaData: engineData.metaData, filename });
       }
     } catch (error) {
-      if (error instanceof ZodError) emitter.emit("error", error.errors);
-      else if (error instanceof Error) emitter.emit("error", error.message);
-      else emitter.emit("error", String(error));
+      if (error instanceof ZodError) emitter.emit("error", `${colors.red("@error:")} Argument validation failed: ${error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join(", ")}`);
+      else if (error instanceof Error) emitter.emit("error", `${colors.red("@error:")} ${error?.message}`);
+      else emitter.emit("error", `${colors.red("@error:")} An unexpected error occurred: ${String(error)}`);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }

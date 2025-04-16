@@ -11,11 +11,14 @@ export interface relatedVideosType {
   uploadDate: string;
   thumbnails: string[];
 }
-async function relatedVideos({ videoId }: { videoId: string }): Promise<relatedVideosType[] | null> {
+async function relatedVideos({ videoId }: { videoId: string }, emitter: EventEmitter): Promise<relatedVideosType[] | null> {
   try {
     const youtube = new Client();
-    const relatedVideos: any = await youtube.getVideo(videoId);
-    const result: relatedVideosType[] = relatedVideos.related.items.map((item: any) => ({
+    const videoData: any = await youtube.getVideo(videoId);
+    if (!videoData?.related?.items) {
+      return [];
+    }
+    const result: relatedVideosType[] = videoData.related.items.map((item: any) => ({
       id: item.id,
       title: item.title,
       isLive: item.isLive,
@@ -25,6 +28,7 @@ async function relatedVideos({ videoId }: { videoId: string }): Promise<relatedV
     }));
     return result;
   } catch (error: any) {
+    emitter.emit("error", `${colors.red("@error: ")} ${error.message}`);
     return null;
   }
 }
@@ -33,16 +37,16 @@ export default function related_videos({ videoId }: z.infer<typeof ZodSchema>): 
   (async () => {
     try {
       ZodSchema.parse({ videoId });
-      const videos = await relatedVideos({ videoId });
+      const videos = await relatedVideos({ videoId }, emitter);
       if (!videos || videos.length === 0) {
-        emitter.emit("error", "No related videos found");
+        emitter.emit("error", `${colors.red("@error: ")} No related videos found for the provided video ID.`);
         return;
       }
       emitter.emit("data", videos);
     } catch (error) {
-      if (error instanceof ZodError) emitter.emit("error", error.errors);
-      else if (error instanceof Error) emitter.emit("error", error.message);
-      else emitter.emit("error", String(error));
+      if (error instanceof ZodError) emitter.emit("error", `${colors.red("@error:")} Argument validation failed: ${error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join(", ")}`);
+      else if (error instanceof Error) emitter.emit("error", `${colors.red("@error:")} ${error.message}`);
+      else emitter.emit("error", `${colors.red("@error:")} An unexpected error occurred: ${String(error)}`);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }

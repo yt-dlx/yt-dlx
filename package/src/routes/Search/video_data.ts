@@ -18,26 +18,30 @@ export interface singleVideoType {
   tags: string;
   likeCount: number;
 }
-export async function singleVideo({ videoId }: { videoId: string }): Promise<singleVideoType | null> {
+export async function singleVideo({ videoId }: { videoId: string }, emitter: EventEmitter): Promise<singleVideoType | null> {
   try {
     const youtube = new Client();
-    const singleVideo: any = await youtube.getVideo(videoId);
+    const singleVideoData: any = await youtube.getVideo(videoId);
+    if (!singleVideoData) {
+      emitter.emit("error", `${colors.red("@error: ")} Unable to fetch video data.`);
+      return null;
+    }
     return {
-      id: singleVideo.id,
-      title: singleVideo.title,
-      thumbnails: singleVideo.thumbnails,
-      uploadDate: singleVideo.uploadDate,
-      description: singleVideo.description,
-      duration: singleVideo.duration,
-      isLive: singleVideo.isLiveContent,
-      viewCount: singleVideo.viewCount,
-      channelid: singleVideo.channel.id,
-      channelname: singleVideo.channel.name,
-      tags: singleVideo.tags,
-      likeCount: singleVideo.likeCount,
+      id: singleVideoData.id,
+      title: singleVideoData.title,
+      thumbnails: singleVideoData.thumbnails,
+      uploadDate: singleVideoData.uploadDate,
+      description: singleVideoData.description,
+      duration: singleVideoData.duration,
+      isLive: singleVideoData.isLiveContent,
+      viewCount: singleVideoData.viewCount,
+      channelid: singleVideoData.channel?.id,
+      channelname: singleVideoData.channel?.name,
+      tags: singleVideoData.tags,
+      likeCount: singleVideoData.likeCount,
     };
   } catch (error: any) {
-    console.error(colors.red("@error: ") + error.message);
+    emitter.emit("error", `${colors.red("@error: ")} ${error.message}`);
     return null;
   }
 }
@@ -48,19 +52,19 @@ export default function video_data({ videoLink }: z.infer<typeof ZodSchema>): Ev
       ZodSchema.parse({ videoLink });
       const vId = await YouTubeID(videoLink);
       if (!vId) {
-        emitter.emit("error", colors.red("@error: ") + "incorrect video link");
+        emitter.emit("error", `${colors.red("@error: ")} Incorrect video link provided.`);
         return;
       }
-      const metaData: singleVideoType | null = await singleVideo({ videoId: vId });
+      const metaData: singleVideoType | null = await singleVideo({ videoId: vId }, emitter);
       if (!metaData) {
-        emitter.emit("error", colors.red("@error: ") + "Unable to get response!");
+        emitter.emit("error", `${colors.red("@error: ")} Unable to retrieve video information.`);
         return;
       }
       emitter.emit("data", metaData);
     } catch (error) {
-      if (error instanceof ZodError) emitter.emit("error", error.errors);
-      else if (error instanceof Error) emitter.emit("error", error.message);
-      else emitter.emit("error", String(error));
+      if (error instanceof ZodError) emitter.emit("error", `${colors.red("@error:")} Argument validation failed: ${error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join(", ")}`);
+      else if (error instanceof Error) emitter.emit("error", `${colors.red("@error:")} ${error.message}`);
+      else emitter.emit("error", `${colors.red("@error:")} An unexpected error occurred: ${String(error)}`);
     } finally {
       console.log(colors.green("@info:"), "❣️ Thank you for using yt-dlx. Consider 🌟starring the GitHub repo https://github.com/yt-dlx.");
     }
