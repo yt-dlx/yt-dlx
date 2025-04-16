@@ -10,32 +10,16 @@ import { TbWorldSearch } from "react-icons/tb";
 import Introduction from "../home/Introduction";
 import { TbDiamondFilled } from "react-icons/tb";
 import { SiGradleplaypublisher } from "react-icons/si";
-
-export default function HomeGUI(): JSX.Element {
+export default function HomeGUI() {
   const [Query, setQuery] = React.useState<string>("");
   const [TubeSearch, setTubeSearch] = React.useState<any>(null);
-  const FromBottomToTop = {
-    initial: { opacity: 0, y: 100 },
-    exit: {
-      opacity: 0,
-      y: 50,
-      transition: { duration: 0.3 },
-    },
-    whileInView: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8 },
-    },
-  };
-
+  const FromBottomToTop = { initial: { opacity: 0, y: 100 }, exit: { opacity: 0, y: 50, transition: { duration: 0.3 } }, whileInView: { opacity: 1, y: 0, transition: { duration: 0.8 } } };
   React.useEffect(() => {
     window.ipc.on("SearchVideos", (response: { data: Object[] }) => setTubeSearch(response.data));
   }, []);
-
   return (
     <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-700 font-semibold">
-      <NavPackage />
-      <Introduction />
+      <NavPackage /> <Introduction />
       <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white">
         <div className="container px-4 md:px-6">
           <form
@@ -52,35 +36,23 @@ export default function HomeGUI(): JSX.Element {
               Effortless Audio Video Downloader And Streamer!
             </motion.h2>
             <motion.p className="mb-8 italic text-white font-semibold" {...FromBottomToTop}>
-              Unlock the power of YT-DLX, the ultimate node.js toolkit for seamless audio and video downloading and streaming. Effortlessly handle
-              various coding flavors, from TypeScript to CommonJS and ESM, ensuring 100% compatibility and comprehensive type safety.
+              Unlock the power of YT-DLX, the ultimate node.js toolkit for seamless audio and video downloading and streaming. Effortlessly handle various coding flavors, from TypeScript to CommonJS
+              and ESM, ensuring 100% compatibility and comprehensive type safety.
             </motion.p>
             <div className="flex items-center gap-4">
               <label className="form-control w-full">
                 <div className="label">
                   <span className="flex flex-row items-center justify-center label-text text-red-700 text-sm font-black">
-                    <HiFire size={20} className="text-red-700 animate-pulse" />
-                    option:
-                    <span className="text-white font-semibold italic ml-2">provide video name</span>
+                    <HiFire size={20} className="text-red-700 animate-pulse" /> option: <span className="text-white font-semibold italic ml-2">provide video name</span>
                   </span>
                   <span className="flex flex-row items-center justify-center label-text-alt text-red-700 text-sm font-black">
-                    <HiFire size={20} className="text-red-700 animate-pulse" />
-                    option:
-                    <span className="text-white font-semibold italic ml-2">provide video link</span>
+                    <HiFire size={20} className="text-red-700 animate-pulse" /> option: <span className="text-white font-semibold italic ml-2">provide video link</span>
                   </span>
                 </div>
-                <input
-                  type="text"
-                  value={Query}
-                  placeholder="required"
-                  onChange={e => setQuery(e.target.value)}
-                  className="input input-bordered w-full rounded-3xl bg-neutral-800"
-                />
+                <input type="text" value={Query} placeholder="required" onChange={e => setQuery(e.target.value)} className="input input-bordered w-full rounded-3xl bg-neutral-800" />
                 <div className="label">
                   <span className="flex flex-row items-center justify-center label-text-alt text-red-700 text-sm font-black">
-                    <HiFire size={20} className="text-red-700 animate-pulse" />
-                    option:
-                    <span className="text-white font-semibold italic ml-2">provide video id</span>
+                    <HiFire size={20} className="text-red-700 animate-pulse" /> option: <span className="text-white font-semibold italic ml-2">provide video id</span>
                   </span>
                 </div>
               </label>
@@ -89,8 +61,7 @@ export default function HomeGUI(): JSX.Element {
               <button
                 type="submit"
                 className="flex flex-row items-center justify-center whitespace-nowrap text-sm font-semibold ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-500 focus-visible:ring-offset-2 active:ring-2 active:ring-red-500 disabled:pointer-events-none disabled:opacity-50 h-10 px-4 py-2 bg-red-700 hover:bg-red-800 text-white rounded-3xl shadow-md transition-all duration-300 hover:shadow-lg w-full">
-                <TbWorldSearch size={20} className="mr-1 font-black" />
-                Search YouTube
+                <TbWorldSearch size={20} className="mr-1 font-black" /> Search YouTube
               </button>
             </div>
             {TubeSearch && (
@@ -146,7 +117,7 @@ export default function HomeGUI(): JSX.Element {
                             </div>
                           </div>
                           <div className="flex items-center justify-center p-2 duration-700 group-hover:bg-red-700/60 bg-red-700/40 text-white/90 mt-0.5 w-full text-sm gap-1 rounded-b-xl">
-                            powered by <TbDiamondFilled size={20} /> yt-dlx{" "}
+                            powered by <TbDiamondFilled size={20} /> yt-dlx
                           </div>
                         </Link>
                       ))}

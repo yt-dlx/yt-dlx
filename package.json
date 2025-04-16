@@ -44,7 +44,7 @@
     "frontend:build": "cd frontend && yarn run build",
     "frontend:clean": "cd backend && rimraf .next node_modules",
     "frontend:install": "cd backend && yarn install --silent --force",
-    "frontend:update": "cd frontend && yarn upgrade --latest --silent --force",
+    "frontend:update": "cd frontend && yarn upgrade --latest --silent --force && yarn add electron-serve@^1.3.0 electron-store@^8.2.0 && yarn add --dev electron@^34.0.0 electron-builder@^24.13.3 next@^14.2.4 nextron@^9.5.0 react@^18.3.1 react-dom@^18.3.1",
     "========================================================================== client": "==========================================================================",
     "client:web": "cd client && yarn run web",
     "client:ios": "cd client && yarn run ios",

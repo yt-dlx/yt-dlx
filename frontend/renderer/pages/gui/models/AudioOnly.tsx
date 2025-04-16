@@ -2,13 +2,11 @@
 //
 import React from "react";
 import { motion } from "framer-motion";
-
 interface Input {
   videoId: string;
   isOpen: boolean;
   onClose: () => void;
 }
-
 const AudioOnly: React.FunctionComponent<Input> = ({ isOpen, onClose, videoId }) => {
   const [_outputFolder, outputFolder_] = React.useState<string | null>(null);
   const [_quality, quality_] = React.useState<string | null>(null);
@@ -16,13 +14,7 @@ const AudioOnly: React.FunctionComponent<Input> = ({ isOpen, onClose, videoId })
   const [_progress, progress_] = React.useState<any>(null);
   const _modelref = React.useRef<HTMLDivElement>(null);
   const [error, _error] = React.useState<any>(null);
-  const [formData, _formData] = React.useState({
-    metadata: false,
-    verbose: true,
-    useTor: true,
-    stream: true,
-  });
-
+  const [formData, _formData] = React.useState({ metadata: false, verbose: true, useTor: true, stream: true });
   React.useEffect(() => {
     const ClickOutside = (event: MouseEvent) => {
       if (_modelref.current && !_modelref.current.contains(event.target as Node)) {
@@ -39,7 +31,6 @@ const AudioOnly: React.FunctionComponent<Input> = ({ isOpen, onClose, videoId })
       document.removeEventListener("mousedown", ClickOutside);
     };
   }, [isOpen, onClose]);
-
   const socket = React.useRef<WebSocket | null>(null);
   React.useEffect(() => {
     socket.current = new WebSocket("ws://localhost:8642");
@@ -58,7 +49,6 @@ const AudioOnly: React.FunctionComponent<Input> = ({ isOpen, onClose, videoId })
       if (socket.current) socket.current.close();
     };
   }, []);
-
   return (
     <React.Fragment>
       {isOpen && (
@@ -71,8 +61,7 @@ const AudioOnly: React.FunctionComponent<Input> = ({ isOpen, onClose, videoId })
             ref={_modelref}
             className="bg-neutral-900 rounded-3xl p-8 backdrop-blur-lg border-4 border-double border-red-700 shadow-red-700 shadow-[0_0_800px_rgba(255,0,0,0.5)] w-auto max-w-[90vw] max-h-[90vh] overflow-y-auto flex flex-col items-center justify-start text-center">
             <h2 className="text-7xl text-red-700 font-black mb-10">
-              Choose Your Poison For <br />
-              <span className="text-9xl block italic">Audio</span>
+              Choose Your Poison For <br /> <span className="text-9xl block italic">Audio</span>
             </h2>
             <ul className="font-semibold list-disc mb-10 text-white text-xl">
               <li
@@ -104,14 +93,7 @@ const AudioOnly: React.FunctionComponent<Input> = ({ isOpen, onClose, videoId })
                     if (socket.current && socket.current.readyState === WebSocket.OPEN) {
                       const payLoad = {
                         event: _quality,
-                        payload: {
-                          metadata: formData.metadata,
-                          verbose: formData.verbose,
-                          stream: formData.stream,
-                          useTor: formData.useTor,
-                          output: _outputFolder,
-                          query: videoId,
-                        },
+                        payload: { metadata: formData.metadata, verbose: formData.verbose, stream: formData.stream, useTor: formData.useTor, output: _outputFolder, query: videoId },
                       };
                       socket.current.send(JSON.stringify(payLoad));
                     } else _error("WebSocket connection not established!");
@@ -155,36 +137,28 @@ const AudioOnly: React.FunctionComponent<Input> = ({ isOpen, onClose, videoId })
             {_filename && (
               <ul className="text-white/60 items-start justify-start flex flex-col list-disc mt-6">
                 <li>
-                  <span className="text-red-700 font-black mr-2">Location:</span>
-                  {_outputFolder || "-"}
+                  <span className="text-red-700 font-black mr-2">Location:</span> {_outputFolder || "-"}
                 </li>
                 <li>
-                  <span className="text-red-700 font-black mr-2">Filename:</span>
-                  {_filename || "-"}
+                  <span className="text-red-700 font-black mr-2">Filename:</span> {_filename || "-"}
                 </li>
                 <li>
-                  <span className="text-red-700 font-black mr-2">frames:</span>
-                  {_progress?.frames || "-"}
+                  <span className="text-red-700 font-black mr-2">frames:</span> {_progress?.frames || "-"}
                 </li>
                 <li>
-                  <span className="text-red-700 font-black mr-2">currentFps:</span>
-                  {_progress?.currentFps || "-"}
+                  <span className="text-red-700 font-black mr-2">currentFps:</span> {_progress?.currentFps || "-"}
                 </li>
                 <li>
-                  <span className="text-red-700 font-black mr-2">targetSize:</span>
-                  {_progress?.targetSize || "-"}
+                  <span className="text-red-700 font-black mr-2">targetSize:</span> {_progress?.targetSize || "-"}
                 </li>
                 <li>
-                  <span className="text-red-700 font-black mr-2">timemark:</span>
-                  {_progress?.timemark || "-"}
+                  <span className="text-red-700 font-black mr-2">timemark:</span> {_progress?.timemark || "-"}
                 </li>
                 <li>
-                  <span className="text-red-700 font-black mr-2">progress:</span>
-                  {_progress?.progress || "-"}
+                  <span className="text-red-700 font-black mr-2">progress:</span> {_progress?.progress || "-"}
                 </li>
                 <li>
-                  <span className="text-red-700 font-black mr-2">Error:</span>
-                  {error || "-"}
+                  <span className="text-red-700 font-black mr-2">Error:</span> {error || "-"}
                 </li>
               </ul>
             )}
@@ -194,8 +168,6 @@ const AudioOnly: React.FunctionComponent<Input> = ({ isOpen, onClose, videoId })
     </React.Fragment>
   );
 };
-
 export default AudioOnly;
-
 //
 // ============================================================================/ with-websocket /============================================================================

@@ -7,22 +7,8 @@ import NpmModel from "../home/models/NpmModel";
 import BunModel from "../home/models/BunModel";
 import YarnModel from "../home/models/YarnModel";
 import PnpmModel from "../home/models/PnpmModel";
-
-var FromTopToBottom = {
-  initial: { opacity: 0, y: -100 },
-  exit: {
-    opacity: 0,
-    y: -50,
-    transition: { duration: 0.3 },
-  },
-  whileInView: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.8 },
-  },
-};
-
-export default function Introduction(): JSX.Element {
+var FromTopToBottom = { initial: { opacity: 0, y: -100 }, exit: { opacity: 0, y: -50, transition: { duration: 0.3 } }, whileInView: { opacity: 1, y: 0, transition: { duration: 0.8 } } };
+export default function Introduction() {
   var [_yarn, yarn_] = react.useState(false);
   var [_pnpm, pnpm_] = react.useState(false);
   var [_npm, npm_] = react.useState(false);
@@ -31,7 +17,6 @@ export default function Introduction(): JSX.Element {
   var _pnpm_ = () => pnpm_(!_pnpm);
   var _npm_ = () => npm_(!_npm);
   var _bun_ = () => bun_(!_bun);
-
   return (
     <react.Fragment>
       <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full pt-12 md:pt-24 lg:pt-32 bg-neutral-950 text-white">
@@ -42,34 +27,29 @@ export default function Introduction(): JSX.Element {
                 Yt-Dlx: The Ultimate Multimedia Downloader
               </motion.h1>
               <motion.p className="mx-auto max-w-[700px] text-white font-semibold md:text-xl" {...FromTopToBottom}>
-                Yt-Dlx is a powerful and versatile tool that allows you to download audio and video content from a wide range of sources, including
-                YouTube, Vimeo, and many more.
+                Yt-Dlx is a powerful and versatile tool that allows you to download audio and video content from a wide range of sources, including YouTube, Vimeo, and many more.
               </motion.p>
             </div>
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">
               <button
                 onClick={_npm_}
                 className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-700 disabled:pointer-events-none disabled:opacity-50">
-                <TbBrandNpm className="mr-2 h-5 w-5" />
-                Install Using Npm
+                <TbBrandNpm className="mr-2 h-5 w-5" /> Install Using Npm
               </button>
               <button
                 onClick={_yarn_}
                 className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-700 disabled:pointer-events-none disabled:opacity-50">
-                <FaYarn className="mr-2 h-5 w-5" />
-                Install Using Yarn
+                <FaYarn className="mr-2 h-5 w-5" /> Install Using Yarn
               </button>
               <button
                 onClick={_pnpm_}
                 className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-700 disabled:pointer-events-none disabled:opacity-50">
-                <SiPnpm className="mr-2 h-5 w-5" />
-                Install Using Pnpm
+                <SiPnpm className="mr-2 h-5 w-5" /> Install Using Pnpm
               </button>
               <button
                 onClick={_bun_}
                 className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-700 disabled:pointer-events-none disabled:opacity-50">
-                <SiBun className="mr-2 h-5 w-5" />
-                Install Using Bun
+                <SiBun className="mr-2 h-5 w-5" /> Install Using Bun
               </button>
             </div>
           </div>
@@ -82,11 +62,7 @@ export default function Introduction(): JSX.Element {
           />
         </div>
       </motion.section>
-      {/* [ Modals ] */}
-      <YarnModel open={_yarn} close={_yarn_} />
-      <PnpmModel open={_pnpm} close={_pnpm_} />
-      <NpmModel open={_npm} close={_npm_} />
-      <BunModel open={_bun} close={_bun_} />
+      {/* [ Modals ] */} <YarnModel open={_yarn} close={_yarn_} /> <PnpmModel open={_pnpm} close={_pnpm_} /> <NpmModel open={_npm} close={_npm_} /> <BunModel open={_bun} close={_bun_} />
     </react.Fragment>
   );
 }

@@ -12,8 +12,7 @@ import AudioVideo from "./models/AudioVideo";
 import { IoVideocam } from "react-icons/io5";
 import Introduction from "../home/Introduction";
 import { PiTelevisionFill } from "react-icons/pi";
-
-export default function VideoId(): JSX.Element {
+export default function VideoId() {
   const router = useRouter();
   const { id } = router.query;
   const [ShowAudio, setShowAudio] = React.useState(false);
@@ -23,25 +22,15 @@ export default function VideoId(): JSX.Element {
   const ToggleAudioVideo = () => setShowAudioVideo(!ShowAudioVideo);
   const ToggleAudio = () => setShowAudio(!ShowAudio);
   const ToggleVideo = () => setShowVideo(!ShowVideo);
-  const FromBottomToTop = {
-    initial: { opacity: 0, y: 100 },
-    exit: { opacity: 0, y: 50, transition: { duration: 0.3 } },
-    whileInView: { opacity: 1, y: 0, transition: { duration: 0.8 } },
-  };
-  const FromRightToLeft = {
-    initial: { opacity: 0, x: 100 },
-    exit: { opacity: 0, x: 50, transition: { duration: 0.3 } },
-    whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } },
-  };
+  const FromBottomToTop = { initial: { opacity: 0, y: 100 }, exit: { opacity: 0, y: 50, transition: { duration: 0.3 } }, whileInView: { opacity: 1, y: 0, transition: { duration: 0.8 } } };
+  const FromRightToLeft = { initial: { opacity: 0, x: 100 }, exit: { opacity: 0, x: 50, transition: { duration: 0.3 } }, whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } } };
   React.useEffect(() => {
     window.ipc.send("VideoData", { query: "https://youtu.be/" + id, verbose: true });
     window.ipc.on("VideoData", (response: any) => setTubeSearch(response.data));
   }, [id]);
-
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-700">
-      <NavPackage />
-      <Introduction />
+      <NavPackage /> <Introduction />
       {TubeSearch ? (
         <section className="flex flex-col items-center justify-center">
           <div className="max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
@@ -80,8 +69,7 @@ export default function VideoId(): JSX.Element {
                       {TubeSearch.title}
                     </motion.h2>
                     <p className="mt-8 leading-loose text-white font-semibold lowercase text-sm">
-                      <span className="text-red-700 font-black text-lg">@description: </span>
-                      {TubeSearch.description}
+                      <span className="text-red-700 font-black text-lg">@description: </span> {TubeSearch.description}
                     </p>
                     <ul className="text-white font-semibold p-1 mb-4 text-sm">
                       <li>
@@ -108,8 +96,7 @@ export default function VideoId(): JSX.Element {
               </div>
             </section>
           </div>
-          <AudioOnly isOpen={ShowAudio} onClose={ToggleAudio} videoId={TubeSearch.id} />
-          <VideoOnly isOpen={ShowVideo} onClose={ToggleVideo} videoId={TubeSearch.id} />
+          <AudioOnly isOpen={ShowAudio} onClose={ToggleAudio} videoId={TubeSearch.id} /> <VideoOnly isOpen={ShowVideo} onClose={ToggleVideo} videoId={TubeSearch.id} />
           <AudioVideo isOpen={ShowAudioVideo} onClose={ToggleAudioVideo} videoId={TubeSearch.id} />
         </section>
       ) : (
