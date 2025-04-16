@@ -1,6 +1,13 @@
-const colors = require("tailwindcss/colors");
-const plugin = require("tailwindcss/plugin");
-module.exports = {
+import daisyui from "daisyui";
+import preline from "preline/plugin";
+import flowbite from "flowbite/plugin";
+import forms from "@tailwindcss/forms";
+import plugin from "tailwindcss/plugin";
+import colors from "tailwindcss/colors";
+import typography from "@tailwindcss/typography";
+import tailwindScrollbar from "tailwind-scrollbar";
+import tailwindScrollbarHide from "tailwind-scrollbar-hide";
+export default {
   darkMode: "class",
   content: ["./renderer/pages/**/*.{js,ts,jsx,tsx}"],
   theme: {
@@ -11,13 +18,13 @@ module.exports = {
     plugin(function ({ matchUtilities, theme }) {
       matchUtilities({ "text-shadow": value => ({ textShadow: value }) }, { values: theme("textShadow") });
     }),
-    require("daisyui"),
-    require("preline/plugin"),
-    require("flowbite/plugin"),
-    require("tailwind-scrollbar"),
-    require("@tailwindcss/forms"),
-    require("@tailwindcss/typography"),
-    require("tailwind-scrollbar-hide"),
+    daisyui,
+    preline,
+    flowbite,
+    tailwindScrollbar,
+    forms,
+    typography,
+    tailwindScrollbarHide,
   ],
   daisyui: {
     themes: [
