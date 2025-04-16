@@ -7,11 +7,11 @@ async function getBinaryPath(execName: string): Promise<string | null> {
     const binaryPath = path.join(nodeModulesPath, execName + (process.platform === "win32" ? ".exe" : ""));
     try {
       await fsx.access(binaryPath, fsx.constants.X_OK);
-      return binaryPath;
+      return `"${binaryPath}"`;
     } catch {
       const devPath = path.join(process.cwd(), "pkg", execName + (process.platform === "win32" ? ".exe" : ""));
       await fsx.access(devPath, fsx.constants.X_OK);
-      return devPath;
+      return `"${devPath}"`;
     }
   } catch {
     return null;

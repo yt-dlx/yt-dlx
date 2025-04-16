@@ -1,106 +1,135 @@
+import path from "path";
 import colors from "colors";
 import { z, ZodError } from "zod";
+import { Client } from "youtubei";
 import { EventEmitter } from "events";
-import Tuber from "../../utils/Agent";
-
+import { Innertube, UniversalCache } from "youtubei.js";
 const ZodSchema = z.object({
   query: z.string().min(2),
-  useTor: z.boolean().optional(),
   verbose: z.boolean().optional(),
-  filter: z.enum(["newest", "oldest", "top", "most_liked", "pinned", "verified", "replies", "uploader", "favorited", "longest", "shortest"]).optional(),
+  sort: z.enum(["newest", "oldest", "most-liked", "least-liked", "pinned-first", "replies-first", "longest"]).optional(),
 });
-
+export interface CommentType {
+  comment_id: string;
+  is_pinned: boolean;
+  comment: string;
+  published_time: string;
+  author_is_channel_owner: boolean;
+  creator_thumbnail_url: string;
+  like_count: number;
+  is_member: boolean;
+  author: string;
+  is_hearted: boolean;
+  is_liked: boolean;
+  is_disliked: boolean;
+  reply_count: number;
+  hasReplies: boolean;
+}
+async function fetchVideoComments({ query, sort, verbose }: z.infer<typeof ZodSchema>): Promise<CommentType[]> {
+  try {
+    if (verbose) console.log(colors.green("@info:"), `Searching for videos with query: ${query}`);
+    const youtubeClient = new Client();
+    const searchResults = await youtubeClient.search(query, { type: "video" });
+    const video = searchResults.items[0];
+    if (!video || !video.id) {
+      if (verbose) console.log(colors.red("@error:"), "No videos found for the given query");
+      return [];
+    }
+    const videoId = video.id;
+    if (verbose) console.log(colors.green("@info:"), `Fetching comments for video ID: ${videoId}`);
+    const youtubeInnertube = await Innertube.create({
+      user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      cache: new UniversalCache(true, path.join(process.cwd(), "YouTubeDLX")),
+    });
+    const response = await youtubeInnertube.getComments(videoId);
+    let comments: CommentType[] = response.contents
+      .map(thread => {
+        const comment = thread?.comment;
+        if (!comment || !comment.content?.text || !comment.published_time || !comment.author?.name) return null;
+        return {
+          comment_id: comment.comment_id || "",
+          is_pinned: comment.is_pinned || false,
+          comment: comment.content.text,
+          published_time: comment.published_time,
+          author_is_channel_owner: comment.author_is_channel_owner || false,
+          creator_thumbnail_url: comment.creator_thumbnail_url || "",
+          like_count: comment.like_count || 0,
+          is_member: comment.is_member || false,
+          author: comment.author.name,
+          is_hearted: comment.is_hearted || false,
+          is_liked: comment.is_liked || false,
+          is_disliked: comment.is_disliked || false,
+          reply_count: comment.reply_count || 0,
+          hasReplies: thread.has_replies || false,
+        } as CommentType;
+      })
+      .filter((item): item is CommentType => item !== null);
+    switch (sort) {
+      case "newest":
+        comments.sort((a, b) => new Date(b.published_time).getTime() - new Date(a.published_time).getTime());
+        break;
+      case "oldest":
+        comments.sort((a, b) => new Date(a.published_time).getTime() - new Date(b.published_time).getTime());
+        break;
+      case "most-liked":
+        comments.sort((a, b) => b.like_count - a.like_count);
+        break;
+      case "least-liked":
+        comments.sort((a, b) => a.like_count - b.like_count);
+        break;
+      case "pinned-first":
+        comments.sort((a, b) => (b.is_pinned ? 1 : 0) - (a.is_pinned ? 1 : 0));
+        break;
+      case "replies-first":
+        comments.sort((a, b) => (b.hasReplies ? 1 : 0) - (a.hasReplies ? 1 : 0));
+        break;
+      case "longest":
+        comments.sort((a, b) => b.comment.length - a.comment.length);
+        break;
+    }
+    if (verbose) console.log(colors.green("@info:"), "Video comments fetched!");
+    return comments;
+  } catch (error: any) {
+    console.error(colors.red("@error: ") + error.message);
+    return [];
+  }
+}
 /**
- * Fetches and processes YouTube video comments based on the provided search query and filters.
+ * Fetches comments for a YouTube video based on a search query.
  *
- * @param {Object} options - The parameters for fetching video comments.
- * @param {string} options.query - The search query string for the video comments.
- * @param {boolean} [options.useTor] - Flag to use Tor for anonymity. Optional.
+ * @param {Object} options - The parameters for fetching comments.
+ * @param {string} options.query - The search query to find a video (minimum 2 characters).
+ * @param {"newest" | "oldest" | "most-liked" | "least-liked" | "pinned-first" | "replies-first" | "longest"} [options.sort] - The sorting order for the comments. Optional.
  * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
- * @param {"newest" | "oldest" | "top" | "most_liked" | "pinned" | "verified" | "replies" | "uploader" | "favorited" | "longest" | "shortest"} [options.filter] - The filter to apply on the comments. Optional.
  *
  * @returns {EventEmitter} An EventEmitter object that emits the following events:
- * - "data": Contains the processed list of video comments.
- * - "error": Emits an error message if fetching the comments or processing fails.
+ * - "data": Contains the list of comments with details such as comment ID, text, author, like count, and more.
+ * - "error": Emits an error message if no videos or comments are found or if fetching the data fails.
  *
  * @example
- * // 1: Fetch video comments with only the query
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial" })
- *   .on("data", (comments) => console.log("Comments:", comments))
+ * // 1: Fetch comments for a video found by query, sorted by newest
+ * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", sort: "newest" })
+ *   .on("data", (comments) => console.log("Comments found:", comments))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // 2: Fetch video comments with verbose output enabled
+ * // 2: Fetch comments with verbose output
  * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", verbose: true })
- *   .on("data", (comments) => console.log("Comments:", comments))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 3: Fetch video comments with the filter set to "newest"
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "newest" })
- *   .on("data", (comments) => console.log("Newest comments:", comments))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 4: Fetch video comments with the filter set to "top" (most liked)
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "most_liked" })
- *   .on("data", (comments) => console.log("Top comments:", comments))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 5: Fetch video comments with the filter set to "pinned"
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "pinned" })
- *   .on("data", (comments) => console.log("Pinned comments:", comments))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 6: Fetch video comments with the filter set to "longest"
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", filter: "longest" })
- *   .on("data", (comments) => console.log("Longest comments:", comments))
+ *   .on("data", (comments) => console.log("Comments found:", comments))
  *   .on("error", (err) => console.error("Error:", err));
  */
-export default function video_comments({ query, useTor, verbose, filter }: z.infer<typeof ZodSchema>): EventEmitter {
+export default function video_comments(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
-      ZodSchema.parse({ query, useTor, verbose, filter });
-      const response = await Tuber({ query, useTor, mode: "comments" });
-      const comments = response.comments;
-      let processed = response.comments;
-      switch (filter) {
-        case "newest":
-          processed = comments.sort((a: { timestamp: number }, b: { timestamp: number }) => b.timestamp - a.timestamp);
-          break;
-        case "oldest":
-          processed = comments.sort((a: { timestamp: number }, b: { timestamp: number }) => a.timestamp - b.timestamp);
-          break;
-        case "top":
-        case "most_liked":
-          processed = comments.sort((a: { like_count: number }, b: { like_count: number }) => b.like_count - a.like_count);
-          break;
-        case "pinned":
-          processed = comments.filter((c: { is_pinned: any }) => c.is_pinned);
-          break;
-        case "verified":
-          processed = comments.filter((c: { author_is_verified: any }) => c.author_is_verified);
-          break;
-        case "replies":
-          processed = comments.filter((c: { parent: string }) => c.parent !== "");
-          break;
-        case "uploader":
-          processed = comments.filter((c: { author_is_uploader: any }) => c.author_is_uploader);
-          break;
-        case "favorited":
-          processed = comments.filter((c: { is_favorited: any }) => c.is_favorited);
-          break;
-        case "longest":
-          processed = comments.sort((a: { text: string | any[] }, b: { text: string | any[] }) => b.text.length - a.text.length);
-          break;
-        case "shortest":
-          processed = comments.sort((a: { text: string | any[] }, b: { text: string | any[] }) => a.text.length - b.text.length);
-          break;
+      ZodSchema.parse(options);
+      const { query, sort, verbose } = options;
+      const comments = await fetchVideoComments({ query, sort, verbose });
+      if (!comments || comments.length === 0) {
+        emitter.emit("error", colors.red("@error: ") + "No videos or comments found for the query");
+        return;
       }
-      emitter.emit("data", processed);
+      emitter.emit("data", comments);
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", error.errors);
       else if (error instanceof Error) emitter.emit("error", error.message);
