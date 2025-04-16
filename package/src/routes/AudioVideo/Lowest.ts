@@ -6,7 +6,6 @@ import ffmpeg from "fluent-ffmpeg";
 import Tuber from "../../utils/Agent";
 import { EventEmitter } from "events";
 import { locator } from "../../utils/locator";
-
 const ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
@@ -16,70 +15,6 @@ const ZodSchema = z.object({
   metadata: z.boolean().optional(),
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
-
-/**
- * Downloads and processes the lowest quality audio and video file with the provided parameters.
- *
- * @param {Object} options - The options for processing the lowest quality audio and video.
- * @param {string} options.query - The search query for the audio and video.
- * @param {string} [options.output] - The output folder where the audio and video file will be saved. Optional.
- * @param {boolean} [options.useTor] - Flag to use Tor for anonymity. Optional.
- * @param {boolean} [options.stream] - Flag to stream the audio and video instead of saving it. Optional.
- * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
- * @param {boolean} [options.metadata] - Flag to output metadata instead of downloading the audio and video. Optional.
- * @param {string} [options.filter] - The video filter to apply to the video file. Optional.
- *
- * @returns {EventEmitter} An EventEmitter object that emits the following events:
- * - "data": Contains the processed audio and video data or metadata.
- * - "error": Emits an error message if the process fails.
- * - "progress": Emits the progress of the audio and video processing.
- * - "start": Emits the start of the audio and video processing.
- * - "end": Emits the end of the audio and video processing.
- * - "stream": Emits the stream object if the `stream` option is enabled.
- * - "metadata": Emits the metadata if the `metadata` option is enabled.
- *
- * @example
- * // 1: Download and process lowest quality audio and video with only the query and filter
- * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale" })
- *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 2: Download and process lowest quality audio and video with query, filter, and verbose output enabled
- * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", verbose: true })
- *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 3: Download and process lowest quality audio and video with query, filter, and custom output folder
- * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", output: "/path/to/folder" })
- *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 4: Stream lowest quality audio and video with query, filter, and stream enabled
- * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", stream: true })
- *   .on("stream", (streamData) => console.log("Streaming audio and video:", streamData))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 5: Download and process lowest quality audio and video with query, filter, and metadata output enabled
- * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", metadata: true })
- *   .on("metadata", (metadata) => console.log("Metadata:", metadata))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 6: Download and process lowest quality audio and video with query, filter, stream, and metadata
- * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", filter: "grayscale", stream: true, metadata: true })
- *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 7: Download and process lowest quality audio and video with all parameters (query, output, filter, stream, verbose, metadata)
- * YouTubeDLX.Audio_Video.Lowest({ query: "Song title", output: "/path/to/folder", filter: "grayscale", stream: true, verbose: true, metadata: true })
- *   .on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData))
- *   .on("error", (err) => console.error("Error:", err));
- */
 export default function AudioVideoLowest({ query, stream, verbose, output, metadata, useTor, filter }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

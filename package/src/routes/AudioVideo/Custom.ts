@@ -16,56 +16,6 @@ var ZodSchema = z.object({
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
   resolution: z.enum(["144p", "240p", "360p", "480p", "720p", "1080p", "1440p", "2160p", "3072p", "4320p", "6480p", "8640p", "12000p"]),
 });
-/**
- * Downloads and processes a custom audio and video file based on the provided parameters.
- *
- * @param {Object} options - The options for processing the audio and video file.
- * @param {string} options.query - The search query for the audio and video.
- * @param {string} [options.output] - The output folder where the file will be saved. Optional.
- * @param {boolean} [options.useTor] - Flag to use Tor for anonymity. Optional.
- * @param {boolean} [options.stream] - Flag to stream the audio and video instead of saving it. Optional.
- * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
- * @param {boolean} [options.metadata] - Flag to output metadata instead of downloading the audio and video. Optional.
- * @param {string} [options.filter] - The video filter to apply to the video file. Optional.
- * @param {"144p" | "240p" | "360p" | "480p" | "720p" | "1080p" | "1440p" | "2160p" | "3072p" | "4320p" | "6480p" | "8640p" | "12000p"} options.resolution - The resolution of the video file to download.
- *
- * @returns {EventEmitter} An EventEmitter object that emits the following events:
- * - "data": Contains the processed audio and video data or metadata.
- * - "error": Emits an error message if the process fails.
- * - "progress": Emits the progress of the audio and video processing.
- * - "start": Emits the start of the audio and video processing.
- * - "end": Emits the end of the audio and video processing.
- * - "stream": Emits the stream object if the `stream` option is enabled.
- * - "metadata": Emits the metadata if the `metadata` option is enabled.
- *
- * @example
- * // 1: Download and process audio and video with only the query, resolution, and filter
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale" }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 2: Download and process audio and video with query, resolution, filter, and verbose output enabled
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", verbose: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 3: Download and process audio and video with query, resolution, and custom output folder
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", output: "/path/to/folder" }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 4: Stream audio and video with query, resolution, and stream enabled
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", stream: true }).on("stream", (streamData) => console.log("Streaming audio and video:", streamData)).on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 5: Download and process audio and video with query, resolution, filter, and metadata output enabled
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", metadata: true }).on("metadata", (metadata) => console.log("Metadata:", metadata)).on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 6: Download and process audio and video with query, resolution, filter, stream, and metadata
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", resolution: "720p", filter: "grayscale", stream: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 7: Download and process audio and video with all parameters (query, output, filter, stream, verbose, metadata, resolution)
- * YouTubeDLX.Audio_Video.Custom({ query: "Song title", output: "/path/to/folder", resolution: "720p", filter: "grayscale", stream: true, verbose: true, metadata: true }).on("data", (audioVideoData) => console.log("Audio and video data:", audioVideoData)).on("error", (err) => console.error("Error:", err));
- */
 export default function AudioVideoCustom({ query, stream, output, useTor, filter, metadata, verbose, resolution }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

@@ -3,24 +3,18 @@ import { z, ZodError } from "zod";
 import { Client } from "youtubei";
 import { EventEmitter } from "events";
 import YouTubeID from "../../utils/YouTubeId";
-
-const ZodSchema = z.object({
-  videoLink: z.string().min(2),
-});
-
+const ZodSchema = z.object({ videoLink: z.string().min(2) });
 export interface CaptionSegment {
   utf8: string;
   tOffsetMs?: number;
   acAsrConf: number;
 }
-
 export interface VideoTranscriptType {
   text: string;
   start: number;
   duration: number;
   segments: CaptionSegment[];
 }
-
 async function getVideoTranscript({ videoId }: { videoId: string }): Promise<VideoTranscriptType[]> {
   try {
     const youtube = new Client();
@@ -41,29 +35,6 @@ async function getVideoTranscript({ videoId }: { videoId: string }): Promise<Vid
     return [];
   }
 }
-
-/**
- * Fetches the transcript (captions) for a given YouTube video based on the provided video link.
- *
- * @param {Object} options - The parameters for fetching the video transcript.
- * @param {string} options.videoLink - The URL of the YouTube video for which to fetch the transcript.
- *
- * @returns {EventEmitter} An EventEmitter object that emits the following events:
- * - "data": Contains the transcript data, including text, start time, duration, and segments.
- * - "error": Emits an error message if the video link is incorrect, if no transcript is found, or if fetching the data fails.
- *
- * @example
- * // 1: Fetch transcript data with only the video link
- * YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID" })
- *   .on("data", (transcriptData) => console.log("Transcript data:", transcriptData))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 2: Fetch transcript data with an invalid video link
- * YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=INVALID_ID" })
- *   .on("data", (transcriptData) => console.log("Transcript data:", transcriptData))
- *   .on("error", (err) => console.error("Error:", err));
- */
 export default function video_transcript({ videoLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

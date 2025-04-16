@@ -41,28 +41,6 @@ export async function singleVideo({ videoId }: { videoId: string }): Promise<sin
     return null;
   }
 }
-/**
- * Fetches detailed information about a single YouTube video based on the provided video link.
- *
- * @param {Object} options - The parameters for fetching video data.
- * @param {string} options.videoLink - The URL of the YouTube video.
- *
- * @returns {EventEmitter} An EventEmitter object that emits the following events:
- * - "data": Contains the detailed video data including ID, title, view count, duration, etc.
- * - "error": Emits an error message if the video link is incorrect or if fetching the data fails.
- *
- * @example
- * // 1: Fetch video data with only the video link
- * YouTubeDLX.Search.Video.Single({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID" })
- *   .on("data", (videoData) => console.log("Video data:", videoData))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 2: Fetch video data with an invalid video link
- * YouTubeDLX.Search.Video.Single({ videoLink: "https://www.youtube.com/watch?v=INVALID_ID" })
- *   .on("data", (videoData) => console.log("Video data:", videoData))
- *   .on("error", (err) => console.error("Error:", err));
- */
 export default function video_data({ videoLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

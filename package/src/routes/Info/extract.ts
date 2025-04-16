@@ -3,7 +3,6 @@ import { z, ZodError } from "zod";
 import Tuber from "../../utils/Agent";
 import { EventEmitter } from "events";
 import type EngineOutput from "../../interfaces/EngineOutput";
-
 function calculateUploadAgo(days: number) {
   const years = Math.floor(days / 365);
   const months = Math.floor((days % 365) / 30);
@@ -11,7 +10,6 @@ function calculateUploadAgo(days: number) {
   const formattedString = `${years > 0 ? years + " years, " : ""}${months > 0 ? months + " months, " : ""}${remainingDays} days`;
   return { years, months, days: remainingDays, formatted: formattedString };
 }
-
 function calculateVideoDuration(seconds: number) {
   const hours = Math.floor(seconds / 3600);
   const minutes = Math.floor((seconds % 3600) / 60);
@@ -19,7 +17,6 @@ function calculateVideoDuration(seconds: number) {
   const formattedString = `${hours > 0 ? hours + " hours, " : ""}${minutes > 0 ? minutes + " minutes, " : ""}${remainingSeconds} seconds`;
   return { hours, minutes, seconds: remainingSeconds, formatted: formattedString };
 }
-
 function formatCount(count: number) {
   const abbreviations = ["K", "M", "B", "T"];
   for (let i = abbreviations.length - 1; i >= 0; i--) {
@@ -31,49 +28,7 @@ function formatCount(count: number) {
   }
   return `${count}`;
 }
-
-const ZodSchema = z.object({
-  query: z.string().min(2),
-  useTor: z.boolean().optional(),
-  verbose: z.boolean().optional(),
-});
-
-/**
- * Extracts detailed information about a video from YouTube based on the provided search query.
- *
- * @param {Object} options - The parameters for extracting video information.
- * @param {string} options.query - The search query string for the video.
- * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
- * @param {boolean} [options.useTor] - Flag to use Tor for anonymity. Optional.
- *
- * @returns {EventEmitter} An EventEmitter object that emits the following events:
- * - "data": Contains the extracted video data, including metadata and other related information.
- * - "error": Emits an error message if the extraction fails.
- *
- * @example
- * // 1: Extract video data with only the query
- * YouTubeDLX.Info.Extract({ query: "Node.js tutorial" })
- *   .on("data", (videoData) => console.log("Video data:", videoData))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 2: Extract video data with verbose output enabled
- * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true })
- *   .on("data", (videoData) => console.log("Video data:", videoData))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 3: Extract video data with Tor enabled
- * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", useTor: true })
- *   .on("data", (videoData) => console.log("Video data:", videoData))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 4: Extract video data with all parameters (query, verbose, useTor)
- * YouTubeDLX.Info.Extract({ query: "Node.js tutorial", verbose: true, useTor: true })
- *   .on("data", (videoData) => console.log("Video data:", videoData))
- *   .on("error", (err) => console.error("Error:", err));
- */
+const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optional(), verbose: z.boolean().optional() });
 export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

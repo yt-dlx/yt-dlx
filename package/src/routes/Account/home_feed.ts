@@ -5,30 +5,6 @@ import TubeResponse from "../../interfaces/TubeResponse";
 import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 import sanitizeContentItem from "../../utils/sanitizeContentItem";
 const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(), sort: z.enum(["oldest", "newest", "old-to-new", "new-to-old"]).optional() });
-/**
- * Fetches the home feed for the user based on the provided parameters.
- *
- * @param {Object} options - The options for fetching the home feed.
- * @param {string} options.cookies - YouTube authentication cookies string or path to cookies file.
- * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
- * @param {"oldest" | "newest" | "old-to-new" | "new-to-old"} [options.sort] - The sorting order for the feed. Optional.
- *
- * @returns {EventEmitter} An EventEmitter object that emits the following events:
- * - "data": Contains the fetched home feed data.
- * - "error": Emits an error message if the fetching fails.
- *
- * @example
- * // 1: Fetch home feed with cookies string
- * YouTubeDLX.Account.HomeFeed({ cookies: "COOKIE_STRING" })
- *   .on("data", (feed) => console.log("Home feed:", feed))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 2: Fetch home feed with path to cookies file
- * YouTubeDLX.Account.HomeFeed({ cookies: "path/to/cookies.txt" })
- *   .on("data", (feed) => console.log("Home feed:", feed))
- *   .on("error", (err) => console.error("Error:", err));
- */
 export default function home_feed(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
