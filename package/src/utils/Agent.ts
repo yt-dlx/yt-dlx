@@ -4,7 +4,43 @@ import { Client } from "youtubei";
 import comEngine from "./comEngine";
 import { execSync } from "child_process";
 import YouTubeID from "../utils/YouTubeId";
-import { singleVideo } from "../routes/Search/video_data";
+export async function VideoInfo({ videoId }: { videoId: string }): Promise<VideoInfoType | null> {
+  try {
+    const youtube = new Client();
+    const VideoInfoData: any = await youtube.getVideo(videoId);
+    if (!VideoInfoData) throw new Error(`${colors.red("@error: ")} Unable to fetch video data for id: ${videoId}`);
+    return {
+      id: VideoInfoData.id,
+      title: VideoInfoData.title,
+      thumbnails: VideoInfoData.thumbnails,
+      uploadDate: VideoInfoData.uploadDate,
+      description: VideoInfoData.description,
+      duration: VideoInfoData.duration,
+      isLive: VideoInfoData.isLiveContent,
+      viewCount: VideoInfoData.viewCount,
+      channelid: VideoInfoData.channel?.id,
+      channelname: VideoInfoData.channel?.name,
+      tags: VideoInfoData.tags,
+      likeCount: VideoInfoData.likeCount,
+    };
+  } catch (error: any) {
+    throw new Error(`${colors.red("@error: ")} Error fetching video data: ${error.message}`);
+  }
+}
+export interface VideoInfoType {
+  id: string;
+  title: string;
+  thumbnails: string[];
+  uploadDate: string;
+  description: string;
+  duration: number;
+  isLive: boolean;
+  viewCount: number;
+  channelid: string | undefined;
+  channelname: string | undefined;
+  tags: string[] | undefined;
+  likeCount: number | undefined;
+}
 export interface searchVideosType {
   id: string;
   title: string;
@@ -16,28 +52,6 @@ export interface searchVideosType {
   channelname: string;
   description: string;
   thumbnails: string[];
-}
-export async function searchVideos({ query }: { query: string }): Promise<searchVideosType[]> {
-  try {
-    const youtube = new Client();
-    const searchResults = await youtube.search(query, { type: "video" });
-    const result: searchVideosType[] = searchResults.items.map((item: any) => ({
-      id: item.id,
-      title: item.title,
-      isLive: item.isLive,
-      duration: item.duration,
-      viewCount: item.viewCount,
-      channelid: item.channel.id,
-      thumbnails: item.thumbnails,
-      uploadDate: item.uploadDate,
-      description: item.description,
-      channelname: item.channel.name,
-    }));
-    return result;
-  } catch (error: any) {
-    console.error(colors.red("@error: ") + error.message);
-    return [];
-  }
 }
 async function systemctlAvailable(): Promise<boolean> {
   try {
@@ -81,23 +95,28 @@ async function restartTor(): Promise<boolean> {
 }
 export default async function Agent({ query, useTor, verbose, mode = "video" }: { query: string; useTor?: boolean; verbose?: boolean; mode?: "video" | "comments" }): Promise<any> {
   if (useTor && process.platform === "win32") {
-    console.log(colors.red("@error:"), "TOR can't be used on your system!");
+    console.log(colors.red("@error:"), "TOR can't be used on your system! [URGENT]: Please Contact The Developer!");
     useTor = false;
   } else if (useTor) await restartTor();
   if (verbose && useTor) console.log(colors.green("@info:"), "Using Tor for request anonymization");
   let url: string;
   const videoId: string | undefined = await YouTubeID(query);
+  const youtube = new Client();
   if (!videoId) {
-    const searchResult = await searchVideos({ query });
-    const video = searchResult[0];
-    if (!video) throw new Error("Unable to find a video!");
-    console.log(colors.green("@info:"), "preparing payload for", video.title);
-    url = `https://www.youtube.com/watch?v=${video.id}`;
+    try {
+      const searchResults = await youtube.search(query, { type: "video" });
+      if (searchResults.items.length === 0) throw new Error(`${colors.red("@error: ")} Unable to find a video for query: ${query}`);
+      const video = searchResults.items[0];
+      console.log(colors.green("@info:"), "preparing payload for", video.title);
+      url = `https://www.youtube.com/watch?v=$${video.id}`;
+    } catch (error: any) {
+      throw new Error(`${colors.red("@error: ")} Error during video search: ${error.message}`);
+    }
   } else {
-    const TubeBody = await singleVideo({ videoId });
-    if (!TubeBody) throw new Error("Unable to get response!");
+    const TubeBody = await VideoInfo({ videoId });
+    if (!TubeBody) throw new Error(`${colors.red("@error: ")} Unable to get video data for id: ${videoId}`);
     console.log(colors.green("@info:"), "preparing payload for", TubeBody.title);
-    url = `https://www.youtube.com/watch?v=${TubeBody.id}`;
+    url = `https://www.youtube.com/watch?v=$${TubeBody.id}`;
   }
   if (mode === "comments") return await comEngine({ query: url, useTor });
   else return await Engine({ query: url, useTor });
