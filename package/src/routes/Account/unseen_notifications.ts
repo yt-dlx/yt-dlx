@@ -3,12 +3,7 @@ import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
 import TubeResponse from "../../interfaces/TubeResponse";
 import TubeLogin, { TubeType } from "../../utils/TubeLogin";
-
-const ZodSchema = z.object({
-  cookies: z.string(),
-  verbose: z.boolean().optional(),
-});
-
+const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional() });
 /**
  * Fetches the count of unseen notifications for the user based on the provided parameters.
  *
