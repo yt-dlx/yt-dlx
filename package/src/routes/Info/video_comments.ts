@@ -4,11 +4,7 @@ import { z, ZodError } from "zod";
 import { Client } from "youtubei";
 import { EventEmitter } from "events";
 import { Innertube, UniversalCache } from "youtubei.js";
-const ZodSchema = z.object({
-  query: z.string().min(2),
-  verbose: z.boolean().optional(),
-  sort: z.enum(["newest", "oldest", "most-liked", "least-liked", "pinned-first", "replies-first", "longest"]).optional(),
-});
+const ZodSchema = z.object({ query: z.string().min(2), verbose: z.boolean().optional() });
 export interface CommentType {
   comment_id: string;
   is_pinned: boolean;
@@ -25,7 +21,7 @@ export interface CommentType {
   reply_count: number;
   hasReplies: boolean;
 }
-async function fetchVideoComments({ query, sort, verbose }: z.infer<typeof ZodSchema>): Promise<CommentType[]> {
+async function fetchVideoComments({ query, verbose }: z.infer<typeof ZodSchema>): Promise<CommentType[] | null> {
   try {
     if (verbose) console.log(colors.green("@info:"), `Searching for videos with query: ${query}`);
     const youtubeClient = new Client();
@@ -33,7 +29,7 @@ async function fetchVideoComments({ query, sort, verbose }: z.infer<typeof ZodSc
     const video = searchResults.items[0];
     if (!video || !video.id) {
       if (verbose) console.log(colors.red("@error:"), "No videos found for the given query");
-      return [];
+      return null;
     }
     const videoId = video.id;
     if (verbose) console.log(colors.green("@info:"), `Fetching comments for video ID: ${videoId}`);
@@ -64,58 +60,38 @@ async function fetchVideoComments({ query, sort, verbose }: z.infer<typeof ZodSc
         } as CommentType;
       })
       .filter((item): item is CommentType => item !== null);
-    switch (sort) {
-      case "newest":
-        comments.sort((a, b) => new Date(b.published_time).getTime() - new Date(a.published_time).getTime());
-        break;
-      case "oldest":
-        comments.sort((a, b) => new Date(a.published_time).getTime() - new Date(b.published_time).getTime());
-        break;
-      case "most-liked":
-        comments.sort((a, b) => b.like_count - a.like_count);
-        break;
-      case "least-liked":
-        comments.sort((a, b) => a.like_count - b.like_count);
-        break;
-      case "pinned-first":
-        comments.sort((a, b) => (b.is_pinned ? 1 : 0) - (a.is_pinned ? 1 : 0));
-        break;
-      case "replies-first":
-        comments.sort((a, b) => (b.hasReplies ? 1 : 0) - (a.hasReplies ? 1 : 0));
-        break;
-      case "longest":
-        comments.sort((a, b) => b.comment.length - a.comment.length);
-        break;
+    if (comments.length === 0) {
+      if (verbose) console.log(colors.red("@error:"), "No comments found for the video");
+      return null;
     }
     if (verbose) console.log(colors.green("@info:"), "Video comments fetched!");
     return comments;
   } catch (error: any) {
     console.error(colors.red("@error: ") + error.message);
-    return [];
+    return null;
   }
 }
 /**
- * Fetches comments for a YouTube video based on a search query.
+ * Fetches all comments for a YouTube video based on a search query.
  *
  * @param {Object} options - The parameters for fetching comments.
  * @param {string} options.query - The search query to find a video (minimum 2 characters).
- * @param {"newest" | "oldest" | "most-liked" | "least-liked" | "pinned-first" | "replies-first" | "longest"} [options.sort] - The sorting order for the comments. Optional.
  * @param {boolean} [options.verbose] - Flag to enable verbose output. Optional.
  *
  * @returns {EventEmitter} An EventEmitter object that emits the following events:
- * - "data": Contains the list of comments with details such as comment ID, text, author, like count, and more.
+ * - "data": Contains the list of all comments with details such as comment ID, text, author, like count, and more.
  * - "error": Emits an error message if no videos or comments are found or if fetching the data fails.
  *
  * @example
- * // 1: Fetch comments for a video found by query, sorted by newest
- * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", sort: "newest" })
- *   .on("data", (comments) => console.log("Comments found:", comments))
+ * // 1: Fetch all comments for a video found by query
+ * YouTubeDLX.Info.Comments({ query: "Node.js tutorial" })
+ *   .on("data", (comments) => console.log("All comments:", comments))
  *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // 2: Fetch comments with verbose output
+ * // 2: Fetch all comments with verbose output
  * YouTubeDLX.Info.Comments({ query: "Node.js tutorial", verbose: true })
- *   .on("data", (comments) => console.log("Comments found:", comments))
+ *   .on("data", (comments) => console.log("All comments:", comments))
  *   .on("error", (err) => console.error("Error:", err));
  */
 export default function video_comments(options: z.infer<typeof ZodSchema>): EventEmitter {
@@ -123,9 +99,9 @@ export default function video_comments(options: z.infer<typeof ZodSchema>): Even
   (async () => {
     try {
       ZodSchema.parse(options);
-      const { query, sort, verbose } = options;
-      const comments = await fetchVideoComments({ query, sort, verbose });
-      if (!comments || comments.length === 0) {
+      const { query, verbose } = options;
+      const comments = await fetchVideoComments({ query, verbose });
+      if (!comments) {
         emitter.emit("error", colors.red("@error: ") + "No videos or comments found for the query");
         return;
       }
