@@ -15,16 +15,6 @@ const ZodSchema = z.object({
   metadata: z.boolean().optional(),
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
-/**
- * query: Always needed
- * output:
- * useTor:
- * stream:
- * verbose:
- * metadata:
- * resolution:
- * filter:
- */
 export default function AudioHighest({ query, output, useTor, stream, filter, metadata, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

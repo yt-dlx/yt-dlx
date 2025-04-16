@@ -15,16 +15,6 @@ var ZodSchema = z.object({
   metadata: z.boolean().optional(),
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
-/**
- * query: Always needed
- * output:
- * useTor:
- * stream:
- * verbose:
- * metadata:
- * resolution:
- * filter:
- */
 export default function VideoLowest({ query, stream, verbose, output, metadata, useTor, filter }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
