@@ -71,6 +71,29 @@ async function fetchVideoComments({ query, verbose }: z.infer<typeof ZodSchema>)
     return null;
   }
 }
+/**
+ * Fetches the comments for a Tube (e.g., YouTube) video based on a search query.
+ *
+ * @param {object} options - An object containing the necessary options.
+ * @param {string} options.query - The URL or search query for the video. The function will search for the first video matching the query and retrieve its comments.
+ * @param {boolean} [options.verbose=false] - If true, enables verbose logging to the console.
+ *
+ * @returns {EventEmitter} An EventEmitter that emits the following events:
+ * - "data": Emitted with an array of comment objects. Each object contains details like the comment text, author, publish time, like count, and more.
+ * - "error": Emitted if there is an error during the process, such as no videos found for the query or issues fetching comments.
+ *
+ * @example
+ * // 1: Fetch comments for a video based on a search query
+ * YouTubeDLX.VideoComments({ query: "most recent music video" })
+ * .on("data", (comments) => console.log("Comments:", comments))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 2: Fetch comments for a video with verbose logging
+ * YouTubeDLX.VideoComments({ query: "tutorial video", verbose: true })
+ * .on("data", (comments) => console.log("Comments:", comments))
+ * .on("error", (err) => console.error("Error:", err));
+ */
 export default function video_comments(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

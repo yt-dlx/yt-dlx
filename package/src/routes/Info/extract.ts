@@ -29,6 +29,54 @@ function formatCount(count: number) {
   return `${count}`;
 }
 const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optional(), verbose: z.boolean().optional() });
+/**
+ * Extracts metadata and available download formats for a given Tube (e.g., YouTube) video query.
+ *
+ * @param {object} options - An object containing the necessary options.
+ * @param {string} options.query - The URL or search query for the video.
+ * @param {boolean} [options.useTor=false] - If true, uses the Tor network for the request.
+ * @param {boolean} [options.verbose=false] - If true, enables verbose logging to the console.
+ *
+ * @returns {EventEmitter} An EventEmitter that emits the following events:
+ * - "data": Emitted with the extracted metadata and format information. The data is an object containing various audio and video format URLs, along with detailed metadata about the video.
+ * - "error": Emitted if there is an error during the process.
+ *
+ * @example
+ * // 1: Extract metadata for a given video query
+ * YouTubeDLX.Extract({ query: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" })
+ * .on("data", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 2: Extract metadata for a search query
+ * YouTubeDLX.Extract({ query: "video title" })
+ * .on("data", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 3: Extract metadata using Tor
+ * YouTubeDLX.Extract({ query: "video url", useTor: true })
+ * .on("data", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 4: Extract metadata with verbose logging
+ * YouTubeDLX.Extract({ query: "another query", verbose: true })
+ * .on("data", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 5: Extract metadata using Tor with verbose logging
+ * YouTubeDLX.Extract({ query: "yet another video", useTor: true, verbose: true })
+ * .on("data", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 6: Extract metadata for a short query (should still work if the engine handles it)
+ * YouTubeDLX.Extract({ query: "short" })
+ * .on("data", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ */
 export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

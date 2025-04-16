@@ -25,6 +25,28 @@ async function playlistVideos({ playlistId }: { playlistId: string }, emitter: E
     return null;
   }
 }
+/**
+ * Fetches data for a given Tube (e.g., YouTube) channel link.
+ *
+ * @param {object} options - An object containing the necessary options.
+ * @param {string} options.channelLink - The URL of the YouTube channel.
+ *
+ * @returns {EventEmitter} An EventEmitter that emits the following events:
+ * - "data": Emitted with the channel data object, which includes information like channel title, description, subscriber count, and thumbnails.
+ * - "error": Emitted if there is an error during the process, such as an incorrect channel link or if the data cannot be retrieved.
+ *
+ * @example
+ * // Fetch data for a YouTube channel
+ * YouTubeDLX.ChannelData({ channelLink: "https://www.youtube.com/@Google" })
+ * .on("data", (channelInfo) => console.log("Channel Data:", channelInfo))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // Example with invalid channel link
+ * YouTubeDLX.ChannelData({ channelLink: "invalid_link" })
+ * .on("data", (channelInfo) => console.log("Channel Data:", channelInfo))
+ * .on("error", (err) => console.error("Error:", err));
+ */
 export default function playlist_data({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

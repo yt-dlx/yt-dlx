@@ -35,6 +35,22 @@ async function getVideoTranscript({ videoId }: { videoId: string }, emitter: Eve
     return [];
   }
 }
+/**
+ * Fetches the transcript for a given Tube (e.g., YouTube) video link.
+ *
+ * @param {object} options - An object containing the necessary options.
+ * @param {string} options.videoLink - The URL of the YouTube video.
+ *
+ * @returns {EventEmitter} An EventEmitter that emits the following events:
+ * - "data": Emitted with an array of transcript objects. Each object contains the text, start time (in seconds), duration (in seconds), and segments of a caption.
+ * - "error": Emitted if there is an error during the process, such as an incorrect video link or if the transcript cannot be retrieved.
+ *
+ * @example
+ * // Fetch the transcript for a YouTube video
+ * YouTubeDLX.VideoTranscript({ videoLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" })
+ * .on("data", (transcript) => console.log("Transcript:", transcript))
+ * .on("error", (err) => console.error("Error:", err));
+ */
 export default function video_transcript({ videoLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
