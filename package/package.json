@@ -50,7 +50,6 @@
     "typescript": "^5.8.2"
   },
   "scripts": {
-    "docs": "typedoc .",
     "make": "yarn install --frozen-lockfile",
     "prepublishOnly": "rimraf pkg && yarn build",
     "test": "yarn build && node pkg/cjs/src/spec/quick.spec.js",
