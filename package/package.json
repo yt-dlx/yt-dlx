@@ -5,7 +5,10 @@
   "main": "pkg/cjs/src/index.js",
   "types": "pkg/types/index.d.ts",
   "module": "pkg/esm/src/index.js",
-  "author": "shovitdutta <shovitdutta1@gmail.com>",
+  "author": {
+    "name": "Shovit Dutta",
+    "email": "shovitdutta1@gmail.com"
+  },
   "description": "Effortless Audio-Video Downloader And Streamer!",
   "repository": {
     "type": "git",
