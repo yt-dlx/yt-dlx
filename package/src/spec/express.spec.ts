@@ -160,7 +160,7 @@ server.get("/api/Info/Live", async (req: any, res) => {
 });
 server.get("/api/Info/Comments", async (req: any, res) => {
   try {
-    const options = { query: req.query.query, verbose: req.query.verbose, filter: req.query.filter };
+    const options = { query: req.query.query, verbose: req.query.verbose };
     const emitter = YouTubeDLX.Info.Comments(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
