@@ -1,16 +1,17 @@
 ==========[ Requirements ]==========
+Confirm your understanding by responding with "Yes, I understood."
 Please adhere to the following specifications:
+
 1. I will provide a code snippet from the yt-dlx package.
 4. Provide the code samples with detailed inline comments explaining functionality and configuration.
 2. Based on the provided code, generate detailed usage examples in TypeScript, ECMAScript, and CommonJS environments.
 3. Each example should demonstrate multiple methods of utilizing the code, showcasing different configurations and use cases.
-5. The examples must cover the following environments:
-   - TypeScript-Express
-   - TypeScript-Node.js
-   - ECMAScript-Express
-   - ECMAScript-Node.js
-   - CommonJS-Express
-   - CommonJS-Node.js
-
-
-==========[ Original Code ]==========
+4. Use import YouTubeDLX from "yt-dlx" 
+5. Use the correct YouTubeDLX.importname from the original code's tsdoc 
+6. The examples must cover the following environments:
+   - TypeScript | (Express)
+   - TypeScript | (Node.js)
+   - ECMAScript | (Express)
+   - ECMAScript | (Node.js)
+   - CommonJS | (Express)
+   - CommonJS | (Node.js)
