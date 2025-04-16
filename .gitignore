@@ -6,3 +6,4 @@ ffmpeg.**
 ffprobe_**
 cprobe_**
 ffmpeg_**
+.env
