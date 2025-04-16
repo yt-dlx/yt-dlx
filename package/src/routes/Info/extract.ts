@@ -3,6 +3,7 @@ import { z, ZodError } from "zod";
 import Tuber from "../../utils/Agent";
 import { EventEmitter } from "events";
 import type EngineOutput from "../../interfaces/EngineOutput";
+const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optional(), verbose: z.boolean().optional() });
 function calculateUploadAgo(days: number) {
   const years = Math.floor(days / 365);
   const months = Math.floor((days % 365) / 30);
@@ -28,53 +29,47 @@ function formatCount(count: number) {
   }
   return `${count}`;
 }
-const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optional(), verbose: z.boolean().optional() });
+
 /**
- * Extracts metadata and available download formats for a given Tube (e.g., YouTube) video query.
+ * Extracts detailed metadata and available formats for a video based on a query.
  *
- * @param {object} options - An object containing the necessary options.
- * @param {string} options.query - The URL or search query for the video.
- * @param {boolean} [options.useTor=false] - If true, uses the Tor network for the request.
- * @param {boolean} [options.verbose=false] - If true, enables verbose logging to the console.
+ * This function uses a search query to find a video and then retrieves comprehensive information,
+ * including various audio and video formats, metadata like title, uploader, view count, and formatted durations.
+ * It supports optional verbose logging and the use of Tor for anonymous requests.
  *
- * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - "data": Emitted with the extracted metadata and format information. The data is an object containing various audio and video format URLs, along with detailed metadata about the video.
- * - "error": Emitted if there is an error during the process.
+ * @param {object} options - An object containing the configuration options for extracting video information.
+ * @param {string} options.query - The search query string (minimum 2 characters) to find the desired video. This is a mandatory parameter.
+ * @param {boolean} [options.verbose=false] - An optional boolean value that, if set to `true`, enables verbose logging to the console, providing more detailed information about the process.
+ * @param {boolean} [options.useTor=false] - An optional boolean value that, if set to `true`, will route the network request through the Tor network.
+ * This can help in anonymizing your request. Requires Tor to be running on your system.
+ *
+ * @returns {EventEmitter} An EventEmitter instance that emits events during the extraction process.
+ * The following events can be listened to:
+ * - `"data"`: Emitted when the video metadata and format information are successfully extracted and processed. The data is an object containing various details about the video.
+ * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, network requests, or metadata parsing. The emitted data is the error message or object.
  *
  * @example
- * // 1: Extract metadata for a given video query
- * YouTubeDLX.Extract({ query: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" })
- * .on("data", (data) => console.log("Metadata:", data))
+ * // 1: Extract metadata for a video using a query.
+ * YouTubeDLX.extract({ query: "interesting documentary" })
+ * .on("data", (data) => console.log("Video Info:", data))
  * .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // 2: Extract metadata for a search query
- * YouTubeDLX.Extract({ query: "video title" })
- * .on("data", (data) => console.log("Metadata:", data))
+ * // 2: Extract metadata for a video with verbose logging.
+ * YouTubeDLX.extract({ query: "funny cats video", verbose: true })
+ * .on("data", (data) => console.log("Video Info (Verbose):", data))
  * .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // 3: Extract metadata using Tor
- * YouTubeDLX.Extract({ query: "video url", useTor: true })
- * .on("data", (data) => console.log("Metadata:", data))
+ * // 3: Extract metadata for a video using Tor for anonymity.
+ * YouTubeDLX.extract({ query: "private lecture", useTor: true })
+ * .on("data", (data) => console.log("Video Info (Tor):", data))
  * .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // 4: Extract metadata with verbose logging
- * YouTubeDLX.Extract({ query: "another query", verbose: true })
- * .on("data", (data) => console.log("Metadata:", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 5: Extract metadata using Tor with verbose logging
- * YouTubeDLX.Extract({ query: "yet another video", useTor: true, verbose: true })
- * .on("data", (data) => console.log("Metadata:", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 6: Extract metadata for a short query (should still work if the engine handles it)
- * YouTubeDLX.Extract({ query: "short" })
- * .on("data", (data) => console.log("Metadata:", data))
+ * // 4: Extract metadata for a video with verbose logging and using Tor.
+ * YouTubeDLX.extract({ query: "rare footage", verbose: true, useTor: true })
+ * .on("data", (data) => console.log("Video Info (Verbose + Tor):", data))
  * .on("error", (err) => console.error("Error:", err));
  */
 export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSchema>): EventEmitter {

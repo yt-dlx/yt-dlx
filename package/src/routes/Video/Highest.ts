@@ -15,6 +15,167 @@ var ZodSchema = z.object({
   metadata: z.boolean().optional(),
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
+
+/**
+ * Fetches and processes video from a specified query at the highest available quality with optional video filters.
+ *
+ * This function allows you to search for video content, download or stream it at the highest available quality,
+ * apply video filters, save it to a file, or retrieve metadata.
+ * It utilizes `ffmpeg` for processing and supports optional Tor usage for enhanced privacy.
+ *
+ * @param {object} options - An object containing the configuration options for fetching and processing video.
+ * @param {string} options.query - The search query string (minimum 2 characters) to find the desired video. This is a mandatory parameter.
+ * @param {boolean} [options.stream=false] - An optional boolean value that, if set to `true`, will enable streaming of the video.
+ * When streaming is enabled, the `output` parameter can be used to specify the save location.
+ * This option cannot be used when `metadata` is `true`.
+ * @param {boolean} [options.verbose=false] - An optional boolean value that, if set to `true`, enables verbose logging to the console, providing more detailed information about the process.
+ * @param {string} [options.output] - An optional string specifying the directory path where the downloaded video file should be saved.
+ * This parameter is only applicable when the `stream` option is set to `true` and `metadata` is `false`.
+ * If not provided, the video file will be saved in the current working directory.
+ * @param {boolean} [options.metadata=false] - An optional boolean value that, if set to `true`, will only fetch and emit metadata about the video, without downloading or processing it.
+ * This option cannot be used with `stream`, `output`, or `filter`.
+ * @param {boolean} [options.useTor=false] - An optional boolean value that, if set to `true`, will route the network request through the Tor network.
+ * This can help in anonymizing your request. Requires Tor to be running on your system.
+ * @param {("invert" | "rotate90" | "rotate270" | "grayscale" | "rotate180" | "flipVertical" | "flipHorizontal")} [options.filter] - An optional string specifying a video filter to apply during processing.
+ * This parameter is only applicable when `stream` is `true` and `metadata` is `false`. Available filters include:
+ * - `"invert"`: Inverts the colors of the video.
+ * - `"rotate90"`: Rotates the video by 90 degrees clockwise.
+ * - `"rotate270"`: Rotates the video by 270 degrees clockwise.
+ * - `"grayscale"`: Converts the video to grayscale.
+ * - `"rotate180"`: Rotates the video by 180 degrees.
+ * - `"flipVertical"`: Flips the video vertically.
+ * - `"flipHorizontal"`: Flips the video horizontally.
+ *
+ * @returns {EventEmitter} An EventEmitter instance that emits events during the video processing.
+ * The following events can be listened to:
+ * - `"progress"`: Emitted with progress information during the download and processing of the video. The data is an object containing progress details.
+ * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, network requests, or FFmpeg operations. The emitted data is the error message or object.
+ * - `"start"`: Emitted when the FFmpeg processing starts. The emitted data is the FFmpeg start command string.
+ * - `"end"`: Emitted when the FFmpeg processing successfully completes. The emitted data is the filename of the processed video file.
+ * - `"stream"`: Emitted when streaming is enabled (`stream: true` and `metadata: false`). The emitted data is an object with the following structure:
+ * ```typescript
+ * {
+ * filename: string; // The full path to the output file
+ * ffmpeg: ffmpeg.FfmpegCommand; // The FFmpeg command instance
+ * }
+ * ```
+ * - `"metadata"`: Emitted when only metadata is requested (`metadata: true`). The emitted data is an object containing various metadata about the video.
+ *
+ * @example
+ * // 1: Get metadata for a video at the highest quality
+ * YouTubeDLX.VideoHighest({ query: "high quality nature video", metadata: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 2: Get metadata for a video at the highest quality with verbose logging
+ * YouTubeDLX.VideoHighest({ query: "best quality movie trailer", metadata: true, verbose: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 3: Get metadata for a video at the highest quality using Tor
+ * YouTubeDLX.VideoHighest({ query: "private high quality video", metadata: true, useTor: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 4: Stream a video at the highest quality
+ * YouTubeDLX.VideoHighest({ query: "high definition concert", stream: true })
+ * .on("stream", (streamData) => console.log("Streaming to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 5: Stream a video at the highest quality to a specific output directory
+ * YouTubeDLX.VideoHighest({ query: "ultra hd documentary", stream: true, output: "/path/to/save" })
+ * .on("stream", (streamData) => console.log("Streaming to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 6: Stream a video at the highest quality with verbose logging
+ * YouTubeDLX.VideoHighest({ query: "high quality tutorial", stream: true, verbose: true })
+ * .on("stream", (streamData) => console.log("Streaming to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 7: Stream a video at the highest quality using Tor
+ * YouTubeDLX.VideoHighest({ query: "anonymous high quality video", stream: true, useTor: true })
+ * .on("stream", (streamData) => console.log("Streaming via Tor to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 8: Stream a video at the highest quality with the "grayscale" filter
+ * YouTubeDLX.VideoHighest({ query: "black and white high quality", stream: true, filter: "grayscale" })
+ * .on("stream", (streamData) => console.log("Streaming with grayscale filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 9: Stream a video at the highest quality with the "invert" filter
+ * YouTubeDLX.VideoHighest({ query: "inverted colors high quality", stream: true, filter: "invert" })
+ * .on("stream", (streamData) => console.log("Streaming with invert filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 10: Stream a video at the highest quality with output directory "/tmp/highest_videos"
+ * YouTubeDLX.VideoHighest({ query: "temporary high quality video", stream: true, output: "/tmp/highest_videos" })
+ * .on("stream", (streamData) => console.log("Streaming to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 11: Stream a video at the highest quality using Tor and verbose logging
+ * YouTubeDLX.VideoHighest({ query: "anonymous high quality stream", stream: true, useTor: true, verbose: true })
+ * .on("stream", (streamData) => console.log("Streaming via Tor to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 12: Stream a video at the highest quality with the "rotate90" filter and output directory "./rotated_highest"
+ * YouTubeDLX.VideoHighest({ query: "vertical high quality video", stream: true, filter: "rotate90", output: "./rotated_highest" })
+ * .on("stream", (streamData) => console.log("Streaming with rotate90 filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 13: Stream a video at the highest quality with all optional parameters
+ * YouTubeDLX.VideoHighest({ query: "filtered anonymous high quality", stream: true, useTor: true, filter: "flipHorizontal", output: "./flipped_highest", verbose: true })
+ * .on("stream", (streamData) => console.log("Streaming with flipHorizontal filter via Tor to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 14: Get metadata for a video at the highest quality with verbose logging and Tor
+ * YouTubeDLX.VideoHighest({ query: "metadata high quality", metadata: true, verbose: true, useTor: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 15: Stream a video at the highest quality with the "rotate270" filter
+ * YouTubeDLX.VideoHighest({ query: "rotate 270 high quality", stream: true, filter: "rotate270" })
+ * .on("stream", (streamData) => console.log("Streaming with rotate270 filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 16: Stream a video at the highest quality with the "rotate180" filter
+ * YouTubeDLX.VideoHighest({ query: "rotate 180 high quality", stream: true, filter: "rotate180" })
+ * .on("stream", (streamData) => console.log("Streaming with rotate180 filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 17: Stream a video at the highest quality with the "flipVertical" filter
+ * YouTubeDLX.VideoHighest({ query: "flip vertical high quality", stream: true, filter: "flipVertical" })
+ * .on("stream", (streamData) => console.log("Streaming with flipVertical filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ */
 export default function VideoHighest({ query, stream, verbose, output, metadata, useTor, filter }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {

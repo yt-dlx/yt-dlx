@@ -28,20 +28,24 @@ async function searchChannels({ query }: { query: string }): Promise<channelSear
   }
 }
 /**
- * Searches for Tube (e.g., YouTube) channels based on a given query.
+ * Searches for YouTube channels based on a query.
  *
- * @param {object} options - An object containing the necessary options.
- * @param {string} options.query - The search query to find channels.
+ * @param {object} options - Options for searching channels.
+ * @param {string} options.query - The search query for channels.
  *
- * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - "data": Emitted with an array of channel objects. Each object contains details like the channel ID, name, subscriber count, description, and thumbnails.
- * - "error": Emitted if there is an error during the process, such as no channels found for the query.
+ * @returns {EventEmitter} Emits 'data' with an array of channels or 'error'.
  *
  * @example
- * // Search for YouTube channels with the query "programming tutorials"
- * YouTubeDLX.SearchChannels({ query: "programming tutorials" })
- * .on("data", (channels) => console.log("Found channels:", channels))
- * .on("error", (err) => console.error("Error:", err));
+ * // Search for YouTube channels.
+ * YouTubeDLX.search_channels({ query: "technology" })
+ * .on("data", (channels) => console.log("Channels:", channels))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // Handle the case where no channels are found.
+ * YouTubeDLX.search_channels({ query: "nonexistentquerythatshouldreturnnothing" })
+ * .on("data", (channels) => console.log("Channels:", channels))
+ * .on("error", (error) => console.error("Error:", error));
  */
 export default function search_channels({ query }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

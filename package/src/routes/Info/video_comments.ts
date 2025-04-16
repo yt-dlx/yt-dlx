@@ -72,27 +72,25 @@ async function fetchVideoComments({ query, verbose }: z.infer<typeof ZodSchema>)
   }
 }
 /**
- * Fetches the comments for a Tube (e.g., YouTube) video based on a search query.
+ * Fetches comments for a YouTube video.
  *
- * @param {object} options - An object containing the necessary options.
- * @param {string} options.query - The URL or search query for the video. The function will search for the first video matching the query and retrieve its comments.
- * @param {boolean} [options.verbose=false] - If true, enables verbose logging to the console.
+ * @param {object} options - Options for fetching comments.
+ * @param {string} options.query - Video search query.
+ * @param {boolean} [options.verbose=false] - Enable verbose logging.
  *
- * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - "data": Emitted with an array of comment objects. Each object contains details like the comment text, author, publish time, like count, and more.
- * - "error": Emitted if there is an error during the process, such as no videos found for the query or issues fetching comments.
+ * @returns {EventEmitter} Emits 'data' with an array of comments or 'error'.
  *
  * @example
- * // 1: Fetch comments for a video based on a search query
- * YouTubeDLX.VideoComments({ query: "most recent music video" })
+ * // Fetch comments for a video.
+ * YouTubeDLX.video_comments({ query: "trending video" })
  * .on("data", (comments) => console.log("Comments:", comments))
- * .on("error", (err) => console.error("Error:", err));
+ * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 2: Fetch comments for a video with verbose logging
- * YouTubeDLX.VideoComments({ query: "tutorial video", verbose: true })
+ * // Fetch comments with verbose logging.
+ * YouTubeDLX.video_comments({ query: "funny compilation", verbose: true })
  * .on("data", (comments) => console.log("Comments:", comments))
- * .on("error", (err) => console.error("Error:", err));
+ * .on("error", (error) => console.error("Error:", error));
  */
 export default function video_comments(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

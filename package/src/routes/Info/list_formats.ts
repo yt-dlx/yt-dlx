@@ -5,26 +5,31 @@ import { EventEmitter } from "events";
 import type EngineOutput from "../../interfaces/EngineOutput";
 const ZodSchema = z.object({ query: z.string().min(2), verbose: z.boolean().optional() });
 /**
- * Lists the available download formats for a given Tube (e.g., YouTube) video query.
+ * Lists available formats for a video based on a query.
  *
- * @param {object} options - An object containing the necessary options.
- * @param {string} options.query - The URL or search query for the video.
- * @param {boolean} [options.verbose=false] - If true, enables verbose logging to the console.
+ * This function uses a search query to find a video and then retrieves a list of available audio and video formats,
+ * including information about manifests, audio quality, video quality, and HDR options.
+ * It supports optional verbose logging.
  *
- * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - "data": Emitted with an object containing arrays of available formats for different media types (Manifest, Audio, Video) and qualities (Low, High, DRC, HDR). Each item in the arrays includes format-specific information like format name and bitrate or filesize.
- * - "error": Emitted if there is an error during the process.
+ * @param {object} options - An object containing the configuration options for listing video formats.
+ * @param {string} options.query - The search query string (minimum 2 characters) to find the desired video. This is a mandatory parameter.
+ * @param {boolean} [options.verbose=false] - An optional boolean value that, if set to `true`, enables verbose logging to the console, providing more detailed information about the process.
+ *
+ * @returns {EventEmitter} An EventEmitter instance that emits events during the format listing process.
+ * The following events can be listened to:
+ * - `"data"`: Emitted when the list of available formats is successfully retrieved. The data is an object containing arrays of format information for different categories (ManifestLow, ManifestHigh, AudioLow, VideoLow, VideoHigh, AudioHigh, VideoLowHDR, AudioLowDRC, AudioHighDRC, VideoHighHDR). Each item in the arrays provides details about the format (e.g., format, tbr for manifests; filesizeP, format_note for audio/video).
+ * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation or network requests. The emitted data is the error message or object.
  *
  * @example
- * // 1: List available formats for a video URL
- * YouTubeDLX.ListFormats({ query: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" })
- * .on("data", (formats) => console.log("Available formats:", formats))
+ * // 1: List available formats for a video using a query.
+ * YouTubeDLX.list_formats({ query: "high quality music video" })
+ * .on("data", (data) => console.log("Available Formats:", data))
  * .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // 2: List available formats for a search query with verbose logging
- * YouTubeDLX.ListFormats({ query: "funny cats video", verbose: true })
- * .on("data", (formats) => console.log("Available formats:", formats))
+ * // 2: List available formats for a video with verbose logging.
+ * YouTubeDLX.list_formats({ query: "4k nature documentary", verbose: true })
+ * .on("data", (data) => console.log("Available Formats (Verbose):", data))
  * .on("error", (err) => console.error("Error:", err));
  */
 export default function list_formats({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {

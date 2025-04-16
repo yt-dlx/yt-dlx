@@ -33,20 +33,24 @@ async function relatedVideos({ videoId }: { videoId: string }, emitter: EventEmi
   }
 }
 /**
- * Fetches a list of related videos for a given Tube (e.g., YouTube) video ID.
+ * Fetches related videos for a given video ID.
  *
- * @param {object} options - An object containing the necessary options.
+ * @param {object} options - Options for fetching related videos.
  * @param {string} options.videoId - The ID of the YouTube video.
  *
- * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - "data": Emitted with an array of related video objects. Each object contains details like the video ID, title, live status, duration, upload date, and thumbnails.
- * - "error": Emitted if there is an error during the process, such as an invalid video ID or if related videos cannot be retrieved.
+ * @returns {EventEmitter} Emits 'data' with an array of related videos or 'error'.
  *
  * @example
- * // Fetch related videos for a YouTube video ID
- * YouTubeDLX.RelatedVideos({ videoId: "dQw4w9WgXcQ" })
+ * // Fetch related videos for a given video ID.
+ * YouTubeDLX.related_videos({ videoId: "dQw4w9WgXcQ" })
  * .on("data", (relatedVideos) => console.log("Related Videos:", relatedVideos))
- * .on("error", (err) => console.error("Error:", err));
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // Handle the case where no related videos are found.
+ * YouTubeDLX.related_videos({ videoId: "invalidVideoId" })
+ * .on("data", (relatedVideos) => console.log("Related Videos:", relatedVideos))
+ * .on("error", (error) => console.error("Error:", error));
  */
 export default function related_videos({ videoId }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

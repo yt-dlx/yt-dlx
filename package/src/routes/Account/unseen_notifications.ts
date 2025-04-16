@@ -4,48 +4,40 @@ import { EventEmitter } from "events";
 import TubeResponse from "../../interfaces/TubeResponse";
 import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional() });
+
 /**
- * Fetches the count of unseen notifications from Tube (e.g., YouTube).
+ * Fetches the count of unseen notifications for a user.
  *
- * @param {object} options - An object containing the necessary options.
- * @param {string} options.cookies - The cookie string or path to the cookies file required for authentication.
- * @param {boolean} [options.verbose=false] - If true, enables verbose logging to the console.
+ * This function requires valid cookies to authenticate and retrieve the number of unseen notifications.
+ * It supports optional verbose logging.
  *
- * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - "data": Emitted with the fetched count of unseen notifications. The data is an object with the structure:
+ * @param {object} options - An object containing the configuration options for fetching unseen notifications.
+ * @param {string} options.cookies - The user's cookies as a string. This is a mandatory parameter for authentication.
+ * @param {boolean} [options.verbose=false] - An optional boolean value that, if set to `true`, enables verbose logging to the console, providing more detailed information about the process.
+ *
+ * @returns {EventEmitter} An EventEmitter instance that emits events during the notification fetching process.
+ * The following events can be listened to:
+ * - `"data"`: Emitted when the count of unseen notifications is successfully fetched. The data is an object with the following structure:
  * ```typescript
  * {
- * status: "success" | "error",
- * data?: {
- * count: number;
+ * status: "success";
+ * data: {
+ * count: number; // The number of unseen notifications
  * };
- * error?: any;
  * }
  * ```
- * - "error": Emitted if there is an error during the process, with an error message or object.
+ * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, cookie initialization, or network requests. The emitted data is the error message or object.
  *
  * @example
- * // 1: Fetch unseen notifications count with cookies string
- * YouTubeDLX.Account.UnseenNotifications({ cookies: "COOKIE_STRING" })
- * .on("data", (data) => console.log("Unseen notifications count:", data.data.count))
+ * // 1: Fetch the count of unseen notifications with provided cookies.
+ * YouTubeDLX.unseen_notifications({ cookies: "YOUR_COOKIES_HERE" })
+ * .on("data", (data) => console.log("Unseen Notifications Count:", data))
  * .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // 2: Fetch unseen notifications count with path to cookies file
- * YouTubeDLX.Account.UnseenNotifications({ cookies: "path/to/cookies.txt" })
- * .on("data", (data) => console.log("Unseen notifications count:", data.data.count))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 3: Fetch unseen notifications count with verbose logging
- * YouTubeDLX.Account.UnseenNotifications({ cookies: "COOKIE_STRING", verbose: true })
- * .on("data", (data) => console.log("Unseen notifications count:", data.data.count))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 4: Fetch unseen notifications count from cookies file with verbose logging
- * YouTubeDLX.Account.UnseenNotifications({ cookies: "path/to/cookies.txt", verbose: true })
- * .on("data", (data) => console.log("Unseen notifications count:", data.data.count))
+ * // 2: Fetch the count of unseen notifications with verbose logging.
+ * YouTubeDLX.unseen_notifications({ cookies: "YOUR_COOKIES_HERE", verbose: true })
+ * .on("data", (data) => console.log("Unseen Notifications Count (Verbose):", data))
  * .on("error", (err) => console.error("Error:", err));
  */
 export default function unseen_notifications(options: z.infer<typeof ZodSchema>): EventEmitter {

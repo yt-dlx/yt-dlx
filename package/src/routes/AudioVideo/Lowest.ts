@@ -15,6 +15,195 @@ const ZodSchema = z.object({
   metadata: z.boolean().optional(),
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
+
+/**
+ * Fetches and processes video and audio from a specified query at the lowest available quality with optional video filters.
+ *
+ * This function allows you to search for video content, download or stream it with the lowest available quality,
+ * apply video filters, save it to a file, or retrieve metadata.
+ * It utilizes `ffmpeg` for processing and supports optional Tor usage for enhanced privacy.
+ *
+ * @param {object} options - An object containing the configuration options for fetching and processing video.
+ * @param {string} options.query - The search query string (minimum 2 characters) to find the desired video. This is a mandatory parameter.
+ * @param {boolean} [options.stream=false] - An optional boolean value that, if set to `true`, will enable streaming of the video.
+ * When streaming is enabled, the `output` parameter can be used to specify the save location.
+ * This option cannot be used when `metadata` is `true`.
+ * @param {boolean} [options.verbose=false] - An optional boolean value that, if set to `true`, enables verbose logging to the console, providing more detailed information about the process.
+ * @param {string} [options.output] - An optional string specifying the directory path where the downloaded video file should be saved.
+ * This parameter is only applicable when the `stream` option is set to `true` and `metadata` is `false`.
+ * If not provided, the video file will be saved in the current working directory.
+ * @param {boolean} [options.metadata=false] - An optional boolean value that, if set to `true`, will only fetch and emit metadata about the video, without downloading or processing it.
+ * This option cannot be used with `stream`, `output`, or `filter`.
+ * @param {boolean} [options.useTor=false] - An optional boolean value that, if set to `true`, will route the network request through the Tor network.
+ * This can help in anonymizing your request. Requires Tor to be running on your system.
+ * @param {("invert" | "rotate90" | "rotate270" | "grayscale" | "rotate180" | "flipVertical" | "flipHorizontal")} [options.filter] - An optional string specifying a video filter to apply during processing.
+ * This parameter is only applicable when `stream` is `true` and `metadata` is `false`. Available filters include:
+ * - `"invert"`: Inverts the colors of the video.
+ * - `"rotate90"`: Rotates the video by 90 degrees clockwise.
+ * - `"rotate270"`: Rotates the video by 270 degrees clockwise.
+ * - `"grayscale"`: Converts the video to grayscale.
+ * - `"rotate180"`: Rotates the video by 180 degrees.
+ * - `"flipVertical"`: Flips the video vertically.
+ * - `"flipHorizontal"`: Flips the video horizontally.
+ *
+ * @returns {EventEmitter} An EventEmitter instance that emits events during the video processing.
+ * The following events can be listened to:
+ * - `"progress"`: Emitted with progress information during the download and processing of the video. The data is an object containing progress details.
+ * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, network requests, or FFmpeg operations. The emitted data is the error message or object.
+ * - `"start"`: Emitted when the FFmpeg processing starts. The emitted data is the FFmpeg start command string.
+ * - `"end"`: Emitted when the FFmpeg processing successfully completes. The emitted data is the filename of the processed video file.
+ * - `"stream"`: Emitted when streaming is enabled (`stream: true` and `metadata: false`). The emitted data is an object with the following structure:
+ * ```typescript
+ * {
+ * filename: string; // The full path to the output file
+ * ffmpeg: ffmpeg.FfmpegCommand; // The FFmpeg command instance
+ * }
+ * ```
+ * - `"metadata"`: Emitted when only metadata is requested (`metadata: true`). The emitted data is an object containing various metadata about the video.
+ *
+ * @example
+ * // 1: Get metadata for a video
+ * YouTubeDLX.AudioVideoLowest({ query: "educational video", metadata: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 2: Get metadata for a video with verbose logging
+ * YouTubeDLX.AudioVideoLowest({ query: "short film", metadata: true, verbose: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 3: Get metadata for a video using Tor
+ * YouTubeDLX.AudioVideoLowest({ query: "private video", metadata: true, useTor: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 4: Get metadata for a video with verbose logging and using Tor
+ * YouTubeDLX.AudioVideoLowest({ query: "hidden video", metadata: true, verbose: true, useTor: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 5: Stream a video at the lowest quality
+ * YouTubeDLX.AudioVideoLowest({ query: "low quality movie", stream: true })
+ * .on("stream", (streamData) => console.log("Streaming to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 6: Stream a video at the lowest quality to a specific output directory
+ * YouTubeDLX.AudioVideoLowest({ query: "grainy footage", stream: true, output: "/path/to/save" })
+ * .on("stream", (streamData) => console.log("Streaming to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 7: Stream a video at the lowest quality with verbose logging
+ * YouTubeDLX.AudioVideoLowest({ query: "small video", stream: true, verbose: true })
+ * .on("stream", (streamData) => console.log("Streaming to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 8: Stream a video at the lowest quality using Tor
+ * YouTubeDLX.AudioVideoLowest({ query: "anonymous low quality", stream: true, useTor: true })
+ * .on("stream", (streamData) => console.log("Streaming via Tor to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 9: Stream a video at the lowest quality with the "invert" filter
+ * YouTubeDLX.AudioVideoLowest({ query: "inverted colors low", stream: true, filter: "invert" })
+ * .on("stream", (streamData) => console.log("Streaming with invert filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 10: Stream a video at the lowest quality with the "rotate90" filter
+ * YouTubeDLX.AudioVideoLowest({ query: "rotated low quality", stream: true, filter: "rotate90" })
+ * .on("stream", (streamData) => console.log("Streaming with rotate90 filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 11: Stream a video at the lowest quality with the "rotate270" filter
+ * YouTubeDLX.AudioVideoLowest({ query: "another rotation low", stream: true, filter: "rotate270" })
+ * .on("stream", (streamData) => console.log("Streaming with rotate270 filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 12: Stream a video at the lowest quality with the "grayscale" filter
+ * YouTubeDLX.AudioVideoLowest({ query: "grayscale low quality", stream: true, filter: "grayscale" })
+ * .on("stream", (streamData) => console.log("Streaming with grayscale filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 13: Stream a video at the lowest quality with the "rotate180" filter
+ * YouTubeDLX.AudioVideoLowest({ query: "flipped low quality", stream: true, filter: "rotate180" })
+ * .on("stream", (streamData) => console.log("Streaming with rotate180 filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 14: Stream a video at the lowest quality with the "flipVertical" filter
+ * YouTubeDLX.AudioVideoLowest({ query: "vertical flip low", stream: true, filter: "flipVertical" })
+ * .on("stream", (streamData) => console.log("Streaming with flipVertical filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 15: Stream a video at the lowest quality with the "flipHorizontal" filter
+ * YouTubeDLX.AudioVideoLowest({ query: "horizontal flip low", stream: true, filter: "flipHorizontal" })
+ * .on("stream", (streamData) => console.log("Streaming with flipHorizontal filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 16: Stream a video at the lowest quality to output directory "/tmp/lowest"
+ * YouTubeDLX.AudioVideoLowest({ query: "temp low quality", stream: true, output: "/tmp/lowest" })
+ * .on("stream", (streamData) => console.log("Streaming to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 17: Stream a video at the lowest quality using Tor and verbose logging
+ * YouTubeDLX.AudioVideoLowest({ query: "anonymous low verbose", stream: true, useTor: true, verbose: true })
+ * .on("stream", (streamData) => console.log("Streaming via Tor to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 18: Stream a video at the lowest quality with output directory "./low_downloads" and the "grayscale" filter
+ * YouTubeDLX.AudioVideoLowest({ query: "gray low download", stream: true, output: "./low_downloads", filter: "grayscale" })
+ * .on("stream", (streamData) => console.log("Streaming with grayscale filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 19: Stream a video at the lowest quality using Tor and the "invert" filter
+ * YouTubeDLX.AudioVideoLowest({ query: "invert low tor", stream: true, useTor: true, filter: "invert" })
+ * .on("stream", (streamData) => console.log("Streaming with invert filter via Tor to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 20: Stream a video at the lowest quality with verbose logging and the "rotate90" filter
+ * YouTubeDLX.AudioVideoLowest({ query: "rotate low verbose", stream: true, verbose: true, filter: "rotate90" })
+ * .on("stream", (streamData) => console.log("Streaming with rotate90 filter to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ *
+ * @example
+ * // 21: Stream a video at the lowest quality with all optional parameters
+ * YouTubeDLX.AudioVideoLowest({ query: "all options low", stream: true, verbose: true, output: "./all_low", metadata: false, useTor: true, filter: "flipHorizontal" })
+ * .on("stream", (streamData) => console.log("Streaming with flipHorizontal filter via Tor to:", streamData.filename))
+ * .on("end", (filename) => console.log("Video saved to:", filename))
+ * .on("error", (err) => console.error("Error:", err));
+ */
 export default function AudioVideoLowest({ query, stream, verbose, output, metadata, useTor, filter }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
