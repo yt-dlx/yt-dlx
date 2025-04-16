@@ -12,7 +12,7 @@ function wrapEmitter(emitter, eventType = "data") {
 }
 server.get("/api/Account/HomeFeed", async (req: any, res) => {
   try {
-    const options = { cookies: req.query.cookies, verbose: req.query.verbose, sort: req.query.sort };
+    const options = { cookies: req.query.YouTubeDLX_COOKIES, verbose: req.query.verbose, sort: req.query.sort };
     const emitter = YouTubeDLX.Account.HomeFeed(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
@@ -22,7 +22,7 @@ server.get("/api/Account/HomeFeed", async (req: any, res) => {
 });
 server.get("/api/Account/SubscriptionsFeed", async (req: any, res) => {
   try {
-    const options = { cookies: req.query.cookies, verbose: req.query.verbose };
+    const options = { cookies: req.query.YouTubeDLX_COOKIES, verbose: req.query.verbose };
     const emitter = YouTubeDLX.Account.SubscriptionsFeed(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
@@ -32,7 +32,7 @@ server.get("/api/Account/SubscriptionsFeed", async (req: any, res) => {
 });
 server.get("/api/Account/UnseenNotifications", async (req: any, res) => {
   try {
-    const options = { cookies: req.query.cookies, verbose: req.query.verbose };
+    const options = { cookies: req.query.YouTubeDLX_COOKIES, verbose: req.query.verbose };
     const emitter = YouTubeDLX.Account.Unseen_Notifications(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
@@ -42,7 +42,7 @@ server.get("/api/Account/UnseenNotifications", async (req: any, res) => {
 });
 server.get("/api/Account/History", async (req: any, res) => {
   try {
-    const options = { cookies: req.query.cookies, verbose: req.query.verbose, sort: req.query.sort };
+    const options = { cookies: req.query.YouTubeDLX_COOKIES, verbose: req.query.verbose, sort: req.query.sort };
     const emitter = YouTubeDLX.Account.History(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
