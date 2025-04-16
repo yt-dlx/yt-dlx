@@ -19,13 +19,43 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
   const emitter = new EventEmitter();
   (async () => {
     try {
+      if (!query) {
+        emitter.emit("error", `${colors.red("@error:")} The 'query' parameter is always required.`);
+        return;
+      }
+      if (metadata) {
+        if (stream) {
+          emitter.emit("error", `${colors.red("@error:")} The 'stream' parameter cannot be used when 'metadata' is true.`);
+          return;
+        }
+        if (output) {
+          emitter.emit("error", `${colors.red("@error:")} The 'output' parameter cannot be used when 'metadata' is true.`);
+          return;
+        }
+        if (filter) {
+          emitter.emit("error", `${colors.red("@error:")} The 'filter' parameter cannot be used when 'metadata' is true.`);
+          return;
+        }
+      }
+      if (stream && metadata) {
+        emitter.emit("error", `${colors.red("@error:")} The 'stream' parameter cannot be true when 'metadata' is true.`);
+        return;
+      }
+      if (output && (!stream || metadata)) {
+        emitter.emit("error", `${colors.red("@error:")} The 'output' parameter can only be used when 'stream' is true and 'metadata' is false.`);
+        return;
+      }
+      if (filter && (!stream || metadata)) {
+        emitter.emit("error", `${colors.red("@error:")} The 'filter' parameter can only be used when 'stream' is true and 'metadata' is false.`);
+        return;
+      }
       ZodSchema.parse({ query, output, useTor, stream, filter, metadata, verbose });
       const engineData = await Tuber({ query, verbose, useTor }).catch(error => {
         emitter.emit("error", `${colors.red("@error:")} Engine error: ${error?.message}`);
         return undefined;
       });
       if (!engineData) {
-        emitter.emit("error", `${colors.red("@error:")} Unable to get response from the engine.`);
+        emitter.emit("error", `${colors.red("@error:")} Unable to retrieve a response from the engine.`);
         return;
       }
       if (!engineData.metaData) {
@@ -77,7 +107,7 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
         vaporwave: ["aresample=48000,asetrate=48000*0.8"],
         vibrato: ["vibrato=f=6.5"],
       };
-      if (filter && filterMap[filter]) instance.withAudioFilter(filterMap[filter]);
+      if (stream && filter && filterMap[filter]) instance.withAudioFilter(filterMap[filter]);
       instance.on("progress", progress => emitter.emit("progress", progress));
       instance.on("error", error => emitter.emit("error", `${colors.red("@error:")} FFmpeg error: ${error?.message}`));
       instance.on("start", start => emitter.emit("start", start));
@@ -88,13 +118,7 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
         instance.run();
       }
       if (!stream && metadata) {
-        emitter.emit("metadata", {
-          AudioLowDRC: engineData.AudioLowDRC,
-          AudioLowF: engineData.AudioLowF,
-          ipAddress: engineData.ipAddress,
-          metaData: engineData.metaData,
-          filename,
-        });
+        emitter.emit("metadata", { AudioLowDRC: engineData.AudioLowDRC, AudioLowF: engineData.AudioLowF, ipAddress: engineData.ipAddress, metaData: engineData.metaData, filename });
       }
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", `${colors.red("@error:")} Argument validation failed: ${error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join(", ")}`);

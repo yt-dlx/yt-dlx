@@ -23,7 +23,6 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
         emitter.emit("error", `${colors.red("@error:")} The 'query' parameter is always required.`);
         return;
       }
-
       if (metadata) {
         if (stream) {
           emitter.emit("error", `${colors.red("@error:")} The 'stream' parameter cannot be used when 'metadata' is true.`);
@@ -38,22 +37,18 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
           return;
         }
       }
-
       if (stream && metadata) {
         emitter.emit("error", `${colors.red("@error:")} The 'stream' parameter cannot be true when 'metadata' is true.`);
         return;
       }
-
       if (output && (!stream || metadata)) {
         emitter.emit("error", `${colors.red("@error:")} The 'output' parameter can only be used when 'stream' is true and 'metadata' is false.`);
         return;
       }
-
       if (filter && (!stream || metadata)) {
         emitter.emit("error", `${colors.red("@error:")} The 'filter' parameter can only be used when 'stream' is true and 'metadata' is false.`);
         return;
       }
-
       ZodSchema.parse({ query, output, useTor, stream, filter, metadata, verbose });
       const engineData = await Tuber({ query, verbose, useTor }).catch(error => {
         emitter.emit("error", `${colors.red("@error:")} Engine error: ${error?.message}`);

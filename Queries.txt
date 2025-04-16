@@ -15,11 +15,20 @@ Upon provision of a TypeScript code snippet originating from the yt-dlx project,
       - Verifying that argument values adhere to defined constraints (e.g., acceptable ranges, allowed types, mutual exclusivity).
       - Raising appropriate errors (via `emitter.emit("error")`) when invalid argument combinations or values are detected prior to the main execution logic. The error messages should clearly indicate the nature of the validation failure and the expected argument usage.
 The refactored code should maintain the original functionality while incorporating the specified error handling and argument validation enhancements.
-
-
-
-
-
+======================================================================================
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
 ==========[ Requirements ]==========
 Acknowledge receipt and comprehension of these specifications with a concise "Understood."
 Upon provision of a TypeScript code snippet originating from the yt-dlx project, the following actions are mandated:
@@ -27,9 +36,20 @@ Upon provision of a TypeScript code snippet originating from the yt-dlx project,
 1. I will provide a code snippet from the yt-dlx package.
 2. You will have to understand and above the "export default function " area add every possible combination of @examples as well as a well detailed and explained docs.
 3. please remember to add as many possible combinations of examples as possible 
-
-
-
+======================================================================================
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
 ==========[ Requirements ]==========
 Acknowledge receipt and comprehension of these specifications with a concise "Understood."
 Upon provision of a TypeScript code snippet originating from the yt-dlx project, the following actions are mandated:
@@ -47,48 +67,4 @@ Upon provision of a TypeScript code snippet originating from the yt-dlx project,
    - ECMAScript | (Node.js)
    - CommonJS | (Express)
    - CommonJS | (Node.js)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-In this code i need some changes.
-The followings are to be implemented like a check:
-- query: Always needed
-- output: Only available when stream is True and metadata is False
-- useTor: can be used with any commands
-- stream: only avaiable when metadata is False
-- verbose:  can be used with any commands
-- metadata: when metadata is true then stream,output,filter cant be used
-- resolution: Always needed
-- filter: Only available when stream is True and metadata is False
-Please use better english.
-
-
-
-
-
-
-
-
-
-In this code i need some changes.
-The followings are to be implemented like a check:
-- query: Always needed
-- output: Only available when stream is True and metadata is False
-- useTor: can be used with any commands
-- stream: only avaiable when metadata is False
-- verbose:  can be used with any commands
-- metadata: when metadata is true then stream,output,filter cant be used
-- filter: Only available when stream is True and metadata is False
-Please use better english.
+======================================================================================
