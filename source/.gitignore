@@ -10,12 +10,9 @@
 !**/.yarn/versions
 # Cookies and specific binaries
 **/cookies.txt
-**/ffprobe.**
-**/cprobe.**
-**/ffmpeg.**
-**/ffprobe_**
-**/cprobe_**
-**/ffmpeg_**
+**/ffprobe**
+**/cprobe**
+**/ffmpeg**
 **/YouTubeDLX
 **/yt-dlx
 # Environment variables
