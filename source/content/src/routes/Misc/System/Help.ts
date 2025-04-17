@@ -1,12 +1,19 @@
 import colors from "colors";
 import { EventEmitter } from "events";
 /**
- * Displays a help message with information about yt-dlx and a link to the documentation.
+ * @shortdesc Displays a help message for yt-dlx with a documentation link.
+ *
+ * @description This function provides users with helpful information about the yt-dlx tool. It logs a thank you message to the console, encourages starring the GitHub repository, and emits a "data" event containing a link to the official yt-dlx documentation.
  *
  * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - "data": Emitted with a help message containing a link to the yt-dlx documentation.
- * - "error": Emitted if an unexpected error occurs.
+ * - `"data"`: Emitted with a help message containing a link to the yt-dlx documentation.
+ * - `"error"`: Emitted if an unexpected error occurs during the process.
  *
+ * @example
+ * // Display the help message
+ * YouTubeDLX.help()
+ * .on("data", (message) => console.log(message))
+ * .on("error", (error) => console.error("Error:", error));
  */
 export default function help(): EventEmitter {
   const emitter = new EventEmitter();

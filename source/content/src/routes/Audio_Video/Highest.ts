@@ -16,8 +16,6 @@ const ZodSchema = z.object({
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
 /**
- * Fetches and processes audio from a specified query at the highest available quality with optional audio filters.
- *
  * @shortdesc Fetches and processes audio at the highest quality with optional filters, streaming, Tor, and metadata options.
  *
  * @description This function allows you to search for audio content and download or stream it at the highest available quality. It also supports applying various audio filters, saving the audio to a file, or retrieving its metadata. The function utilizes `ffmpeg` for processing and offers the option to route network requests through the Tor network for enhanced privacy.

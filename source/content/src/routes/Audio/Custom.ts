@@ -17,8 +17,6 @@ const ZodSchema = z.object({
   filter: z.enum(["echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed"]).optional(),
 });
 /**
- * Fetches and processes audio from a specified query with customizable settings, including resolution and filters.
- *
  * @shortdesc Fetches audio with customizable quality and applies audio filters with options for streaming, Tor, and metadata.
  *
  * @description This function enables you to search for audio content and process it according to your specifications. You can select the desired audio quality from a range of resolutions, apply various audio filters to modify the sound, stream the processed audio, save it to a file in a specified directory, or simply retrieve metadata about the audio source. The function utilizes `ffmpeg` for robust audio processing and offers the option to use the Tor network for anonymizing your requests.

@@ -36,15 +36,39 @@ async function getVideoTranscript({ videoId }: { videoId: string }, emitter: Eve
   }
 }
 /**
- * Fetches the transcript for a given Tube (e.g., YouTube) video link.
+ * @shortdesc Fetches the transcript of a YouTube video from its URL.
+ *
+ * @description This function takes a URL of a YouTube video as input and retrieves the transcript of the video. The transcript is returned as an array of objects, where each object represents a segment of the transcript with its text, start time, duration, and detailed segment information.
  *
  * @param {object} options - An object containing the necessary options.
- * @param {string} options.videoLink - The URL of the YouTube video.
+ * @param {string} options.videoLink - The URL of the YouTube video. **Required**.
  *
  * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - "data": Emitted with an array of transcript objects. Each object contains the text, start time (in seconds), duration (in seconds), and segments of a caption.
- * - "error": Emitted if there is an error during the process, such as an incorrect video link or if the transcript cannot be retrieved.
+ * - `"data"`: Emitted with an array of transcript objects (`VideoTranscriptType`). Each object contains the `text`, `start` time (in seconds), `duration` (in seconds), and `segments` of a caption.
+ * - `"error"`: Emitted if there is an error during the process, such as an incorrect video link format or if the transcript cannot be retrieved for the given video.
  *
+ * @example
+ * // Define the structure for CaptionSegment
+ * interface CaptionSegment {
+ * utf8: string;
+ * tOffsetMs?: number;
+ * acAsrConf: number;
+ * }
+ *
+ * @example
+ * // Define the structure for VideoTranscriptType
+ * interface VideoTranscriptType {
+ * text: string;
+ * start: number;
+ * duration: number;
+ * segments: CaptionSegment[];
+ * }
+ *
+ * @example
+ * // Fetch the transcript for a YouTube video
+ * YouTubeDLX.video_transcript({ videoLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" })
+ * .on("data", (transcript: VideoTranscriptType[]) => console.log("Video Transcript:", transcript))
+ * .on("error", (error) => console.error("Error:", error));
  */
 export default function video_transcript({ videoLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

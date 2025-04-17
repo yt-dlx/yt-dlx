@@ -2,7 +2,7 @@ import colors from "colors";
 import { Client } from "youtubei";
 import { z, ZodError } from "zod";
 import { EventEmitter } from "events";
-import YouTubeID from "../../utils/YouTubeId";
+import YouTubeID from "../../../utils/YouTubeId";
 const ZodSchema = z.object({ playlistLink: z.string().min(2) });
 export interface searchPlaylistsType {
   id: string;
@@ -27,15 +27,31 @@ async function searchPlaylists({ query }: { query: string }, emitter: EventEmitt
   }
 }
 /**
- * Searches for Tube (e.g., YouTube) playlists based on a given query. Note that this function uses the input as a search term, not a direct playlist link. For fetching data from a specific playlist link, use `playlist_data()`.
+ * @shortdesc Searches for YouTube playlists using a query.
+ *
+ * @description This function allows you to search for YouTube playlists by providing a search query. It returns the first playlist found that matches the query, containing information such as its ID, title, the number of videos it contains, and thumbnails. Please note that this function is for searching playlists and not for fetching detailed information from a specific playlist URL. If you have a direct playlist link, use the `playlist_data()` function instead.
  *
  * @param {object} options - An object containing the necessary options.
- * @param {string} options.playlistLink - The search query to find playlists.
+ * @param {string} options.playlistLink - The search query to find playlists. **Required**.
  *
  * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - "data": Emitted with the first playlist object found matching the search query. This object contains details like the playlist ID, title, video count, and thumbnails.
- * - "error": Emitted if there is an error during the process, such as no playlists found for the query or if the input looks like a playlist link (in which case it suggests using `playlist_data()`).
+ * - `"data"`: Emitted with the first playlist object (`searchPlaylistsType`) found matching the search query. This object contains details like the playlist ID, title, video count, and thumbnails.
+ * - `"error"`: Emitted if there is an error during the process. This can include scenarios where no playlists are found for the query, if the input looks like a direct playlist link (in which case it will suggest using `playlist_data()`), or other unexpected errors.
  *
+ * @example
+ * // Define the structure for searchPlaylistsType
+ * interface searchPlaylistsType {
+ * id: string;
+ * title: string;
+ * videoCount: number;
+ * thumbnails: string[];
+ * }
+ *
+ * @example
+ * // Search for playlists with the query "workout routines"
+ * YouTubeDLX.search_playlists({ playlistLink: "workout routines" })
+ * .on("data", (playlist: searchPlaylistsType) => console.log("Found Playlist:", playlist))
+ * .on("error", (error) => console.error("Error:", error));
  */
 export default function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

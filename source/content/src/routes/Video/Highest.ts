@@ -16,8 +16,6 @@ var ZodSchema = z.object({
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
 /**
- * Fetches and processes video from a specified query at the highest available quality with optional video filters.
- *
  * @shortdesc Fetches and processes video at the highest quality with optional filters, streaming, Tor, and metadata options.
  *
  * @description This function provides a comprehensive way to interact with video content by searching for a query and then either downloading (streaming) it at the highest available quality or retrieving its metadata. It leverages `ffmpeg` for video processing, allowing for the application of various filters during streaming. Additionally, it supports routing network requests through the Tor network for enhanced privacy.

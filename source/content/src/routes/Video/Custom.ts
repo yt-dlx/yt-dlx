@@ -17,8 +17,6 @@ const ZodSchema = z.object({
   resolution: z.enum(["144p", "240p", "360p", "480p", "720p", "1080p", "1440p", "2160p", "3072p", "4320p", "6480p", "8640p", "12000p"]),
 });
 /**
- * Fetches and processes video from a specified query at a custom resolution with optional video filters.
- *
  * @shortdesc Fetches and processes video at a user-defined resolution with optional filters, streaming, Tor, and metadata options.
  *
  * @description This function allows you to search for video content and download or stream it at a specific resolution chosen from a list of available options. It also supports applying video filters, saving the video to a specified file path, or retrieving metadata about the video. The function utilizes `ffmpeg` for video processing and offers the option to route network requests through the Tor network for enhanced privacy.

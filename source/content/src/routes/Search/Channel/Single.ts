@@ -4,19 +4,22 @@ import { Client } from "youtubei";
 import { EventEmitter } from "events";
 const ZodSchema = z.object({ channelLink: z.string().min(2) });
 /**
- * Fetches data for a YouTube channel.
+ * @shortdesc Fetches detailed information about a YouTube channel using its link.
+ *
+ * @description This function allows you to retrieve comprehensive data for a given YouTube channel by providing its URL. The data includes details such as the channel's name, description, subscriber count, thumbnails, available videos, playlists, and more. The exact structure of the emitted data object can vary based on the channel's content and settings.
  *
  * @param {object} options - Options for fetching channel data.
- * @param {string} options.channelLink - The link to the YouTube channel.
+ * @param {string} options.channelLink - The URL of the YouTube channel. **Required**.
  *
- * @returns {EventEmitter} Emits 'data' with channel information or 'error'.
+ * @returns {EventEmitter} An EventEmitter that emits the following events:
+ * - `"data"`: Emitted with an object containing detailed information about the YouTube channel.
+ * - `"error"`: Emitted if an error occurs during the fetching process, such as an invalid channel link or a network issue.
  *
  * @example
- * // Fetch data for a YouTube channel.
- * YouTubeDLX.Search.Channel.Single({ channelLink: "https://www.youtube.com/@LinusTechTips" })
- * .on("data", (channelInfo) => console.log("Channel Info:", channelInfo))
+ * // Fetch data for a YouTube channel
+ * YouTubeDLX.channel_data({ channelLink: "https://www.youtube.com/@LinusTechTips" })
+ * .on("data", (channelInfo) => console.log("Channel Data:", channelInfo))
  * .on("error", (error) => console.error("Error:", error));
- *
  */
 export default function channel_data({ channelLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

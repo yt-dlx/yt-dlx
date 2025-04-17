@@ -4,25 +4,10 @@ import { Client } from "youtubei";
 import { z, ZodError } from "zod";
 import Tuber from "../../../utils/Agent";
 import { EventEmitter } from "events";
-import type EngineOutput from "../../../interfaces/EngineOutput";
 import { Innertube, UniversalCache } from "youtubei.js";
+import { CommentType } from "../../../interfaces/CommentType";
+import type EngineOutput from "../../../interfaces/EngineOutput";
 const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optional(), verbose: z.boolean().optional() });
-interface CommentType {
-  comment_id: string;
-  is_pinned: boolean;
-  comment: string;
-  published_time: string;
-  author_is_channel_owner: boolean;
-  creator_thumbnail_url: string;
-  like_count: number;
-  is_member: boolean;
-  author: string;
-  is_hearted: boolean;
-  is_liked: boolean;
-  is_disliked: boolean;
-  reply_count: number;
-  hasReplies: boolean;
-}
 interface CaptionSegment {
   utf8: string;
   tOffsetMs?: number;
@@ -127,23 +112,121 @@ async function fetchVideoTranscript(videoId: string, verbose: boolean): Promise<
   }
 }
 /**
- * Extracts detailed metadata, available formats, comments, and transcript for a video based on a query.
+ * @shortdesc Extracts comprehensive information (metadata, formats, comments, transcript) for a video.
  *
- * This function uses a search query to find a video and retrieves comprehensive information,
- * including various audio and video formats, metadata like title, uploader, view count,
- * video comments, and transcript. It supports verbose logging and Tor for anonymity.
+ * @description This function takes a search query to find a YouTube video and retrieves a wide range of information about it. This includes various available audio and video formats at different qualities, detailed metadata such as title, uploader, view count, like count, upload date, duration, and more. Additionally, it fetches the video's comments and transcript. The function supports optional verbose logging to provide detailed output during the process and the option to route requests through the Tor network for enhanced anonymity.
  *
  * @param {object} options - Configuration options for extracting video information.
- * @param {string} options.query - The search query string (minimum 2 characters) to find the desired video. Required.
- * @param {boolean} [options.verbose] - Enables verbose logging to the console if true.
- * @param {boolean} [options.useTor] - Routes the request through Tor if true, requires Tor running locally.
+ * @param {string} options.query - The search query string (minimum 2 characters) to find the desired video. **Required**.
+ * @param {boolean} [options.verbose=false] - Enables verbose logging to the console if set to `true`.
+ * @param {boolean} [options.useTor=false] - Routes the request through the Tor network if set to `true`. Requires Tor to be running locally.
  *
  * @returns {EventEmitter} An EventEmitter instance that emits events during the extraction process.
  * The following events can be listened to:
- * - `"data"`: Emitted when the video metadata, formats, comments, and transcript are successfully extracted.
- *   The data is an object containing video details, including `comments` and `transcript` properties.
- * - `"error"`: Emitted when an error occurs during validation, network requests, or data processing.
+ * - `"data"`: Emitted when the video metadata, formats, comments, and transcript are successfully extracted. The data is an object containing the following properties:
+ * - `AudioLowF`: Information about the lowest quality audio format.
+ * - `AudioHighF`: Information about the highest quality audio format.
+ * - `VideoLowF`: Information about the lowest quality video format.
+ * - `VideoHighF`: Information about the highest quality video format.
+ * - `AudioLowDRC`: Information about the lowest quality audio format with dynamic range compression.
+ * - `AudioHighDRC`: Information about the highest quality audio format with dynamic range compression.
+ * - `AudioLow`: Information about a low quality audio format.
+ * - `AudioHigh`: Information about a high quality audio format.
+ * - `VideoLowHDR`: Information about a low quality HDR video format (if available).
+ * - `VideoHighHDR`: Information about a high quality HDR video format (if available).
+ * - `VideoLow`: Information about a low quality video format.
+ * - `VideoHigh`: Information about a high quality video format.
+ * - `ManifestLow`: URL for a low quality manifest (if available).
+ * - `ManifestHigh`: URL for a high quality manifest (if available).
+ * - `meta_data`: An object containing detailed video metadata, including:
+ * - `id`: Video ID.
+ * - `original_url`: Original URL of the video.
+ * - `webpage_url`: Webpage URL of the video.
+ * - `title`: Title of the video.
+ * - `view_count`: Number of views.
+ * - `like_count`: Number of likes.
+ * - `view_count_formatted`: Formatted view count (e.g., "1.2M").
+ * - `like_count_formatted`: Formatted like count (e.g., "10K").
+ * - `uploader`: Name of the uploader.
+ * - `uploader_id`: ID of the uploader.
+ * - `uploader_url`: URL of the uploader's channel.
+ * - `thumbnail`: URL of the video thumbnail.
+ * - `categories`: Array of video categories.
+ * - `time`: Duration of the video in seconds.
+ * - `duration`: Object containing the video duration in hours, minutes, seconds, and a formatted string.
+ * - `age_limit`: Age limit for the video.
+ * - `live_status`: Live status of the video (e.g., "not_live").
+ * - `description`: Short description of the video.
+ * - `full_description`: Full description of the video.
+ * - `upload_date`: Formatted upload date.
+ * - `upload_ago`: Number of days since upload.
+ * - `upload_ago_formatted`: Object containing years, months, days since upload, and a formatted string.
+ * - `comment_count`: Number of comments.
+ * - `comment_count_formatted`: Formatted comment count (e.g., "500").
+ * - `channel_id`: ID of the channel.
+ * - `channel_name`: Name of the channel.
+ * - `channel_url`: URL of the channel.
+ * - `channel_follower_count`: Number of channel followers.
+ * - `channel_follower_count_formatted`: Formatted channel follower count (e.g., "2M").
+ * - `comments`: An array of comment objects (`CommentType`).
+ * - `transcript`: An array of transcript segments (`VideoTranscriptType`).
+ * - `"error"`: Emitted when an error occurs during argument validation, network requests, or data processing.
  *
+ * @example
+ * // Define the structure for CommentType
+ * interface CommentType {
+ * comment_id: string;
+ * is_pinned: boolean;
+ * comment: string;
+ * published_time: string;
+ * author_is_channel_owner: boolean;
+ * creator_thumbnail_url: string;
+ * like_count: number;
+ * is_member: boolean;
+ * author: string;
+ * is_hearted: boolean;
+ * is_liked: boolean;
+ * is_disliked: boolean;
+ * reply_count: number;
+ * hasReplies: boolean;
+ * }
+ *
+ * @example
+ * // Define the structure for VideoTranscriptType
+ * interface VideoTranscriptType {
+ * text: string;
+ * start: number;
+ * duration: number;
+ * segments: {
+ * utf8: string;
+ * tOffsetMs?: number;
+ * acAsrConf: number;
+ * }[];
+ * }
+ *
+ * @example
+ * // 1. Extract all information for a video based on a query
+ * YouTubeDLX.extract({ query: "latest tech review" })
+ * .on("data", (data) => console.log("Extracted Data:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 2. Extract information with verbose logging
+ * YouTubeDLX.extract({ query: "cooking tutorial", verbose: true })
+ * .on("data", (data) => console.log("Extracted Data:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 3. Extract information using Tor
+ * YouTubeDLX.extract({ query: "anonymous video search", useTor: true })
+ * .on("data", (data) => console.log("Extracted Data:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 4. Extract information with verbose logging and Tor
+ * YouTubeDLX.extract({ query: "private educational video", verbose: true, useTor: true })
+ * .on("data", (data) => console.log("Extracted Data:", data))
+ * .on("error", (error) => console.error("Error:", error));
  */
 export default function extract(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

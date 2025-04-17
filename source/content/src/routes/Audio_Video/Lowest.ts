@@ -16,8 +16,6 @@ const ZodSchema = z.object({
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
 /**
- * Fetches and processes video and audio from a specified query at the lowest available quality with optional video filters.
- *
  * @shortdesc Fetches and processes video and audio at the lowest quality with optional filters, streaming, Tor, and metadata options.
  *
  * @description This function provides a comprehensive way to interact with video content by searching for a query and then either downloading (streaming) it with the lowest available quality for both video and audio, or retrieving its metadata. It leverages `ffmpeg` for video processing, allowing for the application of various filters during streaming. Additionally, it supports routing network requests through the Tor network for enhanced privacy.

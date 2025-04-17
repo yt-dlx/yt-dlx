@@ -4,23 +4,8 @@ import { z, ZodError } from "zod";
 import { Client } from "youtubei";
 import { EventEmitter } from "events";
 import { Innertube, UniversalCache } from "youtubei.js";
+import { CommentType } from "../../../interfaces/CommentType";
 const ZodSchema = z.object({ query: z.string().min(2), verbose: z.boolean().optional() });
-export interface CommentType {
-  comment_id: string;
-  is_pinned: boolean;
-  comment: string;
-  published_time: string;
-  author_is_channel_owner: boolean;
-  creator_thumbnail_url: string;
-  like_count: number;
-  is_member: boolean;
-  author: string;
-  is_hearted: boolean;
-  is_liked: boolean;
-  is_disliked: boolean;
-  reply_count: number;
-  hasReplies: boolean;
-}
 async function fetchVideoComments({ query, verbose }: z.infer<typeof ZodSchema>): Promise<CommentType[] | null> {
   try {
     if (verbose) console.log(colors.green("@info:"), `Searching for videos with query: ${query}`);
@@ -72,14 +57,56 @@ async function fetchVideoComments({ query, verbose }: z.infer<typeof ZodSchema>)
   }
 }
 /**
- * Fetches comments for a YouTube video.
+ * @shortdesc Fetches comments for a YouTube video based on a search query.
+ *
+ * @description This function allows you to retrieve comments from a YouTube video. It takes a search query as input to find the relevant video and then fetches the comments associated with it. You can enable verbose logging to get more detailed information about the process in the console.
  *
  * @param {object} options - Options for fetching comments.
- * @param {string} options.query - Video search query.
+ * @param {string} options.query - Video search query. **Required**.
  * @param {boolean} [options.verbose=false] - Enable verbose logging.
  *
- * @returns {EventEmitter} Emits 'data' with an array of comments or 'error'.
+ * @returns {EventEmitter} An EventEmitter that emits the following events:
+ * - `"data"`: Emitted with an array of comment objects (`CommentType`) when the comments are successfully fetched.
+ * - `"error"`: Emitted when an error occurs during the process, such as argument validation, video search failure, or comment fetching issues.
  *
+ * @example
+ * // Define the structure of a comment object
+ * interface CommentType {
+ * comment_id: string;
+ * is_pinned: boolean;
+ * comment: string;
+ * published_time: string;
+ * author_is_channel_owner: boolean;
+ * creator_thumbnail_url: string;
+ * like_count: number;
+ * is_member: boolean;
+ * author: string;
+ * is_hearted: boolean;
+ * is_liked: boolean;
+ * is_disliked: boolean;
+ * reply_count: number;
+ * hasReplies: boolean;
+ * }
+ *
+ * @example
+ * // 1. Fetch comments for a video using a search query
+ * YouTubeDLX.video_comments({ query: "most recent music video" })
+ * .on("data", (comments: CommentType[]) => {
+ * console.log("Comments:", comments);
+ * })
+ * .on("error", (error) => {
+ * console.error("Error fetching comments:", error);
+ * });
+ *
+ * @example
+ * // 2. Fetch comments for a video with verbose logging
+ * YouTubeDLX.video_comments({ query: "funny cat video", verbose: true })
+ * .on("data", (comments: CommentType[]) => {
+ * console.log("Comments:", comments);
+ * })
+ * .on("error", (error) => {
+ * console.error("Error fetching comments:", error);
+ * });
  */
 export default function video_comments(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

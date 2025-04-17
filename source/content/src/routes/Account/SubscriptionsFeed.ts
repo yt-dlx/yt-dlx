@@ -6,28 +6,37 @@ import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 import sanitizeContentItem from "../../utils/sanitizeContentItem";
 const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional() });
 /**
- * Fetches the subscriptions feed of a user.
+ * @shortdesc Fetches the user's personalized subscriptions feed.
  *
- * This function requires valid cookies to authenticate and retrieve the personalized subscriptions feed.
- * It supports optional verbose logging.
+ * @description This function allows you to retrieve a user's subscriptions feed from the platform. It requires valid cookies for authentication to access the feed, which contains the latest videos from the channels the user is subscribed to. The function supports optional verbose logging to provide more details during the process.
  *
- * @param {object} options - An object containing the configuration options for fetching the subscriptions feed.
- * @param {string} options.cookies - The user's cookies as a string. This is a mandatory parameter for authentication.
- * @param {boolean} [options.verbose=false] - An optional boolean value that, if set to `true`, enables verbose logging to the console, providing more detailed information about the process.
+ * The function provides the following configuration options:
+ * - **Cookies:** The user's cookies as a string. This is a mandatory parameter required for authenticating the request and accessing the subscriptions feed.
+ * - **Verbose:** An optional boolean value that, if true, enables detailed logging to the console, providing more information about the steps taken during the feed fetching process.
  *
- * @returns {EventEmitter} An EventEmitter instance that emits events during the feed fetching process.
- * The following events can be listened to:
- * - `"data"`: Emitted when the subscriptions feed data is successfully fetched and processed. The data is an object with the following structure:
- * ```typescript
- * {
- * status: "success";
- * data: {
- * contents: any[]; // Array of sanitized content items from the subscriptions feed
- * };
- * }
- * ```
- * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, cookie initialization, or network requests. The emitted data is the error message or object.
+ * The function returns an EventEmitter instance that emits events during the feed fetching process:
+ * - `"data"`: Emitted when the subscriptions feed data is successfully fetched and processed. The emitted data is an object containing the status and the fetched feed contents as an array of sanitized items.
+ * - `"error"`: Emitted when an error occurs during any stage of the process, such as argument validation, cookie initialization, or network requests. The emitted data is the error message or object.
  *
+ * @param {object} options - An object containing the configuration options.
+ * @param {string} options.cookies - The user's cookies as a string. **Required**.
+ * @param {boolean} [options.verbose=false] - Enable verbose logging.
+ *
+ * @returns {EventEmitter} An EventEmitter instance for handling events during subscriptions feed fetching.
+ *
+ * @example
+ * // 1. Fetch subscriptions feed with provided cookies
+ * const cookies = "YOUR_COOKIES_HERE";
+ * YouTubeDLX.subscriptions_feed({ cookies })
+ * .on("data", (data) => console.log("Subscriptions Feed:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 2. Fetch subscriptions feed with verbose logging
+ * const cookies = "YOUR_COOKIES_HERE";
+ * YouTubeDLX.subscriptions_feed({ cookies, verbose: true })
+ * .on("data", (data) => console.log("Subscriptions Feed:", data))
+ * .on("error", (error) => console.error("Error:", error));
  */
 export default function subscriptions_feed(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

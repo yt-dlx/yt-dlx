@@ -5,28 +5,37 @@ import TubeResponse from "../../interfaces/TubeResponse";
 import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional() });
 /**
- * Fetches the count of unseen notifications for a user.
+ * @shortdesc Fetches the number of unseen notifications for a user.
  *
- * This function requires valid cookies to authenticate and retrieve the number of unseen notifications.
- * It supports optional verbose logging.
+ * @description This function allows you to retrieve the count of unseen notifications for a user on the platform. It requires valid cookies for authentication to access this information. The function supports optional verbose logging to provide more details during the process.
  *
- * @param {object} options - An object containing the configuration options for fetching unseen notifications.
- * @param {string} options.cookies - The user's cookies as a string. This is a mandatory parameter for authentication.
- * @param {boolean} [options.verbose=false] - An optional boolean value that, if set to `true`, enables verbose logging to the console, providing more detailed information about the process.
+ * The function provides the following configuration options:
+ * - **Cookies:** The user's cookies as a string. This is a mandatory parameter required for authenticating the request and accessing the notification count.
+ * - **Verbose:** An optional boolean value that, if true, enables detailed logging to the console, providing more information about the steps taken during the notification count fetching process.
  *
- * @returns {EventEmitter} An EventEmitter instance that emits events during the notification fetching process.
- * The following events can be listened to:
- * - `"data"`: Emitted when the count of unseen notifications is successfully fetched. The data is an object with the following structure:
- * ```typescript
- * {
- * status: "success";
- * data: {
- * count: number; // The number of unseen notifications
- * };
- * }
- * ```
- * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, cookie initialization, or network requests. The emitted data is the error message or object.
+ * The function returns an EventEmitter instance that emits events during the notification fetching process:
+ * - `"data"`: Emitted when the count of unseen notifications is successfully fetched. The emitted data is an object containing the status and the count of unseen notifications.
+ * - `"error"`: Emitted when an error occurs during any stage of the process, such as argument validation, cookie initialization, or network requests. The emitted data is the error message or object.
  *
+ * @param {object} options - An object containing the configuration options.
+ * @param {string} options.cookies - The user's cookies as a string. **Required**.
+ * @param {boolean} [options.verbose=false] - Enable verbose logging.
+ *
+ * @returns {EventEmitter} An EventEmitter instance for handling events during unseen notifications fetching.
+ *
+ * @example
+ * // 1. Fetch the count of unseen notifications with provided cookies
+ * const cookies = "YOUR_COOKIES_HERE";
+ * YouTubeDLX.unseen_notifications({ cookies })
+ * .on("data", (data) => console.log("Unseen Notifications Count:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 2. Fetch the count of unseen notifications with verbose logging
+ * const cookies = "YOUR_COOKIES_HERE";
+ * YouTubeDLX.unseen_notifications({ cookies, verbose: true })
+ * .on("data", (data) => console.log("Unseen Notifications Count:", data))
+ * .on("error", (error) => console.error("Error:", error));
  */
 export default function unseen_notifications(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

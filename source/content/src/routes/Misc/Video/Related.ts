@@ -33,19 +33,33 @@ async function relatedVideos({ videoId }: { videoId: string }, emitter: EventEmi
   }
 }
 /**
- * Fetches related videos for a given video ID.
+ * @shortdesc Fetches a list of videos related to a specified YouTube video.
+ *
+ * @description This function takes a YouTube video ID as input and retrieves a list of videos that are suggested as related to the specified video. The function utilizes the `youtubei` library to fetch this data.
  *
  * @param {object} options - Options for fetching related videos.
- * @param {string} options.videoId - The ID of the YouTube video.
+ * @param {string} options.videoId - The ID of the YouTube video for which to fetch related videos. **Required**.
  *
- * @returns {EventEmitter} Emits 'data' with an array of related videos or 'error'.
+ * @returns {EventEmitter} An EventEmitter that emits the following events:
+ * - `"data"`: Emitted with an array of related video objects (`relatedVideosType`) when the related videos are successfully fetched.
+ * - `"error"`: Emitted when an error occurs during the process, such as argument validation or if the video ID is invalid.
+ *
+ * @example
+ * // Define the structure for relatedVideosType
+ * interface relatedVideosType {
+ * id: string;
+ * title: string;
+ * isLive: boolean;
+ * duration: number;
+ * uploadDate: string;
+ * thumbnails: string[];
+ * }
  *
  * @example
  * // Fetch related videos for a given video ID.
  * YouTubeDLX.related_videos({ videoId: "dQw4w9WgXcQ" })
- * .on("data", (relatedVideos) => console.log("Related Videos:", relatedVideos))
+ * .on("data", (relatedVideos: relatedVideosType[]) => console.log("Related Videos:", relatedVideos))
  * .on("error", (error) => console.error("Error:", error));
- *
  */
 export default function related_videos({ videoId }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

@@ -16,8 +16,6 @@ var ZodSchema = z.object({
   filter: z.enum(["echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed"]).optional(),
 });
 /**
- * Fetches and processes audio from a specified query at the lowest available quality.
- *
  * @shortdesc Fetches the lowest quality audio and applies audio filters with options for streaming, Tor, and metadata.
  *
  * @description This function allows you to search for audio content and retrieve it in the lowest quality available. You can either stream the audio, save it to a specified output directory, apply various audio filters to modify the sound, or just fetch the metadata associated with the audio. The function utilizes `ffmpeg` for audio processing and provides an option to use the Tor network for anonymizing your requests.
