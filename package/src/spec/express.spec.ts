@@ -148,16 +148,6 @@ server.get("/api/Info/Formats", async (req: any, res) => {
     res.status(500).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
   }
 });
-server.get("/api/Info/Live", async (req: any, res) => {
-  try {
-    const options = { videoLink: req.query.videoLink, verbose: req.query.verbose };
-    const emitter = YouTubeDLX.Info.Live(options);
-    const data = await wrapEmitter(emitter);
-    res.json(data);
-  } catch (error) {
-    res.status(500).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
-  }
-});
 server.get("/api/Info/Comments", async (req: any, res) => {
   try {
     const options = { query: req.query.query, verbose: req.query.verbose };

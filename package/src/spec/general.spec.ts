@@ -217,16 +217,6 @@ async function Info_Tests() {
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
   }
-  async function LiveVideoData() {
-    console.log(colors.bold.blue("@info"), "Live: (1): Fetch live video data with only the video link");
-    YouTubeDLX.Info.Live({ videoLink: "https://www.youtube.com/watch?v=test_yOiO2Zi0IRw" })
-      .on("data", data => console.log(colors.italic.green("@data:"), data))
-      .on("error", error => console.error(colors.italic.red("@error:"), error));
-    console.log(colors.bold.blue("@info"), "Live: (2): Fetch live video data with verbose output enabled");
-    YouTubeDLX.Info.Live({ videoLink: "https://www.youtube.com/watch?v=test_yOiO2Zi0IRw", verbose: true })
-      .on("data", data => console.log(colors.italic.green("@data:"), data))
-      .on("error", error => console.error(colors.italic.red("@error:"), error));
-  }
   async function VideoComments() {
     console.log(colors.bold.blue("@info"), "VideoComments: (1): Fetch all video comments with only the query");
     YouTubeDLX.Info.Comments({ query: "Node.js tutorial" })
@@ -260,10 +250,9 @@ async function Info_Tests() {
       .on("error", error => console.error(colors.italic.red("@error:"), error));
     console.log(colors.bold.blue("@info"), "VideoTranscript: (3): Fetch transcript data with verbose output enabled");
   }
-  await Extract();
   await Help();
+  await Extract();
   await ListFormats();
-  await LiveVideoData();
   await VideoComments();
   await VideoTranscript();
 }
