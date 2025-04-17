@@ -37,13 +37,13 @@ async function searchChannels({ query }: { query: string }): Promise<channelSear
  *
  * @example
  * // Search for YouTube channels.
- * YouTubeDLX.search_channels({ query: "technology" })
+ * YouTubeDLX.Search.Channel.Multiple({ query: "technology" })
  * .on("data", (channels) => console.log("Channels:", channels))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
  * // Handle the case where no channels are found.
- * YouTubeDLX.search_channels({ query: "nonexistentquerythatshouldreturnnothing" })
+ * YouTubeDLX.Search.Channel.Multiple({ query: "nonexistentquerythatshouldreturnnothing" })
  * .on("data", (channels) => console.log("Channels:", channels))
  * .on("error", (error) => console.error("Error:", error));
  */

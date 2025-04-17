@@ -31,8 +31,9 @@ var YouTubeDLX = {
   Video: { Lowest: VideoLowest, Highest: VideoHighest, Custom: VideoCustom },
   Audio_Video: { Lowest: AudioVideoLowest, Highest: AudioVideoHighest, Custom: AudioVideoCustom },
   Search: {
+    Channel: { Single: channel_data, Multiple: search_channels },
     Playlist: { Single: playlist_data, Multiple: search_playlists },
-    Video: { Single: video_data, Multiple: search_videos, Related: related_videos, Channel: search_channels, Channel_Data: channel_data },
+    Video: { Single: video_data, Multiple: search_videos, Related: related_videos },
   },
   Account: { History: watch_history, HomeFeed: home_feed, SubscriptionsFeed: subscriptions_feed, Unseen_Notifications: unseen_notifications },
   Info: { Help: help, Extract: extract, Formats: list_formats, GetVideoId: YouTubeID, Comments: video_comments, Transcript: video_transcript },

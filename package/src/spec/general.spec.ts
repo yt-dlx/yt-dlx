@@ -101,7 +101,7 @@ async function Account_Tests() {
 async function Search_Tests() {
   async function ChannelData() {
     console.log(colors.bold.blue("@info"), "Channel_Data: (1): Fetch channel data with only the channel link");
-    YouTubeDLX.Search.Video.Channel_Data({ channelLink: "https://www.youtube.com/c/testchannel" })
+    YouTubeDLX.Search.Channel.Single({ channelLink: "https://www.youtube.com/c/testchannel" })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
   }
@@ -127,11 +127,11 @@ async function Search_Tests() {
   }
   async function SearchChannels() {
     console.log(colors.bold.blue("@info"), "SearchChannels: (1): Search for channels with a valid query");
-    YouTubeDLX.Search.Video.Channel({ query: "Tech channels" })
+    YouTubeDLX.Search.Channel.Multiple({ query: "Tech channels" })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
     console.log(colors.bold.blue("@info"), "SearchChannels: (2): Search for channels with an invalid query");
-    YouTubeDLX.Search.Video.Channel({ query: "INVALID_QUERY" })
+    YouTubeDLX.Search.Channel.Multiple({ query: "INVALID_QUERY" })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
   }

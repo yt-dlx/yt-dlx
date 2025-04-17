@@ -13,13 +13,13 @@ const ZodSchema = z.object({ channelLink: z.string().min(2) });
  *
  * @example
  * // Fetch data for a YouTube channel.
- * YouTubeDLX.channel_data({ channelLink: "https://www.youtube.com/@LinusTechTips" })
+ * YouTubeDLX.Search.Channel.Single({ channelLink: "https://www.youtube.com/@LinusTechTips" })
  * .on("data", (channelInfo) => console.log("Channel Info:", channelInfo))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
  * // Handle errors when fetching channel data.
- * YouTubeDLX.channel_data({ channelLink: "invalid link" })
+ * YouTubeDLX.Search.Channel.Single({ channelLink: "invalid link" })
  * .on("data", (channelInfo) => console.log("Channel Info:", channelInfo))
  * .on("error", (error) => console.error("Error:", error));
  */
