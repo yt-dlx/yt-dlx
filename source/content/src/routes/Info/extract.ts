@@ -1,9 +1,39 @@
+import path from "path";
 import colors from "colors";
+import { Client } from "youtubei";
 import { z, ZodError } from "zod";
 import Tuber from "../../utils/Agent";
 import { EventEmitter } from "events";
 import type EngineOutput from "../../interfaces/EngineOutput";
+import { Innertube, UniversalCache } from "youtubei.js";
 const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optional(), verbose: z.boolean().optional() });
+interface CommentType {
+  comment_id: string;
+  is_pinned: boolean;
+  comment: string;
+  published_time: string;
+  author_is_channel_owner: boolean;
+  creator_thumbnail_url: string;
+  like_count: number;
+  is_member: boolean;
+  author: string;
+  is_hearted: boolean;
+  is_liked: boolean;
+  is_disliked: boolean;
+  reply_count: number;
+  hasReplies: boolean;
+}
+interface CaptionSegment {
+  utf8: string;
+  tOffsetMs?: number;
+  acAsrConf: number;
+}
+interface VideoTranscriptType {
+  text: string;
+  start: number;
+  duration: number;
+  segments: CaptionSegment[];
+}
 function calculateUploadAgo(days: number) {
   const years = Math.floor(days / 365);
   const months = Math.floor((days % 365) / 30);
@@ -29,54 +59,114 @@ function formatCount(count: number) {
   }
   return `${count}`;
 }
-
+async function fetchCommentsByVideoId(videoId: string, verbose: boolean): Promise<CommentType[] | null> {
+  try {
+    if (verbose) console.log(colors.green("@info:"), `Fetching comments for video ID: ${videoId}`);
+    const youtubeInnertube = await Innertube.create({
+      user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+      cache: new UniversalCache(true, path.join(process.cwd(), "YouTubeDLX")),
+    });
+    const response = await youtubeInnertube.getComments(videoId);
+    const comments: CommentType[] = response.contents
+      .map(thread => {
+        const comment = thread?.comment;
+        if (!comment || !comment.content?.text || !comment.published_time || !comment.author?.name) return null;
+        return {
+          comment_id: comment.comment_id || "",
+          is_pinned: comment.is_pinned || false,
+          comment: comment.content.text,
+          published_time: comment.published_time,
+          author_is_channel_owner: comment.author_is_channel_owner || false,
+          creator_thumbnail_url: comment.creator_thumbnail_url || "",
+          like_count: comment.like_count || 0,
+          is_member: comment.is_member || false,
+          author: comment.author.name,
+          is_hearted: comment.is_hearted || false,
+          is_liked: comment.is_liked || false,
+          is_disliked: comment.is_disliked || false,
+          reply_count: comment.reply_count || 0,
+          hasReplies: thread.has_replies || false,
+        } as CommentType;
+      })
+      .filter((item): item is CommentType => item !== null);
+    if (comments.length === 0) {
+      if (verbose) console.log(colors.red("@error:"), "No comments found for the video");
+      return null;
+    }
+    if (verbose) console.log(colors.green("@info:"), "Video comments fetched!");
+    return comments;
+  } catch (error: any) {
+    if (verbose) console.error(colors.red("@error: ") + error.message);
+    return null;
+  }
+}
+async function fetchVideoTranscript(videoId: string, verbose: boolean): Promise<VideoTranscriptType[] | null> {
+  try {
+    if (verbose) console.log(colors.green("@info:"), `Fetching transcript for video ID: ${videoId}`);
+    const youtube = new Client();
+    const captions = await youtube.getVideoTranscript(videoId);
+    if (!captions) {
+      if (verbose) console.log(colors.red("@error:"), "No transcript found for the video");
+      return null;
+    }
+    const transcript = captions.map(caption => ({
+      text: caption.text,
+      start: caption.start,
+      duration: caption.duration,
+      segments: caption.segments.map(segment => ({
+        utf8: segment.utf8,
+        tOffsetMs: segment.tOffsetMs,
+        acAsrConf: segment.acAsrConf,
+      })),
+    }));
+    if (verbose) console.log(colors.green("@info:"), "Video transcript fetched!");
+    return transcript;
+  } catch (error: any) {
+    if (verbose) console.error(colors.red("@error: ") + error.message);
+    return null;
+  }
+}
 /**
- * Extracts detailed metadata and available formats for a video based on a query.
+ * Extracts detailed metadata, available formats, comments, and transcript for a video based on a query.
  *
- * This function uses a search query to find a video and then retrieves comprehensive information,
- * including various audio and video formats, metadata like title, uploader, view count, and formatted durations.
- * It supports optional verbose logging and the use of Tor for anonymous requests.
+ * This function uses a search query to find a video and retrieves comprehensive information,
+ * including various audio and video formats, metadata like title, uploader, view count,
+ * video comments, and transcript. It supports verbose logging and Tor for anonymity.
  *
- * @param {object} options - An object containing the configuration options for extracting video information.
- * @param {string} options.query - The search query string (minimum 2 characters) to find the desired video. This is a mandatory parameter.
- * @param {boolean} [options.verbose=false] - An optional boolean value that, if set to `true`, enables verbose logging to the console, providing more detailed information about the process.
- * @param {boolean} [options.useTor=false] - An optional boolean value that, if set to `true`, will route the network request through the Tor network.
- * This can help in anonymizing your request. Requires Tor to be running on your system.
+ * @param {object} options - Configuration options for extracting video information.
+ * @param {string} options.query - The search query string (minimum 2 characters) to find the desired video. Required.
+ * @param {boolean} [options.verbose] - Enables verbose logging to the console if true.
+ * @param {boolean} [options.useTor] - Routes the request through Tor if true, requires Tor running locally.
  *
  * @returns {EventEmitter} An EventEmitter instance that emits events during the extraction process.
  * The following events can be listened to:
- * - `"data"`: Emitted when the video metadata and format information are successfully extracted and processed. The data is an object containing various details about the video.
- * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, network requests, or metadata parsing. The emitted data is the error message or object.
+ * - `"data"`: Emitted when the video metadata, formats, comments, and transcript are successfully extracted.
+ *   The data is an object containing video details, including `comments` and `transcript` properties.
+ * - `"error"`: Emitted when an error occurs during validation, network requests, or data processing.
  *
  * @example
- * // 1: Extract metadata for a video using a query.
+ * // Extract metadata, formats, comments, and transcript
  * YouTubeDLX.extract({ query: "interesting documentary" })
- * .on("data", (data) => console.log("Video Info:", data))
- * .on("error", (err) => console.error("Error:", err));
+ *   .on("data", (data) => console.log("Video Info:", data))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // 2: Extract metadata for a video with verbose logging.
+ * // Extract with verbose logging
  * YouTubeDLX.extract({ query: "funny cats video", verbose: true })
- * .on("data", (data) => console.log("Video Info (Verbose):", data))
- * .on("error", (err) => console.error("Error:", err));
+ *   .on("data", (data) => console.log("Video Info:", data))
+ *   .on("error", (err) => console.error("Error:", err));
  *
  * @example
- * // 3: Extract metadata for a video using Tor for anonymity.
+ * // Extract with Tor
  * YouTubeDLX.extract({ query: "private lecture", useTor: true })
- * .on("data", (data) => console.log("Video Info (Tor):", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 4: Extract metadata for a video with verbose logging and using Tor.
- * YouTubeDLX.extract({ query: "rare footage", verbose: true, useTor: true })
- * .on("data", (data) => console.log("Video Info (Verbose + Tor):", data))
- * .on("error", (err) => console.error("Error:", err));
+ *   .on("data", (data) => console.log("Video Info:", data))
+ *   .on("error", (err) => console.error("Error:", err));
  */
-export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSchema>): EventEmitter {
+export default function extract(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
   (async () => {
     try {
-      ZodSchema.parse({ query, verbose });
+      const { query, useTor, verbose } = ZodSchema.parse(options);
       const metaBody: EngineOutput = await Tuber({ query, verbose, useTor });
       if (!metaBody) {
         emitter.emit("error", `${colors.red("@error:")} Unable to get response!`);
@@ -104,6 +194,9 @@ export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSc
       const likeCountFormatted = metaBody.metaData.like_count !== undefined ? formatCount(metaBody.metaData.like_count) : "N/A";
       const commentCountFormatted = metaBody.metaData.comment_count !== undefined ? formatCount(metaBody.metaData.comment_count) : "N/A";
       const channelFollowerCountFormatted = metaBody.metaData.channel_follower_count !== undefined ? formatCount(metaBody.metaData.channel_follower_count) : "N/A";
+      const commentsPromise = fetchCommentsByVideoId(metaBody.metaData.id, verbose ?? false);
+      const transcriptPromise = fetchVideoTranscript(metaBody.metaData.id, verbose ?? false);
+      const [comments, transcript] = await Promise.all([commentsPromise, transcriptPromise]);
       const payload = {
         AudioLowF: metaBody.AudioLowF,
         AudioHighF: metaBody.AudioHighF,
@@ -150,6 +243,8 @@ export default function extract({ query, verbose, useTor }: z.infer<typeof ZodSc
           channel_follower_count: metaBody.metaData.channel_follower_count,
           channel_follower_count_formatted: channelFollowerCountFormatted,
         },
+        comments,
+        transcript,
       };
       emitter.emit("data", payload);
     } catch (error) {
