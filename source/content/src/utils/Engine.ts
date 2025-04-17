@@ -114,8 +114,8 @@ export default async function Engine({ sudo, query, useTor }: { query: string; s
   var AudioHighF: AudioFormat | any = null;
   var VideoLowF: VideoFormat | any = null;
   var VideoHighF: VideoFormat | any = null;
-  var cprobe = await locator().then(fp => fp.cprobe);
-  var pLoc = `${cprobe}`;
+  var ytprobe = await locator().then(fp => fp.ytprobe);
+  var pLoc = `${ytprobe}`;
   var config = { factor: 2, retries: 3, minTimeout: 1000, maxTimeout: 3000 };
   var metaCore = await retry(async () => {
     if (useTor) pLoc += ` --proxy "socks5://127.0.0.1:9050"`;

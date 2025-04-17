@@ -27,7 +27,7 @@ const binDL = async (url, filepath, binaryName) => {
 const main = async () => {
   const binaries = [
     { name: "ffmpeg.exe", url: "https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffmpeg.exe" },
-    { name: "cprobe.exe", url: "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" },
+    { name: "ytprobe.exe", url: "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" },
     { name: "ffprobe.exe", url: "https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffprobe.exe" },
   ];
   for (const binary of binaries) {

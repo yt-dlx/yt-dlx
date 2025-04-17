@@ -20,7 +20,7 @@ async function getBinaryPath(execName: string): Promise<string | null> {
 export async function locator() {
   try {
     const results: { [key: string]: string } = {};
-    const execNames = ["ffmpeg", "ffprobe", "cprobe"];
+    const execNames = ["ffmpeg", "ffprobe", "ytprobe"];
     for (const execName of execNames) {
       const execPath = await getBinaryPath(execName);
       if (execPath) results[execName] = execPath;
