@@ -186,66 +186,66 @@ async function Search_Tests() {
 async function Info_Tests() {
   async function Extract() {
     console.log(colors.bold.blue("@info"), "Extract: (1): Extract video data with only the query");
-    YouTubeDLX.Info.Extract({ query: "test video" })
+    YouTubeDLX.Misc.Extract({ query: "test video" })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
     console.log(colors.bold.blue("@info"), "Extract: (2): Extract video data with verbose output enabled");
-    YouTubeDLX.Info.Extract({ query: "test video", verbose: true })
+    YouTubeDLX.Misc.Extract({ query: "test video", verbose: true })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
     console.log(colors.bold.blue("@info"), "Extract: (3): Extract video data with Tor enabled");
-    YouTubeDLX.Info.Extract({ query: "test video", useTor: true })
+    YouTubeDLX.Misc.Extract({ query: "test video", useTor: true })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
     console.log(colors.bold.blue("@info"), "Extract: (4): Extract video data with all parameters (query, verbose, useTor)");
-    YouTubeDLX.Info.Extract({ query: "test video", verbose: true, useTor: true })
+    YouTubeDLX.Misc.Extract({ query: "test video", verbose: true, useTor: true })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
   }
   async function Help() {
     console.log(colors.bold.blue("@info"), "Help: (1): Display help message and get the help URL");
-    const HelpData = YouTubeDLX.Info.Help();
+    const HelpData = YouTubeDLX.Misc.Help();
     console.log(colors.italic.green("@data:"), HelpData);
   }
   async function ListFormats() {
     console.log(colors.bold.blue("@info"), "list_formats: (1): List formats with only the query");
-    YouTubeDLX.Info.Formats({ query: "test video" })
+    YouTubeDLX.Misc.Formats({ query: "test video" })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
     console.log(colors.bold.blue("@info"), "list_formats: (2): List formats with query and verbose output enabled");
-    YouTubeDLX.Info.Formats({ query: "test video", verbose: true })
+    YouTubeDLX.Misc.Formats({ query: "test video", verbose: true })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
   }
   async function VideoComments() {
     console.log(colors.bold.blue("@info"), "VideoComments: (1): Fetch all video comments with only the query");
-    YouTubeDLX.Info.Comments({ query: "Node.js tutorial" })
+    YouTubeDLX.Misc.Comments({ query: "Node.js tutorial" })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
     console.log(colors.bold.blue("@info"), "VideoComments: (2): Fetch all video comments with verbose output enabled");
-    YouTubeDLX.Info.Comments({ query: "Node.js tutorial", verbose: true })
+    YouTubeDLX.Misc.Comments({ query: "Node.js tutorial", verbose: true })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
     console.log(colors.bold.blue("@info"), "VideoComments: (3): Fetch video comments with an invalid (too short) query");
-    YouTubeDLX.Info.Comments({ query: "a" })
+    YouTubeDLX.Misc.Comments({ query: "a" })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
     console.log(colors.bold.blue("@info"), "VideoComments: (4): Fetch video comments with a query that returns no videos");
-    YouTubeDLX.Info.Comments({ query: "asdhfkjashdfkjh", verbose: true })
+    YouTubeDLX.Misc.Comments({ query: "asdhfkjashdfkjh", verbose: true })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
     console.log(colors.bold.blue("@info"), "VideoComments: (5): Fetch video comments for a video likely to have no comments");
-    YouTubeDLX.Info.Comments({ query: "silent ASMR no comments", verbose: true })
+    YouTubeDLX.Misc.Comments({ query: "silent ASMR no comments", verbose: true })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
   }
   async function VideoTranscript() {
     console.log(colors.bold.blue("@info"), "VideoTranscript: (1): Fetch transcript data with only the video link");
-    YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=yOiO2Zi0IRw" })
+    YouTubeDLX.Misc.Transcript({ videoLink: "https://www.youtube.com/watch?v=yOiO2Zi0IRw" })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
     console.log(colors.bold.blue("@info"), "VideoTranscript: (2): Fetch transcript data with an invalid video link");
-    YouTubeDLX.Info.Transcript({ videoLink: "https://www.youtube.com/watch?v=INVALID_ID" })
+    YouTubeDLX.Misc.Transcript({ videoLink: "https://www.youtube.com/watch?v=INVALID_ID" })
       .on("data", data => console.log(colors.italic.green("@data:"), data))
       .on("error", error => console.error(colors.italic.red("@error:"), error));
     console.log(colors.bold.blue("@info"), "VideoTranscript: (3): Fetch transcript data with verbose output enabled");

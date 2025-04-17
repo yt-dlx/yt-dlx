@@ -120,48 +120,48 @@ server.get("/api/Search/PlaylistMultiple", async (req: any, res) => {
     res.status(500).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
   }
 });
-server.get("/api/Info/Extract", async (req: any, res) => {
+server.get("/api/Misc/Extract", async (req: any, res) => {
   try {
     const options = { query: req.query.query, verbose: req.query.verbose, useTor: req.query.useTor };
-    const emitter = YouTubeDLX.Info.Extract(options);
+    const emitter = YouTubeDLX.Misc.Extract(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
   }
 });
-server.get("/api/Info/Help", async (req: any, res) => {
+server.get("/api/Misc/Help", async (req: any, res) => {
   try {
-    const helpUrl = await YouTubeDLX.Info.Help();
+    const helpUrl = await YouTubeDLX.Misc.Help();
     res.json({ helpUrl });
   } catch (error) {
     res.status(500).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
   }
 });
-server.get("/api/Info/Formats", async (req: any, res) => {
+server.get("/api/Misc/Formats", async (req: any, res) => {
   try {
     const options = { query: req.query.query, verbose: req.query.verbose };
-    const emitter = YouTubeDLX.Info.Formats(options);
+    const emitter = YouTubeDLX.Misc.Formats(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
   }
 });
-server.get("/api/Info/Comments", async (req: any, res) => {
+server.get("/api/Misc/Comments", async (req: any, res) => {
   try {
     const options = { query: req.query.query, verbose: req.query.verbose };
-    const emitter = YouTubeDLX.Info.Comments(options);
+    const emitter = YouTubeDLX.Misc.Comments(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
     res.status(500).json({ error: error instanceof Error ? error.message : "An unknown error occurred" });
   }
 });
-server.get("/api/Info/Transcript", async (req: any, res) => {
+server.get("/api/Misc/Transcript", async (req: any, res) => {
   try {
     const options = { videoLink: req.query.videoLink, verbose: req.query.verbose };
-    const emitter = YouTubeDLX.Info.Transcript(options);
+    const emitter = YouTubeDLX.Misc.Transcript(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {
