@@ -24,6 +24,7 @@
   "files": [
     "pkg",
     "LICENSE",
+    "postdeps.mjs",
     "package.json"
   ],
   "dependencies": {
