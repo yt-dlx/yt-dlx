@@ -19,7 +19,10 @@ export default function HomeGUI() {
   }, []);
   return (
     <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-700 font-semibold">
-      <NavPackage /> <Introduction />
+      <NavPackage />
+      <div className="w-full px-4 py-8 md:px-6">
+        <Introduction />
+      </div>
       <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white">
         <div className="container px-4 md:px-6">
           <form

@@ -13,7 +13,10 @@ const AndBounce = { initial: { opacity: 0, y: -50 }, whileInView: { y: 0, opacit
 export default function AudioCustom() {
   return (
     <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-700 font-semibold">
-      <NavPackage /> <Introduction />
+      <NavPackage />
+      <div className="w-full px-4 py-8 md:px-6">
+        <Introduction />
+      </div>
       <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-8 md:py-16 lg:py-24 bg-black text-white">
         <div className="container px-4 md:px-6">
           <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
