@@ -33,7 +33,7 @@ server.get("/api/Account/SubscriptionsFeed", async (req: any, res) => {
 server.get("/api/Account/UnseenNotifications", async (req: any, res) => {
   try {
     const options = { cookies: req.query.YouTubeDLX_COOKIES, verbose: req.query.verbose };
-    const emitter = YouTubeDLX.Account.Unseen_Notifications(options);
+    const emitter = YouTubeDLX.Account.UnseenNotifications(options);
     const data = await wrapEmitter(emitter);
     res.json(data);
   } catch (error) {

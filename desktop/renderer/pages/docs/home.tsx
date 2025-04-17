@@ -57,9 +57,9 @@ const FunctionTable = ({ title, functions }: { title: string; functions: Functio
     </table>
   </motion.div>
 );
-
 export default function HomePage() {
   const functions: Function[] = [
+    /* Audio Functions */
     {
       category: "Audio",
       href: "/docs/Audio/AudioCustom",
@@ -84,6 +84,7 @@ export default function HomePage() {
       name: "YouTubeDLX.placeholder.placeholder()",
       description: "description placeholder placeholder placeholder placeholder placeholder placeholder placeholder.",
     },
+    /* Video Functions */
     {
       category: "Video",
       href: "/docs/placeholder/placeholder",
@@ -108,6 +109,7 @@ export default function HomePage() {
       name: "YouTubeDLX.placeholder.placeholder()",
       description: "description placeholder placeholder placeholder placeholder placeholder placeholder placeholder.",
     },
+    /* Audio_Video Functions */
     {
       category: "Audio_Video",
       href: "/docs/placeholder/placeholder",
@@ -132,30 +134,32 @@ export default function HomePage() {
       name: "YouTubeDLX.placeholder.placeholder()",
       description: "description placeholder placeholder placeholder placeholder placeholder placeholder placeholder.",
     },
+    /* Account Functions */
     {
       category: "Account",
-      href: "/docs/placeholder/placeholder",
-      name: "YouTubeDLX.placeholder.placeholder()",
-      description: "description placeholder placeholder placeholder placeholder placeholder placeholder placeholder.",
+      href: "/docs/Account/History",
+      name: "YouTubeDLX.Account.History()",
+      description: "Fetches the watch history of a user.",
     },
     {
       category: "Account",
-      href: "/docs/placeholder/placeholder",
-      name: "YouTubeDLX.placeholder.placeholder()",
-      description: "description placeholder placeholder placeholder placeholder placeholder placeholder placeholder.",
+      href: "/docs/Account/HomeFeed",
+      name: "YouTubeDLX.Account.placeholder()",
+      description: "Fetches the home feed of a user.",
     },
     {
       category: "Account",
-      href: "/docs/placeholder/placeholder",
-      name: "YouTubeDLX.placeholder.placeholder()",
-      description: "description placeholder placeholder placeholder placeholder placeholder placeholder placeholder.",
+      href: "/docs/Account/SubscriptionsFeed",
+      name: "YouTubeDLX.Account.placeholder()",
+      description: "Fetches the subscriptions feed of a user.",
     },
     {
       category: "Account",
-      href: "/docs/placeholder/placeholder",
-      name: "YouTubeDLX.placeholder.placeholder()",
-      description: "description placeholder placeholder placeholder placeholder placeholder placeholder placeholder.",
+      href: "/docs/Account/Unseen_Notifications",
+      name: "YouTubeDLX.Account.placeholder()",
+      description: "Fetches the count of unseen notifications for a user.",
     },
+    /* Info Functions */
     {
       category: "Info",
       href: "/docs/placeholder/placeholder",
@@ -180,6 +184,7 @@ export default function HomePage() {
       name: "YouTubeDLX.placeholder.placeholder()",
       description: "description placeholder placeholder placeholder placeholder placeholder placeholder placeholder.",
     },
+    /* Search Functions */
     {
       category: "Search",
       href: "/docs/placeholder/placeholder",
@@ -205,13 +210,11 @@ export default function HomePage() {
       description: "description placeholder placeholder placeholder placeholder placeholder placeholder placeholder.",
     },
   ];
-
   const categorizedFunctions: CategorizedFunctions = functions.reduce((acc, func) => {
     if (!acc[func.category]) acc[func.category] = [];
     acc[func.category].push(func);
     return acc;
   }, {});
-
   return (
     <main className="flex flex-col items-center justify-start overflow-y-auto max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-700 font-semibold">
       <NavPackage />

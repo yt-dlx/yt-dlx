@@ -31,13 +31,13 @@ const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(
  *
  * @example
  * // 1: Fetch the subscriptions feed with provided cookies.
- * YouTubeDLX.subscriptions_feed({ cookies: "YOUR_COOKIES_HERE" })
+ * YouTubeDLX.Account.SubscriptionsFeed({ cookies: "YOUR_COOKIES_HERE" })
  * .on("data", (data) => console.log("Subscriptions Feed:", data))
  * .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // 2: Fetch the subscriptions feed with verbose logging.
- * YouTubeDLX.subscriptions_feed({ cookies: "YOUR_COOKIES_HERE", verbose: true })
+ * YouTubeDLX.Account.SubscriptionsFeed({ cookies: "YOUR_COOKIES_HERE", verbose: true })
  * .on("data", (data) => console.log("Subscriptions Feed (Verbose):", data))
  * .on("error", (err) => console.error("Error:", err));
  */

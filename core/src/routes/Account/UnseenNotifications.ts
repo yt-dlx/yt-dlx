@@ -30,13 +30,13 @@ const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(
  *
  * @example
  * // 1: Fetch the count of unseen notifications with provided cookies.
- * YouTubeDLX.unseen_notifications({ cookies: "YOUR_COOKIES_HERE" })
+ * YouTubeDLX.Account.UnseenNotifications({ cookies: "YOUR_COOKIES_HERE" })
  * .on("data", (data) => console.log("Unseen Notifications Count:", data))
  * .on("error", (err) => console.error("Error:", err));
  *
  * @example
  * // 2: Fetch the count of unseen notifications with verbose logging.
- * YouTubeDLX.unseen_notifications({ cookies: "YOUR_COOKIES_HERE", verbose: true })
+ * YouTubeDLX.Account.UnseenNotifications({ cookies: "YOUR_COOKIES_HERE", verbose: true })
  * .on("data", (data) => console.log("Unseen Notifications Count (Verbose):", data))
  * .on("error", (err) => console.error("Error:", err));
  */

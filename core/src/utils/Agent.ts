@@ -2,7 +2,7 @@ import colors from "colors";
 import Engine from "./Engine";
 import { Client } from "youtubei";
 import { execSync } from "child_process";
-import YouTubeID from "../utils/YouTubeId";
+import YouTubeID from "./YouTubeId";
 export async function VideoInfo({ videoId }: { videoId: string }): Promise<VideoInfoType | null> {
   try {
     const youtube = new Client();
