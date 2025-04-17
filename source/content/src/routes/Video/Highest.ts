@@ -15,7 +15,6 @@ var ZodSchema = z.object({
   metadata: z.boolean().optional(),
   filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
 });
-
 /**
  * Fetches and processes video from a specified query at the highest available quality with optional video filters.
  *
