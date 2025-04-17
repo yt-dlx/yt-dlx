@@ -911,9 +911,9 @@
   optionalDependencies:
     global-agent "^3.0.0"
 
-"@electron/node-gyp@https://github.com/electron/node-gyp#06b29aafb7708acef8b3669835c8a7857ebc92d2":
+"@electron/node-gyp@git+https://github.com/electron/node-gyp.git#06b29aafb7708acef8b3669835c8a7857ebc92d2":
   version "10.2.0-electron.1"
-  resolved "https://github.com/electron/node-gyp#06b29aafb7708acef8b3669835c8a7857ebc92d2"
+  resolved "git+https://github.com/electron/node-gyp.git#06b29aafb7708acef8b3669835c8a7857ebc92d2"
   dependencies:
     env-paths "^2.2.0"
     exponential-backoff "^3.1.1"
@@ -3032,12 +3032,12 @@ fraction.js@^4.3.7:
   resolved "https://registry.yarnpkg.com/fraction.js/-/fraction.js-4.3.7.tgz#06ca0085157e42fda7f9e726e79fefc4068840f7"
   integrity sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==
 
-framer-motion@^12.7.3:
-  version "12.7.3"
-  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-12.7.3.tgz#06e58221b526ccc49292ced5a439342eb5e58e28"
-  integrity sha512-dNT4l5gEnUo2ytXLUBUf6AI21dZ77TMclDKE3ElaIHZ8m90nJ/NCcExW51zdSIaS0RhAS5iXcF7bEIxZe8XG2g==
+framer-motion@^12.7.4:
+  version "12.7.4"
+  resolved "https://registry.yarnpkg.com/framer-motion/-/framer-motion-12.7.4.tgz#50aeb8b5b5a672dea931bdb74956d7b526bf0b4b"
+  integrity sha512-jX0bPsTmU0oPZTYz/dVyD0dmOyEOEJvdn0TaZBE5I8g2GvVnnQnW9f65cJnoVfUkY3WZWNXGXnPbVA9YnaIfVA==
   dependencies:
-    motion-dom "^12.7.3"
+    motion-dom "^12.7.4"
     motion-utils "^12.7.2"
     tslib "^2.4.0"
 
@@ -3985,10 +3985,10 @@ mkdirp@^1.0.3, mkdirp@^1.0.4:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-1.0.4.tgz#3eb5ed62622756d79a5f0e2a221dfebad75c2f7e"
   integrity sha512-vVqVZQyf3WLx2Shd0qJ9xuvqgAyKPLAiqITEtqW0oIUjzo3PePDd6fW9iFz30ef7Ysp/oiWqbhszeGWW2T6Gzw==
 
-motion-dom@^12.7.3:
-  version "12.7.3"
-  resolved "https://registry.yarnpkg.com/motion-dom/-/motion-dom-12.7.3.tgz#17885ec7f838e45be12791237f97715008258b64"
-  integrity sha512-IjMt1YJHrvyvruFvmpmd6bGXXGCvmygrnvSb3aZ8KhOzF4H3PulU+cMBzH+U8TBJHjC/mnmJFRIA1Cu4vBfcBA==
+motion-dom@^12.7.4:
+  version "12.7.4"
+  resolved "https://registry.yarnpkg.com/motion-dom/-/motion-dom-12.7.4.tgz#80f5f8d706e94bc29f6f4f4afa300ff9e1f976a2"
+  integrity sha512-1ZUHAoSUMMxP6jPqyxlk9XUfb6NxMsnWPnH2YGhrOhTURLcXWbETi6eemoKb60Pe32NVJYduL4B62VQSO5Jq8Q==
   dependencies:
     motion-utils "^12.7.2"
 
@@ -5405,10 +5405,10 @@ youtubei@^1.6.7:
     node-fetch "2.6.7"
     protobufjs "7.2.6"
 
-yt-dlx@^16.8.7:
-  version "16.8.7"
-  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-16.8.7.tgz#2d90b65de58bd1921361e22578ec690213fc7ae3"
-  integrity sha512-FSofC0Q99wBvlRbq8shZC3mB0GUzrwiX6qUlgcq2dboMt2QvjWBx40rXuVlMPitt5iqEiBMkUCHeWUJTknV2nQ==
+yt-dlx@^16.9.8:
+  version "16.9.8"
+  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-16.9.8.tgz#c60e626dcda7854e21259e1e5ebbb2de1b1d45b1"
+  integrity sha512-1KCYQ+p3jqqoxGXPOpL6Lq/TYNCo4tINZveU8RmVYPnVPLqGlKROfhK7oFV9zsC6qiXfxmaEfN4q1DiBgdGPFw==
   dependencies:
     async-retry "^1.3.3"
     axios "^1.8.4"
