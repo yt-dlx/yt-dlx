@@ -52,7 +52,6 @@ var YouTubeDLX = {
     },
     Video: {
       Single: video_data, // YouTubeDLX.Search.Video.Single
-      Related: related_videos, // YouTubeDLX.Search.Video.Related
       Multiple: search_videos, // YouTubeDLX.Search.Video.Multiple
     },
   },
@@ -63,13 +62,18 @@ var YouTubeDLX = {
     UnseenNotifications: unseen_notifications, // YouTubeDLX.Account.UnseenNotifications
   },
   Misc: {
-    Help: help, // YouTubeDLX.Misc.Help
-    Extract: extract, // YouTubeDLX.Misc.Extract
-    Formats: list_formats, // YouTubeDLX.Misc.Formats
-    ProgressBar: progbar, // YouTubeDLX.Misc.ProgressBar
-    GetVideoId: YouTubeID, // YouTubeDLX.Misc.GetVideoId
-    Comments: video_comments, // YouTubeDLX.Misc.Comments
-    Transcript: video_transcript, // YouTubeDLX.Misc.Transcript
+    System: {
+      Help: help, // YouTubeDLX.Misc.System.Help
+      ProgressBar: progbar, // YouTubeDLX.Misc.System.ProgressBar
+    },
+    Video: {
+      GetId: YouTubeID, // YouTubeDLX.Misc.Video.GetId
+      Extract: extract, // YouTubeDLX.Misc.Video.Extract
+      Formats: list_formats, // YouTubeDLX.Misc.Video.Formats
+      Related: related_videos, // YouTubeDLX.Misc.Video.Related
+      Comments: video_comments, // YouTubeDLX.Video.Misc.Comments
+      Transcript: video_transcript, // YouTubeDLX.Misc.Video.Transcript
+    },
   },
 };
 export default YouTubeDLX;
