@@ -2,9 +2,9 @@ import path from "path";
 import colors from "colors";
 import { Client } from "youtubei";
 import { z, ZodError } from "zod";
-import Tuber from "../../utils/Agent";
+import Tuber from "../../../utils/Agent";
 import { EventEmitter } from "events";
-import type EngineOutput from "../../interfaces/EngineOutput";
+import type EngineOutput from "../../../interfaces/EngineOutput";
 import { Innertube, UniversalCache } from "youtubei.js";
 const ZodSchema = z.object({ query: z.string().min(2), useTor: z.boolean().optional(), verbose: z.boolean().optional() });
 interface CommentType {
