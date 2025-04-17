@@ -80,17 +80,6 @@ async function fetchVideoComments({ query, verbose }: z.infer<typeof ZodSchema>)
  *
  * @returns {EventEmitter} Emits 'data' with an array of comments or 'error'.
  *
- * @example
- * // Fetch comments for a video.
- * YouTubeDLX.video_comments({ query: "trending video" })
- * .on("data", (comments) => console.log("Comments:", comments))
- * .on("error", (error) => console.error("Error:", error));
- *
- * @example
- * // Fetch comments with verbose logging.
- * YouTubeDLX.video_comments({ query: "funny compilation", verbose: true })
- * .on("data", (comments) => console.log("Comments:", comments))
- * .on("error", (error) => console.error("Error:", error));
  */
 export default function video_comments(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

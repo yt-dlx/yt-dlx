@@ -36,17 +36,6 @@ async function searchPlaylists({ query }: { query: string }, emitter: EventEmitt
  * - "data": Emitted with the first playlist object found matching the search query. This object contains details like the playlist ID, title, video count, and thumbnails.
  * - "error": Emitted if there is an error during the process, such as no playlists found for the query or if the input looks like a playlist link (in which case it suggests using `playlist_data()`).
  *
- * @example
- * // Search for YouTube playlists with the query "workout music"
- * YouTubeDLX.SearchPlaylists({ playlistLink: "workout music" })
- * .on("data", (playlist) => console.log("Found playlist:", playlist))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // Search for playlists related to "cooking recipes"
- * YouTubeDLX.SearchPlaylists({ playlistLink: "cooking recipes" })
- * .on("data", (playlist) => console.log("Found playlist:", playlist))
- * .on("error", (err) => console.error("Error:", err));
  */
 export default function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

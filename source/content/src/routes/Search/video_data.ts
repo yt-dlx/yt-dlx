@@ -54,12 +54,6 @@ export async function singleVideo({ videoId }: { videoId: string }, emitter: Eve
  * @returns {EventEmitter} An EventEmitter that emits the following events:
  * - "data": Emitted with a video object containing details like the video ID, title, thumbnails, upload date, description, duration, live status, view count, channel ID, channel name, tags, and like count.
  * - "error": Emitted if there is an error during the process, such as an incorrect video link or if the video information cannot be retrieved.
- *
- * @example
- * // Fetch data for a YouTube video
- * YouTubeDLX.VideoData({ videoLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" })
- * .on("data", (videoInfo) => console.log("Video Data:", videoInfo))
- * .on("error", (err) => console.error("Error:", err));
  */
 export default function video_data({ videoLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

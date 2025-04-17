@@ -46,11 +46,6 @@ async function relatedVideos({ videoId }: { videoId: string }, emitter: EventEmi
  * .on("data", (relatedVideos) => console.log("Related Videos:", relatedVideos))
  * .on("error", (error) => console.error("Error:", error));
  *
- * @example
- * // Handle the case where no related videos are found.
- * YouTubeDLX.related_videos({ videoId: "invalidVideoId" })
- * .on("data", (relatedVideos) => console.log("Related Videos:", relatedVideos))
- * .on("error", (error) => console.error("Error:", error));
  */
 export default function related_videos({ videoId }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

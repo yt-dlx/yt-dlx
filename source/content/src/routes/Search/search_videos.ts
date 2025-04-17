@@ -23,53 +23,6 @@ const ZodSchema = z.object({
  * - "data": Emitted with an array of video objects. Each object contains details like the video ID, title, live status, duration, view count, upload date, channel ID, thumbnails, description, and channel name.
  * - "error": Emitted if there is an error during the process, such as no videos found matching the criteria.
  *
- * @example
- * // 1: Search for videos with a query
- * YouTubeDLX.SearchVideos({ query: "funny cat videos" })
- * .on("data", (videos) => console.log("Found videos:", videos))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 2: Search for videos with a minimum view count
- * YouTubeDLX.SearchVideos({ query: "popular music", minViews: 1000000 })
- * .on("data", (videos) => console.log("Found videos:", videos))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 3: Search for videos with a maximum view count
- * YouTubeDLX.SearchVideos({ query: "niche tutorial", maxViews: 50000 })
- * .on("data", (videos) => console.log("Found videos:", videos))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 4: Search for videos ordered by view count
- * YouTubeDLX.SearchVideos({ query: "trending news", orderBy: "viewCount" })
- * .on("data", (videos) => console.log("Found videos:", videos))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 5: Search for videos ordered by upload date
- * YouTubeDLX.SearchVideos({ query: "new releases", orderBy: "date" })
- * .on("data", (videos) => console.log("Found videos:", videos))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 6: Search for videos with verbose logging
- * YouTubeDLX.SearchVideos({ query: "interesting facts", verbose: true })
- * .on("data", (videos) => console.log("Found videos:", videos))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 7: Search for videos with a query and view count range
- * YouTubeDLX.SearchVideos({ query: "car reviews", minViews: 10000, maxViews: 1000000 })
- * .on("data", (videos) => console.log("Found videos:", videos))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 8: Search for videos with a query and order by relevance (default)
- * YouTubeDLX.SearchVideos({ query: "how to bake a cake", orderBy: "relevance" })
- * .on("data", (videos) => console.log("Found videos:", videos))
- * .on("error", (err) => console.error("Error:", err));
  */
 export default function search_videos({ query, minViews, maxViews, orderBy, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

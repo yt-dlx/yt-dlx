@@ -20,17 +20,6 @@ const ZodSchema = z.object({ query: z.string().min(2), verbose: z.boolean().opti
  * - `"data"`: Emitted when the list of available formats is successfully retrieved. The data is an object containing arrays of format information for different categories (ManifestLow, ManifestHigh, AudioLow, VideoLow, VideoHigh, AudioHigh, VideoLowHDR, AudioLowDRC, AudioHighDRC, VideoHighHDR). Each item in the arrays provides details about the format (e.g., format, tbr for manifests; filesizeP, format_note for audio/video).
  * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation or network requests. The emitted data is the error message or object.
  *
- * @example
- * // 1: List available formats for a video using a query.
- * YouTubeDLX.list_formats({ query: "high quality music video" })
- * .on("data", (data) => console.log("Available Formats:", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 2: List available formats for a video with verbose logging.
- * YouTubeDLX.list_formats({ query: "4k nature documentary", verbose: true })
- * .on("data", (data) => console.log("Available Formats (Verbose):", data))
- * .on("error", (err) => console.error("Error:", err));
  */
 export default function list_formats({ query, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

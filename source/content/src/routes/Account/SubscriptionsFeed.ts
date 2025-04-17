@@ -5,7 +5,6 @@ import TubeResponse from "../../interfaces/TubeResponse";
 import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 import sanitizeContentItem from "../../utils/sanitizeContentItem";
 const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional() });
-
 /**
  * Fetches the subscriptions feed of a user.
  *
@@ -29,17 +28,6 @@ const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(
  * ```
  * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, cookie initialization, or network requests. The emitted data is the error message or object.
  *
- * @example
- * // 1: Fetch the subscriptions feed with provided cookies.
- * YouTubeDLX.Account.SubscriptionsFeed({ cookies: "YOUR_COOKIES_HERE" })
- * .on("data", (data) => console.log("Subscriptions Feed:", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 2: Fetch the subscriptions feed with verbose logging.
- * YouTubeDLX.Account.SubscriptionsFeed({ cookies: "YOUR_COOKIES_HERE", verbose: true })
- * .on("data", (data) => console.log("Subscriptions Feed (Verbose):", data))
- * .on("error", (err) => console.error("Error:", err));
  */
 export default function subscriptions_feed(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

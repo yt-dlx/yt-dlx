@@ -5,7 +5,6 @@ import TubeResponse from "../../interfaces/TubeResponse";
 import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 import sanitizeContentItem from "../../utils/sanitizeContentItem";
 const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(), sort: z.enum(["oldest", "newest", "old-to-new", "new-to-old"]).optional() });
-
 /**
  * Fetches the watch history of a user.
  *
@@ -35,65 +34,6 @@ const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(
  * ```
  * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, cookie initialization, or network requests. The emitted data is the error message or object.
  *
- * @example
- * // 1: Fetch the watch history with provided cookies.
- * YouTubeDLX.Account.History({ cookies: "YOUR_COOKIES_HERE" })
- * .on("data", (data) => console.log("Watch History:", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 2: Fetch the watch history with verbose logging.
- * YouTubeDLX.Account.History({ cookies: "YOUR_COOKIES_HERE", verbose: true })
- * .on("data", (data) => console.log("Watch History (Verbose):", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 3: Fetch the watch history and sort it to show the oldest items.
- * YouTubeDLX.Account.History({ cookies: "YOUR_COOKIES_HERE", sort: "oldest" })
- * .on("data", (data) => console.log("Oldest Watched Items:", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 4: Fetch the watch history and sort it to show the newest items.
- * YouTubeDLX.Account.History({ cookies: "YOUR_COOKIES_HERE", sort: "newest" })
- * .on("data", (data) => console.log("Newest Watched Items:", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 5: Fetch the watch history and sort videos and shorts from old to new.
- * YouTubeDLX.Account.History({ cookies: "YOUR_COOKIES_HERE", sort: "old-to-new" })
- * .on("data", (data) => console.log("Watched Old to New:", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 6: Fetch the watch history and sort videos and shorts from new to old.
- * YouTubeDLX.Account.History({ cookies: "YOUR_COOKIES_HERE", sort: "new-to-old" })
- * .on("data", (data) => console.log("Watched New to Old:", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 7: Fetch the watch history with verbose logging and sort by oldest.
- * YouTubeDLX.Account.History({ cookies: "YOUR_COOKIES_HERE", verbose: true, sort: "oldest" })
- * .on("data", (data) => console.log("Oldest Watched Items (Verbose):", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 8: Fetch the watch history with verbose logging and sort by newest.
- * YouTubeDLX.Account.History({ cookies: "YOUR_COOKIES_HERE", verbose: true, sort: "newest" })
- * .on("data", (data) => console.log("Newest Watched Items (Verbose):", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 9: Fetch the watch history with verbose logging and sort old to new.
- * YouTubeDLX.Account.History({ cookies: "YOUR_COOKIES_HERE", verbose: true, sort: "old-to-new" })
- * .on("data", (data) => console.log("Watched Old to New (Verbose):", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 10: Fetch the watch history with verbose logging and sort new to old.
- * YouTubeDLX.Account.History({ cookies: "YOUR_COOKIES_HERE", verbose: true, sort: "new-to-old" })
- * .on("data", (data) => console.log("Watched New to Old (Verbose):", data))
- * .on("error", (err) => console.error("Error:", err));
  */
 export default function watch_history(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

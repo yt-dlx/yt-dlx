@@ -4,7 +4,6 @@ import { EventEmitter } from "events";
 import TubeResponse from "../../interfaces/TubeResponse";
 import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional() });
-
 /**
  * Fetches the count of unseen notifications for a user.
  *
@@ -28,17 +27,6 @@ const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(
  * ```
  * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, cookie initialization, or network requests. The emitted data is the error message or object.
  *
- * @example
- * // 1: Fetch the count of unseen notifications with provided cookies.
- * YouTubeDLX.Account.UnseenNotifications({ cookies: "YOUR_COOKIES_HERE" })
- * .on("data", (data) => console.log("Unseen Notifications Count:", data))
- * .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // 2: Fetch the count of unseen notifications with verbose logging.
- * YouTubeDLX.Account.UnseenNotifications({ cookies: "YOUR_COOKIES_HERE", verbose: true })
- * .on("data", (data) => console.log("Unseen Notifications Count (Verbose):", data))
- * .on("error", (err) => console.error("Error:", err));
  */
 export default function unseen_notifications(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

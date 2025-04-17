@@ -17,11 +17,6 @@ const ZodSchema = z.object({ channelLink: z.string().min(2) });
  * .on("data", (channelInfo) => console.log("Channel Info:", channelInfo))
  * .on("error", (error) => console.error("Error:", error));
  *
- * @example
- * // Handle errors when fetching channel data.
- * YouTubeDLX.Search.Channel.Single({ channelLink: "invalid link" })
- * .on("data", (channelInfo) => console.log("Channel Info:", channelInfo))
- * .on("error", (error) => console.error("Error:", error));
  */
 export default function channel_data({ channelLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

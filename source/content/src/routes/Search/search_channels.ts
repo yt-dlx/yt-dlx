@@ -35,17 +35,6 @@ async function searchChannels({ query }: { query: string }): Promise<channelSear
  *
  * @returns {EventEmitter} Emits 'data' with an array of channels or 'error'.
  *
- * @example
- * // Search for YouTube channels.
- * YouTubeDLX.Search.Channel.Multiple({ query: "technology" })
- * .on("data", (channels) => console.log("Channels:", channels))
- * .on("error", (error) => console.error("Error:", error));
- *
- * @example
- * // Handle the case where no channels are found.
- * YouTubeDLX.Search.Channel.Multiple({ query: "nonexistentquerythatshouldreturnnothing" })
- * .on("data", (channels) => console.log("Channels:", channels))
- * .on("error", (error) => console.error("Error:", error));
  */
 export default function search_channels({ query }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

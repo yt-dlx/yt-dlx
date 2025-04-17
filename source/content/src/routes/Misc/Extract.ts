@@ -144,23 +144,6 @@ async function fetchVideoTranscript(videoId: string, verbose: boolean): Promise<
  *   The data is an object containing video details, including `comments` and `transcript` properties.
  * - `"error"`: Emitted when an error occurs during validation, network requests, or data processing.
  *
- * @example
- * // Extract metadata, formats, comments, and transcript
- * YouTubeDLX.extract({ query: "interesting documentary" })
- *   .on("data", (data) => console.log("Video Info:", data))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // Extract with verbose logging
- * YouTubeDLX.extract({ query: "funny cats video", verbose: true })
- *   .on("data", (data) => console.log("Video Info:", data))
- *   .on("error", (err) => console.error("Error:", err));
- *
- * @example
- * // Extract with Tor
- * YouTubeDLX.extract({ query: "private lecture", useTor: true })
- *   .on("data", (data) => console.log("Video Info:", data))
- *   .on("error", (err) => console.error("Error:", err));
  */
 export default function extract(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
