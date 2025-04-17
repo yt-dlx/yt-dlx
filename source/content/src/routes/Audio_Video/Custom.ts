@@ -17,55 +17,27 @@ var ZodSchema = z.object({
   resolution: z.enum(["144p", "240p", "360p", "480p", "720p", "1080p", "1440p", "2160p", "3072p", "4320p", "6480p", "8640p", "12000p"]),
 });
 /**
- * Fetches and processes video from a specified query with customizable resolution and video filters.
+ * Fetches and processes video from a specified query with customizable resolution and video filters, while fetching audio at the highest quality.
  *
- * This function allows you to search for video content, select a specific resolution,
- * apply video filters, stream the output, save it to a file, or retrieve metadata.
- * It utilizes `ffmpeg` for video processing and supports optional Tor usage for enhanced privacy.
+ * @shortdesc Fetches high-quality audio and video at a custom resolution with optional filters, streaming, Tor, and metadata options.
  *
- * @param {object} options - An object containing the configuration options for fetching and processing video.
- * @param {string} options.query - The search query string (minimum 2 characters) to find the desired video. This is a mandatory parameter.
- * @param {boolean} [options.stream=false] - An optional boolean value that, if set to `true`, will enable streaming of the video.
- * When streaming is enabled, the `output` parameter can be used to specify the save location.
- * This option cannot be used when `metadata` is `true`.
- * @param {string} [options.output] - An optional string specifying the directory path where the downloaded video file should be saved.
- * This parameter is only applicable when the `stream` option is set to `true` and `metadata` is `false`.
- * If not provided, the video file will be saved in the current working directory.
- * @param {boolean} [options.useTor=false] - An optional boolean value that, if set to `true`, will route the network request through the Tor network.
- * This can help in anonymizing your request. Requires Tor to be running on your system.
- * @param {("invert" | "rotate90" | "rotate270" | "grayscale" | "rotate180" | "flipVertical" | "flipHorizontal")} [options.filter] - An optional string specifying a video filter to apply during processing.
- * This parameter is only applicable when `stream` is `true` and `metadata` is `false`. Available filters include:
- * - `"invert"`: Inverts the colors of the video.
- * - `"rotate90"`: Rotates the video by 90 degrees clockwise.
- * - `"rotate270"`: Rotates the video by 270 degrees clockwise.
- * - `"grayscale"`: Converts the video to grayscale.
- * - `"rotate180"`: Rotates the video by 180 degrees.
- * - `"flipVertical"`: Flips the video vertically.
- * - `"flipHorizontal"`: Flips the video horizontally.
- * @param {boolean} [options.metadata=false] - An optional boolean value that, if set to `true`, will only fetch and emit metadata about the video, without downloading or processing it.
- * This option cannot be used with `stream`, `output`, or `filter`.
- * @param {boolean} [options.verbose=false] - An optional boolean value that, if set to `true`, enables verbose logging to the console, providing more detailed information about the process.
- * @param {("144p" | "240p" | "360p" | "480p" | "720p" | "1080p" | "1440p" | "2160p" | "3072p" | "4320p" | "6480p" | "8640p" | "12000p")} options.resolution - A required string specifying the desired video resolution. Available options are:
- * - `"144p"`
- * - `"240p"`
- * - `"360p"`
- * - `"480p"`
- * - `"720p"`
- * - `"1080p"`
- * - `"1440p"`
- * - `"2160p"`
- * - `"3072p"`
- * - `"4320p"`
- * - `"6480p"`
- * - `"8640p"`
- * - `"12000p"`
+ * @description This function allows you to search for video content and download or stream it with the highest available audio quality and a user-specified video resolution. It also supports applying video filters, saving the combined audio and video to a file, or retrieving metadata. The function utilizes `ffmpeg` for processing and offers the option to route network requests through the Tor network for enhanced privacy.
  *
- * @returns {EventEmitter} An EventEmitter instance that emits events during the video processing.
- * The following events can be listened to:
- * - `"progress"`: Emitted with progress information during the download and processing of the video. The data is an object containing progress details.
+ * The function provides the following configuration options:
+ * - **Query:** The search query string (minimum 2 characters) to find the desired content. This is a mandatory parameter.
+ * - **Stream:** An optional boolean value that, if set to `true`, will enable streaming (downloading) of the audio and video. When streaming is enabled, you can use the `output` parameter to specify the save location. This option cannot be used when `metadata` is `true`.
+ * - **Output:** An optional string specifying the directory path where the downloaded audio and video file should be saved. This parameter is only applicable when the `stream` option is set to `true` and `metadata` is `false`. If not provided, the file will be saved in the current working directory.
+ * - **Use Tor:** An optional boolean value that, if set to `true`, will route the network request through the Tor network. This can help in anonymizing your request. Requires Tor to be running on your system.
+ * - **Filter:** An optional string specifying a video filter to apply during processing. This parameter is only applicable when `stream` is `true` and `metadata` is `false`. Available filters include: "invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", and "flipHorizontal".
+ * - **Metadata:** An optional boolean value that, if set to `true`, will only fetch and emit metadata about the audio and video, without downloading or processing it. This option cannot be used with `stream`, `output`, or `filter`.
+ * - **Verbose:** An optional boolean value that, if set to `true`, enables verbose logging to the console, providing more detailed information about the process.
+ * - **Resolution:** A required string specifying the desired video resolution. Available options are: "144p", "240p", "360p", "480p", "720p", "1080p", "1440p", "2160p", "3072p", "4320p", "6480p", "8640p", and "12000p".
+ *
+ * The function returns an EventEmitter instance that emits events during the processing:
+ * - `"progress"`: Emitted with progress information during the download and processing. The data is an object containing progress details.
  * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, network requests, or FFmpeg operations. The emitted data is the error message or object.
  * - `"start"`: Emitted when the FFmpeg processing starts. The emitted data is the FFmpeg start command string.
- * - `"end"`: Emitted when the FFmpeg processing successfully completes. The emitted data is the filename of the processed video file.
+ * - `"end"`: Emitted when the FFmpeg processing successfully completes. The emitted data is the filename of the processed file.
  * - `"stream"`: Emitted when streaming is enabled (`stream: true` and `metadata: false`). The emitted data is an object with the following structure:
  * ```typescript
  * {
@@ -73,8 +45,229 @@ var ZodSchema = z.object({
  * ffmpeg: ffmpeg.FfmpegCommand; // The FFmpeg command instance
  * }
  * ```
- * - `"metadata"`: Emitted when only metadata is requested (`metadata: true`). The emitted data is an object containing various metadata about the video.
+ * - `"metadata"`: Emitted when only metadata is requested (`metadata: true`). The emitted data is an object containing various metadata about the audio and video.
  *
+ * @param {object} options - An object containing the configuration options.
+ * @param {string} options.query - The search query string (minimum 2 characters). **Required**.
+ * @param {boolean} [options.stream=false] - Enable audio and video streaming (download).
+ * @param {string} [options.output] - The directory path to save the downloaded audio and video (only with `stream: true`).
+ * @param {boolean} [options.useTor=false] - Route requests through the Tor network.
+ * @param {("invert" | "rotate90" | "rotate270" | "grayscale" | "rotate180" | "flipVertical" | "flipHorizontal")} [options.filter] - Apply a video filter during streaming (only with `stream: true`).
+ * @param {boolean} [options.metadata=false] - Only fetch and emit metadata (cannot be used with `stream`, `output`, `filter`).
+ * @param {boolean} [options.verbose=false] - Enable verbose logging.
+ * @param {("144p" | "240p" | "360p" | "480p" | "720p" | "1080p" | "1440p" | "2160p" | "3072p" | "4320p" | "6480p" | "8640p" | "12000p")} options.resolution - The desired video resolution. **Required**.
+ *
+ * @returns {EventEmitter} An EventEmitter instance for handling events during audio and video processing.
+ *
+ * @example
+ * // 1. Get basic metadata for audio (highest quality) and video (at 720p)
+ * YouTubeDLX.AudioVideoCustom({ query: "nature documentary", resolution: "720p" })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 2. Get metadata with verbose logging for audio (highest quality) and video (at 1080p)
+ * YouTubeDLX.AudioVideoCustom({ query: "music video", resolution: "1080p", metadata: true, verbose: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 3. Get metadata using Tor for audio (highest quality) and video (at 480p)
+ * YouTubeDLX.AudioVideoCustom({ query: "news report", resolution: "480p", metadata: true, useTor: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 4. Get metadata with verbose logging and Tor for audio (highest quality) and video (at 360p)
+ * YouTubeDLX.AudioVideoCustom({ query: "funny clips", resolution: "360p", metadata: true, verbose: true, useTor: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 5. Stream audio (highest quality) and video (at 720p)
+ * YouTubeDLX.AudioVideoCustom({ query: "live concert", resolution: "720p", stream: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 6. Stream audio (highest quality) and video (at 1080p) with verbose logging
+ * YouTubeDLX.AudioVideoCustom({ query: "movie trailer", resolution: "1080p", stream: true, verbose: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 7. Stream audio (highest quality) and video (at 480p) to a specific output directory
+ * YouTubeDLX.AudioVideoCustom({ query: "cooking show", resolution: "480p", stream: true, output: "./downloads" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 8. Stream audio (highest quality) and video (at 360p) with verbose logging to a specific output directory
+ * YouTubeDLX.AudioVideoCustom({ query: "educational video", resolution: "360p", stream: true, verbose: true, output: "./videos" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 9. Stream audio (highest quality) and video (at 720p) using Tor
+ * YouTubeDLX.AudioVideoCustom({ query: "private lecture", resolution: "720p", stream: true, useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 10. Stream audio (highest quality) and video (at 1080p) with verbose logging using Tor
+ * YouTubeDLX.AudioVideoCustom({ query: "independent film", resolution: "1080p", stream: true, verbose: true, useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 11. Stream audio (highest quality) and video (at 480p) to a specific output directory using Tor
+ * YouTubeDLX.AudioVideoCustom({ query: "rare footage", resolution: "480p", stream: true, output: "./hidden", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 12. Stream audio (highest quality) and video (at 360p) with verbose logging to a specific output directory using Tor
+ * YouTubeDLX.AudioVideoCustom({ query: "controversial topic", resolution: "360p", stream: true, verbose: true, output: "./anonymous_downloads", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 13. Stream audio (highest quality) and video (at 720p) with the 'invert' filter
+ * YouTubeDLX.AudioVideoCustom({ query: "psychedelic visuals", resolution: "720p", stream: true, filter: "invert" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 14. Stream audio (highest quality) and video (at 1080p) with the 'rotate90' filter and verbose logging
+ * YouTubeDLX.AudioVideoCustom({ query: "vertically filmed content", resolution: "1080p", stream: true, filter: "rotate90", verbose: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 15. Stream audio (highest quality) and video (at 480p) with the 'grayscale' filter and output directory
+ * YouTubeDLX.AudioVideoCustom({ query: "silent movie", resolution: "480p", stream: true, filter: "grayscale", output: "./black_and_white" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 16. Stream audio (highest quality) and video (at 360p) with the 'flipHorizontal' filter and Tor
+ * YouTubeDLX.AudioVideoCustom({ query: "mirrored stream", resolution: "360p", stream: true, filter: "flipHorizontal", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 17. Stream audio (highest quality) and video (at 720p) with the 'rotate180' filter, verbose logging, and output directory
+ * YouTubeDLX.AudioVideoCustom({ query: "upside down video", resolution: "720p", stream: true, filter: "rotate180", verbose: true, output: "./flipped" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 18. Stream audio (highest quality) and video (at 1080p) with the 'flipVertical' filter, verbose logging, and Tor
+ * YouTubeDLX.AudioVideoCustom({ query: "vertically flipped", resolution: "1080p", stream: true, filter: "flipVertical", verbose: true, useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 19. Stream audio (highest quality) and video (at 480p) with the 'rotate270' filter, output directory, and Tor
+ * YouTubeDLX.AudioVideoCustom({ query: "sideways rotated", resolution: "480p", stream: true, filter: "rotate270", output: "./sideways", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 20. Stream audio (highest quality) and video (at 360p) with the 'invert' filter, verbose logging, output directory, and Tor
+ * YouTubeDLX.AudioVideoCustom({ query: "color inverted", resolution: "360p", stream: true, filter: "invert", verbose: true, output: "./inverted_downloads", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 21. Get metadata for audio (highest quality) and video (at 144p)
+ * YouTubeDLX.AudioVideoCustom({ query: "low quality video", resolution: "144p", metadata: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 22. Stream audio (highest quality) and video (at 2160p)
+ * YouTubeDLX.AudioVideoCustom({ query: "4k content", resolution: "2160p", stream: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 23. Stream audio (highest quality) and video (at 8640p) with grayscale filter
+ * YouTubeDLX.AudioVideoCustom({ query: "8k black and white", resolution: "8640p", stream: true, filter: "grayscale" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
  */
 export default function AudioVideoCustom({ query, stream, output, useTor, filter, metadata, verbose, resolution }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

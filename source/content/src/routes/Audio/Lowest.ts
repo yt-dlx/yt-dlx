@@ -18,56 +18,291 @@ var ZodSchema = z.object({
 /**
  * Fetches and processes audio from a specified query at the lowest available quality.
  *
- * This function allows you to search for audio content, stream it, save it to a file,
- * apply audio filters, or retrieve metadata about the lowest quality audio available.
- * It utilizes `ffmpeg` for audio processing and supports optional Tor usage for enhanced privacy.
+ * @shortdesc Fetches the lowest quality audio and applies audio filters with options for streaming, Tor, and metadata.
  *
- * @param {object} options - An object containing the configuration options for fetching and processing audio.
- * @param {string} options.query - The search query string (minimum 2 characters) to find the desired audio. This is a mandatory parameter.
- * @param {string} [options.output] - An optional string specifying the directory path where the downloaded audio file should be saved.
- * This parameter is only applicable when the `stream` option is set to `true` and `metadata` is `false`.
- * If not provided, the audio file will be saved in the current working directory.
- * @param {boolean} [options.useTor=false] - An optional boolean value that, if set to `true`, will route the network request through the Tor network.
- * This can help in anonymizing your request. Requires Tor to be running on your system.
- * @param {boolean} [options.stream=false] - An optional boolean value that, if set to `true`, will enable streaming of the audio.
- * When streaming is enabled, the `output` parameter can be used to specify the save location.
- * This option cannot be used when `metadata` is `true`.
- * @param {boolean} [options.verbose=false] - An optional boolean value that, if set to `true`, enables verbose logging to the console, providing more detailed information about the process.
- * @param {boolean} [options.metadata=false] - An optional boolean value that, if set to `true`, will only fetch and emit metadata about the audio, without downloading or processing it.
- * This option cannot be used with `stream`, `output`, or `filter`.
- * @param {("echo" | "slow" | "speed" | "phaser" | "flanger" | "panning" | "reverse" | "vibrato" | "subboost" | "surround" | "bassboost" | "nightcore" | "superslow" | "vaporwave" | "superspeed")} [options.filter] - An optional string specifying an audio filter to apply during processing.
- * This parameter is only applicable when `stream` is `true` and `metadata` is `false`. Available filters include:
- * - `"echo"`
- * - `"slow"`
- * - `"speed"`
- * - `"phaser"`
- * - `"flanger"`
- * - `"panning"`
- * - `"reverse"`
- * - `"vibrato"`
- * - `"subboost"`
- * - `"surround"`
- * - `"bassboost"`
- * - `"nightcore"`
- * - `"superslow"`
- * - `"vaporwave"`
- * - `"superspeed"`
+ * @description This function allows you to search for audio content and retrieve it in the lowest quality available. You can either stream the audio, save it to a specified output directory, apply various audio filters to modify the sound, or just fetch the metadata associated with the audio. The function utilizes `ffmpeg` for audio processing and provides an option to use the Tor network for anonymizing your requests.
  *
- * @returns {EventEmitter} An EventEmitter instance that emits events during the audio processing.
- * The following events can be listened to:
- * - `"progress"`: Emitted with progress information during the download and processing of the audio. The data is an object containing progress details.
- * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, network requests, or FFmpeg operations. The emitted data is the error message or object.
+ * The function provides the following configuration options:
+ * - **Query:** The search query string (minimum 2 characters) to find the desired audio. This is a mandatory parameter.
+ * - **Output:** An optional string specifying the directory path where the downloaded audio file should be saved. This is applicable only when `stream` is true and `metadata` is false. If not provided, the file will be saved in the current working directory.
+ * - **Use Tor:** An optional boolean value that, if true, routes the network request through the Tor network, enhancing privacy. Requires Tor to be running on your system.
+ * - **Stream:** An optional boolean value that, if true, enables streaming (downloading) of the audio. When streaming, you can use the `output` parameter to set the save location. This cannot be used with `metadata: true`.
+ * - **Verbose:** An optional boolean value that, if true, enables detailed logging to the console.
+ * - **Metadata:** An optional boolean value that, if true, only fetches and emits metadata about the audio, without downloading or processing. This cannot be used with `stream`, `output`, or `filter`.
+ * - **Filter:** An optional string specifying an audio filter to apply during processing. This is only applicable when `stream` is true and `metadata` is false. Available filters include: "echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", and "superspeed".
+ *
+ * The function returns an EventEmitter instance that emits events during the audio processing:
+ * - `"progress"`: Emitted with progress information during the download and processing. The data is an object containing progress details.
+ * - `"error"`: Emitted when an error occurs during any stage of the process. The emitted data is the error message or object.
  * - `"start"`: Emitted when the FFmpeg processing starts. The emitted data is the FFmpeg start command string.
  * - `"end"`: Emitted when the FFmpeg processing successfully completes. The emitted data is the filename of the processed audio file.
- * - `"stream"`: Emitted when streaming is enabled (`stream: true` and `metadata: false`). The emitted data is an object with the following structure:
- * ```typescript
- * {
- * filename: string; // The full path to the output file
- * ffmpeg: ffmpeg.FfmpegCommand; // The FFmpeg command instance
- * }
- * ```
- * - `"metadata"`: Emitted when only metadata is requested (`metadata: true`). The emitted data is an object containing various metadata about the audio.
+ * - `"stream"`: Emitted when streaming is enabled. The emitted data is an object containing the filename and the FFmpeg command instance.
+ * - `"metadata"`: Emitted when only metadata is requested. The emitted data is an object containing various metadata about the audio.
  *
+ * @param {object} options - An object containing the configuration options.
+ * @param {string} options.query - The search query string (minimum 2 characters). **Required**.
+ * @param {string} [options.output] - The directory path to save the downloaded audio file (only with `stream: true`).
+ * @param {boolean} [options.useTor=false] - Route requests through the Tor network.
+ * @param {boolean} [options.stream=false] - Enable audio streaming (download).
+ * @param {("echo" | "slow" | "speed" | "phaser" | "flanger" | "panning" | "reverse" | "vibrato" | "subboost" | "surround" | "bassboost" | "nightcore" | "superslow" | "vaporwave" | "superspeed")} [options.filter] - Apply an audio filter during streaming (only with `stream: true`).
+ * @param {boolean} [options.metadata=false] - Only fetch and emit metadata (cannot be used with `stream`, `output`, `filter`).
+ * @param {boolean} [options.verbose=false] - Enable verbose logging.
+ *
+ * @returns {EventEmitter} An EventEmitter instance for handling events during audio processing.
+ *
+ * @example
+ * // 1. Get basic metadata for the lowest quality audio
+ * YouTubeDLX.AudioLowest({ query: "low quality audio", metadata: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 2. Get metadata with verbose logging for the lowest quality audio
+ * YouTubeDLX.AudioLowest({ query: "minimum audio quality", metadata: true, verbose: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 3. Get metadata using Tor for the lowest quality audio
+ * YouTubeDLX.AudioLowest({ query: "anonymous low quality audio search", metadata: true, useTor: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 4. Get metadata with verbose logging and Tor for the lowest quality audio
+ * YouTubeDLX.AudioLowest({ query: "private low quality audio metadata", metadata: true, verbose: true, useTor: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 5. Stream the lowest quality audio
+ * YouTubeDLX.AudioLowest({ query: "basic audio stream", stream: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 6. Stream the lowest quality audio with verbose logging
+ * YouTubeDLX.AudioLowest({ query: "simple audio", stream: true, verbose: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 7. Stream the lowest quality audio to a specific output directory
+ * YouTubeDLX.AudioLowest({ query: "download basic audio", stream: true, output: "./downloads" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 8. Stream the lowest quality audio with verbose logging to a specific output directory
+ * YouTubeDLX.AudioLowest({ query: "save basic audio", stream: true, verbose: true, output: "./audio" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 9. Stream the lowest quality audio using Tor
+ * YouTubeDLX.AudioLowest({ query: "anonymous basic audio", stream: true, useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 10. Stream the lowest quality audio with verbose logging using Tor
+ * YouTubeDLX.AudioLowest({ query: "private basic audio stream", stream: true, verbose: true, useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 11. Stream the lowest quality audio to a specific output directory using Tor
+ * YouTubeDLX.AudioLowest({ query: "download basic audio anonymously", stream: true, output: "./hidden", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 12. Stream the lowest quality audio with verbose logging to a specific output directory using Tor
+ * YouTubeDLX.AudioLowest({ query: "save basic audio privately", stream: true, verbose: true, output: "./anonymous_audio", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 13. Stream the lowest quality audio with the 'echo' filter
+ * YouTubeDLX.AudioLowest({ query: "echo effect on basic audio", stream: true, filter: "echo" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 14. Stream the lowest quality audio with the 'slow' filter and verbose logging
+ * YouTubeDLX.AudioLowest({ query: "slowed down basic audio", stream: true, filter: "slow", verbose: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 15. Stream the lowest quality audio with the 'speed' filter and output directory
+ * YouTubeDLX.AudioLowest({ query: "sped up basic audio track", stream: true, filter: "speed", output: "./modified" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 16. Stream the lowest quality audio with the 'phaser' filter and Tor
+ * YouTubeDLX.AudioLowest({ query: "phaser sound effect on basic audio", stream: true, filter: "phaser", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 17. Stream the lowest quality audio with the 'flanger' filter, verbose logging, and output directory
+ * YouTubeDLX.AudioLowest({ query: "flanger effect on basic audio", stream: true, filter: "flanger", verbose: true, output: "./filtered" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 18. Stream the lowest quality audio with the 'panning' filter, verbose logging, and Tor
+ * YouTubeDLX.AudioLowest({ query: "basic audio with panning effect", stream: true, filter: "panning", verbose: true, useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 19. Stream the lowest quality audio with the 'reverse' filter, output directory, and Tor
+ * YouTubeDLX.AudioLowest({ query: "reversed basic audio track", stream: true, filter: "reverse", output: "./reversed", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 20. Stream the lowest quality audio with the 'vibrato' filter, verbose logging, output directory, and Tor
+ * YouTubeDLX.AudioLowest({ query: "basic audio with vibrato", stream: true, filter: "vibrato", verbose: true, output: "./vibrato", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 21. Stream the lowest quality audio with the 'subboost' filter
+ * YouTubeDLX.AudioLowest({ query: "basic audio with sub-bass boost", stream: true, filter: "subboost" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 22. Stream the lowest quality audio with the 'surround' filter
+ * YouTubeDLX.AudioLowest({ query: "basic surround sound audio", stream: true, filter: "surround" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 23. Stream the lowest quality audio with the 'bassboost' filter
+ * YouTubeDLX.AudioLowest({ query: "basic bass boosted audio", stream: true, filter: "bassboost" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 24. Stream the lowest quality audio with the 'nightcore' filter
+ * YouTubeDLX.AudioLowest({ query: "basic nightcore remix", stream: true, filter: "nightcore" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 25. Stream the lowest quality audio with the 'superslow' filter
+ * YouTubeDLX.AudioLowest({ query: "super slowed down basic audio", stream: true, filter: "superslow" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 26. Stream the lowest quality audio with the 'vaporwave' filter
+ * YouTubeDLX.AudioLowest({ query: "basic vaporwave music", stream: true, filter: "vaporwave" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 27. Stream the lowest quality audio with the 'superspeed' filter
+ * YouTubeDLX.AudioLowest({ query: "super sped up basic audio", stream: true, filter: "superspeed" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
  */
 export default function AudioLowest({ query, output, useTor, stream, filter, metadata, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
