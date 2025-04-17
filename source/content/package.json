@@ -61,6 +61,6 @@
     "test": "yarn build && node pkg/cjs/src/spec/quick.spec.js",
     "spec:general": "yarn build && node pkg/cjs/src/spec/general.spec.js",
     "spec:express": "yarn build && node pkg/cjs/src/spec/express.spec.js",
-    "build": "rimraf pkg/cjs pkg/esm pkg/types && tsc -p ./src/config/cjs.json && tsc -p ./src/config/esm.json && tsc -p ./src/config/types.json",
+    "build": "rimraf pkg/cjs pkg/esm pkg/types && tsc -p ./src/config/cjs.json && tsc -p ./src/config/esm.json && tsc -p ./src/config/types.json"
   }
 }

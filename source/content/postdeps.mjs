@@ -25,13 +25,22 @@ const binDL = async (url, filepath, binaryName) => {
   }
 };
 const main = async () => {
+  var pname;
+  var ename;
+  if (process.platform === "linux") {
+    ename = ".bin";
+    pname = "-linux";
+  } else if (process.platform === "win32") {
+    ename = ".exe";
+    pname = "-windows";
+  } else throw new Error("@error: Unsupported platform. Please use Linux or Windows.");
   const binaries = [
-    { name: "ffmpeg.exe", url: "https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffmpeg.exe" },
-    { name: "ytprobe.exe", url: "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" },
-    { name: "ffprobe.exe", url: "https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffprobe.exe" },
+    { name: `ffmpeg${ename}`, url: `https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffmpeg${pname}${ename}` },
+    { name: `ffprobe${ename}`, url: `https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffprobe${pname}${ename}` },
+    { name: `ytprobe${ename}`, url: `https://github.com/yt-dlx/yt-dlx/releases/latest/download/ytprobe${pname}${ename}` },
   ];
   for (const binary of binaries) {
-    const filepath = join(outputDir, binary.name);
+    const filepath = join(outputDir, binary.name + pname);
     if (!existsSync(filepath)) await binDL(binary.url, filepath, binary.name);
   }
 };
