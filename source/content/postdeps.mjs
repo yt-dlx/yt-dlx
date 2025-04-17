@@ -36,20 +36,3 @@ const main = async () => {
   }
 };
 main();
-
-const cprobe = {
-  Windows: { name: "cprobe.exe", url: "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp.exe" },
-  Linux: [
-    { name: "cprobe_linux", url: "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux" },
-    { name: "cprobe_linux_armv7l", url: "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux_armv7l" },
-    { name: "cprobe_linux_aarch64", url: "https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp_linux_aarch64" },
-  ],
-};
-const ffmpeg = {
-  Windows: { name: "ffmpeg.exe", url: "https://github.com/BtbN/FFmpeg-Builds/releases/latest/download/ffmpeg-master-latest-win64-gpl.zip" },
-  Linux: [
-    { name: "ffmpeg_linux_x86_64", url: "https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-arm64-static.tar.xz" },
-    { name: "ffmpeg_linux_armhf", url: "https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-armhf-static.tar.xz" },
-    { name: "ffmpeg_linux_arm64", url: "https://johnvansickle.com/ffmpeg/releases/ffmpeg-release-arm64-static.tar.xz" },
-  ],
-};
