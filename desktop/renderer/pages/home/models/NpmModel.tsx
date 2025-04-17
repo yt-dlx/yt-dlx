@@ -10,7 +10,7 @@ var NpmModel: React.FC<{ open: boolean; close: () => void }> = ({ open, close })
               Steps To Install Using <br></br> <span className="text-6xl block">npm</span>
             </h2>
             <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start p-4">
-              <li>open an empty project or old project</li> <li>open terminal inside the project</li> <li>type the following commads</li> <li>npm install yt-dlx</li>
+              <li>open an empty project or old project</li> <li>open terminal inside the project</li> <li>type the following commads</li> <li>npm install YT-DLX</li>
             </ul>
             <button
               onClick={close}

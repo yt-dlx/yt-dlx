@@ -5,8 +5,8 @@ import forms from "@tailwindcss/forms";
 import plugin from "tailwindcss/plugin";
 import colors from "tailwindcss/colors";
 import typography from "@tailwindcss/typography";
-import tailwindScrollbar from "tailwind-scrollbar";
-import tailwindScrollbarHide from "tailwind-scrollbar-hide";
+// import tailwindScrollbar from "tailwind-scrollbar";
+// import tailwindScrollbarHide from "tailwind-scrollbar-hide";
 export default {
   darkMode: "class",
   content: ["./renderer/pages/**/*.{js,ts,jsx,tsx}"],
@@ -18,13 +18,13 @@ export default {
     plugin(function ({ matchUtilities, theme }) {
       matchUtilities({ "text-shadow": value => ({ textShadow: value }) }, { values: theme("textShadow") });
     }),
+    forms,
     daisyui,
     preline,
     flowbite,
-    tailwindScrollbar,
-    forms,
     typography,
-    tailwindScrollbarHide,
+    // tailwindScrollbar,
+    // tailwindScrollbarHide,
   ],
   daisyui: {
     themes: [

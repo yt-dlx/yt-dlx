@@ -24,10 +24,10 @@ export default function Introduction() {
           <div className="flex flex-col items-center space-y-4 text-center">
             <div className="space-y-2">
               <motion.h1 className="text-4xl font-black tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl text-red-700" {...FromTopToBottom}>
-                Yt-Dlx: The Ultimate Multimedia Downloader
+                YT-DLX: The Ultimate Multimedia Downloader
               </motion.h1>
               <motion.p className="mx-auto max-w-[700px] text-white font-semibold md:text-xl" {...FromTopToBottom}>
-                Yt-Dlx is a powerful and versatile tool that allows you to download audio and video content from a wide range of sources, including YouTube, Vimeo, and many more.
+                YT-DLX is a powerful and versatile tool that allows you to download audio and video content from a wide range of sources, including YouTube, Vimeo, and many more.
               </motion.p>
             </div>
             <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4">

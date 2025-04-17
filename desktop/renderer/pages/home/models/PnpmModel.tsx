@@ -10,7 +10,7 @@ var PnpmModel: React.FC<{ open: boolean; close: () => void }> = ({ open, close }
               Steps To Install Using <br></br> <span className="text-6xl block">pnpm</span>
             </h2>
             <ul className="font-semibold text-white list-disc flex flex-col items-start justify-start p-4">
-              <li>open an empty project or old project</li> <li>open terminal inside the project</li> <li>type the following commads</li> <li>pnpm add yt-dlx</li>
+              <li>open an empty project or old project</li> <li>open terminal inside the project</li> <li>type the following commads</li> <li>pnpm add YT-DLX</li>
             </ul>
             <button
               onClick={close}
