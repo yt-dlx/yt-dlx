@@ -1,8 +1,6 @@
 import colors from "colors";
 import * as path from "path";
 import * as fsx from "fs-extra";
-import { spawn } from "child_process";
-
 async function getBinaryPath(execName: string): Promise<string | null> {
   try {
     const nodeModulesPath = path.join(process.cwd(), "node_modules", "yt-dlx", "pkg");
@@ -27,12 +25,8 @@ export async function locator() {
       const execPath = await getBinaryPath(execName);
       if (execPath) results[execName] = execPath;
       else {
-        console.log(colors.red("@red:"), `${execName} not found in package binary directory. Auto-Downloading....`);
-        const postdepsPath = path.join(process.cwd(), "postdeps.mjs");
-        const nodeProcess = spawn("node", [postdepsPath]);
-        nodeProcess.stdout.on("data", data => console.log(data.toString()));
-        nodeProcess.stderr.on("data", data => console.error(data.toString()));
-        nodeProcess.on("close", code => console.log(`child process exited with code ${code}`));
+        console.log(colors.yellow("@warning:"), `${execName} not found in package binary directory.`);
+        console.error(colors.red("@error:"), "please run 'yarn/npm/bun/pnpm install/add yt-dlx'");
         results[execName] = "";
       }
     }
