@@ -2223,10 +2223,10 @@ csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.3.tgz#d80ff294d114fb0e6ac500fbf85b60137d7eff81"
   integrity sha512-M1uQkMl8rQK/szD0LNhtqxIPLpimGm8sOBwU7lLnCpSbTyY3yeU1Vc7l4KT5zT4s/yOxHH5O7tIuuLOCnLADRw==
 
-daisyui@^5.0.22:
-  version "5.0.22"
-  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-5.0.22.tgz#dee7c21fc88fc51b08c0062a29aa8338f409874b"
-  integrity sha512-tcqbCp0nzCmIzR4GfLtPcaNEhDCKO+yw4W3REF3Aw1rNwk0/8fa2fvbnVDq5tUqglnKTesAlmlc2Ze45ZIomMg==
+daisyui@^5.0.23:
+  version "5.0.23"
+  resolved "https://registry.yarnpkg.com/daisyui/-/daisyui-5.0.23.tgz#e65974f861bc30b242ee649c62dd6c42920a5b3a"
+  integrity sha512-SIR8yAneeNxvrpaR5kREG1DrPK8XFyfmyvqyZEUTJ2e6tv4Pp56/w+52Vdv34hmSmtAyDldTCEPWx+GvPyp0Yg==
 
 debounce-fn@^4.0.0:
   version "4.0.0"
@@ -4785,10 +4785,10 @@ youtubei@^1.6.7:
     node-fetch "2.6.7"
     protobufjs "7.2.6"
 
-yt-dlx@^16.4.3:
-  version "16.4.3"
-  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-16.4.3.tgz#abbc3807eb7ce7c2e618c20f9d6629c1760e6064"
-  integrity sha512-yOcvqr0TGPxwwz32Tub9Ypo9rXzD5JY74vNFkUCvtMlwpG/HZXCV8ni/1QCPKov1voAGCblciWytXxG+qXkIoA==
+yt-dlx@^16.6.5:
+  version "16.6.5"
+  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-16.6.5.tgz#09a74fef892dc0b2bf29dc2edb2660419ee4e8f2"
+  integrity sha512-i9G8dbzmlfJ51a1b2unGEOHRU/3P5ROH8ciNrxAzRPVDyCIUo5uHmWq4SULUUBSRLbCQHPndwKZXQ9TNRjllww==
   dependencies:
     async-retry "^1.3.3"
     axios "^1.8.4"
@@ -4800,7 +4800,7 @@ yt-dlx@^16.4.3:
     youtubei.js "^13.3.0"
     zod "^3.24.2"
 
-zod@^3.24.2:
-  version "3.24.2"
-  resolved "https://registry.yarnpkg.com/zod/-/zod-3.24.2.tgz#8efa74126287c675e92f46871cfc8d15c34372b3"
-  integrity sha512-lY7CDW43ECgW9u1TcT3IoXHflywfVqDYze4waEz812jR/bZ8FHDsl7pFQoSZTz5N+2NqRXs8GBwnAwo3ZNxqhQ==
+zod@^3.24.2, zod@^3.24.3:
+  version "3.24.3"
+  resolved "https://registry.yarnpkg.com/zod/-/zod-3.24.3.tgz#1f40f750a05e477396da64438e0e1c0995dafd87"
+  integrity sha512-HhY1oqzWCQWuUqvBFnsyrtZRhyPeR7SUGv+C4+MsisMuVfSPx8HpwWqH8tRahSlt6M3PiFAcoeFhZAqIXTxoSg==
