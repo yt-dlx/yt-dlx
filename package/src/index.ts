@@ -26,7 +26,6 @@ import search_playlists from "./routes/Search/search_playlists";
 import subscriptions_feed from "./routes/Account/subscriptions_feed";
 import unseen_notifications from "./routes/Account/unseen_notifications";
 var YouTubeDLX = {
-  Progress_Bar: progbar,
   Audio: { Lowest: AudioLowest, Highest: AudioHighest, Custom: AudioCustom },
   Video: { Lowest: VideoLowest, Highest: VideoHighest, Custom: VideoCustom },
   Audio_Video: { Lowest: AudioVideoLowest, Highest: AudioVideoHighest, Custom: AudioVideoCustom },
@@ -36,6 +35,6 @@ var YouTubeDLX = {
     Video: { Single: video_data, Multiple: search_videos, Related: related_videos },
   },
   Account: { History: watch_history, HomeFeed: home_feed, SubscriptionsFeed: subscriptions_feed, Unseen_Notifications: unseen_notifications },
-  Info: { Help: help, Extract: extract, Formats: list_formats, GetVideoId: YouTubeID, Comments: video_comments, Transcript: video_transcript },
+  Info: { Help: help, ProgressBar: progbar, Extract: extract, Formats: list_formats, GetVideoId: YouTubeID, Comments: video_comments, Transcript: video_transcript },
 };
 export default YouTubeDLX;
