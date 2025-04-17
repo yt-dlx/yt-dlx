@@ -124,7 +124,7 @@ export default async function Engine({ sudo, query, useTor }: { query: string; s
     pLoc += ` --user-agent "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36"`;
     return await promisify(exec)(pLoc);
   }, config);
-  var i = JSON.parse(metaCore.stdout.toString());
+  var i = JSON.parse(metaCore.stdout.toString().replace(/yt-dlp/g, "yt-dlx"));
   i.formats.forEach((tube: any) => {
     var rm = new Set(["storyboard", "Default"]);
     if (!rm.has(tube.format_note) && tube.protocol === "m3u8_native" && tube.vbr) {
