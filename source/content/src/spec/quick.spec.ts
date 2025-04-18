@@ -1,52 +1,5 @@
 import dotenv from "dotenv";
 import colors from "colors";
 import YouTubeDLX from "..";
-
 dotenv.config();
 console.clear();
-
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
-YouTubeDLX.Misc.Extract({ query: "Soniye" })
-  .on("data", data => console.log(data))
-  .on("error", error => console.error(error));
