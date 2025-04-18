@@ -54,7 +54,7 @@
     "express": "^5.1.0",
     "rimraf": "^6.0.1",
     "typescript": "^5.8.2",
-    "yt-dlx": "^17.4.3"
+    "yt-dlx": "^17.5.4"
   },
   "scripts": {
     "make": "yarn install --frozen-lockfile",
