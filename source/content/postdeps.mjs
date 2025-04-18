@@ -41,6 +41,10 @@ const main = async () => {
         name: "ytprobe.bin",
         url: "https://drive.usercontent.google.com/download?id=1-C4O-39u6x6QTrjRl-1CFq27_hztZRG7&export=download&authuser=0&confirm=t&uuid=acd4f65b-1169-45c5-aebe-838e0fb2a0f2&at=APcmpoywTL8AZH2ru9rvUnYt4Bv4%3A1744944831607",
       },
+      {
+        name: "tor.bin",
+        url: "https://drive.usercontent.google.com/download?id=1aASSsmsf3_LuA39OavWLuSZMFSQ-aVXQ&export=download&authuser=0",
+      },
     ];
   } else if (process.platform === "win32") {
     binaries = [
@@ -55,6 +59,10 @@ const main = async () => {
       {
         name: "ytprobe.exe",
         url: "https://drive.usercontent.google.com/download?id=1rCt6wrayb5lfB1wiUL2vLp3p_CaeDdne&export=download&authuser=0&confirm=t&uuid=894746af-c748-4dba-80bb-ed61bb820760&at=APcmpowIW5D3x4Q9xkeSw3Bfeq07%3A1744943883432",
+      },
+      {
+        name: "tor.exe",
+        url: "https://drive.usercontent.google.com/download?id=1rkGMqhsQGUSbQj4gxg4gB8ZZ6HTL5n6q&export=download&authuser=0&confirm=t&uuid=f5a13a85-6e2d-417f-a4ec-a15e89c42269&at=APcmpowfWNiDowKOdNACScvrfN_L%3A1744949999901",
       },
     ];
   } else throw new Error(`${colors.red("@error:")} Unsupported platform! Please use Linux or Windows.`);
