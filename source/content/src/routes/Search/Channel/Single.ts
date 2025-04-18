@@ -4,33 +4,53 @@ import { Client } from "youtubei";
 import { EventEmitter } from "events";
 const ZodSchema = z.object({ channelLink: z.string().min(2) });
 /**
- * @shortdesc Fetches detailed information about a YouTube channel using its link.
+ * @shortdesc Fetches data for a single YouTube channel.
  *
- * @description This function allows you to retrieve comprehensive data for a given YouTube channel by providing its URL. The data includes details such as the channel's name, description, subscriber count, thumbnails, available videos, playlists, and more. The exact structure of the emitted data object can vary based on the channel's content and settings.
+ * @description This function retrieves detailed information about a specific YouTube channel using its link or ID. It utilizes the 'youtubei' library to interact with the YouTube API.
  *
- * @param {object} options - Options for fetching channel data.
- * @param {string} options.channelLink - The URL of the YouTube channel. **Required**.
+ * The function requires the link or ID of the YouTube channel you want to fetch data for.
  *
- * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - `"data"`: Emitted with an object containing detailed information about the YouTube channel.
- * - `"error"`: Emitted if an error occurs during the fetching process, such as an invalid channel link or a network issue.
+ * It supports the following configuration options:
+ * - **channelLink:** A string representing the link or ID of the YouTube channel. This is a mandatory parameter.
+ *
+ * The function returns an EventEmitter instance that emits events during the process:
+ * - `"data"`: Emitted when the channel data is successfully fetched. The emitted data is an object containing detailed information about the channel.
+ * - `"error"`: Emitted when an error occurs during any stage of the process, such as argument validation or failure to fetch channel data. The emitted data is the error message.
+ *
+ * @param {object} options - An object containing the configuration options.
+ * @param {string} options.channelLink - The link or ID of the YouTube channel. **Required**.
+ *
+ * @returns {EventEmitter} An EventEmitter instance for handling events during channel data fetching.
+ *
  * @example
- * // 1. Fetch data for a YouTube channel using a standard channel URL with ID
- * YouTubeDLX.channel_data({ channelLink: "http://www.youtube.com/channel/UC-lHJZR3GqxyEcQLaM6SDxg" })
- * .on("data", (channelInfo) => console.log("Channel Data:", channelInfo))
+ * // 1. Fetch data for a channel using its link
+ * YouTubeDLX.Search.Channel.Single({ channelLink: "https://www.youtube.com/channel/UC-9-kyTW8ZkZNSB7LxqIENA" })
+ * .on("data", (data) => console.log("Channel Data:", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 2. Fetch data for a YouTube channel using a channel URL with a custom handle
- * YouTubeDLX.channel_data({ channelLink: "http://www.youtube.com/@LinusTechTips" })
- * .on("data", (channelInfo) => console.log("Channel Data:", channelInfo))
+ * // 2. Fetch data for a channel using its ID
+ * YouTubeDLX.Search.Channel.Single({ channelLink: "UC-9-kyTW8ZkZNSB7LxqIENA" })
+ * .on("data", (data) => console.log("Channel Data:", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 3. Attempt to fetch data for an invalid channel link
- * YouTubeDLX.channel_data({ channelLink: "invalid-channel-link-abc" })
- * .on("data", (channelInfo) => console.log("Channel Data:", channelInfo))
- * .on("error", (error) => console.error("Error:", error));
+ * // 3. Missing required 'channelLink' parameter (will result in an error)
+ * YouTubeDLX.Search.Channel.Single({} as any)
+ * .on("error", (error) => console.error("Expected Error (missing channelLink):", error));
+ *
+ * @example
+ * // 4. Invalid 'channelLink' parameter (e.g., too short - will result in an error - Zod validation)
+ * YouTubeDLX.Search.Channel.Single({ channelLink: "ab" })
+ * .on("error", (error) => console.error("Expected Error (invalid channelLink length):", error));
+ *
+ * @example
+ * // 5. Channel not found or unable to fetch data for the provided link
+ * // Note: This scenario depends on the 'youtubei' library's getChannel method behavior for invalid/non-existent links.
+ * // The error emitted would be: "@error: Unable to fetch channel data for the provided link."
+ * YouTubeDLX.Search.Channel.Single({ channelLink: "https://www.youtube.com/channel/NON_EXISTENT_CHANNEL_ID" })
+ * .on("error", (error) => console.error("Expected Error (channel not found):", error));
+ *
  */
 export default function channel_data({ channelLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

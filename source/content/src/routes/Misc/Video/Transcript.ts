@@ -36,39 +36,59 @@ async function getVideoTranscript({ videoId }: { videoId: string }, emitter: Eve
   }
 }
 /**
- * @shortdesc Fetches the transcript of a YouTube video from its URL.
+ * @shortdesc Fetches the transcript of a YouTube video.
  *
- * @description This function takes a URL of a YouTube video as input and retrieves the transcript of the video. The transcript is returned as an array of objects, where each object represents a segment of the transcript with its text, start time, duration, and detailed segment information.
+ * @description This function retrieves the available transcript (captions) for a given YouTube video link.
+ * It requires a valid video link as input.
  *
- * @param {object} options - An object containing the necessary options.
+ * The function requires the following configuration option:
+ * - **videoLink:** A string representing the URL of the YouTube video from which to fetch the transcript. This is a mandatory parameter.
+ *
+ * The function returns an EventEmitter instance that emits events during the process:
+ * - `"data"`: Emitted when the transcript data is successfully fetched and processed. The emitted data is an array of transcript segments.
+ * - `"error"`: Emitted when an error occurs at any stage, such as argument validation, providing an incorrect video link, or failure to retrieve the transcript. The emitted data is the error message.
+ *
+ * @param {object} options - An object containing the configuration options.
  * @param {string} options.videoLink - The URL of the YouTube video. **Required**.
  *
- * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - `"data"`: Emitted with an array of transcript objects (`VideoTranscriptType`). Each object contains the `text`, `start` time (in seconds), `duration` (in seconds), and `segments` of a caption.
- * - `"error"`: Emitted if there is an error during the process, such as an incorrect video link format or if the transcript cannot be retrieved for the given video.
+ * @returns {EventEmitter} An EventEmitter instance for handling events during transcript fetching.
  *
  * @example
- * // Define the structure for CaptionSegment
- * interface CaptionSegment {
- * utf8: string;
- * tOffsetMs?: number;
- * acAsrConf: number;
- * }
+ * // 1. Fetch transcript for a valid video link
+ * YouTubeDLX.Misc.Video.Transcript({ videoLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" })
+ * .on("data", (transcript) => console.log("Video Transcript:", transcript))
+ * .on("error", (error) => console.error("Error fetching transcript:", error));
  *
  * @example
- * // Define the structure for VideoTranscriptType
- * interface VideoTranscriptType {
- * text: string;
- * start: number;
- * duration: number;
- * segments: CaptionSegment[];
- * }
+ * // 2. Fetch transcript using a shortened video URL
+ * YouTubeDLX.Misc.Video.Transcript({ videoLink: "https://youtu.be/dQw4w9WgXcQ" })
+ * .on("data", (transcript) => console.log("Video Transcript:", transcript))
+ * .on("error", (error) => console.error("Error fetching transcript:", error));
  *
  * @example
- * // Fetch the transcript for a YouTube video
- * YouTubeDLX.video_transcript({ videoLink: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" })
- * .on("data", (transcript: VideoTranscriptType[]) => console.log("Video Transcript:", transcript))
- * .on("error", (error) => console.error("Error:", error));
+ * // 3. Missing required 'videoLink' parameter (will result in a Zod error)
+ * YouTubeDLX.Misc.Video.Transcript({} as any)
+ * .on("error", (error) => console.error("Expected Error (missing videoLink):", error));
+ *
+ * @example
+ * // 4. Invalid 'videoLink' format (will result in an error from YouTubeID)
+ * YouTubeDLX.Misc.Video.Transcript({ videoLink: "this is not a video link" })
+ * .on("error", (error) => console.error("Expected Error (incorrect video link):", error));
+ *
+ * @example
+ * // 5. Video link for a video without a transcript
+ * // Note: This scenario depends on the specific video.
+ * // The error emitted would be: "@error: Unable to get transcript for this video!"
+ * YouTubeDLX.Misc.Video.Transcript({ videoLink: "https://www.youtube.com/watch?v=VIDEO_ID_WITHOUT_TRANSCRIPT" })
+ * .on("error", (error) => console.error("Expected Error (no transcript available):", error));
+ *
+ * @example
+ * // 6. An unexpected error occurs during fetching (e.g., network issue, API change)
+ * // Note: This scenario simulates a potential internal error during the fetching process.
+ * // The error emitted would be: "@error: " followed by the underlying error message.
+ * // YouTubeDLX.Misc.Video.Transcript({ videoLink: "valid_link_but_fetch_fails" })
+ * // .on("error", (error) => console.error("Expected Error (fetch failed):", error));
+ *
  */
 export default function video_transcript({ videoLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

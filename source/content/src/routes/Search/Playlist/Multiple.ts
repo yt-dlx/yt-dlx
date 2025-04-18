@@ -27,36 +27,63 @@ async function searchPlaylists({ query }: { query: string }, emitter: EventEmitt
   }
 }
 /**
- * @shortdesc Searches for YouTube playlists using a query.
+ * @shortdesc Searches for YouTube playlists based on a query string.
  *
- * @description This function allows you to search for YouTube playlists by providing a search query. It returns the first playlist found that matches the query, containing information such as its ID, title, the number of videos it contains, and thumbnails. Please note that this function is for searching playlists and not for fetching detailed information from a specific playlist URL. If you have a direct playlist link, use the `playlist_data()` function instead.
+ * @description This function performs a search on YouTube for playlists using a given query string. It returns the data of the first playlist found in the search results. Note that this function is intended for searching by keywords, not for fetching data of a known playlist ID or URL; use the `playlist_data()` function for that purpose.
  *
- * @param {object} options - An object containing the necessary options.
- * @param {string} options.playlistLink - The search query to find playlists. **Required**.
+ * The function requires a search query string.
  *
- * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - `"data"`: Emitted with the first playlist object (`searchPlaylistsType`) found matching the search query. This Ang example of this object is:
- * ```typescript
- * {
- *   id: string;
- *   title: string;
- *   videoCount: number;
- *   thumbnails: string[];
- * }
- * ```
- * - `"error"`: Emitted if there is an error during the process. This can include scenarios where no playlists are found for the query, if the input looks like a direct playlist link (in which case it will suggest using `playlist_data()`), or other unexpected errors.
+ * It supports the following configuration options:
+ * - **playlistLink:** A string representing the search query for playlists. Despite the parameter name, this should be a search term (e.g., "lofi hip hop playlist"), not a playlist URL or ID. This is a mandatory parameter with a minimum length of 2 characters.
  *
- * @example
- * // 1. Fetch data for a playlist using a playlist ID
- * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "PL4cUxeGkcC9g8eVEzV8j3j2eZOxn2xo3y" })
- *   .on("data", (data) => console.log("Playlist data:", data))
- *   .on("error", (error) => console.error("Error:", error));
+ * The function returns an EventEmitter instance that emits events during the process:
+ * - `"data"`: Emitted when a playlist is successfully found based on the query. The emitted data is an object containing details about the first matching playlist, including its ID, title, video count, and thumbnails.
+ * - `"error"`: Emitted when an error occurs at any stage, such as argument validation, if the input is detected as a playlist ID, if no playlists are found for the query, or if there is an internal search or data retrieval issue. The emitted data is the error message.
+ *
+ * @param {object} options - An object containing the configuration options.
+ * @param {string} options.playlistLink - The search query string for playlists. **Required**.
+ *
+ * @returns {EventEmitter} An EventEmitter instance for handling events during the playlist search.
  *
  * @example
- * // 2. Fetch data for a specific playlist using a playlist URL
- * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "https://www.youtube.com/playlist?list=PL4cUxeGkcC9g8eVEzV8j3j2eZOxn2xo3y"  })
- *   .on("data", (data) => console.log("Playlist data:", data))
- *   .on("error", (error) => console.error("Error:", error));
+ * // 1. Search for playlists using a query string
+ * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "lofi hip hop" })
+ * .on("data", (data) => console.log("First Playlist Found:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 2. Search for playlists using a different query string
+ * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "workout music" })
+ * .on("data", (data) => console.log("First Playlist Found:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 3. Provide a query that is too short (will result in a Zod error)
+ * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "a" } as any)
+ * .on("error", (error) => console.error("Expected Error (short query):", error));
+ *
+ * @example
+ * // 4. Provide a playlist URL or ID instead of a search query (will result in an error)
+ * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "https://www.youtube.com/playlist?list=SOME_PLAYLIST_ID" })
+ * .on("error", (error) => console.error("Expected Error (input is playlist link):", error));
+ *
+ * @example
+ * // 5. Provide a query that yields no playlist results
+ * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "a query with no playlist results 12345xyz" })
+ * .on("error", (error) => console.error("Expected Error (no playlists found):", error));
+ *
+ * @example
+ * // 6. Missing required 'playlistLink' parameter (will result in a Zod error)
+ * YouTubeDLX.Search.Playlist.Multiple({} as any)
+ * .on("error", (error) => console.error("Expected Error (missing playlistLink):", error));
+ *
+ * @example
+ * // 7. An internal search or data retrieval error occurs
+ * // Note: This is an internal error scenario, difficult to trigger directly via a simple example call.
+ * // The errors emitted could include: "Engine error: ...", "Unable to retrieve a response from the engine.", "Metadata was not found...", "Unable to get playlist data."
+ * // YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "query that causes internal error" })
+ * // .on("error", (error) => console.error("Expected Error (internal search error):", error));
+ *
  */
 export default function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

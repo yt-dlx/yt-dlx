@@ -6,99 +6,126 @@ import TubeLogin, { TubeType } from "../../utils/TubeLogin";
 import sanitizeContentItem from "../../utils/sanitizeContentItem";
 const ZodSchema = z.object({ cookies: z.string(), verbose: z.boolean().optional(), sort: z.enum(["oldest", "newest", "old-to-new", "new-to-old"]).optional() });
 /**
- * @shortdesc Fetches the user's personalized home feed, including videos and shorts, with optional sorting.
+ * @shortdesc Fetches the user's YouTube home feed.
  *
- * @description This function allows you to retrieve a user's personalized home feed from the platform. It requires valid cookies for authentication to access the feed. The feed typically includes a mix of regular videos and short videos tailored to the user's preferences. The function supports optional verbose logging to provide more details during the process. Additionally, it offers various sorting options to organize the fetched feed according to your needs.
+ * @description This function retrieves the personalized home feed for a user using their authentication cookies. It can fetch both regular videos and short videos displayed on the home feed. Optional verbose logging is available, and the results can be sorted according to different criteria.
  *
- * The function provides the following configuration options:
- * - **Cookies:** The user's cookies as a string. This is a mandatory parameter required for authenticating the request and accessing the home feed.
- * - **Verbose:** An optional boolean value that, if true, enables detailed logging to the console, providing more information about the steps taken during the feed fetching process.
- * - **Sort:** An optional string specifying how the home feed should be sorted. Available options include:
- * - `"oldest"`: Keeps only the oldest video and the oldest short from the feed.
- * - `"newest"`: Keeps only the newest video and the newest short from the feed.
- * - `"old-to-new"`: Sorts both videos and shorts by their video ID in ascending order, effectively showing the oldest items first.
- * - `"new-to-old"`: Sorts both videos and shorts by their video ID in descending order, showing the newest items first.
+ * The function requires valid cookies for authentication to access the user's home feed.
  *
- * The function returns an EventEmitter instance that emits events during the feed fetching process:
- * - `"data"`: Emitted when the home feed data is successfully fetched and processed. The emitted data is an object containing the status and the fetched feed, separated into `Shorts` and `Videos` arrays.
+ * It supports the following configuration options:
+ * - **Cookies:** The user's cookies as a string. This is a mandatory parameter required for authenticating the request.
+ * - **Verbose:** An optional boolean value that, if true, enables detailed logging to the console, providing more information about the process of fetching and parsing the home feed.
+ * - **Sort:** An optional string specifying how the home feed items should be sorted or filtered. Available options include:
+ * - `"oldest"`: Keeps only the oldest video and the oldest short found in the fetched feed data.
+ * - `"newest"`: Keeps only the newest video and the newest short found in the fetched feed data.
+ * - `"old-to-new"`: Sorts both videos and shorts by their video ID in ascending order. Note: The concept of "oldest" or "newest" by video ID might not strictly align with publication date for home feed items, as the feed is curated. This sort orders by the internal video identifier.
+ * - `"new-to-old"`: Sorts both videos and shorts by their video ID in descending order. Similar note about sorting by video ID applies.
+ *
+ * The function returns an EventEmitter instance that emits events during the process:
+ * - `"data"`: Emitted when the home feed data is successfully fetched and processed. The emitted data is an object containing the status and the fetched feed items, separated into `Shorts` and `Videos` arrays.
  * - `"error"`: Emitted when an error occurs during any stage of the process, such as argument validation, cookie initialization, or network requests. The emitted data is the error message or object.
  *
  * @param {object} options - An object containing the configuration options.
  * @param {string} options.cookies - The user's cookies as a string. **Required**.
  * @param {boolean} [options.verbose=false] - Enable verbose logging.
- * @param {("oldest" | "newest" | "old-to-new" | "new-to-old")} [options.sort] - Specify how the home feed should be sorted.
+ * @param {("oldest" | "newest" | "old-to-new" | "new-to-old")} [options.sort] - Specify how the home feed items should be sorted.
  *
  * @returns {EventEmitter} An EventEmitter instance for handling events during home feed fetching.
  *
  * @example
  * // 1. Fetch home feed with provided cookies
  * const cookies = "YOUR_COOKIES_HERE";
- * YouTubeDLX.home_feed({ cookies })
+ * YouTubeDLX.Account.HomeFeed({ cookies })
  * .on("data", (data) => console.log("Home Feed:", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
  * // 2. Fetch home feed with verbose logging
  * const cookies = "YOUR_COOKIES_HERE";
- * YouTubeDLX.home_feed({ cookies, verbose: true })
+ * YouTubeDLX.Account.HomeFeed({ cookies, verbose: true })
  * .on("data", (data) => console.log("Home Feed:", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 3. Fetch home feed and sort by oldest
+ * // 3. Fetch home feed and keep only the oldest item of each type
  * const cookies = "YOUR_COOKIES_HERE";
- * YouTubeDLX.home_feed({ cookies, sort: "oldest" })
- * .on("data", (data) => console.log("Oldest in Home Feed:", data))
+ * YouTubeDLX.Account.HomeFeed({ cookies, sort: "oldest" })
+ * .on("data", (data) => console.log("Oldest Feed Items:", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 4. Fetch home feed and keep only the newest items
+ * // 4. Fetch home feed and keep only the newest item of each type
  * const cookies = "YOUR_COOKIES_HERE";
- * YouTubeDLX.home_feed({ cookies, sort: "newest" })
- * .on("data", (data) => console.log("Newest in Home Feed:", data))
+ * YouTubeDLX.Account.HomeFeed({ cookies, sort: "newest" })
+ * .on("data", (data) => console.log("Newest Feed Items:", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 5. Fetch home feed and sort from oldest to newest
+ * // 5. Fetch home feed and sort from oldest to newest by video ID
  * const cookies = "YOUR_COOKIES_HERE";
- * YouTubeDLX.home_feed({ cookies, sort: "old-to-new" })
- * .on("data", (data) => console.log("Home Feed (Old to New):", data))
+ * YouTubeDLX.Account.HomeFeed({ cookies, sort: "old-to-new" })
+ * .on("data", (data) => console.log("Home Feed (Old to New by ID):", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 6. Fetch home feed and sort from newest to oldest
+ * // 6. Fetch home feed and sort from newest to oldest by video ID
  * const cookies = "YOUR_COOKIES_HERE";
- * YouTubeDLX.home_feed({ cookies, sort: "new-to-old" })
- * .on("data", (data) => console.log("Home Feed (New to Old):", data))
+ * YouTubeDLX.Account.HomeFeed({ cookies, sort: "new-to-old" })
+ * .on("data", (data) => console.log("Home Feed (New to Old by ID):", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 7. Fetch home feed with verbose logging and sort by oldest
+ * // 7. Fetch home feed with verbose logging and keep only the oldest item of each type
  * const cookies = "YOUR_COOKIES_HERE";
- * YouTubeDLX.home_feed({ cookies, verbose: true, sort: "oldest" })
- * .on("data", (data) => console.log("Oldest in Home Feed (Verbose):", data))
+ * YouTubeDLX.Account.HomeFeed({ cookies, verbose: true, sort: "oldest" })
+ * .on("data", (data) => console.log("Oldest Feed Items (Verbose):", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 8. Fetch home feed with verbose logging and keep only the newest items
+ * // 8. Fetch home feed with verbose logging and keep only the newest item of each type
  * const cookies = "YOUR_COOKIES_HERE";
- * YouTubeDLX.home_feed({ cookies, verbose: true, sort: "newest" })
- * .on("data", (data) => console.log("Newest in Home Feed (Verbose):", data))
+ * YouTubeDLX.Account.HomeFeed({ cookies, verbose: true, sort: "newest" })
+ * .on("data", (data) => console.log("Newest Feed Items (Verbose):", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 9. Fetch home feed with verbose logging and sort from oldest to newest
+ * // 9. Fetch home feed with verbose logging and sort from oldest to newest by video ID
  * const cookies = "YOUR_COOKIES_HERE";
- * YouTubeDLX.home_feed({ cookies, verbose: true, sort: "old-to-new" })
- * .on("data", (data) => console.log("Home Feed (Old to New, Verbose):", data))
+ * YouTubeDLX.Account.HomeFeed({ cookies, verbose: true, sort: "old-to-new" })
+ * .on("data", (data) => console.log("Home Feed (Old to New by ID, Verbose):", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 10. Fetch home feed with verbose logging and sort from newest to oldest
+ * // 10. Fetch home feed with verbose logging and sort from newest to oldest by video ID
  * const cookies = "YOUR_COOKIES_HERE";
- * YouTubeDLX.home_feed({ cookies, verbose: true, sort: "new-to-old" })
- * .on("data", (data) => console.log("Home Feed (New to Old, Verbose):", data))
+ * YouTubeDLX.Account.HomeFeed({ cookies, verbose: true, sort: "new-to-old" })
+ * .on("data", (data) => console.log("Home Feed (New to Old by ID, Verbose):", data))
  * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 11. Missing required 'cookies' parameter (will result in an error)
+ * YouTubeDLX.Account.HomeFeed({} as any)
+ * .on("error", (error) => console.error("Expected Error (missing cookies):", error));
+ *
+ * @example
+ * // 12. Invalid 'sort' value (will result in an error - Zod validation)
+ * YouTubeDLX.Account.HomeFeed({ cookies: "YOUR_COOKIES_HERE", sort: "invalid_sort" as any })
+ * .on("error", (error) => console.error("Expected Error (invalid sort):", error));
+ *
+ * @example
+ * // 13. Failed to initialize Tube client (e.g., invalid cookies)
+ * // Note: This scenario depends on the internal TubeLogin logic.
+ * // The error emitted would be: "@error: Could not initialize Tube client."
+ * YouTubeDLX.Account.HomeFeed({ cookies: "INVALID_OR_EXPIRED_COOKIES" })
+ * .on("error", (error) => console.error("Expected Error (client initialization failed):", error));
+ *
+ * @example
+ * // 14. Failed to fetch home feed after client initialization
+ * // Note: This is an internal error scenario, difficult to trigger via simple example.
+ * // The error emitted would be: "@error: Failed to fetch home feed."
+ * // YouTubeDLX.Account.HomeFeed({ cookies: "VALID_COOKIES_BUT_FETCH_FAILS" })
+ * // .on("error", (error) => console.error("Expected Error (fetch failed):", error));
+ *
  */
 export default function home_feed(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

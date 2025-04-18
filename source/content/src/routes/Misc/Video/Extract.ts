@@ -112,121 +112,101 @@ async function fetchVideoTranscript(videoId: string, verbose: boolean): Promise<
   }
 }
 /**
- * @shortdesc Extracts comprehensive information (metadata, formats, comments, transcript) for a video.
+ * @shortdesc Extracts comprehensive information about a YouTube video.
  *
- * @description This function takes a search query to find a YouTube video and retrieves a wide range of information about it. This includes various available audio and video formats at different qualities, detailed metadata such as title, uploader, view count, like count, upload date, duration, and more. Additionally, it fetches the video's comments and transcript. The function supports optional verbose logging to provide detailed output during the process and the option to route requests through the Tor network for enhanced anonymity.
+ * @description This function extracts detailed data for a given YouTube video, including its metadata, available audio and video formats, comments, and transcript. It uses multiple internal tools to gather this information based on a search query or video URL. Optional parameters allow for using Tor and enabling verbose logging.
  *
- * @param {object} options - Configuration options for extracting video information.
- * @param {string} options.query - The search query string (minimum 2 characters) to find the desired video. **Required**.
- * @param {boolean} [options.verbose=false] - Enables verbose logging to the console if set to `true`.
- * @param {boolean} [options.useTor=false] - Routes the request through the Tor network if set to `true`. Requires Tor to be running locally.
+ * The function requires a search query or video URL. It compiles data from various sources into a single, comprehensive output.
  *
- * @returns {EventEmitter} An EventEmitter instance that emits events during the extraction process.
- * The following events can be listened to:
- * - `"data"`: Emitted when the video metadata, formats, comments, and transcript are successfully extracted. The data is an object containing the following properties:
- * - `AudioLowF`: Information about the lowest quality audio format.
- * - `AudioHighF`: Information about the highest quality audio format.
- * - `VideoLowF`: Information about the lowest quality video format.
- * - `VideoHighF`: Information about the highest quality video format.
- * - `AudioLowDRC`: Information about the lowest quality audio format with dynamic range compression.
- * - `AudioHighDRC`: Information about the highest quality audio format with dynamic range compression.
- * - `AudioLow`: Information about a low quality audio format.
- * - `AudioHigh`: Information about a high quality audio format.
- * - `VideoLowHDR`: Information about a low quality HDR video format (if available).
- * - `VideoHighHDR`: Information about a high quality HDR video format (if available).
- * - `VideoLow`: Information about a low quality video format.
- * - `VideoHigh`: Information about a high quality video format.
- * - `ManifestLow`: URL for a low quality manifest (if available).
- * - `ManifestHigh`: URL for a high quality manifest (if available).
- * - `meta_data`: An object containing detailed video metadata, including:
- * - `id`: Video ID.
- * - `original_url`: Original URL of the video.
- * - `webpage_url`: Webpage URL of the video.
- * - `title`: Title of the video.
- * - `view_count`: Number of views.
- * - `like_count`: Number of likes.
- * - `view_count_formatted`: Formatted view count (e.g., "1.2M").
- * - `like_count_formatted`: Formatted like count (e.g., "10K").
- * - `uploader`: Name of the uploader.
- * - `uploader_id`: ID of the uploader.
- * - `uploader_url`: URL of the uploader's channel.
- * - `thumbnail`: URL of the video thumbnail.
- * - `categories`: Array of video categories.
- * - `time`: Duration of the video in seconds.
- * - `duration`: Object containing the video duration in hours, minutes, seconds, and a formatted string.
- * - `age_limit`: Age limit for the video.
- * - `live_status`: Live status of the video (e.g., "not_live").
- * - `description`: Short description of the video.
- * - `full_description`: Full description of the video.
- * - `upload_date`: Formatted upload date.
- * - `upload_ago`: Number of days since upload.
- * - `upload_ago_formatted`: Object containing years, months, days since upload, and a formatted string.
- * - `comment_count`: Number of comments.
- * - `comment_count_formatted`: Formatted comment count (e.g., "500").
- * - `channel_id`: ID of the channel.
- * - `channel_name`: Name of the channel.
- * - `channel_url`: URL of the channel.
- * - `channel_follower_count`: Number of channel followers.
- * - `channel_follower_count_formatted`: Formatted channel follower count (e.g., "2M").
- * - `comments`: An array of comment objects (`CommentType`).
- * - `transcript`: An array of transcript segments (`VideoTranscriptType`).
- * - `"error"`: Emitted when an error occurs during argument validation, network requests, or data processing.
+ * It supports the following configuration options:
+ * - **query:** A string representing the search query or video URL of the video to extract information from. This is a mandatory parameter.
+ * - **useTor:** An optional boolean value. If true, the function will attempt to use Tor for certain network requests (specifically, those made by the internal Tuber agent), enhancing anonymity.
+ * - **verbose:** An optional boolean value. If true, enables detailed logging to the console throughout the extraction process, including fetching metadata, comments, and transcript.
+ *
+ * The function returns an EventEmitter instance that emits events during the extraction process:
+ * - `"data"`: Emitted when all requested information is successfully extracted and compiled. The emitted data is a comprehensive object containing video formats, detailed metadata, comments (if available), and the transcript (if available).
+ * - `"error"`: Emitted when an error occurs at any stage, such as argument validation, failure to retrieve initial video data, or issues fetching comments or the transcript. The emitted data is the error message.
+ *
+ * @param {object} options - An object containing the configuration options.
+ * @param {string} options.query - The search query or video URL. **Required**.
+ * @param {boolean} [options.useTor=false] - Whether to use Tor for certain requests.
+ * @param {boolean} [options.verbose=false] - Enable verbose logging.
+ *
+ * @returns {EventEmitter} An EventEmitter instance for handling events during the extraction process.
  *
  * @example
- * // Define the structure for CommentType
- * interface CommentType {
- * comment_id: string;
- * is_pinned: boolean;
- * comment: string;
- * published_time: string;
- * author_is_channel_owner: boolean;
- * creator_thumbnail_url: string;
- * like_count: number;
- * is_member: boolean;
- * author: string;
- * is_hearted: boolean;
- * is_liked: boolean;
- * is_disliked: boolean;
- * reply_count: number;
- * hasReplies: boolean;
- * }
- *
- * @example
- * // Define the structure for VideoTranscriptType
- * interface VideoTranscriptType {
- * text: string;
- * start: number;
- * duration: number;
- * segments: {
- * utf8: string;
- * tOffsetMs?: number;
- * acAsrConf: number;
- * }[];
- * }
- *
- * @example
- * // 1. Extract all information for a video based on a query
- * YouTubeDLX.extract({ query: "latest tech review" })
- * .on("data", (data) => console.log("Extracted Data:", data))
+ * // 1. Extract information for a video using a query
+ * YouTubeDLX.Misc.Video.Extract({ query: "your search query or url" })
+ * .on("data", (data) => console.log("Video Data:", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 2. Extract information with verbose logging
- * YouTubeDLX.extract({ query: "cooking tutorial", verbose: true })
- * .on("data", (data) => console.log("Extracted Data:", data))
+ * // 2. Extract information using a query and enable verbose logging
+ * YouTubeDLX.Misc.Video.Extract({ query: "your search query or url", verbose: true })
+ * .on("data", (data) => console.log("Video Data (Verbose):", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 3. Extract information using Tor
- * YouTubeDLX.extract({ query: "anonymous video search", useTor: true })
- * .on("data", (data) => console.log("Extracted Data:", data))
+ * // 3. Extract information using a query and attempt to use Tor
+ * YouTubeDLX.Misc.Video.Extract({ query: "your search query or url", useTor: true })
+ * .on("data", (data) => console.log("Video Data (with Tor):", data))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 4. Extract information with verbose logging and Tor
- * YouTubeDLX.extract({ query: "private educational video", verbose: true, useTor: true })
- * .on("data", (data) => console.log("Extracted Data:", data))
+ * // 4. Extract information using a query with both verbose logging and Tor
+ * YouTubeDLX.Misc.Video.Extract({ query: "your search query or url", verbose: true, useTor: true })
+ * .on("data", (data) => console.log("Video Data (Verbose, with Tor):", data))
  * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 5. Missing required 'query' parameter (will result in an error)
+ * YouTubeDLX.Misc.Video.Extract({} as any)
+ * .on("error", (error) => console.error("Expected Error (missing query):", error));
+ *
+ * @example
+ * // 6. Query results in no engine data
+ * // Note: This scenario depends on the internal Tuber function's behavior.
+ * // You can simulate by providing a query that is unlikely to return results.
+ * YouTubeDLX.Misc.Video.Extract({ query: "a query that should return no results 12345abcde" })
+ * .on("error", (error) => console.error("Expected Error (no engine data):", error));
+ *
+ * @example
+ * // 7. Engine data missing metadata
+ * // Note: This is an internal error scenario, difficult to trigger via simple example call.
+ * // The error emitted would be: "@error: Metadata not found in the response!"
+ *
+ * @example
+ * // 8. Failed to parse upload date (internal error)
+ * // Note: This is an internal error scenario, unlikely with standard YouTube data.
+ * // The error emitted would be: "@error: Failed to parse upload date: ..."
+ *
+ * @example
+ * // 9. Failed to fetch comments
+ * // Note: This can happen if comments are disabled or due to network issues during comment fetching.
+ * // The `comments` property in the output will be null, and an error might be logged if verbose is true.
+ * // The main emitter will only emit an error if the *entire* process fails critically before fetching comments/transcript.
+ * // If comments fetching fails but the rest succeeds, the 'data' event will fire with `comments: null`.
+ * // Example showing data event even if comments fail:
+ * YouTubeDLX.Misc.Video.Extract({ query: "a video where comments are disabled" })
+ * .on("data", (data) => console.log("Video Data (comments null):", data.comments === null))
+ * .on("error", (error) => console.error("Error:", error)); // This error is less likely unless the main data fetch fails
+ *
+ * @example
+ * // 10. Failed to fetch transcript
+ * // Note: This can happen if subtitles/transcripts are not available for the video or due to network issues.
+ * // The `transcript` property in the output will be null, and an error might be logged if verbose is true.
+ * // Similar to comments, the main emitter will only emit an error if the entire process fails critically before fetching comments/transcript.
+ * // If transcript fetching fails but the rest succeeds, the 'data' event will fire with `transcript: null`.
+ * // Example showing data event even if transcript fails:
+ * YouTubeDLX.Misc.Video.Extract({ query: "a video with no transcript" })
+ * .on("data", (data) => console.log("Video Data (transcript null):", data.transcript === null))
+ * .on("error", (error) => console.error("Error:", error)); // This error is less likely unless the main data fetch fails
+ *
+ * @example
+ * // 11. An unexpected error occurs during processing
+ * // Note: This is a catch-all for unforeseen errors. The emitted error message will vary.
+ * // YouTubeDLX.Misc.Video.Extract({...})
+ * // .on("error", (error) => console.error("Unexpected Error:", error)); // Emits "@error: An unexpected error occurred: ..."
  */
 export default function extract(options: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

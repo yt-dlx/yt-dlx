@@ -10,107 +10,144 @@ const ZodSchema = z.object({
   orderBy: z.enum(["relevance", "viewCount", "rating", "date"]).optional(),
 });
 /**
- * @shortdesc Searches for YouTube videos with optional view count and ordering filters.
+ * @shortdesc Searches for YouTube videos with filtering and sorting options.
  *
- * @description This function allows you to search for videos on YouTube using a query string. It provides optional filters to refine your search based on the minimum and maximum number of views a video should have. Additionally, you can enable verbose logging for more detailed output and specify the order in which the search results should be returned.
+ * @description This function performs a video search on YouTube based on a provided query. It allows filtering results by minimum and maximum view counts and sorting the results by view count or upload date.
  *
- * @param {object} options - An object containing the necessary options for searching videos.
- * @param {string} options.query - The search query string (minimum 2 characters) to find videos. **Required**.
- * @param {number} [options.minViews] - An optional number specifying the minimum view count for the videos to be included in the results.
- * @param {number} [options.maxViews] - An optional number specifying the maximum view count for the videos to be included in the results.
- * @param {boolean} [options.verbose=false] - An optional boolean value that, if set to `true`, enables verbose logging to the console.
- * @param {("relevance" | "viewCount" | "rating" | "date")} [options.orderBy="relevance"] - An optional string specifying the order in which the search results should be listed. Available options are:
- * - `"relevance"`: Order results by relevance to the query (default).
- * - `"viewCount"`: Order results by the number of views (most to least).
- * - `"rating"`: Order results by their rating (highest to lowest). Note: This might not always be reliably available.
- * - `"date"`: Order results by upload date (newest to oldest).
+ * The function requires a search query.
  *
- * @returns {EventEmitter} An EventEmitter instance that emits events during the search process.
- * The following events can be listened to:
- * - `"data"`: Emitted when the search results are successfully retrieved. The data is an array of video objects, where each object contains the following properties:
- * - `id`: The ID of the video.
- * - `title`: The title of the video.
- * - `isLive`: A boolean indicating if the video is currently live.
- * - `duration`: The duration of the video in seconds.
- * - `viewCount`: The number of views the video has.
- * - `uploadDate`: The date when the video was uploaded.
- * - `channelid`: The ID of the channel that uploaded the video.
- * - `thumbnails`: An array of thumbnail URLs for the video.
- * - `description`: A short description of the video.
- * - `channelname`: The name of the channel that uploaded the video.
- * - `"error"`: Emitted when an error occurs during the search, such as no videos being found for the given criteria or issues with the search request.
+ * It supports the following configuration options:
+ * - **query:** A string representing the search term for videos. This is a mandatory parameter and must be at least 2 characters long.
+ * - **minViews:** An optional number specifying the minimum view count a video must have to be included in the results.
+ * - **maxViews:** An optional number specifying the maximum view count a video can have to be included in the results.
+ * - **verbose:** An optional boolean value that, if true, enables detailed logging to the console during the search and processing.
+ * - **orderBy:** An optional string specifying how the search results should be sorted. Available options are:
+ * - `"relevance"`: (Handled by the underlying search library, explicit sorting by this function is not applied).
+ * - `"viewCount"`: Sorts videos by view count in descending order (highest view count first).
+ * - `"rating"`: (Handled by the underlying search library, explicit sorting by this function is not applied).
+ * - `"date"`: Sorts videos by upload date in descending order (newest first).
+ * If no `orderBy` is specified, results are typically ordered by relevance by the underlying search library.
+ *
+ * The function returns an EventEmitter instance that emits events during the process:
+ * - `"data"`: Emitted when the search is successful and results are processed. The emitted data is an array of video objects matching the criteria.
+ * - `"error"`: Emitted when an error occurs during any stage, such as argument validation, search request failure, or if no videos are found matching the specified criteria. The emitted data is the error message.
+ *
+ * @param {object} options - An object containing the configuration options.
+ * @param {string} options.query - The search term. **Required**, min 2 characters.
+ * @param {number} [options.minViews] - Minimum view count filter.
+ * @param {number} [options.maxViews] - Maximum view count filter.
+ * @param {boolean} [options.verbose=false] - Enable verbose logging.
+ * @param {("relevance" | "viewCount" | "rating" | "date")} [options.orderBy] - Specify the sorting order. Implemented sorts are by `viewCount` (desc) and `date` (desc).
+ *
+ * @returns {EventEmitter} An EventEmitter instance for handling events during the video search.
  *
  * @example
- * // 1. Search for videos with a query
- * YouTubeDLX.search_videos({ query: "funny cats" })
- * .on("data", (videos) => console.log("Search Results:", videos))
+ * // 1. Basic video search
+ * YouTubeDLX.Search.Video.Multiple({ query: "programming tutorials" })
+ * .on("data", (videos) => console.log("Found videos:", videos))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 2. Search for videos with a query and minimum view count
- * YouTubeDLX.search_videos({ query: "epic fails", minViews: 1000000 })
- * .on("data", (videos) => console.log("Search Results (minViews):", videos))
+ * // 2. Search with verbose logging
+ * YouTubeDLX.Search.Video.Multiple({ query: "cats compilation", verbose: true })
+ * .on("data", (videos) => console.log("Found videos:", videos))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 3. Search for videos with a query and maximum view count
- * YouTubeDLX.search_videos({ query: "beginner tutorials", maxViews: 50000 })
- * .on("data", (videos) => console.log("Search Results (maxViews):", videos))
+ * // 3. Search and filter by minimum views
+ * YouTubeDLX.Search.Video.Multiple({ query: "popular songs", minViews: 1000000 })
+ * .on("data", (videos) => console.log("Videos with over 1M views:", videos))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 4. Search for videos with a query and a view count range
- * YouTubeDLX.search_videos({ query: "cooking recipes", minViews: 1000, maxViews: 10000 })
- * .on("data", (videos) => console.log("Search Results (view range):", videos))
+ * // 4. Search and filter by maximum views
+ * YouTubeDLX.Search.Video.Multiple({ query: "new channels", maxViews: 1000 })
+ * .on("data", (videos) => console.log("Videos with under 1k views:", videos))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 5. Search for videos with verbose logging
- * YouTubeDLX.search_videos({ query: "science experiments", verbose: true })
- * .on("data", (videos) => console.log("Search Results (verbose):", videos))
+ * // 5. Search and filter by a range of views
+ * YouTubeDLX.Search.Video.Multiple({ query: "gaming highlights", minViews: 50000, maxViews: 500000 })
+ * .on("data", (videos) => console.log("Videos with views between 50k and 500k:", videos))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 6. Search for videos ordered by view count
- * YouTubeDLX.search_videos({ query: "most viewed music", orderBy: "viewCount" })
- * .on("data", (videos) => console.log("Search Results (orderBy viewCount):", videos))
+ * // 6. Search and sort by view count (highest first)
+ * YouTubeDLX.Search.Video.Multiple({ query: "funny moments", orderBy: "viewCount" })
+ * .on("data", (videos) => console.log("Videos sorted by view count:", videos))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 7. Search for videos ordered by rating
- * YouTubeDLX.search_videos({ query: "best movies", orderBy: "rating" })
- * .on("data", (videos) => console.log("Search Results (orderBy rating):", videos))
+ * // 7. Search and sort by date (newest first)
+ * YouTubeDLX.Search.Video.Multiple({ query: "latest news", orderBy: "date" })
+ * .on("data", (videos) => console.log("Videos sorted by date:", videos))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 8. Search for videos ordered by upload date
- * YouTubeDLX.search_videos({ query: "newest tech", orderBy: "date" })
- * .on("data", (videos) => console.log("Search Results (orderBy date):", videos))
+ * // 8. Search, filter by minimum views, and sort by view count
+ * YouTubeDLX.Search.Video.Multiple({ query: "viral videos", minViews: 10000000, orderBy: "viewCount" })
+ * .on("data", (videos) => console.log("Viral videos sorted by view count:", videos))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 9. Search with query, minViews, and orderBy
- * YouTubeDLX.search_videos({ query: "live streams", minViews: 500, orderBy: "viewCount" })
- * .on("data", (videos) => console.log("Search Results (minViews, orderBy):", videos))
+ * // 9. Search, filter by maximum views, and sort by date
+ * YouTubeDLX.Search.Video.Multiple({ query: "recent uploads", maxViews: 5000, orderBy: "date" })
+ * .on("data", (videos) => console.log("Recent uploads with few views, sorted by date:", videos))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 10. Search with all options enabled
- * YouTubeDLX.search_videos({ query: "educational videos", minViews: 1000, maxViews: 5000, verbose: true, orderBy: "date" })
- * .on("data", (videos) => console.log("Search Results (all options):", videos))
+ * // 10. Search, filter by view range, and sort by date
+ * YouTubeDLX.Search.Video.Multiple({ query: "documentaries", minViews: 10000, maxViews: 1000000, orderBy: "date" })
+ * .on("data", (videos) => console.log("Documentaries within view range, sorted by date:", videos))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 11. Search with query and maxViews
- * YouTubeDLX.search_videos({ query: "short films", maxViews: 10000 })
- * .on("data", (videos) => console.log("Search Results (maxViews):", videos))
+ * // 11. Search with verbose logging, filter by view range, and sort by view count
+ * YouTubeDLX.Search.Video.Multiple({ query: "music videos", verbose: true, minViews: 500000, maxViews: 5000000, orderBy: "viewCount" })
+ * .on("data", (videos) => console.log("Music videos (verbose, filtered, sorted):", videos))
  * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // 12. Search with query and verbose logging with ordering
- * YouTubeDLX.search_videos({ query: "documentaries", verbose: true, orderBy: "rating" })
- * .on("data", (videos) => console.log("Search Results (verbose, orderBy):", videos))
+ * // 12. Search with orderBy set to "relevance" (note: explicit sorting by this function is not applied)
+ * YouTubeDLX.Search.Video.Multiple({ query: "how to knit", orderBy: "relevance" })
+ * .on("data", (videos) => console.log("Videos sorted by relevance (default):", videos))
  * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 13. Missing required 'query' parameter (will result in an error)
+ * YouTubeDLX.Search.Video.Multiple({} as any)
+ * .on("error", (error) => console.error("Expected Error (missing query):", error));
+ *
+ * @example
+ * // 14. 'query' parameter too short (will result in an error - Zod validation)
+ * YouTubeDLX.Search.Video.Multiple({ query: "a" })
+ * .on("error", (error) => console.error("Expected Error (query too short):", error));
+ *
+ * @example
+ * // 15. Invalid 'orderBy' value (will result in an error - Zod validation)
+ * YouTubeDLX.Search.Video.Multiple({ query: "test", orderBy: "popular" as any })
+ * .on("error", (error) => console.error("Expected Error (invalid orderBy):", error));
+ *
+ * @example
+ * // 16. Search query returns no results from the YouTube API
+ * // Note: This depends on the underlying search API's response.
+ * YouTubeDLX.Search.Video.Multiple({ query: "a query that should return no results 12345abcde" })
+ * .on("data", (videos) => console.log("Search returned no videos:", videos)), // Might return empty array
+ * .on("error", (error) => console.error("Error:", error)); // Or might emit error if API fails
+ *
+ * @example
+ * // 17. Search returns results, but none match the view count filters
+ * YouTubeDLX.Search.Video.Multiple({ query: "short video", minViews: 1000000000 })
+ * .on("data", (videos) => console.log("Videos after extreme filtering:", videos)) // Will likely be empty
+ * .on("error", (error) => console.error("Expected Error (no videos after filter):", error)); // Emits if video list is empty after filtering
+ *
+ * @example
+ * // 18. Underlying YouTube API search fails
+ * // Note: This is an internal error scenario, difficult to trigger via simple example.
+ * // The error emitted would be related to the search request failure.
+ * // YouTubeDLX.Search.Video.Multiple({ query: "test" })
+ * // .on("error", (error) => console.error("Expected Error (search API failed):", error));
+ *
  */
 export default function search_videos({ query, minViews, maxViews, orderBy, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
