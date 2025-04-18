@@ -12,14 +12,14 @@
   "dependencies": {
     "colors": "^1.4.0",
     "framer-motion": "^12.7.4",
-    "lucide-react": "^0.492.0",
+    "lucide-react": "^0.500.0",
     "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "react-player": "^2.16.0",
     "react-tooltip": "^5.28.1",
-    "yt-dlx": "^17.3.2",
+    "yt-dlx": "^17.4.3",
     "zod": "^3.24.3"
   },
   "devDependencies": {
