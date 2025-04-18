@@ -1,17 +1,5 @@
 {
-  "name": "yt-dlx",
-  "version": "1.0.0",
   "main": "expo-router/entry",
-  "author": {
-    "name": "Shovit Dutta",
-    "email": "shovitdutta1@gmail.com"
-  },
-  "description": "Effortless Audio-Video Downloader And Streamer!",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yt-dlx/yt-dlx.git"
-  },
-  "homepage": "https://yt-dlx-shovit.koyeb.src",
   "scripts": {
     "start": "expo start",
     "android": "expo run:android",

@@ -1,15 +1,5 @@
 {
-  "name": "yt-dlx",
-  "version": "16.6.5",
-  "license": "Apache-2.0",
   "main": "app/background.js",
-  "author": "yt-dlx <yt-dlx@proton.me>",
-  "description": "Effortless Audio-Video Downloader And Streamer!",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/yt-dlx/yt-dlx.git"
-  },
-  "homepage": "https://yt-dlx-shovit.koyeb.app",
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
