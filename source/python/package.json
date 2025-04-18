@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "venv:windows": "python3 -m venv context/windows/venv",
+    "venv:linux": "python3 -m venv context/linux/venv",
+    "pack": "python3 repack.py"
+  }
+}
