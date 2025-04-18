@@ -4,5 +4,5 @@
   },
   "include": ["src/**/*.ts"],
   "extends": "./src/config/root.json",
-  "exclude": ["package", "node_modules"]
+  "exclude": ["package", "node_modules", "examples"]
 }
