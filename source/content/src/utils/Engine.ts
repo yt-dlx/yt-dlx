@@ -16,7 +16,7 @@ const startTor = async (verbose = false) => {
     const rlStdout = readline.createInterface({ input: torProcess.stdout, output: process.stdout, terminal: false });
     const rlStderr = readline.createInterface({ input: torProcess.stderr, output: process.stderr, terminal: false });
     rlStdout.on("line", line => {
-      if (verbose) console.log(colors.green("Tor stdout:"), line);
+      if (verbose) console.log(colors.green("@info:"), line);
       if (line.includes("Bootstrapped 100% (done): Done")) {
         if (verbose) console.log(colors.green("@info:"), "Tor is 100% bootstrapped!");
         rlStdout.removeAllListeners("line");
@@ -25,7 +25,7 @@ const startTor = async (verbose = false) => {
       }
     });
     rlStderr.on("line", line => {
-      if (verbose) console.error(colors.red("Tor stderr:"), line);
+      if (verbose) console.error(colors.red("@error:"), line);
     });
     torProcess.on("error", err => {
       console.error(colors.red("@error:"), "Tor process error:", err);
