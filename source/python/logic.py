@@ -19,28 +19,16 @@ def run_executable(executable_name_without_ext, executable_path, args):
         print(f"Error: {executable_name_without_ext} not found in bundle.", file=sys.stderr)
         sys.exit(1)
     command = [executable_path] + args
-    is_ytprobe_script = executable_name_without_ext == "ytprobe"
-    if is_ytprobe_script:
-        command.insert(0, sys.executable)
+    is_ytprobe = executable_name_without_ext == "ytprobe"
     try:
-        if is_ytprobe_script:
-            result = subprocess.run(
-                command,
-                capture_output=True,
-                text=True,
-                check=False
-            )
+        if is_ytprobe:
+            result = subprocess.run( command, capture_output=True, text=True, check=False )
             modified_stdout = result.stdout.replace("yt-dlp", "yt-dlx")
             sys.stdout.write(modified_stdout)
             sys.stderr.write(result.stderr)
             sys.exit(result.returncode)
         else:
-            result = subprocess.run(
-                command,
-                stdout=None,
-                stderr=None,
-                check=False
-            )
+            result = subprocess.run( command, stdout=None, stderr=None, check=False  )
             sys.exit(result.returncode)
     except FileNotFoundError:
         print(f"Error: The executable \"{command[0]}\" was not found. Make sure it exists at \"{executable_path}\" and has execute permissions.", file=sys.stderr)
@@ -50,6 +38,9 @@ def run_executable(executable_name_without_ext, executable_path, args):
         sys.exit(126)
     except subprocess.SubprocessError as e:
         print(f"Error running {executable_name_without_ext}: {e}", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"An unexpected error occurred while running {executable_name_without_ext}: {e}", file=sys.stderr)
         sys.exit(1)
 def main():
     parser = argparse.ArgumentParser(description="yt-dlx: YouTube downloader utility with bundled executables")
@@ -62,11 +53,12 @@ def main():
         tor_path = find_bundled_file("context/windows/tor.exe")
         ffmpeg_path = find_bundled_file("context/windows/ffmpeg.exe")
         ffprobe_path = find_bundled_file("context/windows/ffprobe.exe")
+        ytprobe_path = find_bundled_file("context/windows/ytprobe.exe")
     else:
         tor_path = find_bundled_file("context/linux/tor.bin")
         ffmpeg_path = find_bundled_file("context/linux/ffmpeg.bin")
         ffprobe_path = find_bundled_file("context/linux/ffprobe.bin")
-    ytprobe_path = find_bundled_file("scripts/ytprobe.py")
+        ytprobe_path = find_bundled_file("context/linux/ytprobe.bin")
     if args.tor is not None:
         tor_args = args.tor
         run_executable("tor", tor_path, tor_args)
