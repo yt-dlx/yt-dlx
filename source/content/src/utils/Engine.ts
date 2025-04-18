@@ -8,6 +8,11 @@ import type sizeFormat from "../interfaces/sizeFormat";
 import type AudioFormat from "../interfaces/AudioFormat";
 import type VideoFormat from "../interfaces/VideoFormat";
 import type EngineOutput from "../interfaces/EngineOutput";
+let cachedLocatedPaths: any = null;
+export const getLocatedPaths = async () => {
+  if (cachedLocatedPaths === null) cachedLocatedPaths = await locator();
+  return cachedLocatedPaths;
+};
 const startTor = async (ytDlxPath: string, verbose = false) => {
   return new Promise(async (resolve, reject) => {
     if (verbose) console.log(colors.green("@info:"), `Attempting to spawn Tor using yt-dlx at: ${ytDlxPath}`);
@@ -132,8 +137,9 @@ function pManifest(i: any) {
 }
 export default async function Engine({ query, useTor = false, verbose = false }) {
   let torProcess: any = null;
-  const located = await locator();
+  const located = await getLocatedPaths();
   const ytDlxPath = located["yt-dlx"];
+  const ffmpegPath = located["ffmpeg"];
   if (!ytDlxPath) {
     console.error(colors.red("@error:"), "yt-dlx executable path not found.");
     return null;
@@ -176,13 +182,21 @@ export default async function Engine({ query, useTor = false, verbose = false })
     "--user-agent",
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.69 Safari/537.36",
   ];
+  const ytprobeIndex = ytprobeArgs.indexOf("--ytprobe");
+  const insertIndex = ytprobeIndex !== -1 ? ytprobeIndex + 1 : 1;
+  const argsToInsert: string[] = [];
   if (useTor) {
-    const proxyArgs = ["--proxy", "socks5://127.0.0.1:9050"];
-    const ytprobeIndex = ytprobeArgs.indexOf("--ytprobe");
-    if (ytprobeIndex !== -1) {
-      ytprobeArgs.splice(ytprobeIndex + 1, 0, ...proxyArgs);
-      if (verbose) console.log(colors.green("@info:"), "Using Tor proxy for ytprobe request");
-    } else console.warn(colors.yellow("@warn:"), "--ytprobe argument not found, cannot place proxy argument correctly.");
+    argsToInsert.push("--proxy", "socks5://127.0.0.1:9050");
+    if (verbose) console.log(colors.green("@info:"), "Adding Tor proxy arguments.");
+  }
+  if (ffmpegPath) {
+    argsToInsert.push("--ffmpeg", ffmpegPath);
+    if (verbose) console.log(colors.green("@info:"), `Adding ffmpeg path argument: ${ffmpegPath}`);
+  } else {
+    console.warn(colors.yellow("@warn:"), "ffmpeg executable path not found. yt-dlx may use its built-in downloader or fail for some formats.");
+  }
+  if (argsToInsert.length > 0) {
+    ytprobeArgs.splice(insertIndex, 0, ...argsToInsert);
   }
   var metaCore = await retry(async () => {
     return await promisify(execFile)(ytDlxPath, ytprobeArgs);

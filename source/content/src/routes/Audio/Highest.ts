@@ -373,7 +373,7 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
         instance.setFfmpegPath(paths.ffmpeg);
         instance.setFfprobePath(paths.ffprobe);
       } catch (locatorError: any) {
-        emitter.emit("error", `${colors.red("@error:")} Failed to locate ffmpeg or ffprobe: ${locatorError?.message}`);
+        emitter.emit("error", `${colors.red("@error:")} Failed to locate ffmpeg or ffprobe: ${locatorError.message}`);
         return;
       }
       if (!engineData.metaData.thumbnail) {
