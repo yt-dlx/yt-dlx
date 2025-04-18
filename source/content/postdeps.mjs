@@ -1,4 +1,5 @@
 import axios from "axios";
+import colors from "colors";
 import { join } from "path";
 import { createWriteStream, existsSync, mkdirSync } from "fs";
 const outputDir = join(process.cwd(), "pkg");
@@ -25,31 +26,23 @@ const binDL = async (url, filepath, binaryName) => {
   }
 };
 const main = async () => {
-  var pname;
-  var ename;
+  var binaries = [];
   if (process.platform === "linux") {
-    ename = ".bin";
-    pname = "-linux";
+    binaries = [
+      { name: "ffmpeg.bin", url: "https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing" },
+      { name: "ffprobe.bin", url: "" },
+      { name: "ytprobe.bin", url: "https://drive.google.com/file/d/1-C4O-39u6x6QTrjRl-1CFq27_hztZRG7/view?usp=sharing" },
+    ];
   } else if (process.platform === "win32") {
-    ename = ".exe";
-    pname = "-windows";
-  } else throw new Error("@error: Unsupported platform. Please use Linux or Windows.");
-  const binaries = [
-    { name: `ffmpeg${ename}`, url: `https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffmpeg${pname}${ename}` },
-    { name: `ffprobe${ename}`, url: `https://github.com/yt-dlx/yt-dlx/releases/latest/download/ffprobe${pname}${ename}` },
-    { name: `ytprobe${ename}`, url: `https://github.com/yt-dlx/yt-dlx/releases/latest/download/ytprobe${pname}${ename}` },
-  ];
+    binaries = [
+      { name: "ffmpeg.exe", url: "https://drive.google.com/file/d/1EcKV_ORRwJ-cKpjjiVl0y4oG5bNvp6SY/view?usp=sharing" },
+      { name: "ffprobe.exe", url: "https://drive.google.com/file/d/1QZz_esQxglxHmyt9RWTSQH6co0rb-Klq/view?usp=sharing" },
+      { name: "ytprobe.exe", url: "https://drive.google.com/file/d/1rCt6wrayb5lfB1wiUL2vLp3p_CaeDdne/view?usp=sharing" },
+    ];
+  } else throw new Error(`${colors.red("@error:")} Unsupported platform! Please use Linux or Windows.`);
   for (const binary of binaries) {
-    const filepath = join(outputDir, binary.name + pname);
+    const filepath = join(outputDir, binary.name);
     if (!existsSync(filepath)) await binDL(binary.url, filepath, binary.name);
   }
 };
 main();
-
-// ffmpeg-linux.bin: https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing
-// ffprobe-linux.bin: https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing
-// ytprobe-linux.bin: https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing
-
-// ffmpeg-windows.exe: https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing
-// ffprobe-windows.exe: https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing
-// ytprobe-windows.exe: https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing
