@@ -3,13 +3,13 @@ import * as path from "path";
 import * as fsx from "fs-extra";
 async function getBinaryPath(execName: string): Promise<string | null> {
   try {
-    const nodeModulesPath = path.join(process.cwd(), "node_modules", "yt-dlx", "pkg");
+    const nodeModulesPath = path.join(process.cwd(), "node_modules", "yt-dlx", "package");
     const binaryPath = path.join(nodeModulesPath, execName + (process.platform === "win32" ? ".exe" : process.platform === "linux" ? ".bin" : ""));
     try {
       await fsx.access(binaryPath, fsx.constants.X_OK);
       return binaryPath;
     } catch {
-      const devPath = path.join(process.cwd(), "pkg", execName + (process.platform === "win32" ? ".exe" : process.platform === "linux" ? ".bin" : ""));
+      const devPath = path.join(process.cwd(), "package", execName + (process.platform === "win32" ? ".exe" : process.platform === "linux" ? ".bin" : ""));
       await fsx.access(devPath, fsx.constants.X_OK);
       return devPath;
     }

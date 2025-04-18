@@ -7,6 +7,6 @@
     "declarationMap": true,
     "removeComments": false,
     "emitDeclarationOnly": true,
-    "declarationDir": "../../pkg/types"
+    "declarationDir": "../../package/types"
   }
 }

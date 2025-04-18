@@ -3,7 +3,7 @@ import colors from "colors";
 import { join } from "path";
 import cliProgress from "cli-progress";
 import { createWriteStream, existsSync, mkdirSync, unlinkSync } from "fs";
-const outputDir = join(process.cwd(), "pkg");
+const outputDir = join(process.cwd(), "package");
 if (!existsSync(outputDir)) mkdirSync(outputDir, { recursive: true });
 const binDL = async (url, filepath, binaryName, retries = 3) => {
   for (let attempt = 1; attempt <= retries; attempt++) {
