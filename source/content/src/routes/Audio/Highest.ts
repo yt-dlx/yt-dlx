@@ -366,7 +366,12 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
         return;
       }
       if (metadata) {
-        emitter.emit("metadata", { AudioLowDRC: engineData.AudioLowDRC, AudioLowF: engineData.AudioLowF, ipAddress: engineData.ipAddress, metaData: engineData.metaData });
+        emitter.emit("metadata", {
+          metaData: engineData.metaData,
+          AudioHighF: engineData.AudioHighF,
+          AudioHighDRC: engineData.AudioHighDRC,
+          filename: engineData.metaData.title?.replace(/[^a-zA-Z0-9_]+/g, "_"),
+        });
         return;
       }
       const title = engineData.metaData.title?.replace(/[^a-zA-Z0-9_]+/g, "_");
@@ -428,7 +433,8 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
         vaporwave: ["aresample=48000,asetrate=48000*0.8"],
         vibrato: ["vibrato=f=6.5"],
       };
-      if (filter && filterMap[filter]) instance.withAudioFilter(filterMap[filter]);
+      if (filter && filterMap[filter]) instance.withVideoFilter(filterMap[filter]);
+      else instance.outputOptions("-c copy");
       instance.on("progress", progress => emitter.emit("progress", progress));
       instance.on("error", error => emitter.emit("error", `${colors.red("@error:")} FFmpeg error: ${error?.message}`));
       instance.on("start", start => emitter.emit("start", start));

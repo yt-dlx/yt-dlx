@@ -6,26 +6,26 @@ import ffmpeg from "fluent-ffmpeg";
 import Tuber from "../../utils/Agent";
 import { EventEmitter } from "events";
 import { locator } from "../../utils/locator";
-const ZodSchema = z.object({
+var ZodSchema = z.object({
   query: z.string().min(2),
   output: z.string().optional(),
   useTor: z.boolean().optional(),
   stream: z.boolean().optional(),
   verbose: z.boolean().optional(),
   metadata: z.boolean().optional(),
-  filter: z.enum(["invert", "rotate90", "rotate270", "grayscale", "rotate180", "flipVertical", "flipHorizontal"]).optional(),
+  filter: z.enum(["echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", "superspeed"]).optional(),
 });
 /**
  * @shortdesc Fetches and processes audio at the highest quality with optional filters, streaming, Tor, and metadata options.
  *
- * @description This function allows you to search for audio content and download or stream it at the highest available quality. It also supports applying various audio filters, saving the audio to a file, or retrieving its metadata. The function utilizes `ffmpeg` for processing and offers the option to route network requests through the Tor network for enhanced privacy.
+ * @description This function allows you to search for audio content and download or stream it at the highest available quality. It also supports applying various audio filters when processing, saving the audio to a file, or retrieving its metadata. The function utilizes `ffmpeg` for processing and provides an option to route network requests through the Tor network for enhanced privacy. When not fetching just metadata, the function downloads and saves the audio file to the specified output path or the current directory.
  *
  * The function provides the following configuration options:
  * - **Query:** The search query string (minimum 2 characters) to find the desired audio. This is a mandatory parameter.
- * - **Output:** An optional string specifying the directory path where the downloaded audio file should be saved. This parameter is only applicable when the `stream` option is set to `true` and `metadata` is `false`. If not provided, the audio file will be saved in the current working directory.
+ * - **Output:** An optional string specifying the directory path where the processed audio file should be saved. This parameter is applicable when `metadata` is false. If not provided when `metadata` is false, the file will be saved in the current working directory.
  * - **Use Tor:** An optional boolean value that, if set to `true`, will route the network request through the Tor network. This can help in anonymizing your request. Requires Tor to be running on your system.
- * - **Stream:** An optional boolean value that, if set to `true`, will enable streaming (downloading) of the audio. When streaming is enabled, you can use the `output` parameter to specify the save location. This option cannot be used when `metadata` is `true`.
- * - **Filter:** An optional string specifying an audio filter to apply during processing. This parameter is only applicable when `stream` is `true` and `metadata` is `false`. Available filters include: "bassboost", "echo", "flanger", "nightcore", "panning", "phaser", "reverse", "slow", "speed", "subboost", "superslow", "superspeed", "surround", "vaporwave", and "vibrato".
+ * - **Stream:** An optional boolean value that, if set to `true`, will enable streaming (downloading) of the audio. This cannot be used with `metadata: true`.
+ * - **Filter:** An optional string specifying an audio filter to apply during processing. This parameter is only applicable when `metadata` is false. Available filters include: "echo", "slow", "speed", "phaser", "flanger", "panning", "reverse", "vibrato", "subboost", "surround", "bassboost", "nightcore", "superslow", "vaporwave", and "superspeed".
  * - **Metadata:** An optional boolean value that, if set to `true`, will only fetch and emit metadata about the audio, without downloading or processing it. This option cannot be used with `stream`, `output`, or `filter`.
  * - **Verbose:** An optional boolean value that, if set to `true`, enables verbose logging to the console, providing more detailed information about the process.
  *
@@ -34,7 +34,7 @@ const ZodSchema = z.object({
  * - `"error"`: Emitted when an error occurs during any stage of the process, including argument validation, network requests, or FFmpeg operations. The emitted data is the error message or object.
  * - `"start"`: Emitted when the FFmpeg processing starts. The emitted data is the FFmpeg start command string.
  * - `"end"`: Emitted when the FFmpeg processing successfully completes. The emitted data is the filename of the processed audio file.
- * - `"stream"`: Emitted when streaming is enabled (`stream: true` and `metadata: false`). The emitted data is an object with the following structure:
+ * - `"stream"`: Emitted when streaming is enabled (`stream: true, metadata: false`). The emitted data is an object with the following structure:
  * ```typescript
  * {
  * filename: string; // The full path to the output file
@@ -45,15 +45,292 @@ const ZodSchema = z.object({
  *
  * @param {object} options - An object containing the configuration options.
  * @param {string} options.query - The search query string (minimum 2 characters). **Required**.
- * @param {string} [options.output] - The directory path to save the downloaded audio (only with `stream: true`).
+ * @param {string} [options.output] - The directory path to save the processed audio (only with `metadata: false`).
  * @param {boolean} [options.useTor=false] - Route requests through the Tor network.
- * @param {boolean} [options.stream=false] - Enable audio streaming (download).
- * @param {("bassboost" | "echo" | "flanger" | "nightcore" | "panning" | "phaser" | "reverse" | "slow" | "speed" | "subboost" | "superslow" | "superspeed" | "surround" | "vaporwave" | "vibrato")} [options.filter] - Apply an audio filter during streaming (only with `stream: true`).
+ * @param {boolean} [options.stream=false] - Enable audio streaming (only with `metadata: false`).
+ * @param {("echo" | "slow" | "speed" | "phaser" | "flanger" | "panning" | "reverse" | "vibrato" | "subboost" | "surround" | "bassboost" | "nightcore" | "superslow" | "vaporwave" | "superspeed")} [options.filter] - Apply an audio filter during processing (only with `metadata: false`).
  * @param {boolean} [options.metadata=false] - Only fetch and emit metadata (cannot be used with `stream`, `output`, `filter`).
  * @param {boolean} [options.verbose=false] - Enable verbose logging.
  *
  * @returns {EventEmitter} An EventEmitter instance for handling events during audio processing.
  *
+ * @example
+ * // 1. Get basic metadata for the highest quality audio
+ * YouTubeDLX.AudioHighest({ query: "high quality music", metadata: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 2. Get metadata with verbose logging for the highest quality audio
+ * YouTubeDLX.AudioHighest({ query: "best audio quality", metadata: true, verbose: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 3. Get metadata using Tor for the highest quality audio
+ * YouTubeDLX.AudioHighest({ query: "anonymous audio search", metadata: true, useTor: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 4. Get metadata with verbose logging and Tor for the highest quality audio
+ * YouTubeDLX.AudioHighest({ query: "private audio metadata", metadata: true, verbose: true, useTor: true })
+ * .on("metadata", (data) => console.log("Metadata:", data))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 5. Stream the highest quality audio
+ * YouTubeDLX.AudioHighest({ query: "top audio track", stream: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 6. Stream the highest quality audio with verbose logging
+ * YouTubeDLX.AudioHighest({ query: "premium sound", stream: true, verbose: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 7. Stream the highest quality audio to a specific output directory
+ * YouTubeDLX.AudioHighest({ query: "download high quality audio", stream: true, output: "./downloads" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 8. Stream the highest quality audio with verbose logging to a specific output directory
+ * YouTubeDLX.AudioHighest({ query: "save best audio", stream: true, verbose: true, output: "./audio" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 9. Stream the highest quality audio using Tor
+ * YouTubeDLX.AudioHighest({ query: "anonymous high quality audio", stream: true, useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 10. Stream the highest quality audio with verbose logging using Tor
+ * YouTubeDLX.AudioHighest({ query: "private high quality audio stream", stream: true, verbose: true, useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 11. Stream the highest quality audio to a specific output directory using Tor
+ * YouTubeDLX.AudioHighest({ query: "download best audio anonymously", stream: true, output: "./hidden", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 12. Stream the highest quality audio with verbose logging to a specific output directory using Tor
+ * YouTubeDLX.AudioHighest({ query: "save highest quality audio privately", stream: true, verbose: true, output: "./anonymous_audio", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 13. Stream the highest quality audio with the 'echo' filter
+ * YouTubeDLX.AudioHighest({ query: "echo effect audio", stream: true, filter: "echo" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 14. Stream the highest quality audio with the 'slow' filter and verbose logging
+ * YouTubeDLX.AudioHighest({ query: "slowed down audio", stream: true, filter: "slow", verbose: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 15. Stream the highest quality audio with the 'speed' filter and output directory
+ * YouTubeDLX.AudioHighest({ query: "sped up audio track", stream: true, filter: "speed", output: "./modified" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 16. Stream the highest quality audio with the 'phaser' filter and Tor
+ * YouTubeDLX.AudioHighest({ query: "phaser sound effect", stream: true, filter: "phaser", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 17. Stream the highest quality audio with the 'flanger' filter, verbose logging, and output directory
+ * YouTubeDLX.AudioHighest({ query: "flanger effect on audio", stream: true, filter: "flanger", verbose: true, output: "./filtered" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 18. Stream the highest quality audio with the 'panning' filter, verbose logging, and Tor
+ * YouTubeDLX.AudioHighest({ query: "audio with panning effect", stream: true, filter: "panning", verbose: true, useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 19. Stream the highest quality audio with the 'reverse' filter, output directory, and Tor
+ * YouTubeDLX.AudioHighest({ query: "reversed audio track", stream: true, filter: "reverse", output: "./reversed", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 20. Stream the highest quality audio with the 'vibrato' filter, verbose logging, output directory, and Tor
+ * YouTubeDLX.AudioHighest({ query: "audio with vibrato", stream: true, filter: "vibrato", verbose: true, output: "./vibrato", useTor: true })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 21. Stream the highest quality audio with the 'subboost' filter
+ * YouTubeDLX.AudioHighest({ query: "audio with sub-bass boost", stream: true, filter: "subboost" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 22. Stream the highest quality audio with the 'surround' filter
+ * YouTubeDLX.AudioHighest({ query: "surround sound audio", stream: true, filter: "surround" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 23. Stream the highest quality audio with the 'bassboost' filter
+ * YouTubeDLX.AudioHighest({ query: "bass boosted audio", stream: true, filter: "bassboost" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 24. Stream the highest quality audio with the 'nightcore' filter
+ * YouTubeDLX.AudioHighest({ query: "nightcore remix", stream: true, filter: "nightcore" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 25. Stream the highest quality audio with the 'superslow' filter
+ * YouTubeDLX.AudioHighest({ query: "super slowed down audio", stream: true, filter: "superslow" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 26. Stream the highest quality audio with the 'vaporwave' filter
+ * YouTubeDLX.AudioHighest({ query: "vaporwave music", stream: true, filter: "vaporwave" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 27. Stream the highest quality audio with the 'superspeed' filter
+ * YouTubeDLX.AudioHighest({ query: "super sped up audio", stream: true, filter: "superspeed" })
+ * .on("stream", (streamData) => {
+ * console.log("Streaming to:", streamData.filename);
+ * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
+ * streamData.ffmpeg.on("end", () => console.log("Stream finished"));
+ * })
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 28. Download the highest quality audio to a specific output directory
+ * YouTubeDLX.AudioHighest({ query: "download highest quality podcast", stream: false, output: "./hq_downloads" })
+ * .on("end", (filename) => console.log("Download finished:", filename))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 29. Download the highest quality audio to current directory
+ * YouTubeDLX.AudioHighest({ query: "download highest quality music", stream: false })
+ * .on("end", (filename) => console.log("Download finished:", filename))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 30. Download the highest quality audio with the 'echo' filter to a specific output directory
+ * YouTubeDLX.AudioHighest({ query: "filtered highest quality podcast", stream: false, filter: "echo", output: "./hq_filtered_downloads" })
+ * .on("end", (filename) => console.log("Filtered download finished:", filename))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 31. Download the highest quality audio with the 'bassboost' filter to current directory
+ * YouTubeDLX.AudioHighest({ query: "filtered highest quality music", stream: false, filter: "bassboost" })
+ * .on("end", (filename) => console.log("Filtered download finished:", filename))
+ * .on("error", (error) => console.error("Error:", error));
  */
 export default function AudioHighest({ query, output, useTor, stream, filter, metadata, verbose }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();
@@ -81,25 +358,30 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
         emitter.emit("error", `${colors.red("@error:")} The 'stream' parameter cannot be true when 'metadata' is true.`);
         return;
       }
-      if (output && (!stream || metadata)) {
-        emitter.emit("error", `${colors.red("@error:")} The 'output' parameter can only be used when 'stream' is true and 'metadata' is false.`);
-        return;
-      }
-      if (filter && (!stream || metadata)) {
-        emitter.emit("error", `${colors.red("@error:")} The 'filter' parameter can only be used when 'stream' is true and 'metadata' is false.`);
-        return;
-      }
       ZodSchema.parse({ query, output, useTor, stream, filter, metadata, verbose });
       const engineData = await Tuber({ query, verbose, useTor }).catch(error => {
         emitter.emit("error", `${colors.red("@error:")} Engine error: ${error?.message}`);
         return undefined;
       });
+
       if (!engineData) {
         emitter.emit("error", `${colors.red("@error:")} Unable to retrieve a response from the engine.`);
         return;
       }
       if (!engineData.metaData) {
         emitter.emit("error", `${colors.red("@error:")} Metadata not found in the engine response.`);
+        return;
+      }
+      if (metadata) {
+        emitter.emit("metadata", {
+          metaData: engineData.metaData,
+          AudioHighF: engineData.AudioHighF,
+          AudioHighDRC: engineData.AudioHighDRC,
+          VideoHighF: engineData.VideoHighF,
+          VideoHighHDR: engineData.VideoHighHDR,
+          ManifestHigh: engineData.ManifestHigh,
+          filename: engineData.metaData.title?.replace(/[^a-zA-Z0-9_]+/g, "_"),
+        });
         return;
       }
       const title = engineData.metaData.title?.replace(/[^a-zA-Z0-9_]+/g, "_") || "audio";
@@ -134,10 +416,15 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
         return;
       }
       instance.addInput(engineData.metaData.thumbnail);
-      instance.addInput(engineData.AudioHighF?.url);
       instance.withOutputFormat("avi");
+      if (!engineData.AudioHighF?.url) {
+        emitter.emit("error", `${colors.red("@error:")} Highest quality audio URL not found.`);
+        return;
+      }
+      instance.addInput(engineData.AudioHighF.url);
       const filenameBase = `yt-dlx_AudioHighest_`;
-      let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.avi`;
+      let filename = `${filenameBase}${filter ? filter + "_" : ""}${title}.avi`;
+      const outputPath = path.join(folder, filename);
       const filterMap: Record<string, string[]> = {
         bassboost: ["bass=g=10,dynaudnorm=f=150"],
         echo: ["aecho=0.8:0.9:1000:0.3"],
@@ -155,19 +442,15 @@ export default function AudioHighest({ query, output, useTor, stream, filter, me
         vaporwave: ["aresample=48000,asetrate=48000*0.8"],
         vibrato: ["vibrato=f=6.5"],
       };
-      if (stream && filter && filterMap[filter]) instance.withAudioFilter(filterMap[filter]);
+      if (filter && filterMap[filter]) instance.withVideoFilter(filterMap[filter]);
+      else instance.outputOptions("-c copy");
       instance.on("progress", progress => emitter.emit("progress", progress));
       instance.on("error", error => emitter.emit("error", `${colors.red("@error:")} FFmpeg error: ${error?.message}`));
       instance.on("start", start => emitter.emit("start", start));
-      instance.on("end", () => emitter.emit("end", filename));
-      if (stream && !metadata) {
-        emitter.emit("stream", { filename: path.join(folder, filename), ffmpeg: instance });
-        instance.output(path.join(folder, filename));
-        instance.run();
-      }
-      if (!stream && metadata) {
-        emitter.emit("metadata", { AudioLowDRC: engineData.AudioLowDRC, AudioLowF: engineData.AudioLowF, ipAddress: engineData.ipAddress, metaData: engineData.metaData, filename });
-      }
+      instance.on("end", () => emitter.emit("end", outputPath));
+      instance.output(outputPath);
+      if (stream) emitter.emit("stream", { filename: outputPath, ffmpeg: instance });
+      instance.run();
     } catch (error) {
       if (error instanceof ZodError) emitter.emit("error", `${colors.red("@error:")} Argument validation failed: ${error.errors.map(e => `${e.path.join(".")}: ${e.message}`).join(", ")}`);
       else if (error instanceof Error) emitter.emit("error", `${colors.red("@error:")} ${error?.message}`);

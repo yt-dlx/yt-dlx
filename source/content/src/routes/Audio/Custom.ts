@@ -371,7 +371,14 @@ export default function AudioCustom({ query, output, useTor, stream, filter, ver
         return;
       }
       if (metadata) {
-        emitter.emit("metadata", { AudioLowDRC: engineData.AudioLowDRC, AudioLowF: engineData.AudioLowF, ipAddress: engineData.ipAddress, metaData: engineData.metaData });
+        emitter.emit("metadata", {
+          metaData: engineData.metaData,
+          AudioLowF: engineData.AudioLowF,
+          AudioHighF: engineData.AudioHighF,
+          AudioLowDRC: engineData.AudioLowDRC,
+          AudioHighDRC: engineData.AudioHighDRC,
+          filename: engineData.metaData.title?.replace(/[^a-zA-Z0-9_]+/g, "_"),
+        });
         return;
       }
       const title = engineData.metaData.title.replace(/[^a-zA-Z0-9_]+/g, "_");
@@ -438,7 +445,8 @@ export default function AudioCustom({ query, output, useTor, stream, filter, ver
         vaporwave: ["aresample=48000,asetrate=48000*0.8"],
         nightcore: ["aresample=48000,asetrate=48000*1.25"],
       };
-      if (filter && filterMap[filter]) instance.withAudioFilter(filterMap[filter]);
+      if (filter && filterMap[filter]) instance.withVideoFilter(filterMap[filter]);
+      else instance.outputOptions("-c copy");
       instance.on("progress", progress => emitter.emit("progress", progress));
       instance.on("error", error => emitter.emit("error", `${colors.red("@error:")} FFmpeg encountered an error: ${error.message}`));
       instance.on("start", start => emitter.emit("start", start));
