@@ -59,9 +59,7 @@ const binDL = async (url, filepath, binaryName, retries = 3) => {
           reject(err);
         });
       });
-      if (dSize !== tSize) {
-        throw new Error(`@error: Download incomplete. Expected ${tSize} bytes, got ${dSize} bytes.`);
-      }
+      if (dSize !== tSize) throw new Error(`@error: Download incomplete. Expected ${tSize} bytes, got ${dSize} bytes.`);
       console.log(`[${binaryName}]: Download successful.`);
       return;
     } catch (error) {
@@ -81,7 +79,7 @@ const main = async () => {
     binaries = [
       {
         name: "yt-dlx.bin",
-        url: "",
+        url: "https://drive.usercontent.google.com/download?id=1BSInjS-Zfj1zhjfyr27clZ8OuSCX7pEy&export=download&authuser=0",
       },
       {
         name: "ffmpeg.bin",
@@ -96,7 +94,7 @@ const main = async () => {
     binaries = [
       {
         name: "yt-dlx.exe",
-        url: "",
+        url: "https://drive.usercontent.google.com/download?id=1YGXejnGKk_yuEpi0HDTkDtfxQrltf1Iz&export=download&authuser=0&confirm=t&uuid=65a7b190-6cf5-4aad-a36a-09aa60c95f5e&at=APcmpowBfuZGJk6HhA4WO-uNNaws%3A1744972497751",
       },
       {
         name: "ffmpeg.exe",
