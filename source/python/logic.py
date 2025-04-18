@@ -1,5 +1,6 @@
 # code 2: logic.py
 import os
+import re
 import sys
 import json
 import argparse
@@ -22,13 +23,24 @@ def run_executable(executable_name_without_ext, executable_path, args):
     is_ytprobe = executable_name_without_ext == "ytprobe"
     try:
         if is_ytprobe:
-            result = subprocess.run( command, capture_output=True, text=True, check=False )
-            modified_stdout = result.stdout.replace("yt-dlp", "yt-dlx")
+            result = subprocess.run(
+                command,
+                capture_output=True,
+                text=True,
+                check=False
+            )
+            modified_stdout = re.sub(r"yt-dlp", "yt-dlx", result.stdout, flags=re.IGNORECASE)
+            modified_stderr = re.sub(r"yt-dlp", "yt-dlx", result.stderr, flags=re.IGNORECASE)
             sys.stdout.write(modified_stdout)
-            sys.stderr.write(result.stderr)
+            sys.stderr.write(modified_stderr)
             sys.exit(result.returncode)
         else:
-            result = subprocess.run( command, stdout=None, stderr=None, check=False  )
+            result = subprocess.run(
+                command,
+                stdout=None,
+                stderr=None,
+                check=False
+            )
             sys.exit(result.returncode)
     except FileNotFoundError:
         print(f"Error: The executable \"{command[0]}\" was not found. Make sure it exists at \"{executable_path}\" and has execute permissions.", file=sys.stderr)
@@ -51,16 +63,22 @@ def main():
     args = parser.parse_args()
     if sys.platform == "win32":
         tor_path = find_bundled_file("context/windows/tor.exe")
+        torrc_path = find_bundled_file("context/windows/torrc")
         ffmpeg_path = find_bundled_file("context/windows/ffmpeg.exe")
         ffprobe_path = find_bundled_file("context/windows/ffprobe.exe")
         ytprobe_path = find_bundled_file("context/windows/ytprobe.exe")
     else:
         tor_path = find_bundled_file("context/linux/tor.bin")
+        torrc_path = find_bundled_file("context/linux/torrc")
         ffmpeg_path = find_bundled_file("context/linux/ffmpeg.bin")
         ffprobe_path = find_bundled_file("context/linux/ffprobe.bin")
         ytprobe_path = find_bundled_file("context/linux/ytprobe.bin")
     if args.tor is not None:
         tor_args = args.tor
+        if torrc_path:
+            tor_args = ["--config-file", torrc_path] + tor_args
+        else:
+            pass
         run_executable("tor", tor_path, tor_args)
     elif args.ffmpeg is not None:
         run_executable("ffmpeg", ffmpeg_path, args.ffmpeg)
@@ -74,6 +92,7 @@ def main():
             "ffmpeg": ffmpeg_path if ffmpeg_path else "Not found in bundle",
             "ffprobe": ffprobe_path if ffprobe_path else "Not found in bundle",
             "ytprobe": ytprobe_path if ytprobe_path else "Not found in bundle",
+            "torrc": torrc_path if torrc_path else "Not found in bundle"
         }
         print(json.dumps(paths_info, indent=2))
 if __name__ == "__main__":
