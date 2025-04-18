@@ -26,15 +26,36 @@ async function playlistVideos({ playlistId }: { playlistId: string }, emitter: E
   }
 }
 /**
- * Fetches data for a given Tube (e.g., YouTube) channel link.
+ * @shortdesc Retrieves detailed information about a YouTube playlist, including its videos.
+ *
+ * @description This function fetches comprehensive data for a given YouTube playlist by providing its URL or ID. It returns details about the playlist, such as its ID, title, video count, and a list of videos with their respective IDs, titles, live status, durations, and thumbnails. This function is designed to work with direct playlist links or IDs, unlike `search_playlists()`, which is used for searching playlists by query.
  *
  * @param {object} options - An object containing the necessary options.
- * @param {string} options.channelLink - The URL of the YouTube channel.
+ * @param {string} options.playlistLink - The URL or ID of the YouTube playlist. **Required**.
  *
  * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - "data": Emitted with the channel data object, which includes information like channel title, description, subscriber count, and thumbnails.
- * - "error": Emitted if there is an error during the process, such as an incorrect channel link or if the data cannot be retrieved.
+ * - `"data"`: Emitted with the playlist data object (`playlistVideosType`) containing the playlist's ID, title, video count, and an array of video details. An example of this object is:
+ * ```typescript
+ * {
+ *   id: string;
+ *   title: string;
+ *   videoCount: number;
+ *   result: { id: string; title: string; isLive: boolean; duration: number; thumbnails: string[] }[];
+ * }
+ * ```
+ * - `"error"`: Emitted if there is an error during the process. This can include scenarios such as an invalid playlist link, failure to retrieve playlist data, or unexpected errors during processing.
  *
+ * @example
+ * // 1. Fetch data for a specific playlist using a playlist URL
+ * YouTubeDLX.Search.Playlist.Single({ playlistLink: "https://www.youtube.com/playlist?list=PL4cUxeGkcC9g8eVEzV8j3j2eZOxn2xo3y" })
+ *   .on("data", (data) => console.log("Playlist data:", data))
+ *   .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 2. Fetch data for a playlist using a playlist ID
+ * YouTubeDLX.Search.Playlist.Single({ playlistLink: "PL4cUxeGkcC9g8eVEzV8j3j2eZOxn2xo3y" })
+ *   .on("data", (data) => console.log("Playlist data:", data))
+ *   .on("error", (error) => console.error("Error:", error));
  */
 export default function playlist_data({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

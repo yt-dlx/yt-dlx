@@ -35,23 +35,28 @@ async function searchPlaylists({ query }: { query: string }, emitter: EventEmitt
  * @param {string} options.playlistLink - The search query to find playlists. **Required**.
  *
  * @returns {EventEmitter} An EventEmitter that emits the following events:
- * - `"data"`: Emitted with the first playlist object (`searchPlaylistsType`) found matching the search query. This object contains details like the playlist ID, title, video count, and thumbnails.
+ * - `"data"`: Emitted with the first playlist object (`searchPlaylistsType`) found matching the search query. This Ang example of this object is:
+ * ```typescript
+ * {
+ *   id: string;
+ *   title: string;
+ *   videoCount: number;
+ *   thumbnails: string[];
+ * }
+ * ```
  * - `"error"`: Emitted if there is an error during the process. This can include scenarios where no playlists are found for the query, if the input looks like a direct playlist link (in which case it will suggest using `playlist_data()`), or other unexpected errors.
  *
  * @example
- * // Define the structure for searchPlaylistsType
- * interface searchPlaylistsType {
- * id: string;
- * title: string;
- * videoCount: number;
- * thumbnails: string[];
- * }
+ * // 1. Fetch data for a playlist using a playlist ID
+ * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "PL4cUxeGkcC9g8eVEzV8j3j2eZOxn2xo3y" })
+ *   .on("data", (data) => console.log("Playlist data:", data))
+ *   .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // Search for playlists with the query "workout routines"
- * YouTubeDLX.search_playlists({ playlistLink: "workout routines" })
- * .on("data", (playlist: searchPlaylistsType) => console.log("Found Playlist:", playlist))
- * .on("error", (error) => console.error("Error:", error));
+ * // 2. Fetch data for a specific playlist using a playlist URL
+ * YouTubeDLX.Search.Playlist.Multiple({ playlistLink: "https://www.youtube.com/playlist?list=PL4cUxeGkcC9g8eVEzV8j3j2eZOxn2xo3y"  })
+ *   .on("data", (data) => console.log("Playlist data:", data))
+ *   .on("error", (error) => console.error("Error:", error));
  */
 export default function search_playlists({ playlistLink }: z.infer<typeof ZodSchema>): EventEmitter {
   const emitter = new EventEmitter();

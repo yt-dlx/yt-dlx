@@ -14,10 +14,21 @@ const ZodSchema = z.object({ channelLink: z.string().min(2) });
  * @returns {EventEmitter} An EventEmitter that emits the following events:
  * - `"data"`: Emitted with an object containing detailed information about the YouTube channel.
  * - `"error"`: Emitted if an error occurs during the fetching process, such as an invalid channel link or a network issue.
+ * @example
+ * // 1. Fetch data for a YouTube channel using a standard channel URL with ID
+ * YouTubeDLX.channel_data({ channelLink: "http://www.youtube.com/channel/UC-lHJZR3GqxyEcQLaM6SDxg" })
+ * .on("data", (channelInfo) => console.log("Channel Data:", channelInfo))
+ * .on("error", (error) => console.error("Error:", error));
  *
  * @example
- * // Fetch data for a YouTube channel
- * YouTubeDLX.channel_data({ channelLink: "https://www.youtube.com/@LinusTechTips" })
+ * // 2. Fetch data for a YouTube channel using a channel URL with a custom handle
+ * YouTubeDLX.channel_data({ channelLink: "http://www.youtube.com/@LinusTechTips" })
+ * .on("data", (channelInfo) => console.log("Channel Data:", channelInfo))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 3. Attempt to fetch data for an invalid channel link
+ * YouTubeDLX.channel_data({ channelLink: "invalid-channel-link-abc" })
  * .on("data", (channelInfo) => console.log("Channel Data:", channelInfo))
  * .on("error", (error) => console.error("Error:", error));
  */

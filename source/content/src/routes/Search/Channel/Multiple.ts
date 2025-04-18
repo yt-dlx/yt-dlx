@@ -37,7 +37,7 @@ async function searchChannels({ query }: { query: string }): Promise<channelSear
  *
  * @returns {EventEmitter} An EventEmitter that emits the following events:
  * - `"data"`: Emitted with an array of channel objects (`channelSearchType`) that match the search query.
- * - `"error"`: Emitted if an error occurs during the search process, such as argument validation issues or network errors.
+ * - `"error"`: Emitted if an error occurs during the search process, such as argument validation issues or network errors, or if no channels are found for the query.
  *
  * @example
  * // Define the structure for channelSearchType
@@ -50,8 +50,20 @@ async function searchChannels({ query }: { query: string }): Promise<channelSear
  * }
  *
  * @example
- * // Search for YouTube channels with the query "programming tutorials"
+ * // 1. Search for YouTube channels with the query "programming tutorials"
  * YouTubeDLX.search_channels({ query: "programming tutorials" })
+ * .on("data", (channels: channelSearchType[]) => console.log("Found Channels:", channels))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 2. Search for YouTube channels with the query "science communicators"
+ * YouTubeDLX.search_channels({ query: "science communicators" })
+ * .on("data", (channels: channelSearchType[]) => console.log("Found Channels:", channels))
+ * .on("error", (error) => console.error("Error:", error));
+ *
+ * @example
+ * // 3. Search for YouTube channels with a query that yields no results
+ * YouTubeDLX.search_channels({ query: "nonexistent channels on youtube 12345" })
  * .on("data", (channels: channelSearchType[]) => console.log("Found Channels:", channels))
  * .on("error", (error) => console.error("Error:", error));
  */
