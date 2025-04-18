@@ -1,6 +1,6 @@
 {
   "name": "yt-dlx",
-  "version": "17.4.3",
+  "version": "17.5.4",
   "license": "Apache-2.0",
   "main": "package/cjs/src/index.js",
   "types": "package/types/index.d.ts",
@@ -53,7 +53,8 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "rimraf": "^6.0.1",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "yt-dlx": "^17.4.3"
   },
   "scripts": {
     "make": "yarn install --frozen-lockfile",
