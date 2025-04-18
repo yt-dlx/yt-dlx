@@ -24,6 +24,7 @@
   "files": [
     "package",
     "LICENSE",
+    "examples",
     "postdeps.mjs",
     "package.json"
   ],
