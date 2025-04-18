@@ -89,10 +89,10 @@ def main():
     else:
         paths_info = {
             "tor": tor_path if tor_path else "Not found in bundle",
+            "torrc": torrc_path if torrc_path else "Not found in bundle",
             "ffmpeg": ffmpeg_path if ffmpeg_path else "Not found in bundle",
             "ffprobe": ffprobe_path if ffprobe_path else "Not found in bundle",
             "ytprobe": ytprobe_path if ytprobe_path else "Not found in bundle",
-            "torrc": torrc_path if torrc_path else "Not found in bundle"
         }
         print(json.dumps(paths_info, indent=2))
 if __name__ == "__main__":
