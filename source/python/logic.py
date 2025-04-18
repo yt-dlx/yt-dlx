@@ -43,11 +43,11 @@ def run_executable(executable_name_without_ext, executable_path, args):
             )
             sys.exit(result.returncode)
     except FileNotFoundError:
-         print(f"Error: The executable \"{command[0]}\" was not found. Make sure it exists at \"{executable_path}\" and has execute permissions.", file=sys.stderr)
-         sys.exit(127)
+        print(f"Error: The executable \"{command[0]}\" was not found. Make sure it exists at \"{executable_path}\" and has execute permissions.", file=sys.stderr)
+        sys.exit(127)
     except PermissionError:
-         print(f"Error: Permission denied to execute \"{command[0]}\". Make sure it has execute permissions.", file=sys.stderr)
-         sys.exit(126)
+        print(f"Error: Permission denied to execute \"{command[0]}\". Make sure it has execute permissions.", file=sys.stderr)
+        sys.exit(126)
     except subprocess.SubprocessError as e:
         print(f"Error running {executable_name_without_ext}: {e}", file=sys.stderr)
         sys.exit(1)
@@ -62,18 +62,13 @@ def main():
         tor_path = find_bundled_file("context/windows/tor.exe")
         ffmpeg_path = find_bundled_file("context/windows/ffmpeg.exe")
         ffprobe_path = find_bundled_file("context/windows/ffprobe.exe")
-        torrc_path = find_bundled_file("context/windows/torrc")
     else:
         tor_path = find_bundled_file("context/linux/tor.bin")
         ffmpeg_path = find_bundled_file("context/linux/ffmpeg.bin")
         ffprobe_path = find_bundled_file("context/linux/ffprobe.bin")
-        torrc_path = find_bundled_file("context/linux/torrc")
     ytprobe_path = find_bundled_file("scripts/ytprobe.py")
     if args.tor is not None:
-        if torrc_path:
-            tor_args = ["-f", torrc_path] + args.tor
-        else:
-            tor_args = args.tor
+        tor_args = args.tor
         run_executable("tor", tor_path, tor_args)
     elif args.ffmpeg is not None:
         run_executable("ffmpeg", ffmpeg_path, args.ffmpeg)

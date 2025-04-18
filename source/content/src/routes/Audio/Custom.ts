@@ -147,7 +147,7 @@ const ZodSchema = z.object({
  *
  * @example
  * // 12. Stream audio at ultralow resolution with verbose logging to a specific output directory using Tor
- * YouTubeDLX.AudioCustom({ query: "discreet recording", resolution: "ultralow", stream: true, verbose: true, output: "./anonymous_audio", useTor: true })
+ * YouTubeDLX.AudioCustom({ query: "discreet recording", resolution: "ultralow", stream: true, verbose: true, output: "./vibrato", useTor: true })
  * .on("stream", (streamData) => {
  * console.log("Streaming to:", streamData.filename);
  * streamData.ffmpeg.on("progress", (progress) => console.log("Progress:", progress));
@@ -366,6 +366,14 @@ export default function AudioCustom({ query, output, useTor, stream, filter, ver
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
       try {
         const paths = await locator();
+        if (!paths.ffmpeg) {
+          emitter.emit("error", `${colors.red("@error:")} ffmpeg executable not found.`);
+          return;
+        }
+        if (!paths.ffprobe) {
+          emitter.emit("error", `${colors.red("@error:")} ffprobe executable not found.`);
+          return;
+        }
         instance.setFfmpegPath(paths.ffmpeg);
         instance.setFfprobePath(paths.ffprobe);
       } catch (locatorError: any) {
@@ -391,7 +399,7 @@ export default function AudioCustom({ query, output, useTor, stream, filter, ver
       instance.addInput(adata.url);
       const filenameBase = `yt-dlx_AudioCustom_${resolution}_`;
       let filename = `${filenameBase}${filter ? filter + "_" : "_"}${title}.avi`;
-      const filterMap = {
+      const filterMap: { [key: string]: string[] } = {
         speed: ["atempo=2"],
         flanger: ["flanger"],
         slow: ["atempo=0.8"],

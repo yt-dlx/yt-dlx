@@ -362,6 +362,14 @@ export default function AudioLowest({ query, output, useTor, stream, filter, met
       const instance: ffmpeg.FfmpegCommand = ffmpeg();
       try {
         const paths = await locator();
+        if (!paths.ffmpeg) {
+          emitter.emit("error", `${colors.red("@error:")} ffmpeg executable not found.`);
+          return;
+        }
+        if (!paths.ffprobe) {
+          emitter.emit("error", `${colors.red("@error:")} ffprobe executable not found.`);
+          return;
+        }
         instance.setFfmpegPath(paths.ffmpeg);
         instance.setFfprobePath(paths.ffprobe);
       } catch (locatorError: any) {
