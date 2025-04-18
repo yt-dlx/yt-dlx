@@ -12,13 +12,13 @@ if sys.platform == "win32":
         "--name", "yt-dlx.exe",
         "--icon", "context/logo.jpg",
         "main.py",
-        "--add-binary", "context/windows/ffmpeg.exe;context/windows",
-        "--add-binary", "context/windows/ffprobe.exe;context/windows",
-        "--add-binary", "context/windows/tor.exe;context/windows",
-        "--add-binary", "context/windows/ytprobe.exe;context/windows",
-        "--add-data", "context/windows/venv;context/windows/venv",
-        "--add-data", "logic.py;.",
-        "--add-data", "context/windows/torrc;context/windows"
+        "--add-binary", f"context/windows/ffmpeg.exe;context/windows",
+        "--add-binary", f"context/windows/ffprobe.exe;context/windows",
+        "--add-binary", f"context/windows/tor.exe;context/windows",
+        "--add-binary", f"context/windows/ytprobe.exe;context/windows",
+        "--add-data", f"context/windows/venv;context/windows/venv",
+        "--add-data", f"logic.py;.",
+        "--add-data", f"context/windows/torrc;context/windows"
     ]
     exe_name = "yt-dlx.exe"
 elif sys.platform.startswith("linux"):
@@ -28,13 +28,13 @@ elif sys.platform.startswith("linux"):
         "--name", "yt-dlx.bin",
         "--icon", "context/logo.jpg",
         "main.py",
-        "--add-binary", "context/linux/ffmpeg.bin;context/linux",
-        "--add-binary", "context/linux/ffprobe.bin;context/linux",
-        "--add-binary", "context/linux/tor.bin;context/linux",
-        "--add-binary", "context/linux/ytprobe.bin;context/linux",
-        "--add-data", "context/linux/venv;context/linux/venv",
-        "--add-data", "logic.py;.",
-        "--add-data", "context/linux/torrc;context/linux"
+        "--add-binary", f"context/linux/ffmpeg.bin:context/linux",
+        "--add-binary", f"context/linux/ffprobe.bin:context/linux",
+        "--add-binary", f"context/linux/tor.bin:context/linux",
+        "--add-binary", f"context/linux/ytprobe.bin:context/linux",
+        "--add-data", f"context/linux/venv:context/linux/venv",
+        "--add-data", f"logic.py:.",
+        "--add-data", f"context/linux/torrc:context/linux"
     ]
     exe_name = "yt-dlx.bin"
 else:
