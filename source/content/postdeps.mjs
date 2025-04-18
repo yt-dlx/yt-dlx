@@ -45,3 +45,11 @@ const main = async () => {
   }
 };
 main();
+
+// ffmpeg-linux.bin: https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing
+// ffprobe-linux.bin: https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing
+// ytprobe-linux.bin: https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing
+
+// ffmpeg-windows.exe: https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing
+// ffprobe-windows.exe: https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing
+// ytprobe-windows.exe: https://drive.google.com/file/d/1mTJXoZ0JyOGREZIkd7YXTtnJyPeBR7-t/view?usp=sharing
