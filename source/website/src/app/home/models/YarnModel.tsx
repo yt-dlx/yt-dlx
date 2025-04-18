@@ -1,3 +1,4 @@
+"use client";
 import react from "react";
 import { motion } from "framer-motion";
 const yarnModel: React.FC<{ open: boolean; close: () => void }> = ({ open, close }) => {

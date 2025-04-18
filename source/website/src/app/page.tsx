@@ -47,9 +47,9 @@ export default function HomePage() {
                 </li>
               </ul>
               <Link
-                href="/gui/home"
+                href="#"
                 className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-700 disabled:pointer-events-none disabled:opacity-50">
-                <HiFolderDownload className="mr-2 h-5 w-5" /> Try YT-DLX in Graphical User Interface mode
+                <HiFolderDownload className="mr-2 h-5 w-5" /> Download YT-DLX Windows/Linux Client
               </Link>
             </div>
             <motion.img
@@ -99,7 +99,7 @@ export default function HomePage() {
                 </li>
               </ul>
               <Link
-                href="/docs/home"
+                href="/docs/"
                 className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-700 disabled:pointer-events-none disabled:opacity-50">
                 <FaBook className="mr-2 h-5 w-5" /> Checkout Usage Documentations for YT-DLX
               </Link>
