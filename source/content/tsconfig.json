@@ -1,8 +1,0 @@
-{
-  "compilerOptions": {
-    "target": "esnext"
-  },
-  "include": ["src/**/*.ts", "src/routes/Account/SubscriptionsFeed.ts"],
-  "exclude": ["pkg", "node_modules"],
-  "extends": "./src/config/root.json"
-}
