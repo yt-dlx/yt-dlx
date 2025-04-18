@@ -31,14 +31,14 @@ export default function VideoId() {
   return (
     <main className="overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-700">
       <NavPackage />
-      <div className="w-full px-4 py-8 md:px-6">
+      <div className="w-full">
         <Introduction />
       </div>
       {TubeSearch ? (
         <section className="flex flex-col items-center justify-center">
           <div className="max-w-screen-2xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
             <section className="flex flex-col items-center justify-center">
-              <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-neutral-950 border-4 border-[#cd322d6e] rounded-3xl shadow-red-700 shadow-[0_0_80px_rgba(255,0,0,0.5)]">
+              <div className="mt-8 grid grid-cols-1 gap-8 md:mt-16 bg-black border-4 border-[#cd322d6e] rounded-3xl shadow-red-700 shadow-[0_0_80px_rgba(255,0,0,0.5)]">
                 <div className="overflow-x-auto">
                   <section className="max-w-screen-2xl px-6 mx-auto p-1">
                     {TubeSearch.thumbnails && TubeSearch.thumbnails.length > 0 && (

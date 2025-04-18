@@ -228,7 +228,7 @@ export default function HomePage() {
   return (
     <main className="flex flex-col items-center justify-start overflow-y-auto max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-700 font-semibold">
       <NavPackage />
-      <div className="w-full px-4 py-8 md:px-6">
+      <div className="w-full">
         <Introduction />
       </div>
       <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-8 md:py-16 lg:py-24 bg-black text-white">

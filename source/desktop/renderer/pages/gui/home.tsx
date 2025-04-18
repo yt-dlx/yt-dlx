@@ -20,7 +20,7 @@ export default function HomeGUI() {
   return (
     <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-700 font-semibold">
       <NavPackage />
-      <div className="w-full px-4 py-8 md:px-6">
+      <div className="w-full">
         <Introduction />
       </div>
       <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white">
@@ -31,7 +31,7 @@ export default function HomeGUI() {
               event.preventDefault();
               window.ipc.send("SearchVideos", { query: Query });
             }}
-            className="bg-neutral-950 max-w-screen-2xl p-10 text-red-700 mx-auto my-8 rounded-3xl border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-700">
+            className="bg-black max-w-screen-2xl p-10 text-red-700 mx-auto my-8 rounded-3xl border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-700">
             <motion.h1 className="text-7xl mb-4 font-black" {...FromBottomToTop}>
               Yt-Dlx PlayGround
             </motion.h1>

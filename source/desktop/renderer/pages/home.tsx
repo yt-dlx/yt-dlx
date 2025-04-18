@@ -15,7 +15,7 @@ export default function HomePage() {
   return (
     <main className="flex flex-col overflow-y-auto overflow-x-hidden max-h-screen bg-neutral-950 font-semibold">
       <NavPackage />
-      <div className="w-full px-4 py-8 md:px-6">
+      <div className="w-full">
         <Introduction />
       </div>
       {/* ======================/ Playground /====================== */}
@@ -63,7 +63,7 @@ export default function HomePage() {
         </div>
       </section>
       {/* =====================/ Documentation /===================== */}
-      <section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-neutral-950 text-white">
+      <section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-12 md:py-24 lg:py-32 bg-black text-white">
         <div className="container px-4 md:px-6">
           <div className="grid items-center gap-6 lg:grid-cols-[1fr_500px] lg:gap-12 xl:grid-cols-[1fr_550px]">
             <motion.img

@@ -5,14 +5,15 @@ import forms from "@tailwindcss/forms";
 import plugin from "tailwindcss/plugin";
 import colors from "tailwindcss/colors";
 import typography from "@tailwindcss/typography";
-// import tailwindScrollbar from "tailwind-scrollbar";
-// import tailwindScrollbarHide from "tailwind-scrollbar-hide";
 export default {
   darkMode: "class",
   content: ["./renderer/pages/**/*.{js,ts,jsx,tsx}"],
   theme: {
     colors: { white: colors.white, gray: colors.gray, blue: colors.blue },
-    extend: { textShadow: { sm: "0 1px 2px var(--tw-shadow-color)", DEFAULT: "0 2px 4px var(--tw-shadow-color)", lg: "0 8px 16px var(--tw-shadow-color)" }, fontFamily: {} },
+    extend: {
+      fontFamily: { Lobster: ["var(--font-Lobster)"], Markazi: ["var(--font-Markazi)"] },
+      textShadow: { sm: "0 1px 2px var(--tw-shadow-color)", DEFAULT: "0 2px 4px var(--tw-shadow-color)", lg: "0 8px 16px var(--tw-shadow-color)" },
+    },
   },
   plugins: [
     plugin(function ({ matchUtilities, theme }) {
@@ -23,8 +24,6 @@ export default {
     preline,
     flowbite,
     typography,
-    // tailwindScrollbar,
-    // tailwindScrollbarHide,
   ],
   daisyui: {
     themes: [
