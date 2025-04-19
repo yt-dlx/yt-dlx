@@ -2,18 +2,16 @@
 import React from "react";
 import { motion } from "framer-motion";
 import NavPackage from "@/components/nav";
+import Introduction from "@/app/home/page";
 import FootPackage from "@/components/foot";
-import Introduction from "../../../home/page";
 import { MdDescription } from "react-icons/md";
 import { FaClipboardCheck } from "react-icons/fa";
 import { BiLogoTypescript } from "react-icons/bi";
 import { RiJavascriptFill } from "react-icons/ri";
 import { MdNotificationsNone } from "react-icons/md";
-
 const FromRightToLeft = { initial: { opacity: 0, x: 100 }, exit: { opacity: 0, x: 50, transition: { duration: 0.3 } }, whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } } };
 const FromLeftToRight = { initial: { opacity: 0, x: -100 }, exit: { opacity: 0, x: -50, transition: { duration: 0.3 } }, whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } } };
 const AndBounce = { initial: { opacity: 0, y: -50 }, whileInView: { y: 0, opacity: 1, transition: { duration: 0.8, bounce: 0.3 } }, exit: { opacity: 0, y: -50, transition: { duration: 0.3 } } };
-
 export default function AccountUnseenNotifications() {
   return (
     <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-700 font-semibold">
@@ -61,21 +59,21 @@ export default function AccountUnseenNotifications() {
                 <button
                   className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-700 disabled:pointer-events-none disabled:opacity-50"
                   onClick={() => {
-                    window.open("https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/Account/unseennotifications.test.ts", "_blank"); // Placeholder URL
+                    window.open("https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/Account/unseennotifications.test.ts", "_blank");
                   }}>
                   <BiLogoTypescript className="mr-2 h-5 w-5" /> Typescript Examples
                 </button>
                 <button
                   className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-700 disabled:pointer-events-none disabled:opacity-50"
                   onClick={() => {
-                    window.open("https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/Account/unseennotifications.test.js", "_blank"); // Placeholder URL
+                    window.open("https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/Account/unseennotifications.test.js", "_blank");
                   }}>
                   <RiJavascriptFill className="mr-2 h-5 w-5" /> Javascript Examples
                 </button>
                 <button
                   className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-700 disabled:pointer-events-none disabled:opacity-50"
                   onClick={() => {
-                    window.open("https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/Account/unseennotifications.test.mjs", "_blank"); // Placeholder URL
+                    window.open("https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/Account/unseennotifications.test.mjs", "_blank");
                   }}>
                   <MdDescription className="mr-2 h-5 w-5" /> EcmaScript Examples
                 </button>
