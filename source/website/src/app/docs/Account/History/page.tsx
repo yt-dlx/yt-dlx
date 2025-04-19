@@ -29,14 +29,14 @@ export default function AccountHistory() {
               </motion.h2>
               <motion.ul className="grid gap-2 py-4" {...AndBounce}>
                 <li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-700" /> Fetches the user&quot;s watch history, including videos and shorts, with optional sorting.
+                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-700" /> Fetches the user&apos;s watch history, including videos and shorts, with optional sorting.
                 </li>
                 <li>
                   <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-700" /> @param options - An object containing the configuration options.
                 </li>
                 <ul className="grid gap-2 pl-6">
                   <li>
-                    <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-700" /> @param options.cookies - The user&quot;s cookies as a string. <strong>Required</strong>.
+                    <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-700" /> @param options.cookies - The user&apos;s cookies as a string. <strong>Required</strong>.
                   </li>
                   <li>
                     <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-700" /> @param options.verbose - (optional) Enable verbose logging.
