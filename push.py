@@ -32,7 +32,6 @@ def monitor_and_commit():
                 print(push_command.stdout)
                 print(push_command.stderr)
                 print("Commit and push successful.")
-                time.sleep(10)
             else:
                 print("No changes detected. Waiting...")
                 time.sleep(5)
