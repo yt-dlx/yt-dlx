@@ -34,12 +34,11 @@ def monitor_and_commit():
                 print("Commit and push successful.")
             else:
                 print("No changes detected. Waiting...")
-                time.sleep(5)
+                time.sleep(30)
         except subprocess.CalledProcessError as e:
             print(f"Git command failed: {e}")
             print(f"Stdout: {e.stdout}")
             print(f"Stderr: {e.stderr}")
-            time.sleep(10)
         except Exception as e:
             print(f"An error occurred: {e}")
             time.sleep(10)
