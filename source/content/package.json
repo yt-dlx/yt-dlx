@@ -54,8 +54,7 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "rimraf": "^6.0.1",
-    "typescript": "^5.8.2",
-    "yt-dlx": "^17.7.6"
+    "typescript": "^5.8.2"
   },
   "scripts": {
     "make": "yarn install --frozen-lockfile",
