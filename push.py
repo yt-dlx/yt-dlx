@@ -12,7 +12,7 @@ def monitor_and_commit():
                 text=True,
             )
             if status_check.stdout.strip():
-                print("Changes detected. Staging, Committing, and pushing...")
+                print("Changes detected. Staging, Committing, and Pushing...")
                 add_command = subprocess.run(
                     ["git", "add", "."], capture_output=True, text=True, check=True
                 )
