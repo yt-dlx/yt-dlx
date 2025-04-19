@@ -12,75 +12,119 @@ import { RiJavascriptFill } from "react-icons/ri";
 const FromRightToLeft = { initial: { opacity: 0, x: 100 }, exit: { opacity: 0, x: 50, transition: { duration: 0.3 } }, whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } } };
 const FromLeftToRight = { initial: { opacity: 0, x: -100 }, exit: { opacity: 0, x: -50, transition: { duration: 0.3 } }, whileInView: { opacity: 1, x: 0, transition: { duration: 0.8 } } };
 const AndBounce = { initial: { opacity: 0, y: -50 }, whileInView: { y: 0, opacity: 1, transition: { duration: 0.8, bounce: 0.3 } }, exit: { opacity: 0, y: -50, transition: { duration: 0.3 } } };
+const FadeIn = { initial: { opacity: 0 }, whileInView: { opacity: 1, transition: { duration: 0.5 } } };
 export default function MiscVideoRelated() {
   return (
-    <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-neutral-950 scrollbar-track-neutral-950 scrollbar-thumb-red-700 font-semibold">
+    <main className="flex flex-col overflow-x-hidden max-h-screen scrollbar-thin bg-black scrollbar-track-black scrollbar-thumb-red-700 font-sans">
       <NavPackage />
-      <div className="w-full px-4 py-8 md:px-6">
+      <div className="w-full px-4 py-6 md:px-6">
         <Introduction />
       </div>
-      <motion.section className="flex items-center justify-center border-b-8 border-double border-[#cd322d6e] w-full py-8 md:py-16 lg:py-24 bg-black text-white">
-        <div className="container px-4 md:px-6">
-          <div className="grid items-center gap-6 lg:grid-cols-2 lg:gap-12">
-            <div className="flex flex-col justify-center space-y-4">
-              <motion.div className="inline-block rounded-3xl bg-red-700 text-neutral-900 cursor-not-allowed font-black px-3 py-1 text-sm"> Viewing Documentation For: </motion.div>
-              <motion.h2 className="text-3xl font-black tracking-tighter sm:text-4xl lg:text-5xl text-red-700" {...FromLeftToRight}>
+      <motion.section className="flex items-center justify-center w-full py-8 md:py-12 lg:py-16 bg-black text-white">
+        <div className="container px-4 md:px-6 max-w-7xl">
+          <div className="grid items-start gap-8 lg:grid-cols-2 lg:gap-12">
+            <div className="flex flex-col justify-start space-y-6">
+              <motion.div className="inline-block rounded-full bg-red-700 text-white px-4 py-2 text-sm" {...FadeIn}>
+                Documentation
+              </motion.div>
+              <motion.h2 className="text-4xl font-bold sm:text-5xl lg:text-6xl text-red-600" {...FromLeftToRight}>
                 YtDlx.Misc.Video.Related()
               </motion.h2>
-              <motion.ul className="grid gap-2 py-4" {...AndBounce}>
-                <li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-700" /> Fetches related videos for a given YouTube video ID.
-                </li>
-                <li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-700" /> @param options - An object containing the configuration options.
-                </li>
-                <ul className="grid gap-2 pl-6">
-                  <li>
-                    <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-700" /> @param options.videoId - The YouTube video ID. <strong>Required</strong>, minimum length 2.
-                  </li>
-                </ul>
-                <li>
-                  <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-700" /> @returns An EventEmitter instance for handling events during the related videos fetching process.
-                </li>
-                <ul className="grid gap-2 pl-6">
-                  <li>
-                    <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-700" /> Emits &quot;data&quot; on success: array of related video objects.
-                  </li>
-                  <li>
-                    <FaClipboardCheck className="mr-2 inline-block h-4 w-4 text-red-700" /> Emits &quot;error&quot;: Error message (validation, API issues, no related videos found).
-                  </li>
-                </ul>
-              </motion.ul>
-              <motion.div className="flex flex-wrap gap-2">
+              <motion.p className="text-gray-300 text-lg" {...AndBounce}>
+                Fetches related videos for a given YouTube video ID.
+              </motion.p>
+              <motion.div className="flex flex-wrap gap-3 mt-6" {...FadeIn}>
                 <button
-                  className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-700 disabled:pointer-events-none disabled:opacity-50"
+                  className="inline-flex h-10 items-center justify-center rounded-full bg-red-600 text-white font-medium px-5 py-2 text-sm transition-all hover:bg-red-700"
                   onClick={() => {
                     window.open("https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/typescript/Misc/Video/related.test.ts", "_blank");
                   }}>
-                  <BiLogoTypescript className="mr-2 h-5 w-5" /> Typescript Examples
+                  <BiLogoTypescript className="mr-2 h-5 w-5" /> TypeScript Examples
                 </button>
                 <button
-                  className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-700 disabled:pointer-events-none disabled:opacity-50"
+                  className="inline-flex h-10 items-center justify-center rounded-full bg-neutral-800 text-white font-medium hover:bg-neutral-700 px-5 py-2 text-sm transition-all"
                   onClick={() => {
                     window.open("https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/javascript/Misc/Video/related.test.js", "_blank");
                   }}>
-                  <RiJavascriptFill className="mr-2 h-5 w-5" /> Javascript Examples
+                  <RiJavascriptFill className="mr-2 h-5 w-5 text-yellow-400" /> JavaScript Examples
                 </button>
                 <button
-                  className="inline-flex h-10 items-center justify-center rounded-3xl border hover:border-neutral-900 text-red-700 font-black border-red-700/50 bg-neutral-900 hover:bg-red-700 hover:text-neutral-900 px-4 md:px-8 text-sm duration-700 transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-red-700 disabled:pointer-events-none disabled:opacity-50"
+                  className="inline-flex h-10 items-center justify-center rounded-full bg-neutral-800 text-white font-medium hover:bg-neutral-700 px-5 py-2 text-sm transition-all"
                   onClick={() => {
                     window.open("https://github.com/yt-dlx/yt-dlx/blob/main/config/examples/ecmascript/Misc/Video/related.test.mjs", "_blank");
                   }}>
-                  <MdDescription className="mr-2 h-5 w-5" /> EcmaScript Examples
+                  <MdDescription className="mr-2 h-5 w-5 text-blue-400" /> EcmaScript Examples
                 </button>
               </motion.div>
             </div>
-            <motion.div
-              className="mx-auto aspect-video overflow-hidden rounded-3xl object-cover object-center w-full max-w-[550px] border-4 border-[#cd322d6e] shadow-[0_0_400px_rgba(255,0,0,0.5)] shadow-red-700 flex items-center justify-center"
-              {...FromRightToLeft}>
-              <MdLink className="w-48 h-48 text-red-700/70" />
+            <motion.div className="mx-auto aspect-video overflow-hidden rounded-lg w-full max-w-[550px] bg-neutral-900 border border-neutral-800 flex items-center justify-center" {...FromRightToLeft}>
+              <div className="text-center p-6">
+                <MdLink className="w-24 h-24 text-red-600 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-white mb-2">Related Videos</h3>
+                <p className="text-neutral-400">Find videos related to a given video ID</p>
+              </div>
             </motion.div>
           </div>
+          <motion.div className="mt-8 w-full" {...AndBounce}>
+            <div className="bg-neutral-900 rounded-lg p-6 border border-neutral-800">
+              <h3 className="text-xl font-semibold text-red-500 mb-4">Parameters</h3>
+              <div className="space-y-4">
+                <div className="flex items-start">
+                  <div className="mt-1 mr-3 text-red-600 flex-shrink-0">
+                    <FaClipboardCheck className="h-4 w-4" />
+                  </div>
+                  <div className="flex flex-wrap w-full">
+                    <span className="font-semibold text-neutral-300">options</span>
+                    <p className="text-neutral-400 w-full">An object containing the configuration options.</p>
+                  </div>
+                </div>
+                <div className="space-y-3 pl-7">
+                  <div className="flex items-start">
+                    <div className="mt-1 mr-3 text-red-600 flex-shrink-0">
+                      <FaClipboardCheck className="h-4 w-4" />
+                    </div>
+                    <div className="flex flex-wrap w-full">
+                      <span className="font-semibold text-neutral-300">options.videoId</span>
+                      <p className="text-neutral-400 w-full">
+                        The YouTube video ID. <span className="text-red-500">Required</span>, minimum length 2.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="bg-neutral-900 rounded-lg p-6 border border-neutral-800 mt-6">
+              <h3 className="text-xl font-semibold text-red-500 mb-4">Return Value</h3>
+              <div className="flex items-start">
+                <div className="mt-1 mr-3 text-red-600 flex-shrink-0">
+                  <FaClipboardCheck className="h-4 w-4" />
+                </div>
+                <div className="flex flex-wrap w-full">
+                  <p className="text-neutral-300 w-full">An EventEmitter instance for handling events during the related videos fetching process.</p>
+                </div>
+              </div>
+              <div className="space-y-3 pl-7 mt-4">
+                <div className="flex items-start">
+                  <div className="mt-1 mr-3 text-red-600 flex-shrink-0">
+                    <FaClipboardCheck className="h-4 w-4" />
+                  </div>
+                  <div className="flex flex-wrap w-full">
+                    <span className="font-semibold text-purple-400">Emits &quot;data&quot;</span>
+                    <p className="text-neutral-400 w-full">On success: array of related video objects.</p>
+                  </div>
+                </div>
+                <div className="flex items-start">
+                  <div className="mt-1 mr-3 text-red-600 flex-shrink-0">
+                    <FaClipboardCheck className="h-4 w-4" />
+                  </div>
+                  <div className="flex flex-wrap w-full">
+                    <span className="font-semibold text-purple-400">Emits &quot;error&quot;</span>
+                    <p className="text-neutral-400 w-full">Error message (validation, API issues, no related videos found).</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </motion.section>
       <FootPackage />
