@@ -1530,23 +1530,6 @@ youtubei@^1.6.7:
     node-fetch "2.6.7"
     protobufjs "7.2.6"
 
-yt-dlx@^17.5.4:
-  version "17.5.4"
-  resolved "https://registry.yarnpkg.com/yt-dlx/-/yt-dlx-17.5.4.tgz#b8cef3a92c5f0c698750d04e4b13e6c339310047"
-  integrity sha512-EHBbEe0EsfrIa20Skv8/Yin6K01hLgQHJ8c0sKaiHb0/+GmeIns5giqP4Q05ZHQAPXvTFN36ECC2RefMhwbKlg==
-  dependencies:
-    async-retry "^1.3.3"
-    axios "^1.8.4"
-    cli-progress "^3.12.0"
-    colors "^1.4.0"
-    fluent-ffmpeg "^2.1.3"
-    fs-extra "^11.3.0"
-    shx "^0.4.0"
-    socks-proxy-agent "^8.0.5"
-    youtubei "^1.6.7"
-    youtubei.js "^13.3.0"
-    zod "^3.24.3"
-
 zod@^3.24.3:
   version "3.24.3"
   resolved "https://registry.yarnpkg.com/zod/-/zod-3.24.3.tgz#1f40f750a05e477396da64438e0e1c0995dafd87"
