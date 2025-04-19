@@ -1,12 +1,12 @@
 import react from "react";
 import { motion } from "framer-motion";
 import { FaYarn } from "react-icons/fa";
+import NpmModel from "./models/NpmModel";
+import BunModel from "./models/BunModel";
+import YarnModel from "./models/YarnModel";
+import PnpmModel from "./models/PnpmModel";
 import { TbBrandNpm } from "react-icons/tb";
 import { SiBun, SiPnpm } from "react-icons/si";
-import NpmModel from "../home/models/NpmModel";
-import BunModel from "../home/models/BunModel";
-import YarnModel from "../home/models/YarnModel";
-import PnpmModel from "../home/models/PnpmModel";
 const FromTopToBottom = { initial: { opacity: 0, y: -100 }, exit: { opacity: 0, y: -50, transition: { duration: 0.3 } }, whileInView: { opacity: 1, y: 0, transition: { duration: 0.8 } } };
 export default function Introduction() {
   const [_yarn, yarn_] = react.useState(false);

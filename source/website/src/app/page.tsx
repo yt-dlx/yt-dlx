@@ -2,10 +2,10 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import Introduction from "./home/page";
 import { FaBook } from "react-icons/fa";
 import NavPackage from "@/components/nav";
 import FootPackage from "@/components/foot";
-import Introduction from "./home/Introduction";
 import { FaClipboardCheck } from "react-icons/fa";
 import { HiFolderDownload } from "react-icons/hi";
 import { RiContactsBookFill } from "react-icons/ri";
